@@ -10,8 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c963dc72-3b16-4a4f-832c-4830b1ee2264" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/UML/ORBSLAM2.xmi" beforeDir="false" afterPath="$PROJECT_DIR$/UML/ORBSLAM2.xmi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UML/ObjSLAM.xmi" beforeDir="false" afterPath="$PROJECT_DIR$/UML/ObjSLAM.xmi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UML/g2o.xmi" beforeDir="false" afterPath="$PROJECT_DIR$/UML/g2o.xmi" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
