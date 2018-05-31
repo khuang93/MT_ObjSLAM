@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     PyObject *pArgs, *pValue;
     int i;
 
-    if (argc < 3) {
+    if (argc < 3) {git sa
         fprintf(stderr,"Usage: call pythonfile funcname [args]\n");
         return 1;
     }
