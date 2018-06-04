@@ -4,7 +4,7 @@
 #include "ITMLib/ITMBasicEngine.h"
 
 #include <string>
-using ITMLib::ITMBasicEngine;
+using ITMLib::ITMMainEngine;
 
 namespace ObjSLAM {
 
@@ -15,7 +15,7 @@ namespace ObjSLAM {
   * 
   */
 
-class InfiniTAMEngine : public InfiniTAMApp, public ITMBasicEngine
+class InfiniTAMEngine : public InfiniTAMApp, public ITMMainEngine
 {
 public:
 

@@ -37,7 +37,58 @@
 					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
+			<Target title="ObjSLAM">
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/ObjSLAM" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir=""/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/local/MT/MT_ObjSLAM/$(SOURCE_DIR)"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/Makefile&quot;  VERBOSE=1 ObjSLAM"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ObjSLAM/fast">
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/ObjSLAM" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir=""/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/local/MT/MT_ObjSLAM/$(SOURCE_DIR)"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/Makefile&quot;  VERBOSE=1 ObjSLAM/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
 		</Build>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMApp.cpp">
+			<Option target="ObjSLAM"/>
+		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

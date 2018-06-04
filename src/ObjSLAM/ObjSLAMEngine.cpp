@@ -2,12 +2,12 @@
 
 // Constructors/Destructors
 //  
-
-ObjSLAMEngine::ObjSLAMEngine () {
-initAttributes();
+namespace ObjSLAM {
+ObjSLAMEngine::ObjSLAMEngine() {
+  initAttributes();
 }
 
-ObjSLAMEngine::~ObjSLAMEngine () { }
+ObjSLAMEngine::~ObjSLAMEngine() {}
 
 //  
 // Methods
@@ -21,6 +21,8 @@ ObjSLAMEngine::~ObjSLAMEngine () { }
 // Other methods
 //  
 
-void ObjSLAMEngine::initAttributes () {
+void ObjSLAMEngine::initAttributes() {
+  std::cout << "initAttr\n";
 }
 
+}
