@@ -11,6 +11,21 @@ set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 
 #add_subdirectory()
 
-include_directories(AFTER $(SOURCE_DIR))
+include_directories($(HEADER_DIR)
+        /usr/local/cuda/include
+        /usr/include
+        )
 
-add_executable(ObjSLAM ${SOURCE_DIR}/ObjSLAMApp.cpp)
+add_subdirectory(External/InfiniTAM/InfiniTAM)
+add_subdirectory(External/g2o/g2o)
+
+set(ObjSLAM_Sources
+        ${SOURCE_DIR}/ObjSLAMApp.cpp
+        ${SOURCE_DIR}/ObjSLAMEngine.cpp
+        ${SOURCE_DIR}/InfiniTAMEngine.cpp
+        ${SOURCE_DIR}/ObjectSLAMTracker.cpp
+#        ${SOURCE_DIR}/ObjectView.cpp
+
+    )
+
+add_executable(ObjSLAM ${ObjSLAM_Sources})

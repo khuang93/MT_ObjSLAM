@@ -1,12 +1,13 @@
 
 #ifndef OBJECTVIEW_H
 #define OBJECTVIEW_H
-#include "ITMLib/ITMView.h"
-#include "ITMLib/ITMView.h"
+#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Objects/Views/ITMView.h"
+#include "Pose.h"
 
 #include <string>
+#include <vector>
 using ITMLib::ITMView;
-using ITMLib::ITMView;
+
 
 namespace ObjSLAM {
 
@@ -16,7 +17,7 @@ namespace ObjSLAM {
   * 
   */
 
-class ObjectView : public ITMView, public ITMView
+class ObjectView : public ITMView
 {
 public:
 
@@ -40,7 +41,8 @@ public:
 	// Public attributes
 	//  
 
-	undef segmentationImage;
+	//TODO
+  // undef segmentationImage;
 
 	// Public attribute accessor methods
 	//  
@@ -54,25 +56,25 @@ public:
 	 * Set the value of segmentationImage
 	 * @param new_var the new value of segmentationImage
 	 */
-	void setSegmentationImage (undef new_var)	 {
-			segmentationImage = new_var;
-	}
+//	void setSegmentationImage (undef new_var)	 {
+//			segmentationImage = new_var;
+//	}
 
 	/**
 	 * Get the value of segmentationImage
 	 * @return the value of segmentationImage
 	 */
-	undef getSegmentationImage ()	 {
-		return segmentationImage;
-	}
+//	undef getSegmentationImage ()	 {
+//		return segmentationImage;
+//	}
 
 
 	/**
 	 * @return undef
 	 */
-	undef getSegmentationMask ()
-	{
-	}
+//	undef getSegmentationMask ()
+//	{
+//	}
 
 
 	/**

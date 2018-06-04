@@ -1,7 +1,7 @@
 
 #ifndef POSEGRAPH_H
 #define POSEGRAPH_H
-#include "OptimizableGraph.h"
+//#include "../../External/g2o/g2o/core/optimizable_graph.h"
 
 #include <string>
 
@@ -13,7 +13,9 @@ namespace ObjSLAM {
   * 
   */
 
-class PoseGraph : public OptimizableGraph
+//TODO see how to solve g2o compilation issues
+
+class PoseGraph //: public OptimizableGraph
 {
 public:
 

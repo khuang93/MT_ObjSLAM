@@ -1,12 +1,14 @@
 
 #ifndef OBJECTSCENERECONSTRUCTIONENGINE_H
 #define OBJECTSCENERECONSTRUCTIONENGINE_H
-#include "ITMLib/ITMSceneReconstructionEngine.h"
-#include "ITMLib/ITMSceneReconstructionEngine_CUDA<_TVoxel,_ITMVoxelBlockHash_>.h"
+#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/Interface/ITMSceneReconstructionEngine.h"
+
 
 #include <string>
+#include "SemanticLabelEngine.h"
 using ITMLib::ITMSceneReconstructionEngine;
 using ITMLib::ITMSceneReconstructionEngine_CUDA_TVoxel_ITMVoxelBlockHash_;
+
 
 namespace ObjSLAM {
 

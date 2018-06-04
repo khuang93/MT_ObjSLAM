@@ -1,8 +1,8 @@
 
 #ifndef OBJECTSCENE_H
 #define OBJECTSCENE_H
-#include "ITMLib/ITMScene.h"
-#include "ObjSLAM/ObjectView.h"
+#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMScene.h"
+#include "ObjectView.h"
 
 #include <string>
 using ITMLib::ITMScene;

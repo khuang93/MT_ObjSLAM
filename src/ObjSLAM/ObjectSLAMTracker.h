@@ -1,7 +1,9 @@
 
 #ifndef OBJECTSLAMTRACKER_H
 #define OBJECTSLAMTRACKER_H
-#include "ITMLib/ITMTracker.h"
+#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Trackers/Interface/ITMTracker.h"
+#include "ObjectView.h"
+#include "PoseGraph.h"
 
 #include <string>
 using ITMLib::ITMTracker;
@@ -14,7 +16,7 @@ namespace ObjSLAM {
   * 
   */
 
-class ObjectSLAMTracker : virtual public ITMTracker
+class ObjectSLAMTracker : /*virtual*/ public ITMTracker
 {
 public:
 

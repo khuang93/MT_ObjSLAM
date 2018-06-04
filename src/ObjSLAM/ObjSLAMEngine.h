@@ -5,8 +5,13 @@
 #include <string>
 #include <iostream>
 
-namespace ObjSLAM {
+#include "InfiniTAMEngine.h"
+#include "ObjectScene.h"
+#include "LoopClosureDetector.h"
+#include "ObjectSceneReconstructionEngine.h"
 
+namespace ObjSLAM {
+template<class TVoxel, class TIndex>
 
 /**
   * class ObjSLAMEngine
@@ -26,11 +31,10 @@ public:
 	 */
 	ObjSLAMEngine ();
 
-
 	/**
 	 * Empty Destructor
 	 */
-	/*virtual*/ ~ObjSLAMEngine ();
+	virtual ~ObjSLAMEngine ();
 
 	// Static Public attributes
 	//  
@@ -51,24 +55,24 @@ public:
 	/**
 	 * @return ObjSLAM::InfiniTAMEngine
 	 */
-//	ObjSLAM::InfiniTAMEngine init_InfiniTAMCreator ()
-//	{
-//	}
+	ObjSLAM::InfiniTAMEngine init_InfiniTAMCreator ()
+	{
+	}
 
-//
-//	/**
-//	 */
-//	void init_SemanticLabelGreator ()
-//	{
-//	}
-//
-//
-//	/**
-//	 * @return ObjSLAM::ObjectSceneReconstructionEngine
-//	 */
-//	ObjSLAM::ObjectSceneReconstructionEngine init_ObjectSceneReconstructionEngine ()
-//	{
-//	}
+
+	/**
+	 */
+	void init_SemanticLabelGreator ()
+	{
+	}
+
+
+	/**
+	 * @return ObjSLAM::ObjectSceneReconstructionEngine
+	 */
+	ObjSLAM::ObjectSceneReconstructionEngine init_ObjectSceneReconstructionEngine ()
+	{
+	}
 
 protected:
 
@@ -82,7 +86,7 @@ public:
 
 
 	// Protected attribute accessor methods
-	//  
+	//
 
 protected:
 
@@ -90,7 +94,7 @@ public:
 
 
 	// Protected attribute accessor methods
-	//  
+	//
 
 protected:
 
@@ -98,34 +102,34 @@ protected:
 private:
 
 	// Static Private attributes
-	//  
+	//
 
 	// Private attributes
-	//  
+	//
 
-//	ObjSLAM::InfiniTAMEngine infiniTAMCreator;
-//	ObjSLAM::LoopClosureDetector loopClosureDetector;
-//	ObjSLAM::ObjectScene scene;
-//	undef objSLAMTracker;
+	ObjSLAM::InfiniTAMEngine<TVoxel,TIndex> infiniTAMCreator;
+	ObjSLAM::LoopClosureDetector loopClosureDetector;
+	ObjSLAM::ObjectScene scene;
+	ObjSLAM::ObjectSLAMTracker objSLAMTracker;
 public:
 
 
 	// Private attribute accessor methods
-	//  
+	//
 
 private:
 
 public:
 
-//
-//	// Private attribute accessor methods
-//	//
-//
-//
-//	/**
-//	 * Set the value of infiniTAMCreator
-//	 * @param new_var the new value of infiniTAMCreator
-//	 */
+
+	// Private attribute accessor methods
+	//
+
+
+	/**
+	 * Set the value of infiniTAMCreator
+	 * @param new_var the new value of infiniTAMCreator
+	 */
 //	void setInfiniTAMCreator (ObjSLAM::InfiniTAMEngine new_var)	 {
 //			infiniTAMCreator = new_var;
 //	}
@@ -137,54 +141,54 @@ public:
 //	ObjSLAM::InfiniTAMEngine getInfiniTAMCreator ()	 {
 //		return infiniTAMCreator;
 //	}
-//
-//	/**
-//	 * Set the value of loopClosureDetector
-//	 * @param new_var the new value of loopClosureDetector
-//	 */
-//	void setLoopClosureDetector (ObjSLAM::LoopClosureDetector new_var)	 {
-//			loopClosureDetector = new_var;
-//	}
-//
-//	/**
-//	 * Get the value of loopClosureDetector
-//	 * @return the value of loopClosureDetector
-//	 */
-//	ObjSLAM::LoopClosureDetector getLoopClosureDetector ()	 {
-//		return loopClosureDetector;
-//	}
-//
-//	/**
-//	 * Set the value of scene
-//	 * @param new_var the new value of scene
-//	 */
-//	void setScene (ObjSLAM::ObjectScene new_var)	 {
-//			scene = new_var;
-//	}
-//
-//	/**
-//	 * Get the value of scene
-//	 * @return the value of scene
-//	 */
-//	ObjSLAM::ObjectScene getScene ()	 {
-//		return scene;
-//	}
-//
-//	/**
-//	 * Set the value of objSLAMTracker
-//	 * @param new_var the new value of objSLAMTracker
-//	 */
-//	void setObjSLAMTracker (undef new_var)	 {
-//			objSLAMTracker = new_var;
-//	}
-//
-//	/**
-//	 * Get the value of objSLAMTracker
-//	 * @return the value of objSLAMTracker
-//	 */
-//	undef getObjSLAMTracker ()	 {
-//		return objSLAMTracker;
-//	}
+
+	/**
+	 * Set the value of loopClosureDetector
+	 * @param new_var the new value of loopClosureDetector
+	 */
+	void setLoopClosureDetector (ObjSLAM::LoopClosureDetector new_var)	 {
+			loopClosureDetector = new_var;
+	}
+
+	/**
+	 * Get the value of loopClosureDetector
+	 * @return the value of loopClosureDetector
+	 */
+	ObjSLAM::LoopClosureDetector getLoopClosureDetector ()	 {
+		return loopClosureDetector;
+	}
+
+	/**
+	 * Set the value of scene
+	 * @param new_var the new value of scene
+	 */
+	void setScene (ObjSLAM::ObjectScene new_var)	 {
+			scene = new_var;
+	}
+
+	/**
+	 * Get the value of scene
+	 * @return the value of scene
+	 */
+	ObjSLAM::ObjectScene getScene ()	 {
+		return scene;
+	}
+
+	/**
+	 * Set the value of objSLAMTracker
+	 * @param new_var the new value of objSLAMTracker
+	 */
+	void setObjSLAMTracker (ObjSLAM::ObjectSLAMTracker new_var)	 {
+			objSLAMTracker = new_var;
+	}
+
+	/**
+	 * Get the value of objSLAMTracker
+	 * @return the value of objSLAMTracker
+	 */
+	ObjSLAM::ObjectSLAMTracker getObjSLAMTracker ()	 {
+		return objSLAMTracker;
+	}
 private:
 
 

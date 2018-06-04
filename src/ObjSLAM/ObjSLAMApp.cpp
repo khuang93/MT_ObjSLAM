@@ -9,6 +9,7 @@
 /// \brief Entry point of ObjSLAM
 
 int main(int argc, char **argv) {
+//  template<class TVoxel, class TIndex>
   auto *objSLAM = new ObjSLAM::ObjSLAMEngine;
   //ObjSLAM::ObjSLAMEngine objSLAM;
 

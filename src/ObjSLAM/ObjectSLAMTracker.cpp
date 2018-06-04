@@ -2,6 +2,7 @@
 
 // Constructors/Destructors
 //  
+namespace ObjSLAM{
 
 ObjectSLAMTracker::ObjectSLAMTracker () {
 }
@@ -21,3 +22,4 @@ ObjectSLAMTracker::~ObjectSLAMTracker () { }
 //  
 
 
+}

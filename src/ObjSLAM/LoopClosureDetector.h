@@ -90,9 +90,9 @@ protected:
 
 	// Protected attributes
 	//  
-
-	new_class_3 globalGraph;
-	new_class_4 localGraph;
+//TODO
+	ObjSLAM::ObjectsGraph  globalGraph;
+	ObjSLAM::ObjectsGraph  localGraph;
 public:
 
 
@@ -112,7 +112,7 @@ public:
 	 * Set the value of globalGraph
 	 * @param new_var the new value of globalGraph
 	 */
-	void setGlobalGraph (new_class_3 new_var)	 {
+	void setGlobalGraph (ObjSLAM::ObjectsGraph  new_var)	 {
 			globalGraph = new_var;
 	}
 
@@ -120,7 +120,7 @@ public:
 	 * Get the value of globalGraph
 	 * @return the value of globalGraph
 	 */
-	new_class_3 getGlobalGraph ()	 {
+	ObjSLAM::ObjectsGraph  getGlobalGraph ()	 {
 		return globalGraph;
 	}
 
@@ -128,7 +128,7 @@ public:
 	 * Set the value of localGraph
 	 * @param new_var the new value of localGraph
 	 */
-	void setLocalGraph (new_class_4 new_var)	 {
+	void setLocalGraph (ObjSLAM::ObjectsGraph  new_var)	 {
 			localGraph = new_var;
 	}
 
@@ -136,7 +136,7 @@ public:
 	 * Get the value of localGraph
 	 * @return the value of localGraph
 	 */
-	new_class_4 getLocalGraph ()	 {
+	ObjSLAM::ObjectsGraph getLocalGraph ()	 {
 		return localGraph;
 	}
 protected:
@@ -149,8 +149,8 @@ private:
 
 	// Private attributes
 	//  
-
-	undef GlobalVBA;
+//TODO
+//	undef GlobalVBA;
 public:
 
 
@@ -170,17 +170,19 @@ public:
 	 * Set the value of GlobalVBA
 	 * @param new_var the new value of GlobalVBA
 	 */
-	void setGlobalVBA (undef new_var)	 {
-			GlobalVBA = new_var;
-	}
+	 //TODO
+//	void setGlobalVBA (undef new_var)	 {
+//			GlobalVBA = new_var;
+//	}
 
 	/**
 	 * Get the value of GlobalVBA
 	 * @return the value of GlobalVBA
 	 */
-	undef getGlobalVBA ()	 {
-		return GlobalVBA;
-	}
+	 //TODO
+//	undef getGlobalVBA ()	 {
+//		return GlobalVBA;
+//	}
 private:
 
 

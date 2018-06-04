@@ -12,7 +12,10 @@ ObjSLAMEngine::~ObjSLAMEngine() {}
 //  
 // Methods
 //  
+ObjSLAM::InfiniTAMEngine init_InfiniTAMCreator (){
+  infiniTAMCreator = new InfiniTAMEngine;
 
+}
 
 // Accessor methods
 //  
