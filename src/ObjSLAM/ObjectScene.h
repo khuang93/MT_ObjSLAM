@@ -37,9 +37,6 @@ template<class TVoxel, class TIndex>
     std::cout << "Created Scene! \n";
   }
 
-  ObjectScene(){
-
-  }
 
 
   //Destructor

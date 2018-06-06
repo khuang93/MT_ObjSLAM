@@ -2,10 +2,12 @@
 // Created by khuang on 6/6/18.
 //
 #include <iostream>
+
 #include "ObjSLAMEngine.h"
 
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
 #include "../../External/InfiniTAM/InfiniTAM/InputSource/ImageSourceEngine.h"
+
 
 //#include "../../External/InfiniTAM/InfiniTAM/InputSource/OpenNIEngine.h"
 //#include "../../External/InfiniTAM/InfiniTAM/InputSource/Kinect2Engine.h"
@@ -146,8 +148,11 @@ using namespace InputSource;
 
 int main(int argc, char ** argv) {
 
+
+  std::cout<< "ObjSLAMApp"<<std::endl;
   //Similar to InfiniTAM.cpp
 
+/*
   //Start copied from InfiniTAM.cpp
   const char *arg1 = "";
   const char *arg2 = NULL;
@@ -178,6 +183,7 @@ int main(int argc, char ** argv) {
 
   printf("initialising ...\n");
 
+*/
 
 
   ITMLibSettings *settings = new ITMLibSettings();

@@ -7,41 +7,40 @@ project(MT_ObjSLAM)
 set (PROJECT_DIR "/local/MT/MT_ObjSLAM")
 set (SOURCE_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
-set (INFINITAM_DIR "External/InfiniTAM/InfiniTAM")
+
+#set (INFINITAM_DIR "External/InfiniTAM/InfiniTAM")
 
 
 #from Apps/InfiniTAM/CMakeLists.txt
 #INCLUDE(${INFINITAM_DIR}/cmake/UseCUDA.cmake)
 #INCLUDE(${INFINITAM_DIR}/cmake/UseFFmpeg.cmake)
-INCLUDE(${INFINITAM_DIR}/cmake/UseGLUT.cmake)
-INCLUDE(${INFINITAM_DIR}/cmake/UseLibRoyale.cmake)
-INCLUDE(${INFINITAM_DIR}/cmake/UseOpenGL.cmake)
-INCLUDE(${INFINITAM_DIR}/cmake/UseOpenMP.cmake)
-INCLUDE(${INFINITAM_DIR}/cmake/UseOpenNI.cmake)
-INCLUDE(${INFINITAM_DIR}/cmake/UsePNG.cmake)
-INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense.cmake)
-INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense2.cmake)
-INCLUDE(${INFINITAM_DIR}/cmake/UseUVC.cmake)
-
-#add_subdirectory()
+#INCLUDE(${INFINITAM_DIR}/cmake/UseGLUT.cmake)
+#INCLUDE(${INFINITAM_DIR}/cmake/UseLibRoyale.cmake)
+#INCLUDE(${INFINITAM_DIR}/cmake/UseOpenGL.cmake)
+#INCLUDE(${INFINITAM_DIR}/cmake/UseOpenMP.cmake)
+#INCLUDE(${INFINITAM_DIR}/cmake/UseOpenNI.cmake)
+#INCLUDE(${INFINITAM_DIR}/cmake/UsePNG.cmake)
+#INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense.cmake)
+#INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense2.cmake)
+#INCLUDE(${INFINITAM_DIR}/cmake/UseUVC.cmake)
 
 include_directories($(HEADER_DIR)
         /usr/local/cuda/include
         /usr/include
         External/InfiniTAM/InfiniTAM/InputSource
+        External/InfiniTAM/InfiniTAM/ITMLib
         )
 
 add_subdirectory(External/InfiniTAM/InfiniTAM)
-#add_subdirectory(External/InfiniTAM/InfiniTAM/Apps)
-#add_subdirectory(External/InfiniTAM/InfiniTAM/Apps/InfiniTAM)
+
 #add_subdirectory(External/g2o/g2o)
 
 
 
 set(ObjSLAM_Sources
 
-        src/ObjSLAM/ObjSLAMApp.cpp
-        src/ObjSLAM/ObjSLAMEngine.cpp src/ObjSLAM/ObjSLAMEngine.h
+        src/ObjSLAM/ObjSLAMApp.cpp src/ObjSLAM/ObjSLAMEngine.h
+        src/ObjSLAM/ObjSLAMEngine.tpp
         src/ObjSLAM/InfiniTAMEngine.cpp src/ObjSLAM/InfiniTAMEngine.h
         src/ObjSLAM/ObjectSLAMTracker.cpp src/ObjSLAM/ObjectSLAMTracker.h
         src/ObjSLAM/ObjectView.cpp src/ObjSLAM/ObjectView.h
@@ -53,4 +52,4 @@ set(ObjSLAM_Sources
 add_executable(ObjSLAM ${ObjSLAM_Sources})
 
 
-TARGET_LINK_LIBRARIES(ObjSLAM External/InfiniTAM/InfiniTAM/InputSource External/InfiniTAM/InfiniTAM/ITMLib )
+TARGET_LINK_LIBRARIES(ObjSLAM InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)
