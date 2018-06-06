@@ -4,10 +4,11 @@
 
 #ifndef MT_OBJSLAM_OBJSLAMENGINE_H
 #define MT_OBJSLAM_OBJSLAMENGINE_H
+#include<iostream>
 
 namespace ObjSLAM {
 class ObjSLAMEngine {
-  int infiniTAMCreator:
+  int infiniTAMCreator;
 
  public:
 
@@ -15,6 +16,7 @@ class ObjSLAMEngine {
    * Empty Constructor
    */
   ObjSLAMEngine() {
+    std::cout<<"ObjSLAMEngine Constructor\n";
 
   }
 
@@ -22,6 +24,7 @@ class ObjSLAMEngine {
  * Empty Destructor
  */
   ~ObjSLAMEngine() {
+    std::cout<<"ObjSLAMEngine Destructor\n";
 
   }
 

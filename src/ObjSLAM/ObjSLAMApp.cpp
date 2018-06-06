@@ -11,5 +11,9 @@ int main(int argc, char ** argv) {
   auto *objSLAM = new ObjSLAM::ObjSLAMEngine();
 
 
+
+
+  delete objSLAM;
+
   return 0;
 }

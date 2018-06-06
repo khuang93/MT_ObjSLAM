@@ -17,16 +17,19 @@ include_directories($(HEADER_DIR)
         )
 
 add_subdirectory(External/InfiniTAM/InfiniTAM)
-add_subdirectory(External/g2o/g2o)
+#add_subdirectory(External/g2o/g2o)
 
 set(ObjSLAM_Sources
-        ${SOURCE_DIR}/ObjSLAMApp.cpp
-#        ${SOURCE_DIR}/ObjSLAMEngine.cpp
+#        ${SOURCE_DIR}/ObjSLAMApp.cpp
+#        ${SOURCE_DIR}/ObjSLA.MEngine.cpp
 #        ${SOURCE_DIR}/InfiniTAMEngine.cpp
 #        ${SOURCE_DIR}/ObjectSLAMTracker.cpp
 ##        ${SOURCE_DIR}/ObjectView.cpp
 #        ${SOURCE_DIR}/SemanticLabelEngine.cpp
 
-        src/ObjSLAMApp.cpp src/ObjSLAMEngine.cpp src/ObjSLAMEngine.h)
+        src/ObjSLAM/ObjSLAMApp.cpp
+        src/ObjSLAM/ObjSLAMEngine.cpp src/ObjSLAM/ObjSLAMEngine.h
+        src/ObjSLAM/InfiniTAMEngine.cpp src/ObjSLAM/InfiniTAMEngine.h
+        src/ObjSLAM/ObjectSLAMTracker.cpp src/ObjSLAM/ObjectSLAMTracker.h)
 
 add_executable(ObjSLAM ${ObjSLAM_Sources})

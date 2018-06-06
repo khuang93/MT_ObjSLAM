@@ -5,40 +5,13 @@
   </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
     <generated>
-      <config projectName="MT_ObjSLAM" targetName="curve_fit" />
-      <config projectName="MT_ObjSLAM" targetName="MiniSlamGraphLib" />
-      <config projectName="MT_ObjSLAM" targetName="InputSource" />
-      <config projectName="MT_ObjSLAM" targetName="solver_structure_only" />
-      <config projectName="MT_ObjSLAM" targetName="solver_dense" />
-      <config projectName="MT_ObjSLAM" targetName="ITMLib" />
-      <config projectName="MT_ObjSLAM" targetName="g2o_hierarchical_application" />
-      <config projectName="MT_ObjSLAM" targetName="types_icp" />
-      <config projectName="MT_ObjSLAM" targetName="types_slam2d" />
-      <config projectName="MT_ObjSLAM" targetName="circle_fit" />
-      <config projectName="MT_ObjSLAM" targetName="types_sclam2d" />
-      <config projectName="MT_ObjSLAM" targetName="ORUtils" />
-      <config projectName="MT_ObjSLAM" targetName="g2o_cli_application" />
-      <config projectName="MT_ObjSLAM" targetName="create_sphere" />
-      <config projectName="MT_ObjSLAM" targetName="ObjSLAM" />
-      <config projectName="MT_ObjSLAM" targetName="interface_library" />
-      <config projectName="MT_ObjSLAM" targetName="types_sim3" />
-      <config projectName="MT_ObjSLAM" targetName="test_isometry3d_mappings" />
-      <config projectName="MT_ObjSLAM" targetName="test_slam3d_jacobian" />
-      <config projectName="MT_ObjSLAM" targetName="test_mat2quat_jacobian" />
-      <config projectName="MT_ObjSLAM" targetName="types_slam2d_addons" />
-      <config projectName="MT_ObjSLAM" targetName="InfiniTAM_cli" />
-      <config projectName="MT_ObjSLAM" targetName="g2o_hierarchical_library" />
-      <config projectName="MT_ObjSLAM" targetName="types_slam3d_addons" />
-      <config projectName="MT_ObjSLAM" targetName="types_sba" />
-      <config projectName="MT_ObjSLAM" targetName="convert_sba_slam3d" />
-      <config projectName="MT_ObjSLAM" targetName="types_data" />
-      <config projectName="MT_ObjSLAM" targetName="types_slam3d" />
       <config projectName="MT_ObjSLAM" targetName="InfiniTAM" />
-      <config projectName="MT_ObjSLAM" targetName="g2o_cli_library" />
-      <config projectName="MT_ObjSLAM" targetName="core" />
-      <config projectName="MT_ObjSLAM" targetName="solver_pcg" />
-      <config projectName="MT_ObjSLAM" targetName="stuff" />
-      <config projectName="MT_ObjSLAM" targetName="parser_library" />
+      <config projectName="MT_ObjSLAM" targetName="MiniSlamGraphLib" />
+      <config projectName="MT_ObjSLAM" targetName="ORUtils" />
+      <config projectName="MT_ObjSLAM" targetName="InputSource" />
+      <config projectName="MT_ObjSLAM" targetName="InfiniTAM_cli" />
+      <config projectName="MT_ObjSLAM" targetName="ObjSLAM" />
+      <config projectName="MT_ObjSLAM" targetName="ITMLib" />
       <config projectName="MT_ObjSLAM" targetName="FernRelocLib" />
     </generated>
   </component>
@@ -49,56 +22,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c963dc72-3b16-4a4f-832c-4830b1ee2264" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ObjSLAMApp.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ObjSLAMEngine.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ObjSLAMEngine.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/External/g2o" beforeDir="false" afterPath="$PROJECT_DIR$/External/g2o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/ObjSLAM" beforeDir="false" afterPath="$PROJECT_DIR$/build/ObjSLAM" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/External/InfiniTAM/InfiniTAM/InfiniTAM.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/External/InfiniTAM/InfiniTAM/InfiniTAM.cbp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/MT_ObjSLAM.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/MT_ObjSLAM.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ImageSource.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ImageSource.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/LabeledVoxel.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/LabeledVoxel.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/LoopClosureDetector.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/LoopClosureDetector.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectClassLabel.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectClassLabel.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectEdge.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectEdge.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectGraphCreator.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectGraphCreator.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectInstance.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectInstance.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectNode.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectNode.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectScene.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectScene.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectSceneReconstructionEngine.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectSceneReconstructionEngine.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectView.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectView.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectsGraph.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectsGraph.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/Pose.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/Pose.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/PoseGraph.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/PoseGraph.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/SemanticLabelCreator.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/SemanticLabelCreator.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/SemanticLabelEngine.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/SemanticLabelEngine_Groundtruth.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/SemanticLabelEngine_MRCNN.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/SemanticLabelEngine_MRCNN.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/test.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/test.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ObjSLAMApp.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ObjSLAMEngine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ObjSLAMEngine.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -109,17 +44,29 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DockManager">
-    <window id="3">
+    <window id="4">
       <content type="file-editors">
         <state>
           <leaf>
-            <file leaf-file-name="ObjSLAMApp.cpp" pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/src _V1_notWorking/ObjSLAM/ObjSLAMApp.cpp">
+            <file leaf-file-name="ITMExtendedTracker.cpp" pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Trackers/Interface/ITMExtendedTracker.cpp">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="45">
-                    <caret line="3" selection-start-line="3" selection-end-line="3" />
+                  <state relative-caret-position="345">
+                    <caret line="101" column="10" selection-start-line="101" selection-start-column="10" selection-end-line="101" selection-end-column="10" />
                     <folding>
-                      <element signature="e#38#56#0" expanded="true" />
+                      <element signature="e#134#165#0" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file leaf-file-name="ITMExtendedTracker.h" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Trackers/Interface/ITMExtendedTracker.h">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="1330">
+                    <caret line="101" column="26" selection-start-line="101" selection-start-column="8" selection-end-line="101" selection-end-column="26" />
+                    <folding>
+                      <element signature="e#104#127#0" expanded="true" />
                     </folding>
                   </state>
                 </provider>
@@ -133,41 +80,81 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="46" lean-forward="true" selection-start-line="27" selection-start-column="46" selection-end-line="27" selection-end-column="46" />
+            <state relative-caret-position="435">
+              <caret line="29" column="34" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ObjSLAMApp.cpp" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ObjSLAMApp.cpp">
+      <file leaf-file-name="InfiniTAMEngine.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
+            <state relative-caret-position="75">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ObjectSLAMTracker.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ObjectSLAMTracker.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="16" column="65" selection-start-line="16" selection-start-column="65" selection-end-line="16" selection-end-column="65" />
               <folding>
-                <element signature="e#38#57#0" expanded="true" />
+                <element signature="e#117#207#0" expanded="true" />
+                <element signature="e#664#1450#0" />
+                <element signature="e#1481#2890#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ObjSLAMEngine.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ObjSLAMEngine.cpp">
+      <file leaf-file-name="ITMTracker.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Trackers/Interface/ITMTracker.h">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="ITMExtendedTracker_CPU.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Trackers/CPU/ITMExtendedTracker_CPU.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+            <state relative-caret-position="570">
+              <caret line="39" column="41" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="41" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ObjSLAMEngine.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ObjSLAMEngine.h">
+      <file leaf-file-name="InfiniTAMEngine.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="27" selection-start-line="27" selection-start-column="6" selection-end-line="27" selection-end-column="27" />
+            <state relative-caret-position="70">
+              <caret line="8" column="73" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="73" />
+              <folding>
+                <element signature="e#114#131#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ITMMainEngine.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMMainEngine.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="46" column="23" selection-start-line="46" selection-start-column="10" selection-end-line="46" selection-end-column="23" />
+              <folding>
+                <element signature="e#104#150#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -200,25 +187,25 @@
         <option value="$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.cpp" />
         <option value="$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMScene.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.cpp" />
-        <option value="$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectSceneReconstructionEngine.cpp" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectView.cpp" />
         <option value="$PROJECT_DIR$/External/g2o/g2o/core/openmp_mutex.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/PoseGraph.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectScene.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.cpp" />
-        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/LoopClosureDetector.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/SemanticLabelEngine.cpp" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectSceneReconstructionEngine.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/SemanticLabelEngine.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectView.h" />
-        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h" />
-        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp" />
-        <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/src/ObjSLAMEngine.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAMEngine.cpp" />
         <option value="$PROJECT_DIR$/src/ObjSLAMApp.cpp" />
+        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h" />
+        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp" />
+        <option value="$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.h" />
+        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h" />
+        <option value="$PROJECT_DIR$/CMakeLists.txt" />
       </list>
     </option>
   </component>
@@ -265,18 +252,80 @@
             <path>
               <item name="MT_ObjSLAM" type="b2602c69:ProjectViewProjectNode" />
               <item name="MT_ObjSLAM" type="462c0819:PsiDirectoryNode" />
+              <item name="External" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MT_ObjSLAM" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MT_ObjSLAM" type="462c0819:PsiDirectoryNode" />
+              <item name="External" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="ITMLib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MT_ObjSLAM" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MT_ObjSLAM" type="462c0819:PsiDirectoryNode" />
+              <item name="External" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="ITMLib" type="462c0819:PsiDirectoryNode" />
+              <item name="Core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MT_ObjSLAM" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MT_ObjSLAM" type="462c0819:PsiDirectoryNode" />
+              <item name="External" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="ITMLib" type="462c0819:PsiDirectoryNode" />
+              <item name="Engines" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MT_ObjSLAM" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MT_ObjSLAM" type="462c0819:PsiDirectoryNode" />
+              <item name="External" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="ITMLib" type="462c0819:PsiDirectoryNode" />
+              <item name="Trackers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MT_ObjSLAM" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MT_ObjSLAM" type="462c0819:PsiDirectoryNode" />
+              <item name="External" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="ITMLib" type="462c0819:PsiDirectoryNode" />
+              <item name="Trackers" type="462c0819:PsiDirectoryNode" />
+              <item name="CPU" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MT_ObjSLAM" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MT_ObjSLAM" type="462c0819:PsiDirectoryNode" />
+              <item name="External" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="InfiniTAM" type="462c0819:PsiDirectoryNode" />
+              <item name="ITMLib" type="462c0819:PsiDirectoryNode" />
+              <item name="Trackers" type="462c0819:PsiDirectoryNode" />
+              <item name="Interface" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MT_ObjSLAM" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MT_ObjSLAM" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MT_ObjSLAM" type="b2602c69:ProjectViewProjectNode" />
               <item name="MT_ObjSLAM" type="462c0819:PsiDirectoryNode" />
-              <item name="src _V1_notWorking" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ObjSLAM" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MT_ObjSLAM" type="b2602c69:ProjectViewProjectNode" />
               <item name="MT_ObjSLAM" type="462c0819:PsiDirectoryNode" />
               <item name="src _V1_notWorking" type="462c0819:PsiDirectoryNode" />
-              <item name="ObjSLAM" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -323,63 +372,9 @@
     <configuration name="MiniSlamGraphLib" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="MiniSlamGraphLib" CONFIG_NAME="Debug" />
     <configuration name="ORUtils" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="ORUtils" CONFIG_NAME="Debug" />
     <configuration name="ObjSLAM" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="ObjSLAM" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="ObjSLAM" />
-    <configuration name="circle_fit" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="circle_fit" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="circle_fit" />
-    <configuration name="convert_sba_slam3d" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="convert_sba_slam3d" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="convert_sba_slam3d" />
-    <configuration name="core" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="core" CONFIG_NAME="Debug" />
-    <configuration name="create_sphere" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="create_sphere" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="create_sphere" />
-    <configuration name="curve_fit" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="curve_fit" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="curve_fit" />
-    <configuration name="g2o_cli_application" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="g2o_cli_application" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="g2o_cli_application" />
-    <configuration name="g2o_cli_library" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="g2o_cli_library" CONFIG_NAME="Debug" />
-    <configuration name="g2o_hierarchical_application" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="g2o_hierarchical_application" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="g2o_hierarchical_application" />
-    <configuration name="g2o_hierarchical_library" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="g2o_hierarchical_library" CONFIG_NAME="Debug" />
-    <configuration name="interface_library" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="interface_library" CONFIG_NAME="Debug" />
-    <configuration name="parser_library" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="parser_library" CONFIG_NAME="Debug" />
-    <configuration name="solver_dense" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="solver_dense" CONFIG_NAME="Debug" />
-    <configuration name="solver_pcg" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="solver_pcg" CONFIG_NAME="Debug" />
-    <configuration name="solver_structure_only" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="solver_structure_only" CONFIG_NAME="Debug" />
-    <configuration name="stuff" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="stuff" CONFIG_NAME="Debug" />
-    <configuration name="test_isometry3d_mappings" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="test_isometry3d_mappings" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="test_isometry3d_mappings" />
-    <configuration name="test_mat2quat_jacobian" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="test_mat2quat_jacobian" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="test_mat2quat_jacobian" />
-    <configuration name="test_slam3d_jacobian" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="test_slam3d_jacobian" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="test_slam3d_jacobian" />
-    <configuration name="types_data" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="types_data" CONFIG_NAME="Debug" />
-    <configuration name="types_icp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="types_icp" CONFIG_NAME="Debug" />
-    <configuration name="types_sba" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="types_sba" CONFIG_NAME="Debug" />
-    <configuration name="types_sclam2d" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="types_sclam2d" CONFIG_NAME="Debug" />
-    <configuration name="types_sim3" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="types_sim3" CONFIG_NAME="Debug" />
-    <configuration name="types_slam2d" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="types_slam2d" CONFIG_NAME="Debug" />
-    <configuration name="types_slam2d_addons" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="types_slam2d_addons" CONFIG_NAME="Debug" />
-    <configuration name="types_slam3d" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="types_slam3d" CONFIG_NAME="Debug" />
-    <configuration name="types_slam3d_addons" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="types_slam3d_addons" CONFIG_NAME="Debug" />
     <list>
       <item itemvalue="Application.Build All" />
       <item itemvalue="Application.ObjSLAM" />
-      <item itemvalue="Application.g2o_cli_application" />
-      <item itemvalue="Application.g2o_cli_library" />
-      <item itemvalue="Application.g2o_hierarchical_application" />
-      <item itemvalue="Application.g2o_hierarchical_library" />
-      <item itemvalue="Application.core" />
-      <item itemvalue="Application.convert_sba_slam3d" />
-      <item itemvalue="Application.circle_fit" />
-      <item itemvalue="Application.curve_fit" />
-      <item itemvalue="Application.interface_library" />
-      <item itemvalue="Application.parser_library" />
-      <item itemvalue="Application.create_sphere" />
-      <item itemvalue="Application.solver_dense" />
-      <item itemvalue="Application.solver_pcg" />
-      <item itemvalue="Application.solver_structure_only" />
-      <item itemvalue="Application.stuff" />
-      <item itemvalue="Application.types_data" />
-      <item itemvalue="Application.types_icp" />
-      <item itemvalue="Application.types_sba" />
-      <item itemvalue="Application.types_sclam2d" />
-      <item itemvalue="Application.types_sim3" />
-      <item itemvalue="Application.types_slam2d" />
-      <item itemvalue="Application.types_slam2d_addons" />
-      <item itemvalue="Application.test_isometry3d_mappings" />
-      <item itemvalue="Application.test_mat2quat_jacobian" />
-      <item itemvalue="Application.test_slam3d_jacobian" />
-      <item itemvalue="Application.types_slam3d" />
-      <item itemvalue="Application.types_slam3d_addons" />
       <item itemvalue="Application.InfiniTAM" />
       <item itemvalue="Application.InfiniTAM_cli" />
       <item itemvalue="Application.FernRelocLib" />
@@ -402,12 +397,12 @@
       <workItem from="1527583274886" duration="2043000" />
       <workItem from="1528103483440" duration="64000" />
       <workItem from="1528103591729" duration="391000" />
-      <workItem from="1528104050361" duration="22553000" />
+      <workItem from="1528104050361" duration="25773000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25051000" />
+    <option name="totallyTimeSpent" value="28271000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1204" extended-state="6" />
@@ -441,17 +436,10 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="3" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/InfiniTAM.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2280">
-          <caret line="152" column="8" selection-start-line="152" selection-start-column="8" selection-end-line="152" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAM.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -516,15 +504,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMMainEngine.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#104#150#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -602,13 +581,6 @@
         <state relative-caret-position="-2565" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/External/g2o/config.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -627,13 +599,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
         </state>
       </provider>
     </entry>
@@ -668,16 +633,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="45" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="45" />
-          <folding>
-            <element signature="e#265#293#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -738,13 +693,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h">
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-405">
-          <caret line="18" column="35" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="37" />
+        <state relative-caret-position="390">
+          <caret line="26" column="40" selection-start-line="26" selection-start-column="40" selection-end-line="26" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
           <folding>
-            <element signature="e#57#141#0" expanded="true" />
+            <element signature="e#38#57#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
         </state>
       </provider>
     </entry>
@@ -758,34 +727,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="46" lean-forward="true" selection-start-line="27" selection-start-column="46" selection-end-line="27" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAMEngine.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="27" selection-start-line="27" selection-start-column="6" selection-end-line="27" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAMEngine.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAMApp.cpp">
+    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMMainEngine.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
-          <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
+          <caret line="46" column="23" selection-start-line="46" selection-start-column="10" selection-end-line="46" selection-end-column="23" />
           <folding>
-            <element signature="e#38#57#0" expanded="true" />
+            <element signature="e#104#150#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="70">
+          <caret line="8" column="73" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="73" />
+          <folding>
+            <element signature="e#114#131#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Trackers/Interface/ITMTracker.h">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Trackers/Interface/ITMExtendedTracker.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="101" column="10" selection-start-line="101" selection-start-column="10" selection-end-line="101" selection-end-column="10" />
+          <folding>
+            <element signature="e#134#165#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Trackers/Interface/ITMExtendedTracker.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1330">
+          <caret line="101" column="26" selection-start-line="101" selection-start-column="8" selection-end-line="101" selection-end-column="26" />
+          <folding>
+            <element signature="e#104#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Trackers/CPU/ITMExtendedTracker_CPU.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="39" column="41" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="65" selection-start-line="16" selection-start-column="65" selection-end-line="16" selection-end-column="65" />
+          <folding>
+            <element signature="e#117#207#0" expanded="true" />
+            <element signature="e#664#1450#0" />
+            <element signature="e#1481#2890#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" column="34" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
         </state>
       </provider>
     </entry>

@@ -5,7 +5,7 @@
 		<Option title="InfiniTAM"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\External\;CMake Files\External\InfiniTAM\;CMake Files\External\InfiniTAM\InfiniTAM\;CMake Files\External\InfiniTAM\InfiniTAM\Apps\;CMake Files\External\InfiniTAM\InfiniTAM\Apps\InfiniTAM\;CMake Files\External\InfiniTAM\InfiniTAM\Apps\InfiniTAM_cli\;CMake Files\External\InfiniTAM\InfiniTAM\cmake\;CMake Files\External\InfiniTAM\InfiniTAM\FernRelocLib\;CMake Files\External\InfiniTAM\InfiniTAM\InputSource\;CMake Files\External\InfiniTAM\InfiniTAM\ITMLib\;CMake Files\External\InfiniTAM\InfiniTAM\MiniSlamGraphLib\;CMake Files\External\InfiniTAM\InfiniTAM\ORUtils\;CMake Files\External\g2o\;CMake Files\External\g2o\g2o\;CMake Files\External\g2o\g2o\stuff\;CMake Files\External\g2o\g2o\core\;CMake Files\External\g2o\g2o\apps\;CMake Files\External\g2o\g2o\apps\g2o_cli\;CMake Files\External\g2o\g2o\apps\g2o_hierarchical\;CMake Files\External\g2o\g2o\types\;CMake Files\External\g2o\g2o\types\data\;CMake Files\External\g2o\g2o\types\slam2d\;CMake Files\External\g2o\g2o\types\slam3d\;CMake Files\External\g2o\g2o\types\sba\;CMake Files\External\g2o\g2o\types\sim3\;CMake Files\External\g2o\g2o\types\icp\;CMake Files\External\g2o\g2o\types\sclam2d\;CMake Files\External\g2o\g2o\types\slam2d_addons\;CMake Files\External\g2o\g2o\types\slam3d_addons\;CMake Files\External\g2o\g2o\solvers\;CMake Files\External\g2o\g2o\solvers\pcg\;CMake Files\External\g2o\g2o\solvers\dense\;CMake Files\External\g2o\g2o\solvers\structure_only\;CMake Files\External\g2o\g2o\examples\;CMake Files\External\g2o\g2o\examples\data_fitting\;CMake Files\External\g2o\g2o\examples\sphere\;CMake Files\External\g2o\g2o\examples\data_convert\;CMake Files\External\g2o\g2o\examples\interactive_slam\;CMake Files\External\g2o\g2o\examples\interactive_slam\slam_parser\;CMake Files\External\g2o\g2o\examples\interactive_slam\slam_parser\parser\;CMake Files\External\g2o\g2o\examples\interactive_slam\slam_parser\interface\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\External\;CMake Files\External\InfiniTAM\;CMake Files\External\InfiniTAM\InfiniTAM\;CMake Files\External\InfiniTAM\InfiniTAM\Apps\;CMake Files\External\InfiniTAM\InfiniTAM\Apps\InfiniTAM\;CMake Files\External\InfiniTAM\InfiniTAM\Apps\InfiniTAM_cli\;CMake Files\External\InfiniTAM\InfiniTAM\cmake\;CMake Files\External\InfiniTAM\InfiniTAM\FernRelocLib\;CMake Files\External\InfiniTAM\InfiniTAM\InputSource\;CMake Files\External\InfiniTAM\InfiniTAM\ITMLib\;CMake Files\External\InfiniTAM\InfiniTAM\MiniSlamGraphLib\;CMake Files\External\InfiniTAM\InfiniTAM\ORUtils\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM"/>
@@ -1310,90 +1310,6 @@
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ORUtils/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\ORUtils\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/stuff/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\stuff\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/core/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\core\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/apps/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\apps\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/apps/g2o_cli/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\apps\g2o_cli\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/apps/g2o_hierarchical/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\apps\g2o_hierarchical\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/types/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\types\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/types/data/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\types\data\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/types/slam2d/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\types\slam2d\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/types/slam3d/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\types\slam3d\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/types/sba/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\types\sba\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/types/sim3/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\types\sim3\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/types/icp/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\types\icp\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/types/sclam2d/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\types\sclam2d\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/types/slam2d_addons/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\types\slam2d_addons\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/types/slam3d_addons/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\types\slam3d_addons\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/solvers/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\solvers\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/solvers/pcg/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\solvers\pcg\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/solvers/dense/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\solvers\dense\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/solvers/structure_only/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\solvers\structure_only\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/examples/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\examples\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/examples/data_fitting/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\examples\data_fitting\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/examples/sphere/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\examples\sphere\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/examples/data_convert/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\examples\data_convert\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/examples/interactive_slam/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\examples\interactive_slam\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/examples/interactive_slam/slam_parser/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\examples\interactive_slam\slam_parser\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/examples/interactive_slam/slam_parser/parser/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\examples\interactive_slam\slam_parser\parser\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/g2o/g2o/examples/interactive_slam/slam_parser/interface/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\External\g2o\g2o\examples\interactive_slam\slam_parser\interface\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>
