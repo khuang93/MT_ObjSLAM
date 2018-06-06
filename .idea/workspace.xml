@@ -22,11 +22,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c963dc72-3b16-4a4f-832c-4830b1ee2264" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/build/ObjSLAM" beforeDir="false" afterPath="$PROJECT_DIR$/build/ObjSLAM" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjCameraPose.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjCameraPose.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectView.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjectView.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjectClassLabel.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjectClassLabel.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjectInstance.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjectInstance.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UML/ObjSLAM_with_g2o_V2.xmi" beforeDir="false" afterPath="$PROJECT_DIR$/UML/ObjSLAM_with_g2o_V2.xmi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/ObjSLAM" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/MT_ObjSLAM.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/MT_ObjSLAM.cbp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -73,15 +77,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="29" column="34" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ObjectSLAMTracker.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h">
           <provider selected="true" editor-type-id="text-editor">
@@ -108,10 +103,52 @@
       <file leaf-file-name="ObjectView.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectView.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="14" column="78" selection-start-line="14" selection-start-column="78" selection-end-line="14" selection-end-column="78" />
+            <state relative-caret-position="180">
+              <caret line="12" column="17" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="17" />
               <folding>
                 <element signature="e#103#179#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ObjectClassLabel.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectClassLabel.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ObjectClassLabel.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectClassLabel.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" column="72" selection-start-line="17" selection-start-column="72" selection-end-line="17" selection-end-column="72" />
+              <folding>
+                <element signature="e#115#132#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ObjectInstance.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectInstance.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="25" lean-forward="true" selection-start-line="25" selection-start-column="2" selection-end-line="27" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ObjectInstance.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectInstance.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="23" lean-forward="true" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
+              <folding>
+                <element signature="e#112#129#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -195,6 +232,10 @@
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjCameraPose.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectView.h" />
+        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectClassLabel.cpp" />
+        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectClassLabel.h" />
+        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectInstance.cpp" />
+        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectInstance.h" />
       </list>
     </option>
   </component>
@@ -377,12 +418,12 @@
       <workItem from="1527583274886" duration="2043000" />
       <workItem from="1528103483440" duration="64000" />
       <workItem from="1528103591729" duration="391000" />
-      <workItem from="1528104050361" duration="27876000" />
+      <workItem from="1528104050361" duration="29555000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30374000" />
+    <option name="totallyTimeSpent" value="32053000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1204" extended-state="6" />
@@ -420,28 +461,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/InfiniTAM.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2280">
-          <caret line="152" column="8" selection-start-line="152" selection-start-column="8" selection-end-line="152" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAM.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="1" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/UML_code_generation_V2/ObjSLAM/Pose.h">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/Makefile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-725" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAM.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -775,10 +794,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectClassLabel.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectClassLabel.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="72" selection-start-line="17" selection-start-column="72" selection-end-line="17" selection-end-column="72" />
+          <folding>
+            <element signature="e#115#132#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectInstance.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-start-column="2" selection-end-line="27" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectInstance.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="23" lean-forward="true" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
+          <folding>
+            <element signature="e#112#129#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectView.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="14" column="78" selection-start-line="14" selection-start-column="78" selection-end-line="14" selection-end-column="78" />
+        <state relative-caret-position="180">
+          <caret line="12" column="17" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="17" />
           <folding>
             <element signature="e#103#179#0" expanded="true" />
           </folding>

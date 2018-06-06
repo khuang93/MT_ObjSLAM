@@ -30,6 +30,6 @@ set(ObjSLAM_Sources
         src/ObjSLAM/ObjSLAMApp.cpp
         src/ObjSLAM/ObjSLAMEngine.cpp src/ObjSLAM/ObjSLAMEngine.h
         src/ObjSLAM/InfiniTAMEngine.cpp src/ObjSLAM/InfiniTAMEngine.h
-        src/ObjSLAM/ObjectSLAMTracker.cpp src/ObjSLAM/ObjectSLAMTracker.h src/ObjSLAM/ObjectView.cpp src/ObjSLAM/ObjectView.h src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h)
+        src/ObjSLAM/ObjectSLAMTracker.cpp src/ObjSLAM/ObjectSLAMTracker.h src/ObjSLAM/ObjectView.cpp src/ObjSLAM/ObjectView.h src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h src/ObjSLAM/ObjectClassLabel.cpp src/ObjSLAM/ObjectClassLabel.h src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h)
 
 add_executable(ObjSLAM ${ObjSLAM_Sources})

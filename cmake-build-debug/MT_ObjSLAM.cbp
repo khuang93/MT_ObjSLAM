@@ -1305,6 +1305,18 @@
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMEngine.h">
 			<Option target="ObjSLAM"/>
 		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectClassLabel.cpp">
+			<Option target="ObjSLAM"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectClassLabel.h">
+			<Option target="ObjSLAM"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectInstance.cpp">
+			<Option target="ObjSLAM"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectInstance.h">
+			<Option target="ObjSLAM"/>
+		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectSLAMTracker.cpp">
 			<Option target="ObjSLAM"/>
 		</Unit>
