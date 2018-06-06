@@ -23,9 +23,9 @@ namespace ObjSLAM{
     std::cout<<"Label set: "<<label.getLabelClassName()<<std::endl;
   }
 
-//  void ObjectInstance::setListOfVisibleViews(std::vector<ObjectView> _views){
-//    listOfVisibleViews = _views;
-//  }
+  void ObjectInstance::setListOfVisibleViews(std::vector<ObjectView>* _views){
+    listOfVisibleViews = _views;
+  }
 
 
 }

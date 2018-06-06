@@ -20,12 +20,6 @@ add_subdirectory(External/InfiniTAM/InfiniTAM)
 #add_subdirectory(External/g2o/g2o)
 
 set(ObjSLAM_Sources
-#        ${SOURCE_DIR}/ObjSLAMApp.cpp
-#        ${SOURCE_DIR}/ObjSLA.MEngine.cpp
-#        ${SOURCE_DIR}/InfiniTAMEngine.cpp
-#        ${SOURCE_DIR}/ObjectSLAMTracker.cpp
-##        ${SOURCE_DIR}/ObjectView.cpp
-#        ${SOURCE_DIR}/SemanticLabelEngine.cpp
 
         src/ObjSLAM/ObjSLAMApp.cpp
         src/ObjSLAM/ObjSLAMEngine.cpp src/ObjSLAM/ObjSLAMEngine.h
@@ -34,6 +28,7 @@ set(ObjSLAM_Sources
         src/ObjSLAM/ObjectView.cpp src/ObjSLAM/ObjectView.h
         src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
         src/ObjSLAM/ObjectClassLabel.cpp src/ObjSLAM/ObjectClassLabel.h
-        src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h)
+        src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
+        src/ObjSLAM/ObjectScene.cpp src/ObjSLAM/ObjectScene.h)
 
 add_executable(ObjSLAM ${ObjSLAM_Sources})

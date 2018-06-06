@@ -14,4 +14,8 @@ namespace ObjSLAM {
     pose = new ObjCameraPose;
   }
 
+  void ObjSLAMEngine::createEmptyScene() {
+    scene = new ObjectScene;
+  }
+
 }

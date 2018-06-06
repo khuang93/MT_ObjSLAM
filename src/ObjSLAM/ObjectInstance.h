@@ -17,8 +17,10 @@ class ObjectInstance {
  private:
   ObjectClassLabel label;
   std::vector<ObjectView> *listOfVisibleViews;
+
+  //TODO: complete the class with voxel blocks:
   //private member of allocated voxels;
-//  ObjectView* view;
+
 
  public:
 
@@ -41,7 +43,7 @@ class ObjectInstance {
   //setters
   void setClassLabel(ObjectClassLabel _label);
 
-//  void setListOfVisibleViews(std::vector<ObjectView> _views);
+  void setListOfVisibleViews(std::vector<ObjectView>* _views);
 
 };
 
