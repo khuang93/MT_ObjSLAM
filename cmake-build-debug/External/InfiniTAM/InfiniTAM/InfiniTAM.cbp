@@ -24,13 +24,14 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add option="-D_FORCE_INLINES"/>
 					<Add option="-DCOMPILE_WITH_FFMPEG"/>
-					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include/GL"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -53,13 +54,14 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add option="-D_FORCE_INLINES"/>
 					<Add option="-DCOMPILE_WITH_FFMPEG"/>
-					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include/GL"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -82,10 +84,12 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
 					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
+					<Add option="-D_FORCE_INLINES"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -109,10 +113,12 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
 					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
+					<Add option="-D_FORCE_INLINES"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -136,9 +142,12 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add option="-D_FORCE_INLINES"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -162,9 +171,12 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add option="-D_FORCE_INLINES"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -188,14 +200,15 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add option="-D_FORCE_INLINES"/>
 					<Add option="-DCOMPILE_WITH_FFMPEG"/>
 					<Add option="-DCOMPILE_WITHOUT_Kinect2"/>
-					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include/GL"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -218,14 +231,15 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add option="-D_FORCE_INLINES"/>
 					<Add option="-DCOMPILE_WITH_FFMPEG"/>
 					<Add option="-DCOMPILE_WITHOUT_Kinect2"/>
-					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include/GL"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -248,9 +262,12 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add option="-D_FORCE_INLINES"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -274,9 +291,12 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add option="-D_FORCE_INLINES"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -300,8 +320,11 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -325,8 +348,11 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -350,9 +376,12 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add option="-D_FORCE_INLINES"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -376,9 +405,12 @@
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add option="-D_FORCE_INLINES"/>
+					<Add directory="/usr/include/GL"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>

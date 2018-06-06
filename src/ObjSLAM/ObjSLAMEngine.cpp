@@ -6,16 +6,19 @@
 
 namespace ObjSLAM {
 
-  int ObjSLAMEngine::init_InfiniTAMCreator() {
+template <class TVoxel, class TIndex>
+  int ObjSLAMEngine<TVoxel, TIndex>::init_InfiniTAMCreator() {
     return 10;
   }
 
-  void ObjSLAMEngine::createPose(){
-    pose = new ObjCameraPose;
+template <class TVoxel, class TIndex>
+  void ObjSLAMEngine<TVoxel, TIndex>::createPose(){
+//    pose = new ObjCameraPose;
   }
 
-  void ObjSLAMEngine::createEmptyScene() {
-    scene = new ObjectScene;
+template <class TVoxel, class TIndex>
+  void ObjSLAMEngine<TVoxel, TIndex>::createEmptyScene() {
+    scene = new ObjectScene<TVoxel,TIndex>;
   }
 
 }

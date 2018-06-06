@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -7,17 +7,36 @@ project(MT_ObjSLAM)
 set (PROJECT_DIR "/local/MT/MT_ObjSLAM")
 set (SOURCE_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
+set (INFINITAM_DIR "External/InfiniTAM/InfiniTAM")
 
+
+#from Apps/InfiniTAM/CMakeLists.txt
+#INCLUDE(${INFINITAM_DIR}/cmake/UseCUDA.cmake)
+#INCLUDE(${INFINITAM_DIR}/cmake/UseFFmpeg.cmake)
+INCLUDE(${INFINITAM_DIR}/cmake/UseGLUT.cmake)
+INCLUDE(${INFINITAM_DIR}/cmake/UseLibRoyale.cmake)
+INCLUDE(${INFINITAM_DIR}/cmake/UseOpenGL.cmake)
+INCLUDE(${INFINITAM_DIR}/cmake/UseOpenMP.cmake)
+INCLUDE(${INFINITAM_DIR}/cmake/UseOpenNI.cmake)
+INCLUDE(${INFINITAM_DIR}/cmake/UsePNG.cmake)
+INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense.cmake)
+INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense2.cmake)
+INCLUDE(${INFINITAM_DIR}/cmake/UseUVC.cmake)
 
 #add_subdirectory()
 
 include_directories($(HEADER_DIR)
         /usr/local/cuda/include
         /usr/include
+        External/InfiniTAM/InfiniTAM/InputSource
         )
 
 add_subdirectory(External/InfiniTAM/InfiniTAM)
+#add_subdirectory(External/InfiniTAM/InfiniTAM/Apps)
+#add_subdirectory(External/InfiniTAM/InfiniTAM/Apps/InfiniTAM)
 #add_subdirectory(External/g2o/g2o)
+
+
 
 set(ObjSLAM_Sources
 
@@ -32,3 +51,6 @@ set(ObjSLAM_Sources
         src/ObjSLAM/ObjectScene.cpp src/ObjSLAM/ObjectScene.h)
 
 add_executable(ObjSLAM ${ObjSLAM_Sources})
+
+
+TARGET_LINK_LIBRARIES(ObjSLAM External/InfiniTAM/InfiniTAM/InputSource External/InfiniTAM/InfiniTAM/ITMLib )

@@ -8,14 +8,20 @@
 #include "ObjCameraPose.h"
 #include "ObjectScene.h"
 
+#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMBasicEngine.h"
+
 namespace ObjSLAM {
-class ObjSLAMEngine {
- private:
+
+template <class TVoxel, class TIndex>
+class ObjSLAMEngine : ITMLib::ITMBasicEngine<TVoxel, TIndex> {
+
+  private:
   int infiniTAMCreator;
-  ObjCameraPose *pose;
+//  ObjCameraPose *pose;
 
   //TODO: scene< > using template args
-  ObjectScene *scene;
+
+  ObjectScene<TVoxel, TIndex> *scene;
 
 
 
@@ -24,21 +30,22 @@ class ObjSLAMEngine {
   /**
    * Empty Constructor
    */
-  ObjSLAMEngine() {
+  ObjSLAMEngine(const ITMLib::ITMLibSettings *settings, const ITMLib::ITMRGBDCalib& calib, Vector2i imgSize_rgb, Vector2i imgSize_d) :
+      ITMLib::ITMBasicEngine<TVoxel,TIndex>(settings, calib, imgSize_rgb, imgSize_d){
     std::cout<<"ObjSLAMEngine Constructor\n";
     createPose();
-    createEmptyScene()
+    createEmptyScene();
 
   }
 
   /**
  * Empty Destructor
  */
-  ~ObjSLAMEngine() {
-    std::cout<<"ObjSLAMEngine Destructor\n";
-    delete pose;
-
-  }
+//  ~ObjSLAMEngine(){
+//    std::cout<<"ObjSLAMEngine Destructor\n";
+////    delete pose;
+//
+//  }
 
   int init_InfiniTAMCreator();
 
