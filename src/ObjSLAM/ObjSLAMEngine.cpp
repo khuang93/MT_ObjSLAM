@@ -6,8 +6,12 @@
 
 namespace ObjSLAM {
 
-  int init_InfiniTAMCreator() {
+  int ObjSLAMEngine::init_InfiniTAMCreator() {
     return 10;
+  }
+
+  void ObjSLAMEngine::createPose(){
+    pose = new ObjCameraPose;
   }
 
 }

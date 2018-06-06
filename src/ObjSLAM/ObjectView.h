@@ -11,25 +11,28 @@
 namespace ObjSLAM {
 
  class ObjectView : public ITMLib::ITMView{
-   //using ITMLib::ITMView::ITMView;
 
+   //TODO: Finish all private members of ITMView with their correct data types
+  private:
+   ObjCameraPose *cameraPose;
+
+
+  public:
+
+   //Constructor
+   //using ITMLib::ITMView::ITMView;
    ObjectView(const ITMLib::ITMRGBDCalib& calibration, Vector2i imgSize_rgb, Vector2i imgSize_d, bool useGPU, ObjCameraPose pose):
        ITMView(  calibration,  imgSize_rgb,  imgSize_d,  useGPU), cameraPose(&pose){
 
    }
 
-
+  //Destructor
    ~ObjectView(){
      delete cameraPose;
-     ITMLib::ITMView::~ITMView();
+//     ITMLib::ITMView::~ITMView();
    }
 
 
-
-  private:
-    ObjCameraPose *cameraPose;
-
-  public:
    ObjCameraPose* getCameraPose(){
      return cameraPose;
    }
