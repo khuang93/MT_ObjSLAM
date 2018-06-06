@@ -1290,6 +1290,12 @@
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/InfiniTAMEngine.h">
 			<Option target="ObjSLAM"/>
 		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjCameraPose.cpp">
+			<Option target="ObjSLAM"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjCameraPose.h">
+			<Option target="ObjSLAM"/>
+		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMApp.cpp">
 			<Option target="ObjSLAM"/>
 		</Unit>
@@ -1303,6 +1309,12 @@
 			<Option target="ObjSLAM"/>
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectSLAMTracker.h">
+			<Option target="ObjSLAM"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectView.cpp">
+			<Option target="ObjSLAM"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectView.h">
 			<Option target="ObjSLAM"/>
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/CMakeLists.txt">
