@@ -30,6 +30,7 @@ class ObjectInstance {
   }
 
   //getters
+
   ObjectClassLabel getClassLabel();
 
 
