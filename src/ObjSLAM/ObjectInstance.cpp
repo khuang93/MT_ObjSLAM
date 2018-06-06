@@ -12,7 +12,7 @@ namespace ObjSLAM{
   }
 
 
-  std::vector<ObjectView> ObjectInstance::getListOfVisibleViews(){
+   std::vector<ObjectView> *ObjectInstance::getListOfVisibleViews(){
     return listOfVisibleViews;
   }
 

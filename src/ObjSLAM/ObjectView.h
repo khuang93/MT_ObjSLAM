@@ -41,6 +41,9 @@ namespace ObjSLAM {
    void setCameraPose(ObjCameraPose *_pose){
      cameraPose = _pose;
    }
+
+   ObjectView(const ObjectView&);
+   ObjectView& operator=(const ObjectView&);
   };
 
 }
