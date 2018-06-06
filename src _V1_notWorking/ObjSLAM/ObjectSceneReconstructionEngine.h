@@ -18,8 +18,7 @@ namespace ObjSLAM {
   * 
   */
 
-class ObjectSceneReconstructionEngine : virtual public ITMSceneReconstructionEngine, public ITMSceneReconstructionEngine_CUDA_TVoxel_ITMVoxelBlockHash_
-{
+class ObjectSceneReconstructionEngine : virtual public ITMSceneReconstructionEngine {
 public:
 
 	// Constructors/Destructors
@@ -75,7 +74,7 @@ public:
 	/**
 	 * @return ObjSLAM::SemanticLabelEngine
 	 */
-	ObjSLAM::SemanticLabelEngine CreateSementicLabelEngine ()
+	ObjSLAM::SemanticLabelEngine CreateSemanticLabelEngine ()
 	{
 	}
 

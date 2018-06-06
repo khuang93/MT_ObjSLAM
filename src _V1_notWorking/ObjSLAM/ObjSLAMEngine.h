@@ -8,10 +8,11 @@
 #include "InfiniTAMEngine.h"
 #include "ObjectScene.h"
 #include "LoopClosureDetector.h"
+#include "ObjectSLAMTracker.h"
 #include "ObjectSceneReconstructionEngine.h"
 
 namespace ObjSLAM {
-template<class TVoxel, class TIndex>
+//template<class TVoxel, class TIndex>
 
 /**
   * class ObjSLAMEngine

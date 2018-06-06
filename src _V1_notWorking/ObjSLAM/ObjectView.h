@@ -127,7 +127,7 @@ private:
 	// Type of the list to be discussed
 	// 
 	std::vector< int >* listOfObjectsInView;
-	std::vector<Vector3< T >> distVectorToObject;
+//	std::vector<Vector3< T >> distVectorToObject;
 	ObjSLAM::Pose camPose;
 public:
 
@@ -168,15 +168,15 @@ public:
 	 * Set the value of distVectorToObject
 	 * @param new_var the new value of distVectorToObject
 	 */
-	void setDistVectorToObject (std::vector<Vector3< T >> new_var)	 {
-			distVectorToObject = new_var;
-	}
+//	void setDistVectorToObject (std::vector<Vector3< T >> new_var)	 {
+//			distVectorToObject = new_var;
+//	}
 
 	/**
 	 * Get the value of distVectorToObject
 	 * @return the value of distVectorToObject
 	 */
-	std::vector<Vector3< T >> getDistVectorToObject ()	 {
+	std::vector<Vector3< T > > getDistVectorToObject ()	 {
 		return distVectorToObject;
 	}
 

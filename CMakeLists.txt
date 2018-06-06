@@ -21,11 +21,12 @@ add_subdirectory(External/g2o/g2o)
 
 set(ObjSLAM_Sources
         ${SOURCE_DIR}/ObjSLAMApp.cpp
-        ${SOURCE_DIR}/ObjSLAMEngine.cpp
-        ${SOURCE_DIR}/InfiniTAMEngine.cpp
-        ${SOURCE_DIR}/ObjectSLAMTracker.cpp
-#        ${SOURCE_DIR}/ObjectView.cpp
+#        ${SOURCE_DIR}/ObjSLAMEngine.cpp
+#        ${SOURCE_DIR}/InfiniTAMEngine.cpp
+#        ${SOURCE_DIR}/ObjectSLAMTracker.cpp
+##        ${SOURCE_DIR}/ObjectView.cpp
+#        ${SOURCE_DIR}/SemanticLabelEngine.cpp
 
-    )
+        src/ObjSLAMApp.cpp src/ObjSLAMEngine.cpp src/ObjSLAMEngine.h)
 
 add_executable(ObjSLAM ${ObjSLAM_Sources})

@@ -3582,27 +3582,6 @@
 		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Trackers/CUDA/ITMLib_generated_ITMExtendedTracker_CUDA.cu.o">
 			<Option target="ITMLib"/>
 		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/InfiniTAMEngine.cpp">
-			<Option target="ObjSLAM"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/InfiniTAMEngine.h">
-			<Option target="ObjSLAM"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMApp.cpp">
-			<Option target="ObjSLAM"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMEngine.cpp">
-			<Option target="ObjSLAM"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMEngine.h">
-			<Option target="ObjSLAM"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectSLAMTracker.cpp">
-			<Option target="ObjSLAM"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectSLAMTracker.h">
-			<Option target="ObjSLAM"/>
-		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
