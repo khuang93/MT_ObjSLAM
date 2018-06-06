@@ -11,6 +11,8 @@
 //#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Trackers/CPU/ITMExtendedTracker_CPU.h"
 namespace ObjSLAM {
 
+//TODO: Make a interface class to extend ITMTracker Interface, and then CPU GPU classes separately extend ITM CPU and GPU trackers
+
   class ObjectSLAMTracker : public ITMLib::ITMExtendedTracker_CPU{
 
     //Constructor Inherited from parent

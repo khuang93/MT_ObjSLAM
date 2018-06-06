@@ -22,18 +22,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c963dc72-3b16-4a4f-832c-4830b1ee2264" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/ObjSLAM" beforeDir="false" afterPath="$PROJECT_DIR$/build/ObjSLAM" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/External/InfiniTAM/InfiniTAM/InfiniTAM.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/External/InfiniTAM/InfiniTAM/InfiniTAM.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/MT_ObjSLAM.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/MT_ObjSLAM.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAMApp.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAMEngine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAMEngine.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -80,7 +69,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="435">
@@ -107,11 +96,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ObjectSLAMTracker.h" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ObjectSLAMTracker.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="65" selection-start-line="16" selection-start-column="65" selection-end-line="16" selection-end-column="65" />
+            <state relative-caret-position="195">
+              <caret line="13" column="130" selection-start-line="13" selection-start-column="130" selection-end-line="13" selection-end-column="130" />
               <folding>
                 <element signature="e#117#207#0" expanded="true" />
                 <element signature="e#664#1450#0" />
@@ -204,8 +193,8 @@
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/InfiniTAMEngine.h" />
-        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h" />
       </list>
     </option>
   </component>
@@ -397,12 +386,12 @@
       <workItem from="1527583274886" duration="2043000" />
       <workItem from="1528103483440" duration="64000" />
       <workItem from="1528103591729" duration="391000" />
-      <workItem from="1528104050361" duration="25773000" />
+      <workItem from="1528104050361" duration="26126000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28271000" />
+    <option name="totallyTimeSpent" value="28624000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1204" extended-state="6" />
@@ -411,13 +400,13 @@
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25436682" />
       <window_info anchor="bottom" id="TODO" order="8" />
       <window_info anchor="bottom" id="Messages" order="0" weight="0.32991612" />
-      <window_info active="true" anchor="bottom" id="CMake" order="1" visible="true" weight="0.33643988" />
+      <window_info anchor="bottom" id="CMake" order="1" weight="0.33643988" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="3" weight="0.32991612" />
       <window_info anchor="bottom" id="Run" order="4" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32991612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.38303822" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.38303822" />
       <window_info anchor="bottom" id="Debug" order="5" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -791,22 +780,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" column="34" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectSLAMTracker.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="65" selection-start-line="16" selection-start-column="65" selection-end-line="16" selection-end-column="65" />
+        <state relative-caret-position="195">
+          <caret line="13" column="130" selection-start-line="13" selection-start-column="130" selection-end-line="13" selection-end-column="130" />
           <folding>
             <element signature="e#117#207#0" expanded="true" />
             <element signature="e#664#1450#0" />
             <element signature="e#1481#2890#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="34" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
         </state>
       </provider>
     </entry>
