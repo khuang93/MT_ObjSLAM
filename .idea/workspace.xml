@@ -23,17 +23,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c963dc72-3b16-4a4f-832c-4830b1ee2264" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/External/InfiniTAM" beforeDir="false" afterPath="$PROJECT_DIR$/External/InfiniTAM" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/InfiniTAM" beforeDir="false" afterPath="$PROJECT_DIR$/build/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/InfiniTAM" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/InfiniTAM_cli" beforeDir="false" afterPath="$PROJECT_DIR$/build/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/InfiniTAM_cli" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/External/InfiniTAM/InfiniTAM/ITMLib/libITMLib.a" beforeDir="false" afterPath="$PROJECT_DIR$/build/External/InfiniTAM/InfiniTAM/ITMLib/libITMLib.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/External/InfiniTAM/InfiniTAM/InfiniTAM.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/External/InfiniTAM/InfiniTAM/InfiniTAM.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/MT_ObjSLAM.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/MT_ObjSLAM.cbp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.tpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectScene.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjectScene.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -45,88 +36,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="515">
-              <caret line="54" column="49" selection-start-line="54" selection-start-column="49" selection-end-line="54" selection-end-column="49" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ObjSLAMApp.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-335">
-              <caret line="155" selection-start-line="154" selection-end-line="186" />
-              <folding>
-                <element signature="e#38#57#0" expanded="true" />
-                <element signature="e#1066#2329#0" />
-                <element signature="e#2309#4382#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ObjectScene.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectScene.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="44" column="3" selection-start-line="44" selection-start-column="3" selection-end-line="44" selection-end-column="3" />
-              <folding>
-                <element signature="e#106#183#0" expanded="true" />
-                <element signature="e#421#449#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ObjectView.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectView.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="2" selection-start-column="2" selection-end-column="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ObjSLAMEngine.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="74" column="1" selection-start-line="74" selection-start-column="1" selection-end-line="74" selection-end-column="1" />
-              <folding>
-                <element signature="e#109#127#0" expanded="true" />
-                <element signature="e#289#317#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ObjSLAMEngine.tpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.tpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" selection-start-line="8" selection-start-column="2" selection-end-line="21" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ITMScene.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMScene.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="460">
-              <caret line="56" selection-start-line="56" selection-end-line="56" />
-              <folding>
-                <element signature="e#104#128#0" expanded="true" />
-                <element signature="e#306#334#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -152,6 +62,7 @@
       <find>InputSourceI</find>
       <find>librar</find>
       <find>add</find>
+      <find>tpp</find>
       <find>INFINITAM_DIR</find>
     </findStrings>
     <dirStrings>
@@ -194,8 +105,8 @@
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.tpp" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjectScene.h" />
         <option value="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h" />
-        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp" />
       </list>
     </option>
   </component>
@@ -369,27 +280,26 @@
       <workItem from="1527583274886" duration="2043000" />
       <workItem from="1528103483440" duration="64000" />
       <workItem from="1528103591729" duration="391000" />
-      <workItem from="1528104050361" duration="45751000" />
+      <workItem from="1528104050361" duration="46593000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48249000" />
+    <option name="totallyTimeSpent" value="49091000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1204" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.31277293" />
       <window_info anchor="bottom" id="TODO" order="8" />
       <window_info anchor="bottom" id="Messages" order="0" weight="0.32991612" />
       <window_info anchor="bottom" id="CMake" order="1" weight="0.33643988" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Find" order="3" weight="0.32991612" />
-      <window_info anchor="bottom" id="Run" order="4" />
+      <window_info active="true" anchor="bottom" id="Find" order="3" visible="true" weight="0.32991612" />
+      <window_info anchor="bottom" id="Run" order="4" weight="0.32991612" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32991612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.38303822" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.38303822" />
       <window_info anchor="bottom" id="Debug" order="5" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -428,20 +338,10 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="4" />
+      <option name="time" value="6" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectSceneReconstructionEngine.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="84" selection-start-line="20" selection-start-column="84" selection-end-line="20" selection-end-column="84" />
-          <folding>
-            <element signature="e#85#201#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ObjSLAM/SemanticLabelEngine.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -609,13 +509,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMMainEngine.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-653">
-          <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMVoxelTypes.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1050">
@@ -629,16 +522,6 @@
           <caret line="10" selection-start-line="10" selection-end-line="23" selection-end-column="51" />
           <folding>
             <element signature="e#104#149#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMBasicEngine.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="18" column="47" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="47" />
-          <folding>
-            <element signature="e#568#602#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -707,18 +590,6 @@
     <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/CLIEngine.cpp">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMBasicEngine.tpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="70" column="46" selection-start-line="70" selection-start-column="32" selection-end-line="70" selection-end-column="46" />
-          <folding>
-            <element signature="e#611#645#0" expanded="true" />
-            <element signature="e#602#2841#0" />
-            <element signature="e#2852#2886#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/InputSource/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="10">
@@ -758,10 +629,48 @@
         <state relative-caret-position="-405" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectView.cpp">
+    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMBasicEngine.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="2" selection-start-column="2" selection-end-column="2" />
+        <state relative-caret-position="1005">
+          <caret line="67" column="38" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="38" />
+          <folding>
+            <element signature="e#104#131#0" expanded="true" />
+            <element signature="e#568#602#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="397">
+          <caret line="35" column="18" selection-start-line="35" selection-start-column="14" selection-end-line="35" selection-end-column="28" />
+          <folding>
+            <element signature="e#109#127#0" expanded="true" />
+            <element signature="e#289#317#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMBasicEngine.tpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+          <folding>
+            <element signature="e#611#645#0" expanded="true" />
+            <element signature="e#602#2841#0" />
+            <element signature="e#2852#2886#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMScene.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="30" column="52" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
+          <folding>
+            <element signature="e#104#128#0" expanded="true" />
+            <element signature="e#306#334#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -772,14 +681,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMScene.h">
+    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectView.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="56" selection-start-line="56" selection-end-line="56" />
-          <folding>
-            <element signature="e#104#128#0" expanded="true" />
-            <element signature="e#306#334#0" expanded="true" />
-          </folding>
+        <state>
+          <caret column="2" selection-start-column="2" selection-end-column="2" />
         </state>
       </provider>
     </entry>
@@ -794,21 +699,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="74" column="1" selection-start-line="74" selection-start-column="1" selection-end-line="74" selection-end-column="1" />
-          <folding>
-            <element signature="e#109#127#0" expanded="true" />
-            <element signature="e#289#317#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-335">
-          <caret line="155" selection-start-line="154" selection-end-line="186" />
+        <state relative-caret-position="457">
+          <caret line="211" column="28" selection-start-line="211" selection-start-column="28" selection-end-line="211" selection-end-column="28" />
           <folding>
             <element signature="e#38#57#0" expanded="true" />
             <element signature="e#1066#2329#0" />
@@ -819,8 +713,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="515">
-          <caret line="54" column="49" selection-start-line="54" selection-start-column="49" selection-end-line="54" selection-end-column="49" />
+        <state relative-caret-position="392">
+          <caret line="42" column="37" selection-start-line="42" selection-start-column="37" selection-end-line="42" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/CPUInstantiations.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMMainEngine.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
         </state>
       </provider>
     </entry>
