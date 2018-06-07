@@ -23,6 +23,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c963dc72-3b16-4a4f-832c-4830b1ee2264" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/External/InfiniTAM" beforeDir="false" afterPath="$PROJECT_DIR$/External/InfiniTAM" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UML/ObjSLAM_with_g2o_V2.xmi" beforeDir="false" afterPath="$PROJECT_DIR$/UML/ObjSLAM_with_g2o_V2.xmi" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,8 +36,13 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="UseFFmpeg.cmake" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UseFFmpeg.cmake" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/cmake/UseFFmpeg.cmake">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="UseCUDA.cmake" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/cmake/UseCUDA.cmake">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
@@ -292,23 +298,23 @@
       <workItem from="1527583274886" duration="2043000" />
       <workItem from="1528103483440" duration="64000" />
       <workItem from="1528103591729" duration="391000" />
-      <workItem from="1528104050361" duration="47237000" />
+      <workItem from="1528104050361" duration="47914000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49735000" />
+    <option name="totallyTimeSpent" value="50412000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1204" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31277293" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.31277293" />
       <window_info anchor="bottom" id="TODO" order="8" />
       <window_info anchor="bottom" id="Messages" order="0" weight="0.32991612" />
       <window_info anchor="bottom" id="CMake" order="1" weight="0.33643988" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Find" order="3" visible="true" weight="0.32991612" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50054586" side_tool="true" weight="0.32991612" />
+      <window_info anchor="bottom" id="Find" order="3" sideWeight="0.49945414" visible="true" weight="0.32991612" />
       <window_info anchor="bottom" id="Run" order="4" weight="0.32991612" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32991612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -355,16 +361,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAMApp.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-          <folding>
-            <element signature="e#38#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjSLAMEngine.h">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -739,6 +735,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/cmake/UseFFmpeg.cmake">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/cmake/UseCUDA.cmake">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
