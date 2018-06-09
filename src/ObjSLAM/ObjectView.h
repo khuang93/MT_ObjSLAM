@@ -17,9 +17,10 @@ namespace ObjSLAM {
    //TODO: Finish all private members of ITMView with their correct data types
   private:
    ObjCameraPose *camera_Pose;
+   
    ObjUIntImage *segmentation_Mask;
    ObjUChar4Image *rgb_Image;
-   ObjFloatImage *depth_Image;s
+   ObjFloatImage *depth_Image;
 
 
 
@@ -28,7 +29,7 @@ namespace ObjSLAM {
    //Constructor
    //using ITMLib::ITMView::ITMView;
    ObjectView(const ITMLib::ITMRGBDCalib& calibration, Vector2i imgSize_rgb, Vector2i imgSize_d, bool useGPU, ObjCameraPose pose):
-       ITMView(  calibration,  imgSize_rgb,  imgSize_d,  useGPU), cameraPose(&pose){
+       ITMView(  calibration,  imgSize_rgb,  imgSize_d,  useGPU), camera_Pose(&pose){
 
    }
 

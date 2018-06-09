@@ -84,8 +84,8 @@
       <file leaf-file-name="ObjectView.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectView.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="39" column="30" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
+            <state relative-caret-position="195">
+              <caret line="19" column="3" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
               <folding>
                 <element signature="e#103#144#0" expanded="true" />
               </folding>
@@ -210,11 +210,11 @@
     <packageJsonPaths />
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1985" />
-    <option name="y" value="-4" />
-    <option name="width" value="1855" />
-    <option name="height" value="1204" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-50" />
+    <option name="y" value="223" />
+    <option name="width" value="1398" />
+    <option name="height" value="863" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -386,12 +386,12 @@
       <workItem from="1527583274886" duration="2043000" />
       <workItem from="1528103483440" duration="64000" />
       <workItem from="1528103591729" duration="391000" />
-      <workItem from="1528104050361" duration="51804000" />
+      <workItem from="1528104050361" duration="51829000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54302000" />
+    <option name="totallyTimeSpent" value="54327000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1985" y="-4" width="1855" height="1204" extended-state="6" />
@@ -402,11 +402,11 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.32991612" />
       <window_info anchor="bottom" id="CMake" order="1" weight="0.33643988" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50054586" side_tool="true" weight="0.32991612" />
-      <window_info active="true" anchor="bottom" id="Find" order="3" sideWeight="0.49945414" visible="true" weight="0.32991612" />
+      <window_info anchor="bottom" id="Find" order="3" sideWeight="0.49945414" weight="0.32991612" />
       <window_info anchor="bottom" id="Run" order="4" weight="0.32991612" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32991612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.38303822" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.38303822" />
       <window_info anchor="bottom" id="Debug" order="5" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -792,8 +792,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectView.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="39" column="30" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
+        <state relative-caret-position="195">
+          <caret line="19" column="3" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
           <folding>
             <element signature="e#103#144#0" expanded="true" />
           </folding>
