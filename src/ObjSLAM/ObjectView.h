@@ -4,9 +4,11 @@
 
 #ifndef MT_OBJSLAM_OBJECTVIEW_H
 #define MT_OBJSLAM_OBJECTVIEW_H
+#include <src/ObjSLAM/ObjSLAMDataTypes.h>
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/Objects/Views/ITMView.h"
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMRGBDCalib.h"
 #include "ObjCameraPose.h"
+#include "ObjSLAMDataTypes.h"
 
 namespace ObjSLAM {
 
@@ -15,6 +17,10 @@ namespace ObjSLAM {
    //TODO: Finish all private members of ITMView with their correct data types
   private:
    ObjCameraPose *cameraPose;
+   ObjUIntImage *segmentationMask;
+   ObjUChar4Image *rgbImage;
+   ObjFloatImage *depthImage;
+
 
 
   public:
