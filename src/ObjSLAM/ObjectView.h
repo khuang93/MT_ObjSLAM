@@ -16,10 +16,10 @@ namespace ObjSLAM {
 
    //TODO: Finish all private members of ITMView with their correct data types
   private:
-   ObjCameraPose *cameraPose;
-   ObjUIntImage *segmentationMask;
-   ObjUChar4Image *rgbImage;
-   ObjFloatImage *depthImage;
+   ObjCameraPose *camera_Pose;
+   ObjUIntImage *segmentation_Mask;
+   ObjUChar4Image *rgb_Image;
+   ObjFloatImage *depth_Image;s
 
 
 
@@ -34,18 +34,21 @@ namespace ObjSLAM {
 
   //Destructor
    ~ObjectView(){
-     delete cameraPose;
+     delete camera_Pose;
+     delete rgb_Image;
+     delete depth_Image;
+     delete segmentation_Mask;
 //     ITMLib::ITMView::~ITMView();
    }
 
 
    ObjCameraPose* getCameraPose(){
-     return cameraPose;
+     return camera_Pose;
    }
 
 
    void setCameraPose(ObjCameraPose *_pose){
-     cameraPose = _pose;
+     camera_Pose = _pose;
    }
 
    ObjectView(const ObjectView&);

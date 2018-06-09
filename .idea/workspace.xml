@@ -22,11 +22,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c963dc72-3b16-4a4f-832c-4830b1ee2264" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjSLAMDataTypes.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/External/InfiniTAM" beforeDir="false" afterPath="$PROJECT_DIR$/External/InfiniTAM" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/MT_ObjSLAM.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/MT_ObjSLAM.cbp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ObjSLAM/ObjectView.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ObjSLAM/ObjectView.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -88,8 +84,8 @@
       <file leaf-file-name="ObjectView.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectView.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="3" selection-start-line="22" selection-start-column="3" selection-end-line="22" selection-end-column="3" />
+            <state relative-caret-position="405">
+              <caret line="39" column="30" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
               <folding>
                 <element signature="e#103#144#0" expanded="true" />
               </folding>
@@ -390,23 +386,23 @@
       <workItem from="1527583274886" duration="2043000" />
       <workItem from="1528103483440" duration="64000" />
       <workItem from="1528103591729" duration="391000" />
-      <workItem from="1528104050361" duration="51048000" />
+      <workItem from="1528104050361" duration="51804000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53546000" />
+    <option name="totallyTimeSpent" value="54302000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1985" y="-4" width="1855" height="1204" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31277293" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.31277293" />
       <window_info anchor="bottom" id="TODO" order="8" />
       <window_info anchor="bottom" id="Messages" order="0" weight="0.32991612" />
       <window_info anchor="bottom" id="CMake" order="1" weight="0.33643988" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50054586" side_tool="true" weight="0.32991612" />
-      <window_info anchor="bottom" id="Find" order="3" sideWeight="0.49945414" visible="true" weight="0.32991612" />
+      <window_info active="true" anchor="bottom" id="Find" order="3" sideWeight="0.49945414" visible="true" weight="0.32991612" />
       <window_info anchor="bottom" id="Run" order="4" weight="0.32991612" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32991612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -433,13 +429,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectInstance.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="69" selection-start-line="25" selection-start-column="69" selection-end-line="25" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectInstance.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="430">
@@ -794,10 +783,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/External/InfiniTAM/InfiniTAM/doxygen-html/classInputSource_1_1FFMPEGWriter-members.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="100" column="161" selection-start-line="100" selection-start-column="161" selection-end-line="100" selection-end-column="161" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ObjSLAM/ObjectView.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="3" selection-start-line="22" selection-start-column="3" selection-end-line="22" selection-end-column="3" />
+        <state relative-caret-position="405">
+          <caret line="39" column="30" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
           <folding>
             <element signature="e#103#144#0" expanded="true" />
           </folding>
