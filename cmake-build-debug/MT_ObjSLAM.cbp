@@ -1331,6 +1331,9 @@
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMApp.cpp">
 			<Option target="ObjSLAM"/>
 		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMDataTypes.h">
+			<Option target="ObjSLAM"/>
+		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMEngine.h">
 			<Option target="ObjSLAM"/>
 		</Unit>

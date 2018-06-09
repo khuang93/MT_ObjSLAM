@@ -47,7 +47,7 @@ set(ObjSLAM_Sources
         src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
         src/ObjSLAM/ObjectClassLabel.cpp src/ObjSLAM/ObjectClassLabel.h
         src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
-        src/ObjSLAM/ObjectScene.cpp src/ObjSLAM/ObjectScene.h)
+        src/ObjSLAM/ObjectScene.cpp src/ObjSLAM/ObjectScene.h "src/ObjSLAM/ObjSLAMDataTypes.h")
 
 add_executable(ObjSLAM ${ObjSLAM_Sources})
 
