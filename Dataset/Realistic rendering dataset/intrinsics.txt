@@ -1,0 +1,17 @@
+# Camera intrinsic parameters for unreal dataset RealisticRendering
+# date: 2018-1-24-0-30-43
+
+numCameras 2
+
+devName cam0
+# resolution: nCols, nRows
+resolution 640 480
+# K: fx fy cx cy with pinhole camera model
+K 320 320 320 240
+
+devName cam1
+# resolution: nCols, nRows
+resolution 640 480
+# K: fx fy cx cy with pinhole camera model
+K 320 320 320 240
+
