@@ -17,7 +17,7 @@ namespace ObjSLAM {
    //TODO: Finish all private members of ITMView with their correct data types
   private:
    ObjCameraPose *camera_Pose;
-   
+
    ObjUIntImage *segmentation_Mask;
    ObjUChar4Image *rgb_Image;
    ObjFloatImage *depth_Image;
