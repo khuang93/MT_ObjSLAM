@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="ObjSLAMMapper"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\clion-2018.1.2\;CMake Files\..\..\clion-2018.1.2\bin\;CMake Files\..\..\clion-2018.1.2\bin\cmake\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Platform\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Compiler\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ObjSLAMMapper">
+				<Option output="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/ObjSLAMMapper" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/src"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 ObjSLAMMapper"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ObjSLAMMapper/fast">
+				<Option output="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/ObjSLAMMapper" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/src"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 ObjSLAMMapper/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/src/main.cpp">
+			<Option target="ObjSLAMMapper"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/CMakeCInformation.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/CMakeCXXInformation.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/CMakeCommonLanguageInclude.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/CMakeExtraGeneratorDetermineCompilerMacrosAndIncludeDirs.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/CMakeFindCodeBlocks.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/CMakeGenericSystem.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/CMakeLanguageInformation.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/CMakeSystemSpecificInformation.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/CMakeSystemSpecificInitialize.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/ProcessorCount.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/Platform/Linux-GNU-C.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Platform\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/Platform/Linux-GNU-CXX.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Platform\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/Platform/Linux-GNU.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Platform\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/Platform/Linux.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Platform\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/Platform/UnixPaths.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Platform\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/Compiler/CMakeCommonCompilerMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Compiler\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/Compiler/GNU-C.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Compiler\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/Compiler/GNU-CXX.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Compiler\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/Compiler/GNU.cmake">
+			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Compiler\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
