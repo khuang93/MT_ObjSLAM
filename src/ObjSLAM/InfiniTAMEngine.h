@@ -6,7 +6,7 @@
 #define MT_OBJSLAM_INFINITAMENGINE_H
 
 #include <opencv/cv.h>
-#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMMainEngine.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMMainEngine.h"
 
 
 

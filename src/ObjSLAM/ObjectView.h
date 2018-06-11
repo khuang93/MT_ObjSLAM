@@ -5,9 +5,9 @@
 #ifndef MT_OBJSLAM_OBJECTVIEW_H
 #define MT_OBJSLAM_OBJECTVIEW_H
 #include <src/ObjSLAM/ObjSLAMDataTypes.h>
-#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Objects/Views/ITMView.h"
-#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMRGBDCalib.h"
-#include "ObjCameraPose.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Views/ITMView.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMRGBDCalib.h"
+#include "src/ObjSLAM/ObjCameraPose.h"
 #include "ObjSLAMDataTypes.h"
 
 namespace ObjSLAM {

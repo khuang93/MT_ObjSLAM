@@ -48,9 +48,28 @@ set(ObjSLAM_Sources
         src/ObjSLAM/ObjectClassLabel.cpp src/ObjSLAM/ObjectClassLabel.h
         src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
         src/ObjSLAM/ObjectScene.cpp src/ObjSLAM/ObjectScene.h src/ObjSLAM/ObjSLAMDataTypes.h
+
+        src/ObjSLAM/DatasetReader_LPD_Dataset.h
+        )
+set(Mapper_Sources
+        src/ObjSLAM/ObjSLAMMapper.cpp
+        src/ObjSLAM/ObjSLAMEngine.h
+        src/ObjSLAM/ObjSLAMEngine.tpp
+        src/ObjSLAM/InfiniTAMEngine.cpp src/ObjSLAM/InfiniTAMEngine.h
+        src/ObjSLAM/ObjectSLAMTracker.cpp src/ObjSLAM/ObjectSLAMTracker.h
+        src/ObjSLAM/ObjectView.cpp src/ObjSLAM/ObjectView.h
+        src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
+        src/ObjSLAM/ObjectClassLabel.cpp src/ObjSLAM/ObjectClassLabel.h
+        src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
+        src/ObjSLAM/ObjectScene.cpp src/ObjSLAM/ObjectScene.h src/ObjSLAM/ObjSLAMDataTypes.h
+
+        src/ObjSLAM/DatasetReader_LPD_Dataset.h
         )
 
-add_executable(ObjSLAM ${ObjSLAM_Sources})
+#add_executable(ObjSLAM ${ObjSLAM_Sources})
+#TARGET_LINK_LIBRARIES(ObjSLAM InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)
 
 
-TARGET_LINK_LIBRARIES(ObjSLAM InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)
+
+add_executable(Mapper ${Mapper_Sources})
+TARGET_LINK_LIBRARIES(Mapper InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)

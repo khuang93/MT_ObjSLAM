@@ -1,0 +1,1 @@
+./Mapper ../Dataset/RealisticRenderingDataset/depth/cam0/1.exr

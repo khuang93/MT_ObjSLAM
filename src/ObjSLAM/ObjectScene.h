@@ -5,7 +5,7 @@
 #ifndef MT_OBJSLAM_OBJECTSCENE_H
 #define MT_OBJSLAM_OBJECTSCENE_H
 
-#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMScene.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMScene.h"
 
 #include "ObjectView.h"
 #include "ObjectInstance.h"
