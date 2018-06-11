@@ -118,14 +118,12 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
-					<Add option="-DCOMPILE_WITH_FFMPEG"/>
+					<Add option="-DCOMPILE_WITHOUT_CUDA"/>
 					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include/GL"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
@@ -133,6 +131,7 @@
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
@@ -149,14 +148,12 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
-					<Add option="-DCOMPILE_WITH_FFMPEG"/>
+					<Add option="-DCOMPILE_WITHOUT_CUDA"/>
 					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include/GL"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
@@ -164,6 +161,7 @@
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
@@ -180,7 +178,7 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
+					<Add option="-DCOMPILE_WITHOUT_CUDA"/>
 					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
@@ -209,7 +207,7 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
+					<Add option="-DCOMPILE_WITHOUT_CUDA"/>
 					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
@@ -232,13 +230,13 @@
 				</MakeCommands>
 			</Target>
 			<Target title="FernRelocLib">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/libFernRelocLib_d.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/libFernRelocLib.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
+					<Add option="-DCOMPILE_WITHOUT_CUDA"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
@@ -260,13 +258,13 @@
 				</MakeCommands>
 			</Target>
 			<Target title="FernRelocLib/fast">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/libFernRelocLib_d.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/libFernRelocLib.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
+					<Add option="-DCOMPILE_WITHOUT_CUDA"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
@@ -288,21 +286,19 @@
 				</MakeCommands>
 			</Target>
 			<Target title="InputSource">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/libInputSource_d.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/libInputSource.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
-					<Add option="-DCOMPILE_WITH_FFMPEG"/>
+					<Add option="-DCOMPILE_WITHOUT_CUDA"/>
 					<Add option="-DCOMPILE_WITHOUT_Kinect2"/>
 					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include/GL"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
@@ -310,6 +306,7 @@
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
@@ -320,21 +317,19 @@
 				</MakeCommands>
 			</Target>
 			<Target title="InputSource/fast">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/libInputSource_d.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/libInputSource.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
-					<Add option="-DCOMPILE_WITH_FFMPEG"/>
+					<Add option="-DCOMPILE_WITHOUT_CUDA"/>
 					<Add option="-DCOMPILE_WITHOUT_Kinect2"/>
 					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include/GL"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
@@ -342,6 +337,7 @@
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
@@ -352,13 +348,13 @@
 				</MakeCommands>
 			</Target>
 			<Target title="ITMLib">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/libITMLib_d.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/libITMLib.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
+					<Add option="-DCOMPILE_WITHOUT_CUDA"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
@@ -380,13 +376,13 @@
 				</MakeCommands>
 			</Target>
 			<Target title="ITMLib/fast">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/libITMLib_d.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/libITMLib.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
+					<Add option="-DCOMPILE_WITHOUT_CUDA"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
@@ -408,7 +404,7 @@
 				</MakeCommands>
 			</Target>
 			<Target title="MiniSlamGraphLib">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/libMiniSlamGraphLib_d.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/libMiniSlamGraphLib.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
@@ -435,7 +431,7 @@
 				</MakeCommands>
 			</Target>
 			<Target title="MiniSlamGraphLib/fast">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/libMiniSlamGraphLib_d.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/libMiniSlamGraphLib.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
@@ -462,13 +458,13 @@
 				</MakeCommands>
 			</Target>
 			<Target title="ORUtils">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/libORUtils_d.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/libORUtils.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
+					<Add option="-DCOMPILE_WITHOUT_CUDA"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
@@ -490,13 +486,13 @@
 				</MakeCommands>
 			</Target>
 			<Target title="ORUtils/fast">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/libORUtils_d.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/libORUtils.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-D_FORCE_INLINES"/>
+					<Add option="-DCOMPILE_WITHOUT_CUDA"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
@@ -1295,26 +1291,11 @@
 		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ORUtils/Vector.h">
 			<Option target="ORUtils"/>
 		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Engines/LowLevel/CUDA/ITMLib_generated_ITMLowLevelEngine_CUDA.cu.o">
-			<Option target="ITMLib"/>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/DatasetReader.cpp">
+			<Option target="ObjSLAM"/>
 		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Engines/ViewBuilding/CUDA/ITMLib_generated_ITMViewBuilder_CUDA.cu.o">
-			<Option target="ITMLib"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Engines/Visualisation/CUDA/ITMLib_generated_ITMVisualisationHelpers_CUDA.cu.o">
-			<Option target="ITMLib"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/ITMLib_generated_CUDAInstantiations.cu.o">
-			<Option target="ITMLib"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Trackers/CUDA/ITMLib_generated_ITMColorTracker_CUDA.cu.o">
-			<Option target="ITMLib"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Trackers/CUDA/ITMLib_generated_ITMDepthTracker_CUDA.cu.o">
-			<Option target="ITMLib"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Trackers/CUDA/ITMLib_generated_ITMExtendedTracker_CUDA.cu.o">
-			<Option target="ITMLib"/>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/DatasetReader.h">
+			<Option target="ObjSLAM"/>
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/InfiniTAMEngine.cpp">
 			<Option target="ObjSLAM"/>
@@ -1384,12 +1365,6 @@
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\Apps\InfiniTAM_cli\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/cmake/CUDACheckCompute.cmake">
-			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\cmake\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/cmake/FindFFmpeg.cmake">
-			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\cmake\"/>
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/cmake/Flags.cmake">
 			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\cmake\"/>
@@ -1467,9 +1442,6 @@
 			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\cmake\"/>
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/cmake/UseUVC.cmake">
-			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\cmake\"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/cmake/cuda_compute_capability.cpp">
 			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\cmake\"/>
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/FernRelocLib/CMakeLists.txt">
