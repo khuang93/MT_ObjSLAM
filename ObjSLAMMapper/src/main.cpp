@@ -16,9 +16,9 @@ int main(int argc, char** argv){
 
   Eigen::MatrixXf img;
 
-  DatasetReader_LPD_Dataset reader;
-  reader.setHeight(480);
-  reader.setWidth(640);
+  DatasetReader_LPD_Dataset reader(640,480);
+  cout<<reader.getHeight()<<" "<<reader.getWidth()<<endl;
+
 
   img = reader.ReadDepth(path);
 

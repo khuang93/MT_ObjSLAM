@@ -19,9 +19,10 @@ class DatasetReader_LPD_Dataset {
 
 
  public:
-  DatasetReader_LPD_Dataset(){
+  DatasetReader_LPD_Dataset(){};
 
-  };
+  DatasetReader_LPD_Dataset(int w, int h):width(w),height(h){};
+
 
   void setWidth(int w){
     width=w;
