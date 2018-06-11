@@ -1316,12 +1316,6 @@
 		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Trackers/CUDA/ITMLib_generated_ITMExtendedTracker_CUDA.cu.o">
 			<Option target="ITMLib"/>
 		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/DatasetReader.cpp">
-			<Option target="ObjSLAM"/>
-		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/DatasetReader.h">
-			<Option target="ObjSLAM"/>
-		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/InfiniTAMEngine.cpp">
 			<Option target="ObjSLAM"/>
 		</Unit>
