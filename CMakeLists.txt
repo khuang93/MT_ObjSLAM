@@ -48,7 +48,7 @@ set(ObjSLAM_Sources
         src/ObjSLAM/ObjectClassLabel.cpp src/ObjSLAM/ObjectClassLabel.h
         src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
         src/ObjSLAM/ObjectScene.cpp src/ObjSLAM/ObjectScene.h src/ObjSLAM/ObjSLAMDataTypes.h
-        src/ObjSLAM/DatasetReader.cpp src/ObjSLAM/DatasetReader.h)
+        )
 
 add_executable(ObjSLAM ${ObjSLAM_Sources})
 

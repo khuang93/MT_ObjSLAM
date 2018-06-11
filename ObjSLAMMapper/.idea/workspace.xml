@@ -152,7 +152,7 @@
       <updated>1528721008080</updated>
       <workItem from="1528721009792" duration="1004000" />
       <workItem from="1528722169640" duration="4287000" />
-      <workItem from="1528727820608" duration="3609000" />
+      <workItem from="1528727820608" duration="3769000" />
     </task>
     <task id="LOCAL-00001" summary="added txt for commands&#10;added width height as params">
       <created>1528729024548</created>
@@ -165,11 +165,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8900000" />
+    <option name="totallyTimeSpent" value="9060000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1204" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
