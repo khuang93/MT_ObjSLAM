@@ -5,7 +5,7 @@
 		<Option title="ObjSLAMMapper"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\clion-2018.1.2\;CMake Files\..\..\clion-2018.1.2\bin\;CMake Files\..\..\clion-2018.1.2\bin\cmake\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Platform\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Compiler\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\..\usr\lib\cmake\;CMake Files\..\..\..\..\..\usr\lib\cmake\eigen3\;CMake Files\..\..\clion-2018.1.2\;CMake Files\..\..\clion-2018.1.2\bin\;CMake Files\..\..\clion-2018.1.2\bin\cmake\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Platform\;CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\Compiler\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/cmake-build-debug"/>
@@ -44,7 +44,7 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/src"/>
+					<Add directory="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -68,7 +68,7 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/src"/>
+					<Add directory="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -86,11 +86,20 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/src/DatasetReader.h">
+			<Option target="ObjSLAMMapper"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/src/DatasetReader.tpp">
+			<Option target="ObjSLAMMapper"/>
+		</Unit>
 		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/src/main.cpp">
 			<Option target="ObjSLAMMapper"/>
 		</Unit>
 		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../../../../usr/lib/cmake/eigen3/Eigen3Config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\cmake\eigen3\"/>
 		</Unit>
 		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/../../clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/CMakeCInformation.cmake">
 			<Option virtualFolder="CMake Files\..\..\clion-2018.1.2\bin\cmake\share\cmake-3.10\Modules\"/>
