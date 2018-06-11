@@ -18,7 +18,7 @@ int main(int argc, char** argv){
 
   DatasetReader_LPD_Dataset reader(640,480);
   cout<<reader.getHeight()<<" "<<reader.getWidth()<<endl;
-
+  
 
   img = reader.ReadDepth(path);
 

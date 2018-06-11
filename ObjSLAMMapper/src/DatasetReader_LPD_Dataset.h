@@ -59,7 +59,30 @@ class DatasetReader_LPD_Dataset {
       }
     }
     return res;
+  }
+  /*static*/ Eigen::MatrixXf ReadDepth (std::string Path, std::string Name) {
+    ifstream in;
 
+    in.open(Path+Name);
+
+    vector<float> vector_in;
+    
+
+    while (in.peek() != EOF) {
+      float tmp;
+      in >> tmp;
+      vector_in.push_back(tmp);
+    }
+
+    cout << vector_in.size();
+
+    Eigen::MatrixXf res(width, height);
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        res(i, j) = vector_in.at(height * i + j);
+      }
+    }
+    return res;
   }
 
 };
