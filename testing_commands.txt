@@ -1,1 +1,4 @@
 ./Mapper ../Dataset/RealisticRenderingDataset/depth/cam0/1.exr
+
+
+/local/MT/MT_ObjSLAM/Dataset/RealisticRenderingDataset

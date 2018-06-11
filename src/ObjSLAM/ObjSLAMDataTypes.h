@@ -8,6 +8,7 @@
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMImageTypes.h"
 #include "External/InfiniTAM/InfiniTAM/ORUtils/Image.h"
 
+namespace ObjSLAM {
 
 //
 typedef ORUtils::Image<bool> ObjBoolImage;
@@ -29,7 +30,7 @@ typedef ORUtils::Image<uint> ObjUIntImage;
 //typedef ORUtils::Image<ushort> ObjUShortImage;
 
 
-
+}
 
 
 #endif //MT_OBJSLAM_OBJSLAMDATATYPES_H

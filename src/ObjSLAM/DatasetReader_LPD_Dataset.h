@@ -11,63 +11,42 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 #include "ObjSLAMDataTypes.h"
+#include <stdlib.h>
+
+
+#include "../../External/InfiniTAM/InfiniTAM/ORUtils/FileUtils.h"
 
 using namespace std;
 
 class DatasetReader_LPD_Dataset {
  private:
-  int width ,height;
-
+  int width, height;
 
  public:
-  DatasetReader_LPD_Dataset(){};
+  DatasetReader_LPD_Dataset() {};
 
-  DatasetReader_LPD_Dataset(int w, int h):width(w),height(h){};
+  DatasetReader_LPD_Dataset(int w, int h) : width(w), height(h) {};
 
-
-  void setWidth(int w){
-    width=w;
+  void setWidth(int w) {
+    width = w;
   }
-  void setHeight(int h){
-    height=h;
+  void setHeight(int h) {
+    height = h;
   }
-  int getWidth(){
+  int getWidth() {
     return width;
   }
-  int getHeight(){
+  int getHeight() {
     return height;
   }
 
-  /*static*/ Eigen::MatrixXf ReadDepth (std::string Path) {
+
+  ObjSLAM::ObjFloatImage* ReadDepth(std::string Path) {
     ifstream in;
 
     in.open(Path);
 
-    vector<float> readin;
-
-    while (in.peek() != EOF) {
-      float tmp;
-      in >> tmp;
-      readin.push_back(tmp);
-    }
-
-    cout << readin.size();
-
-    Eigen::MatrixXf res(width, height);
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
-        res(i, j) = readin.at(height * i + j);
-      }
-    }
-    return res;
-  }
-  /*static*/ Eigen::MatrixXf ReadDepth (std::string Path, std::string Name) {
-    ifstream in;
-
-    in.open(Path+Name);
-
     vector<float> vector_in;
-    
 
     while (in.peek() != EOF) {
       float tmp;
@@ -75,21 +54,50 @@ class DatasetReader_LPD_Dataset {
       vector_in.push_back(tmp);
     }
 
-    cout << vector_in.size();
+    //TODO debug output
+    cout << "**Input size is "<<vector_in.size()<<endl;
 
-    Eigen::MatrixXf res(width, height);
+    ORUtils::Vector2<int> newDims(width, height);
+    auto *res = new ObjSLAM::ObjFloatImage(newDims, MEMORYDEVICE_CPU);
+
+    res->ChangeDims(newDims);
+
+
+//
     for (int i = 0; i < width; i++) {
+//      cout<<"i"<<i<<endl;
       for (int j = 0; j < height; j++) {
-        res(i, j) = vector_in.at(height * i + j);
+//        res[height * i + j] = vector_in.at(height * i + j);
+
+        res->GetData(MEMORYDEVICE_CPU)[height * i + j] = vector_in.at(height * i + j);
       }
+
     }
     return res;
+
   }
 
+  ObjSLAM::ObjUChar4Image* ReadRGB(std::string Path) {
+
+    ifstream in;
+
+    in.open(Path);
+  //read rgb from png file
+
+
+    ORUtils::Vector2<int> newDims(width, height);
+    auto *res = new ObjSLAM::ObjUChar4Image(newDims, MEMORYDEVICE_CPU);
+
+
+    res->ChangeDims(newDims);
+
+    ReadImageFromFile(res, Path.c_str());
+
+
+    return res;
+
+//  return nullptr;
+  }
 };
-
-/*static*/ Eigen::MatrixXd ReadRGB (std::string path){
-
-}
 
 #endif //OBJSLAMMAPPER_DATASETREADER_H
