@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "DatasetReader.h"
+#include "DatasetReader_LPD_Dataset.h"
 
 using namespace std;
 
@@ -42,7 +42,7 @@ int main(int argc, char** argv){
 
   Eigen::MatrixXf img;
 
-  img = DatasetReader::ReadDepth(path);
+  img = DatasetReader_LPD_Dataset::ReadDepth(path);
 
   cout <<img(0,0);
   return 0;

@@ -11,7 +11,7 @@ set(SOURCE_DIR "src" CACHE STRING "some info" FORCE)
 include_directories(${CMAKE_SOURCE_DIR})
 
 set(SOURCES
-        src/main.cpp src/DatasetReader.h)
+        src/main.cpp src/DatasetReader_LPD_Dataset.h)
 
-add_executable(ObjSLAMMapper src/main.cpp src/DatasetReader.h)
+add_executable(ObjSLAMMapper src/main.cpp src/DatasetReader_LPD_Dataset.h)
 

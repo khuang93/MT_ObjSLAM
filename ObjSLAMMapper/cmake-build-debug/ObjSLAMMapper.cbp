@@ -86,10 +86,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/src/DatasetReader.h">
-			<Option target="ObjSLAMMapper"/>
-		</Unit>
-		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/src/DatasetReader.tpp">
+		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/src/DatasetReader_LPD_Dataset.h">
 			<Option target="ObjSLAMMapper"/>
 		</Unit>
 		<Unit filename="/nas/khuang/MT/MT_ObjSLAM/ObjSLAMMapper/src/main.cpp">
