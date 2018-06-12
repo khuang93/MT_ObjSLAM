@@ -93,12 +93,10 @@ class DatasetReader_LPD_Dataset {
 
     res->ChangeDims(newDims);
 
-//    ReadImageFromFile(res, Path.c_str());
+    ReadImageFromFile(res, Path.c_str());
 
 
     return res;
-
-//  return nullptr;
   }
 
 
