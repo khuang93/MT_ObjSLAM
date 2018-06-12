@@ -63,8 +63,8 @@ set(Mapper_Sources
         src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
         src/ObjSLAM/ObjectScene.cpp src/ObjSLAM/ObjectScene.h src/ObjSLAM/ObjSLAMDataTypes.h
 
-        src/ObjSLAM/DatasetReader_LPD_Dataset.h
-        )
+        src/ObjSLAM/DatasetReader_LPD_Dataset.h src/ObjSLAM/DatasetReader_LPD_Dataset.cpp
+        src/ObjSLAM/ObjectSegmentation.cpp src/ObjSLAM/ObjectSegmentation.h )
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)
