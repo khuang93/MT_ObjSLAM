@@ -8,6 +8,7 @@ set (PROJECT_DIR "/local/MT/MT_ObjSLAM")
 set (SOURCE_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 
+
 #set (INFINITAM_DIR "External/InfiniTAM/InfiniTAM")
 
 
@@ -30,6 +31,8 @@ include_directories($(HEADER_DIR)
         External/InfiniTAM/InfiniTAM/InputSource
         External/InfiniTAM/InfiniTAM/ITMLib
         )
+
+
 
 add_subdirectory(External/InfiniTAM/InfiniTAM)
 
@@ -63,8 +66,8 @@ set(Mapper_Sources
         src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
         src/ObjSLAM/ObjectScene.cpp src/ObjSLAM/ObjectScene.h src/ObjSLAM/ObjSLAMDataTypes.h
 
-        src/ObjSLAM/DatasetReader_LPD_Dataset.h src/ObjSLAM/DatasetReader_LPD_Dataset.cpp
-        src/ObjSLAM/ObjectSegmentation.cpp src/ObjSLAM/ObjectSegmentation.h )
+        src/ObjSLAM/DatasetReader_LPD_Dataset.h
+        )
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)
@@ -72,4 +75,5 @@ set(Mapper_Sources
 
 
 add_executable(Mapper ${Mapper_Sources})
-TARGET_LINK_LIBRARIES(Mapper InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)
+TARGET_LINK_LIBRARIES(Mapper cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)
+#looks like it needs link cudart

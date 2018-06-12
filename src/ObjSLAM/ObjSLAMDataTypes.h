@@ -19,6 +19,8 @@ typedef ORUtils::Image<Vector4u> ObjUChar4Image;
 //Segmentation Mask
 typedef ORUtils::Image<uint> ObjUIntImage;
 
+typedef ORUtils::Matrix4<float> ObjMatrix4f;
+
 //
 //typedef ORUtils::Image<short> ObjShortImage;
 //typedef ORUtils::Image<Vector2s> ObjShort2Image;
