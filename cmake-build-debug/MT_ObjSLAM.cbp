@@ -1316,9 +1316,12 @@
 		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Trackers/CUDA/ITMLib_generated_ITMExtendedTracker_CUDA.cu.o">
 			<Option target="ITMLib"/>
 		</Unit>
+<<<<<<< HEAD
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/DatasetReader_LPD_Dataset.h">
 			<Option target="ObjSLAM"/>
 		</Unit>
+=======
+>>>>>>> parent of 81c5f7e... added Segmentation class and calib info from LPD Dataset
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/InfiniTAMEngine.cpp">
 			<Option target="ObjSLAM"/>
 		</Unit>
