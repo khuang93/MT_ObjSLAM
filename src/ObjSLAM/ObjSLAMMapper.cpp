@@ -10,9 +10,6 @@
 
 using namespace std;
 
-
-//TODO: this is mainly for testing the mapper
-
 int main(int argc, char** argv){
   //TODO Debug output
   cout<<"**Hello SLAM World!"<<endl;
@@ -41,14 +38,6 @@ int main(int argc, char** argv){
 
   //TODO Debug output
   cout <<"** Debug: "<<depth_img->GetElement(0, MEMORYDEVICE_CPU)<<endl;
-  cout <<"** Debug: "<<(int)(rgb_img->GetElement(0, MEMORYDEVICE_CPU).r)<<endl;
-  cout <<"** Debug: "<<(int)(rgb_img->GetElement(0, MEMORYDEVICE_CPU).g)<<endl;
-  cout <<"** Debug: "<<(int)(rgb_img->GetElement(0, MEMORYDEVICE_CPU).b)<<endl;
-
-
-  cout <<"** Debug: "<<(int)(rgb_img->GetElement(100, MEMORYDEVICE_CPU).r)<<endl;
-  cout <<"** Debug: "<<(int)(rgb_img->GetElement(100, MEMORYDEVICE_CPU).g)<<endl;
-  cout <<"** Debug: "<<(int)(rgb_img->GetElement(100, MEMORYDEVICE_CPU).b)<<endl;
-
+  cout <<"** Debug: "<<rgb_img->GetElement(35000, MEMORYDEVICE_CPU).r<<endl;
   return 0;
 }

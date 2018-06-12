@@ -15,14 +15,12 @@
 
 
 #include "../../External/InfiniTAM/InfiniTAM/ORUtils/FileUtils.h"
-#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMRGBDCalib.h"
 
 using namespace std;
 
 class DatasetReader_LPD_Dataset {
  private:
   int width, height;
-  /*static*/ ITMLib::ITMRGBDCalib* calib;
 
  public:
   DatasetReader_LPD_Dataset() {};
@@ -100,9 +98,6 @@ class DatasetReader_LPD_Dataset {
 
 //  return nullptr;
   }
-
-
-  void SetCalibration_LPD();
 };
 
 #endif //OBJSLAMMAPPER_DATASETREADER_H
