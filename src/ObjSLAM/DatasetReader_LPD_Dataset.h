@@ -15,12 +15,14 @@
 
 
 #include "../../External/InfiniTAM/InfiniTAM/ORUtils/FileUtils.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMRGBDCalib.h"
 
 using namespace std;
 
 class DatasetReader_LPD_Dataset {
  private:
   int width, height;
+  ITMLib::ITMRGBDCalib* calib;
 
  public:
   DatasetReader_LPD_Dataset() {};
@@ -98,6 +100,24 @@ class DatasetReader_LPD_Dataset {
 
 //  return nullptr;
   }
+
+
+  void SetCalib_LPD(){
+    calib = new ITMLib::ITMRGBDCalib();
+
+
+    calib->intrinsics_rgb.SetFrom(640,480,320,320,320,240);
+    calib->intrinsics_d.SetFrom(640,480,320,320,320,240);
+
+    ObjSLAM::ObjMatrix4f calib_Ext;
+    calib_Ext.m00=0.5;calib_Ext.m10=0;calib_Ext.m20=0;calib_Ext.m30=0;
+    calib_Ext.m01=0;calib_Ext.m11=0.5;calib_Ext.m21=0;calib_Ext.m31=0;
+    calib_Ext.m02=0;calib_Ext.m12=0;calib_Ext.m22=0.5;calib_Ext.m32=0;
+    calib_Ext.m03=0;calib_Ext.m13=0;calib_Ext.m23=0;calib_Ext.m33=1;
+    calib->trafo_rgb_to_depth.SetFrom(calib_Ext);
+    calib->disparityCalib.SetFrom(0.0,0.0,ITMLib::ITMDisparityCalib::TRAFO_AFFINE);
+  }
+
 };
 
 #endif //OBJSLAMMAPPER_DATASETREADER_H

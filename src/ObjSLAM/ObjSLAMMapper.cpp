@@ -30,6 +30,8 @@ int main(int argc, char** argv){
   cout<<"depth path "<<depth_path<<endl;
 
   DatasetReader_LPD_Dataset reader(640,480);
+
+  reader.SetCalib_LPD();
 //  cout<<reader.getHeight()<<" "<<reader.getWidth()<<endl;
 
 
