@@ -9,7 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include <opencv2/opencv.hpp>
+//#include <opencv2/opencv.hpp>
 #include "ObjSLAMDataTypes.h"
 #include <stdlib.h>
 
@@ -91,7 +91,7 @@ class DatasetReader_LPD_Dataset {
 
     res->ChangeDims(newDims);
 
-    ReadImageFromFile(res, Path.c_str());
+//    ReadImageFromFile(res, Path.c_str());
 
 
     return res;
