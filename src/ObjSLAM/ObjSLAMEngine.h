@@ -6,7 +6,7 @@
 #define MT_OBJSLAM_OBJSLAMENGINE_H
 #include<iostream>
 #include "ObjCameraPose.h"
-#include "ObjectScene.h"
+#include "ObjectInstanceScene.h"
 
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMBasicEngine.h"
 

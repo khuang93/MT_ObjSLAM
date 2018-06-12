@@ -50,7 +50,7 @@ set(ObjSLAM_Sources
         src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
         src/ObjSLAM/ObjectClassLabel.cpp src/ObjSLAM/ObjectClassLabel.h
         src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
-        src/ObjSLAM/ObjectScene.cpp src/ObjSLAM/ObjectScene.h src/ObjSLAM/ObjSLAMDataTypes.h
+        src/ObjSLAM/ObjectInstanceScene.cpp src/ObjSLAM/ObjectInstanceScene.h src/ObjSLAM/ObjSLAMDataTypes.h
 
         src/ObjSLAM/DatasetReader_LPD_Dataset.h
         )
@@ -64,7 +64,7 @@ set(Mapper_Sources
         src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
         src/ObjSLAM/ObjectClassLabel.cpp src/ObjSLAM/ObjectClassLabel.h
         src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
-        src/ObjSLAM/ObjectScene.cpp src/ObjSLAM/ObjectScene.h src/ObjSLAM/ObjSLAMDataTypes.h
+        src/ObjSLAM/ObjectInstanceScene.cpp src/ObjSLAM/ObjectInstanceScene.h src/ObjSLAM/ObjSLAMDataTypes.h
 
         src/ObjSLAM/DatasetReader_LPD_Dataset.h
         )

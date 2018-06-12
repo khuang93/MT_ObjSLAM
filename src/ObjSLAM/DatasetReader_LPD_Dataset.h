@@ -24,6 +24,7 @@ class DatasetReader_LPD_Dataset {
   int width, height;
   ITMLib::ITMRGBDCalib* calib;
 
+
  public:
   DatasetReader_LPD_Dataset() {};
 
@@ -41,7 +42,10 @@ class DatasetReader_LPD_Dataset {
   int getHeight() {
     return height;
   }
-
+  Vector2i getSize(){
+    Vector2i res(width,height);
+    return res;
+  }
 
   ObjSLAM::ObjFloatImage* ReadDepth(std::string Path) {
     ifstream in;
@@ -100,7 +104,7 @@ class DatasetReader_LPD_Dataset {
   }
 
 
-  void SetCalib_LPD(){
+  void setCalib_LPD(){
     calib = new ITMLib::ITMRGBDCalib();
 
 
@@ -114,6 +118,10 @@ class DatasetReader_LPD_Dataset {
     calib_Ext.m03=0;calib_Ext.m13=0;calib_Ext.m23=0;calib_Ext.m33=1;
     calib->trafo_rgb_to_depth.SetFrom(calib_Ext);
     calib->disparityCalib.SetFrom(0.0,0.0,ITMLib::ITMDisparityCalib::TRAFO_AFFINE);
+  }
+  
+  ITMLib::ITMRGBDCalib* getCalib(){
+    return calib;
   }
 
 };

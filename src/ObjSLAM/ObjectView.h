@@ -31,6 +31,9 @@ namespace ObjSLAM {
    ObjectView(const ITMLib::ITMRGBDCalib& calibration, Vector2i imgSize_rgb, Vector2i imgSize_d, bool useGPU, ObjCameraPose pose):
        ITMView(  calibration,  imgSize_rgb,  imgSize_d,  useGPU), camera_Pose(&pose){
 
+     //TODO debug info
+     std::cout<<"ObjectView ceated!\n";
+
    }
 
   //Destructor

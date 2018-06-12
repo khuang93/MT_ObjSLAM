@@ -12,9 +12,9 @@ namespace ObjSLAM{
   }
 
 
-   std::vector<ObjectView> *ObjectInstance::getListOfVisibleViews(){
-    return listOfVisibleViews;
-  }
+//   std::vector<ObjectView> ObjectInstance::getListOfVisibleViews(){
+//    return listOfVisibleViews;
+//  }
 
 
   //setters
@@ -23,9 +23,9 @@ namespace ObjSLAM{
     std::cout<<"Label set: "<<label.getLabelClassName()<<std::endl;
   }
 
-  void ObjectInstance::setListOfVisibleViews(std::vector<ObjectView>* _views){
-    listOfVisibleViews = _views;
-  }
+//  void ObjectInstance::setListOfVisibleViews(std::vector<ObjectView> _views){
+//    listOfVisibleViews = _views;
+//  }
 
 
 }

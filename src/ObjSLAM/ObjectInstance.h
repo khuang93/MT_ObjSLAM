@@ -16,7 +16,7 @@ namespace ObjSLAM {
 class ObjectInstance {
  private:
   ObjectClassLabel label;
-  std::vector<ObjectView> *listOfVisibleViews;
+//  std::vector<ObjectView> listOfVisibleViews;
 
   //TODO: complete the class with voxel blocks:
   //private member of allocated voxels;
@@ -25,8 +25,8 @@ class ObjectInstance {
  public:
 
   //Constructor
-  ObjectInstance(ObjectClassLabel _label,    std::vector<ObjectView>* _views):
-      label(_label), listOfVisibleViews(_views){
+  ObjectInstance(ObjectClassLabel _label):
+      label(_label){
 
     //debug
     std::cout<<"Created ObjectInstance of class "<<label.getLabelClassName()<<std::endl;
@@ -37,13 +37,13 @@ class ObjectInstance {
   ObjectClassLabel getClassLabel();
 
 
-  std::vector<ObjectView>*  getListOfVisibleViews();
+//  std::vector<ObjectView>  getListOfVisibleViews();
 
 
   //setters
   void setClassLabel(ObjectClassLabel _label);
 
-  void setListOfVisibleViews(std::vector<ObjectView>* _views);
+//  void setListOfVisibleViews(std::vector<ObjectView> _views);
 
 };
 

@@ -16,13 +16,15 @@
 namespace ObjSLAM {
 
 using ObjectVector = std::vector <ObjSLAM::ObjectInstance>;
-using ViewVector = std::vector <ObjSLAM::ObjectView>;
+//access view using pointer because copy constructor supressed
+using ViewVector = std::vector <ObjSLAM::ObjectView*>;
 
+//Scene for each single object
 template<class TVoxel, class TIndex>
- class ObjectScene : public ITMLib::ITMScene<TVoxel, TIndex>{
+ class ObjectInstanceScene : public ITMLib::ITMScene<TVoxel, TIndex>{
  private:
-  ObjectVector* ListOfAllObjects;
-  ViewVector* ListofAllViews;
+  ObjectVector ListOfAllObjects;
+  ViewVector ListofAllViews;
 
   //TODO
   //Add Pose graph and objects graph
@@ -30,17 +32,17 @@ template<class TVoxel, class TIndex>
  public:
 
   //Constructor
-  ObjectScene(const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType, ObjectVector* _objVector, ViewVector* _viewVector):
+  ObjectInstanceScene(const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType, ObjectVector& _objVector, ViewVector& _viewVector):
       ITMLib::ITMScene<TVoxel,TIndex>(_sceneParams, _useSwapping, _memoryType), ListOfAllObjects(_objVector),ListofAllViews(_viewVector){
 
     //debug msg
-    std::cout << "Created Scene! \n";
+    std::cout << "Created ObjectInstanceScene! \n";
   }
 
 
 
   //Destructor
-  ~ObjectScene(){
+  ~ObjectInstanceScene(){
 
   }
 
