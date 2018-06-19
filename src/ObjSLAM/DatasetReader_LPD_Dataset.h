@@ -2,8 +2,8 @@
 // Created by khuang on 6/11/18.
 //
 
-#ifndef OBJSLAMMAPPER_DATASETREADER_H
-#define OBJSLAMMAPPER_DATASETREADER_H
+#ifndef DATASETREADER_LPD_DATASET_H
+#define DATASETREADER_LPD_DATASET_H
 
 #include <eigen3/Eigen/Dense>
 #include <fstream>
@@ -126,4 +126,4 @@ class DatasetReader_LPD_Dataset {
 
 };
 
-#endif //OBJSLAMMAPPER_DATASETREADER_H
+#endif //DATASETREADER__LPD_DATASET_H
