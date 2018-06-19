@@ -103,6 +103,8 @@ class DatasetReader_LPD_Dataset {
     return res;
   }
 
+  ObjSLAM::ObjUIntImage* ReadLabel(std::St)
+
 
   void setCalib_LPD(){
     calib = new ITMLib::ITMRGBDCalib();
