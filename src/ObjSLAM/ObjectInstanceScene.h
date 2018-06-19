@@ -23,7 +23,7 @@ using ViewVector = std::vector <ObjSLAM::ObjectView*>;
 template<class TVoxel, class TIndex>
  class ObjectInstanceScene : public ITMLib::ITMScene<TVoxel, TIndex>{
  private:
-  ObjectVector ListOfAllObjects;
+//  ObjectVector ListOfAllObjects;
   ViewVector ListofAllViews;
 
   //TODO
@@ -32,8 +32,8 @@ template<class TVoxel, class TIndex>
  public:
 
   //Constructor
-  ObjectInstanceScene(const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType, ObjectVector& _objVector, ViewVector& _viewVector):
-      ITMLib::ITMScene<TVoxel,TIndex>(_sceneParams, _useSwapping, _memoryType), ListOfAllObjects(_objVector),ListofAllViews(_viewVector){
+  ObjectInstanceScene(const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType, /*ObjectVector& _objVector,*/ ViewVector& _viewVector):
+      ITMLib::ITMScene<TVoxel,TIndex>(_sceneParams, _useSwapping, _memoryType), /*ListOfAllObjects(_objVector),*/ ListofAllViews(_viewVector){
 
     //debug msg
     std::cout << "Created ObjectInstanceScene! \n";

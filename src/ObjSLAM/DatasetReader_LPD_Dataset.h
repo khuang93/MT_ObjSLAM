@@ -103,7 +103,43 @@ class DatasetReader_LPD_Dataset {
     return res;
   }
 
-  ObjSLAM::ObjUIntImage* ReadLabel(std::St)
+  ObjSLAM::ObjUIntImage* ReadLabel(std::string Path) {
+    ifstream in;
+
+    in.open(Path);
+
+    vector<unsigned int> vector_in;
+
+    while (in.peek() != EOF) {
+      float tmp;
+      in >> tmp;
+      vector_in.push_back(tmp);
+    }
+
+    //TODO debug output
+    cout << "**Input size of label is "<<vector_in.size()<<endl;
+
+    //set dimension
+    ORUtils::Vector2<int> newDims(width, height);
+
+    //create UintImage object
+    auto *res = new ObjSLAM::ObjUIntImage(newDims, MEMORYDEVICE_CPU);
+
+    res->ChangeDims(newDims);
+
+
+//
+    for (int i = 0; i < width; i++) {
+//      cout<<"i"<<i<<endl;
+      for (int j = 0; j < height; j++) {
+//        res[height * i + j] = vector_in.at(height * i + j);
+
+        res->GetData(MEMORYDEVICE_CPU)[height * i + j] = vector_in.at(height * i + j);
+      }
+
+    }
+    return res;
+  }
 
 
   void setCalib_LPD(){

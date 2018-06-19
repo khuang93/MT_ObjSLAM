@@ -9,7 +9,7 @@
 #include <iostream>
 
 #include "ObjectClassLabel.h"
-#include "ObjectView.h"
+//#include "ObjectView.h"
 
 namespace ObjSLAM {
 

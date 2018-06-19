@@ -4,11 +4,18 @@
 
 #ifndef MT_OBJSLAM_OBJECTVIEW_H
 #define MT_OBJSLAM_OBJECTVIEW_H
-#include <src/ObjSLAM/ObjSLAMDataTypes.h>
+#include <vector>
+
+#include "src/ObjSLAM/ObjSLAMDataTypes.h"
+
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Views/ITMView.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMRGBDCalib.h"
 #include "src/ObjSLAM/ObjCameraPose.h"
 #include "ObjSLAMDataTypes.h"
+#include "ObjectInstance.h"
+
+#include "External/InfiniTAM/InfiniTAM/ORUtils/MemoryBlock.h"
+#include "External/InfiniTAM/InfiniTAM/ORUtils/Image.h"
 
 namespace ObjSLAM {
 
@@ -22,6 +29,9 @@ namespace ObjSLAM {
    ObjUChar4Image *rgb_Image;
    ObjFloatImage *depth_Image;
 
+   std::vector<ObjectInstance> objectInstanceVector;
+
+   void setListOfObjects();
 
 
   public:
@@ -31,8 +41,20 @@ namespace ObjSLAM {
    ObjectView(const ITMLib::ITMRGBDCalib& calibration, Vector2i imgSize_rgb, Vector2i imgSize_d, bool useGPU, ObjCameraPose pose):
        ITMView(  calibration,  imgSize_rgb,  imgSize_d,  useGPU), camera_Pose(&pose){
 
+     setListOfObjects();
+
      //TODO debug info
-     std::cout<<"ObjectView ceated!\n";
+     std::cout<<"ObjectView simple ceated!\n";
+   }
+
+   //Constructor
+   //using ITMLib::ITMView::ITMView;
+   ObjectView(const ITMLib::ITMRGBDCalib& calibration, Vector2i imgSize_rgb, Vector2i imgSize_d, bool useGPU, ObjCameraPose pose, ObjFloatImage* _depth, ObjUChar4Image* _rgb, ObjUIntImage* _label):
+       ITMView(  calibration,  imgSize_rgb,  imgSize_d,  useGPU), camera_Pose(&pose), depth_Image(_depth), rgb_Image(_rgb), segmentation_Mask(_label){
+
+     setListOfObjects();
+     //TODO debug info
+     std::cout<<"ObjectView complete ceated!\n";
 
    }
 
@@ -46,14 +68,11 @@ namespace ObjSLAM {
    }
 
 
-   ObjCameraPose* getCameraPose(){
-     return camera_Pose;
-   }
+   ObjCameraPose* getCameraPose();
+
+   void setCameraPose(ObjCameraPose *_pose);
 
 
-   void setCameraPose(ObjCameraPose *_pose){
-     camera_Pose = _pose;
-   }
 
    ObjectView(const ObjectView&);
    ObjectView& operator=(const ObjectView&);

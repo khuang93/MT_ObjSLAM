@@ -30,9 +30,10 @@ int main(int argc, char** argv){
   //TODO make the path using os path join instead of slash
   string depth_path =path + "/depth/cam0/" + to_string(img_number) + ".exr";
   string rgb_path =path + "/rgb/cam0/" + to_string(img_number) + ".png";
+  string label_path =path + "/pixel_label/cam0/" + to_string(img_number) /*+ ".png"*/;
+  cout<<"label path "<<label_path<<endl;
 
-  cout<<"depth path "<<depth_path<<endl;
-
+  //create a reader
   DatasetReader_LPD_Dataset reader(640,480);
 
   reader.setCalib_LPD();
@@ -41,10 +42,12 @@ int main(int argc, char** argv){
 
   ObjSLAM::ObjFloatImage* depth_img = reader.ReadDepth(depth_path);
   ObjSLAM::ObjUChar4Image* rgb_img = reader.ReadRGB(rgb_path);
+  ObjSLAM::ObjUIntImage* label_img = reader.ReadLabel(label_path);
 
   //TODO Debug output
   cout <<"** Debug: "<<depth_img->GetElement(0, MEMORYDEVICE_CPU)<<endl;
   cout <<"** Debug: "<<(int)(rgb_img->GetElement(0, MEMORYDEVICE_CPU).r)<<endl;
+  cout <<"** Debug: "<<label_img->GetElement(64120, MEMORYDEVICE_CPU)<<endl;
 
 
 
@@ -55,7 +58,7 @@ int main(int argc, char** argv){
 
   //dummy objVector and scene vector:
   //objvector only one obj
-  ObjSLAM::ObjectClassLabel label_table(1, "table");
+//  ObjSLAM::ObjectClassLabel label_table(1, "table");
 
 
   //Init View:
@@ -64,19 +67,17 @@ int main(int argc, char** argv){
   Vector2i imgSize = reader.getSize();
   ObjSLAM::ObjCameraPose dummyPose1;
 
-  ObjSLAM::ObjectView* view0=new ObjSLAM::ObjectView (*calib, imgSize, imgSize, false, dummyPose1);
+  ObjSLAM::ObjectView* view0=new ObjSLAM::ObjectView (*calib, imgSize, imgSize, false, dummyPose1, depth_img, rgb_img, label_img);
 
   //View List
   vector<ObjSLAM::ObjectView*> table_list_view = {view0};
-//
-  ObjSLAM::ObjectInstance* objectInstanceDummy_table = new ObjSLAM::ObjectInstance(label_table);
-  std::vector <ObjSLAM::ObjectInstance> objectVector = {*objectInstanceDummy_table};
 
-
+//  ObjSLAM::ObjectInstance* objectInstanceDummy_table = new ObjSLAM::ObjectInstance(label_table);
+//  std::vector <ObjSLAM::ObjectInstance> objectVector = {*objectInstanceDummy_table};
 
   //const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType, ObjectVector* _objVector, ViewVector* _viewVector
   auto* object = new ObjSLAM::ObjectInstanceScene<ITMVoxel, ITMVoxelIndex>(
-      params, true, MEMORYDEVICE_CPU, objectVector, table_list_view);
+      params, true, MEMORYDEVICE_CPU, /*objectVector, */table_list_view);
 
 
   return 0;
