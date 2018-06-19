@@ -1,5 +1,5 @@
 # Camera extrinsic parameters for unreal dataset RealisticRendering
-# date: 2018-2-6-15-46-10
+# date: 2018-6-14-10-7-29
 
 numCameras 2
 
