@@ -5,7 +5,7 @@
 #ifndef DATASETREADER_LPD_DATASET_H
 #define DATASETREADER_LPD_DATASET_H
 
-#include <eigen3/Eigen/Dense>
+//#include <eigen3/Eigen/Dense>
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -13,13 +13,13 @@
 
 //#include <opencv2/opencv.hpp>
 #include "ObjSLAMDataTypes.h"
-#include "Pose.h"
+#include "ObjCameraPose.h"
 
 
 
 #include "../../External/InfiniTAM/InfiniTAM/ORUtils/FileUtils.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMRGBDCalib.h"
-#include "eigen3/Eigen/Geometry"
+//#include "eigen3/Eigen/Geometry"
 
 using namespace std;
 
@@ -145,13 +145,14 @@ class DatasetReader_LPD_Dataset {
     return res;
   }
 
-  ObjSLAM::LPD_RAW_Pose* ReadPose(std::string Path, double t){
+  ObjSLAM::LPD_RAW_Pose* ReadLPDRawPose(std::string Path, double t){
     ifstream in;
     in.open(Path);
 
     ObjSLAM::LPD_RAW_Pose* res = new ObjSLAM::LPD_RAW_Pose();
 
     string currentLine;
+    //TODO get a more efficient way to do the read in instead of loop from begin every time...(one loop to read in every time step)
     while(getline(in, currentLine)){
       istringstream iss(currentLine);
       double currentT=0.0;
@@ -180,6 +181,21 @@ class DatasetReader_LPD_Dataset {
     return res;
   }
 
+  ObjSLAM::ObjCameraPose* convertRawPose_to_Pose(ObjSLAM::LPD_RAW_Pose* _rawPose){
+    auto* res = new ObjSLAM::ObjCameraPose(
+        _rawPose->qw,
+        _rawPose->qx,
+        _rawPose->qy,
+        _rawPose->qz,
+        _rawPose->x,
+        _rawPose->y,
+        _rawPose->z
+        );
+
+    return res;
+
+  }
+
   void setCalib_LPD(){
     calib = new ITMLib::ITMRGBDCalib();
 
@@ -195,7 +211,9 @@ class DatasetReader_LPD_Dataset {
     calib->trafo_rgb_to_depth.SetFrom(calib_Ext);
     calib->disparityCalib.SetFrom(0.0,0.0,ITMLib::ITMDisparityCalib::TRAFO_AFFINE);
   }
-  
+
+
+
   ITMLib::ITMRGBDCalib* getCalib(){
     return calib;
   }

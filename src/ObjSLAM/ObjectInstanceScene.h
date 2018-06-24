@@ -27,7 +27,7 @@ template<class TVoxel, class TIndex>
   ViewVector ListofAllViews;
 
   //TODO
-  //Add Pose graph and objects graph
+  //Add ObjCameraPose graph and objects graph
 
  public:
 
