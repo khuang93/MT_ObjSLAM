@@ -67,13 +67,13 @@ set(Mapper_Sources
         src/ObjSLAM/ObjectInstanceScene.cpp src/ObjSLAM/ObjectInstanceScene.h src/ObjSLAM/ObjSLAMDataTypes.h
 
         src/ObjSLAM/DatasetReader_LPD_Dataset.h
-        )
+        src/ObjSLAM/Pose.cpp src/ObjSLAM/Pose.h src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)
 
 
 
-add_executable(Mapper ${Mapper_Sources})
+add_executable(Mapper ${Mapper_Sources}  /usr/include)
 TARGET_LINK_LIBRARIES(Mapper cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)
 #looks like it needs link cudart

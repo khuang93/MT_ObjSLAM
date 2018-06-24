@@ -26,12 +26,16 @@ int main(int argc, char** argv){
   //for LPD dataset 1 -13
   int img_number;
   iss>>img_number;
+  double time = img_number*0.1;
 
   //TODO make the path using os path join instead of slash
   string depth_path =path + "/depth/cam0/" + to_string(img_number) + ".exr";
   string rgb_path =path + "/rgb/cam0/" + to_string(img_number) + ".png";
   string label_path =path + "/pixel_label/cam0/" + to_string(img_number) /*+ ".png"*/;
-  cout<<"label path "<<label_path<<endl;
+  string pose_path = path + "groundTruthPoseVel_imu.txt";
+
+  //TODO debug
+  cout<<"pose_path  "<<pose_path<<endl;
 
   //create a reader
   DatasetReader_LPD_Dataset reader(640,480);
@@ -43,11 +47,15 @@ int main(int argc, char** argv){
   ObjSLAM::ObjFloatImage* depth_img = reader.ReadDepth(depth_path);
   ObjSLAM::ObjUChar4Image* rgb_img = reader.ReadRGB(rgb_path);
   ObjSLAM::ObjUIntImage* label_img = reader.ReadLabel(label_path);
+  ObjSLAM::LPD_RAW_Pose* pose = reader.ReadPose(pose_path, time);
+
+  //read pose
 
   //TODO Debug output
   cout <<"** Debug: "<<depth_img->GetElement(0, MEMORYDEVICE_CPU)<<endl;
   cout <<"** Debug: "<<(int)(rgb_img->GetElement(0, MEMORYDEVICE_CPU).r)<<endl;
   cout <<"** Debug: "<<label_img->GetElement(64120, MEMORYDEVICE_CPU)<<endl;
+  cout <<"** Debug: "<<pose->qw<<" "<<pose->qx<<endl;
 
 
 

@@ -2,34 +2,110 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6"/>
 	<Project>
-		<Option title="InfiniTAM"/>
+		<Option title="MT_ObjSLAM"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
 		<Option virtualFolders="CMake Files\;CMake Files\External\;CMake Files\External\InfiniTAM\;CMake Files\External\InfiniTAM\InfiniTAM\;CMake Files\External\InfiniTAM\InfiniTAM\Apps\;CMake Files\External\InfiniTAM\InfiniTAM\Apps\InfiniTAM\;CMake Files\External\InfiniTAM\InfiniTAM\Apps\InfiniTAM_cli\;CMake Files\External\InfiniTAM\InfiniTAM\cmake\;CMake Files\External\InfiniTAM\InfiniTAM\FernRelocLib\;CMake Files\External\InfiniTAM\InfiniTAM\InputSource\;CMake Files\External\InfiniTAM\InfiniTAM\ITMLib\;CMake Files\External\InfiniTAM\InfiniTAM\MiniSlamGraphLib\;CMake Files\External\InfiniTAM\InfiniTAM\ORUtils\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Mapper">
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/Mapper" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
+					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 Mapper"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Mapper/fast">
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/Mapper" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
+					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
+					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 Mapper/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="InfiniTAM">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/InfiniTAM" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/InfiniTAM" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-D_FORCE_INLINES"/>
+					<Add option="-DCOMPILE_WITH_FFMPEG"/>
 					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include/GL"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
@@ -37,29 +113,30 @@
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 InfiniTAM"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 InfiniTAM"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="InfiniTAM/fast">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/InfiniTAM" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/InfiniTAM" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-D_FORCE_INLINES"/>
+					<Add option="-DCOMPILE_WITH_FFMPEG"/>
 					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include/GL"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
@@ -67,19 +144,18 @@
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 InfiniTAM/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 InfiniTAM/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="InfiniTAM_cli">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/InfiniTAM_cli" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/InfiniTAM_cli" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -100,15 +176,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 InfiniTAM_cli"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 InfiniTAM_cli"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="InfiniTAM_cli/fast">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/InfiniTAM_cli" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/InfiniTAM_cli" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -129,15 +205,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 InfiniTAM_cli/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 InfiniTAM_cli/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="FernRelocLib">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/libFernRelocLib.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/FernRelocLib/libFernRelocLib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/FernRelocLib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
@@ -157,15 +233,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 FernRelocLib"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 FernRelocLib"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="FernRelocLib/fast">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/libFernRelocLib.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/FernRelocLib/libFernRelocLib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/FernRelocLib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
@@ -185,26 +261,28 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 FernRelocLib/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 FernRelocLib/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/FernRelocLib/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="InputSource">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/libInputSource.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/InputSource/libInputSource.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/InputSource"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-D_FORCE_INLINES"/>
+					<Add option="-DCOMPILE_WITH_FFMPEG"/>
 					<Add option="-DCOMPILE_WITHOUT_Kinect2"/>
 					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include/GL"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
@@ -212,30 +290,31 @@
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 InputSource"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 InputSource"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="InputSource/fast">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/libInputSource.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/InputSource/libInputSource.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/InputSource"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-D_FORCE_INLINES"/>
+					<Add option="-DCOMPILE_WITH_FFMPEG"/>
 					<Add option="-DCOMPILE_WITHOUT_Kinect2"/>
 					<Add option="-DCOMPILE_WITHOUT_OpenNI"/>
 					<Add directory="/local/MT/MT_ObjSLAM/$(HEADER_DIR)"/>
 					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/InputSource"/>
 					<Add directory="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include/GL"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
@@ -243,19 +322,18 @@
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 InputSource/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 InputSource/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/InputSource/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ITMLib">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/libITMLib.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/libITMLib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
@@ -275,15 +353,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 ITMLib"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 ITMLib"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ITMLib/fast">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/libITMLib.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/libITMLib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
@@ -303,15 +381,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 ITMLib/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 ITMLib/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="MiniSlamGraphLib">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/libMiniSlamGraphLib.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/libMiniSlamGraphLib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
@@ -330,15 +408,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 MiniSlamGraphLib"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 MiniSlamGraphLib"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="MiniSlamGraphLib/fast">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/libMiniSlamGraphLib.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/libMiniSlamGraphLib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
@@ -357,15 +435,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 MiniSlamGraphLib/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 MiniSlamGraphLib/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/MiniSlamGraphLib/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ORUtils">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/libORUtils.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ORUtils/libORUtils.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ORUtils"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
@@ -385,15 +463,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 ORUtils"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 ORUtils"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ORUtils/fast">
-				<Option output="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/libORUtils.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils"/>
+				<Option output="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ORUtils/libORUtils.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ORUtils"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
@@ -413,10 +491,10 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 ORUtils/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 ORUtils/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ORUtils/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
@@ -1197,26 +1275,83 @@
 		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ORUtils/Vector.h">
 			<Option target="ORUtils"/>
 		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Engines/LowLevel/CUDA/ITMLib_generated_ITMLowLevelEngine_CUDA.cu.o">
+		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Engines/LowLevel/CUDA/ITMLib_generated_ITMLowLevelEngine_CUDA.cu.o">
 			<Option target="ITMLib"/>
 		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Engines/ViewBuilding/CUDA/ITMLib_generated_ITMViewBuilder_CUDA.cu.o">
+		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Engines/ViewBuilding/CUDA/ITMLib_generated_ITMViewBuilder_CUDA.cu.o">
 			<Option target="ITMLib"/>
 		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Engines/Visualisation/CUDA/ITMLib_generated_ITMVisualisationHelpers_CUDA.cu.o">
+		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Engines/Visualisation/CUDA/ITMLib_generated_ITMVisualisationHelpers_CUDA.cu.o">
 			<Option target="ITMLib"/>
 		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/ITMLib_generated_CUDAInstantiations.cu.o">
+		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/ITMLib_generated_CUDAInstantiations.cu.o">
 			<Option target="ITMLib"/>
 		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Trackers/CUDA/ITMLib_generated_ITMColorTracker_CUDA.cu.o">
+		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Trackers/CUDA/ITMLib_generated_ITMColorTracker_CUDA.cu.o">
 			<Option target="ITMLib"/>
 		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Trackers/CUDA/ITMLib_generated_ITMDepthTracker_CUDA.cu.o">
+		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Trackers/CUDA/ITMLib_generated_ITMDepthTracker_CUDA.cu.o">
 			<Option target="ITMLib"/>
 		</Unit>
-		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-debug/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Trackers/CUDA/ITMLib_generated_ITMExtendedTracker_CUDA.cu.o">
+		<Unit filename="/local/MT/MT_ObjSLAM/cmake-build-default/External/InfiniTAM/InfiniTAM/ITMLib/CMakeFiles/ITMLib.dir/Trackers/CUDA/ITMLib_generated_ITMExtendedTracker_CUDA.cu.o">
 			<Option target="ITMLib"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/DatasetReader_LPD_Dataset.h">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/InfiniTAMEngine.cpp">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/InfiniTAMEngine.h">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjCameraPose.cpp">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjCameraPose.h">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMDataTypes.h">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMEngine.h">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMEngine.tpp">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMMapper.cpp">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectClassLabel.cpp">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectClassLabel.h">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectInstance.cpp">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectInstance.h">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectInstanceScene.cpp">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectInstanceScene.h">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectSLAMTracker.cpp">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectSLAMTracker.h">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectView.cpp">
+			<Option target="Mapper"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjectView.h">
+			<Option target="Mapper"/>
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
@@ -1232,6 +1367,12 @@
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/Apps/InfiniTAM_cli/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\Apps\InfiniTAM_cli\"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/cmake/CUDACheckCompute.cmake">
+			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\cmake\"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/cmake/FindFFmpeg.cmake">
+			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\cmake\"/>
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/cmake/Flags.cmake">
 			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\cmake\"/>
@@ -1309,6 +1450,9 @@
 			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\cmake\"/>
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/cmake/UseUVC.cmake">
+			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\cmake\"/>
+		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/cmake/cuda_compute_capability.cpp">
 			<Option virtualFolder="CMake Files\External\InfiniTAM\InfiniTAM\cmake\"/>
 		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/FernRelocLib/CMakeLists.txt">

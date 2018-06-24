@@ -8,7 +8,9 @@
 #include <vector>
 #include <iostream>
 
+
 #include "ObjectClassLabel.h"
+
 //#include "ObjectView.h"
 
 namespace ObjSLAM {

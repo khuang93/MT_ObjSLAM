@@ -9,13 +9,17 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <stdlib.h>
+
 //#include <opencv2/opencv.hpp>
 #include "ObjSLAMDataTypes.h"
-#include <stdlib.h>
+#include "Pose.h"
+
 
 
 #include "../../External/InfiniTAM/InfiniTAM/ORUtils/FileUtils.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMRGBDCalib.h"
+#include "eigen3/Eigen/Geometry"
 
 using namespace std;
 
@@ -141,6 +145,40 @@ class DatasetReader_LPD_Dataset {
     return res;
   }
 
+  ObjSLAM::LPD_RAW_Pose* ReadPose(std::string Path, double t){
+    ifstream in;
+    in.open(Path);
+
+    ObjSLAM::LPD_RAW_Pose* res = new ObjSLAM::LPD_RAW_Pose();
+
+    string currentLine;
+    while(getline(in, currentLine)){
+      istringstream iss(currentLine);
+      double currentT=0.0;
+      iss>>currentT;
+      if(currentT==t) {
+        iss>>res->qw;
+        iss>>res->qx;
+        iss>>res->qy;
+        iss>>res->qz;
+        iss>>res->x;
+        iss>>res->y;
+        iss>>res->z;
+        iss>>res->vx;
+        iss>>res->vy;
+        iss>>res->vz;
+        iss>>res->p;
+        iss>>res->q;
+        iss>>res->r;
+        iss>>res->ax;
+        iss>>res->ay;
+        iss>>res->az;
+
+        break;
+      }
+    }
+    return res;
+  }
 
   void setCalib_LPD(){
     calib = new ITMLib::ITMRGBDCalib();
