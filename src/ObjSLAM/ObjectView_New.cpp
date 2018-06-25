@@ -41,16 +41,18 @@ void ObjectView_New::setListOfObjects(){
     ObjectClassLabel newLabel (labelIndexVector.at(i),std::to_string(labelIndexVector.at(i)));
     ObjectInstance* newObjInstance= new ObjSLAM::ObjectInstance(newLabel);
     objectInstanceVector.push_back(*newObjInstance);
+
+    auto* single_obj_ITMView = new ITMLib::ITMView(calibration,imgSize,imgSize, false);
+
+    Object_View_Pair tmp_pair (newObjInstance,single_obj_ITMView );
+    object_view_pair_vector.push_back(tmp_pair);
   }
 }
 
 void ObjectView_New::setListOfViews() {
-  for(int i = 0; i < objectInstanceVector.size();i++){
-    auto* single_obj_ITMView = new ITMLib::ITMView(calibration,imgSize,imgSize, false);
-    ITMViewVector_each_Object.push_back(single_obj_ITMView);
-  }
-  for(int i=0; i  < segmentation_Mask->dataSize; i++){
 
+  for(int i=0; i  < segmentation_Mask->dataSize; i++){
+    if(segmentation_Mask->GetElement(i, MEMORYDEVICE_CPU))
   }
 
 }

@@ -16,11 +16,16 @@
 #include "ObjSLAMDataTypes.h"
 #include "ObjectInstance.h"
 
+#include <utility>
+
 #include "External/InfiniTAM/InfiniTAM/ORUtils/MemoryBlock.h"
 #include "External/InfiniTAM/InfiniTAM/ORUtils/Image.h"
 
+
+
 namespace ObjSLAM {
 
+using Object_View_Pair = std::pair<ObjectInstance*, ITMLib::ITMView*>;
 class ObjectView_New {
 
  private:
@@ -35,6 +40,9 @@ class ObjectView_New {
 
   std::vector<ObjectInstance> objectInstanceVector;
   std::vector<ITMLib::ITMView*> ITMViewVector_each_Object;
+
+
+  std::vector<Object_View_Pair> object_view_pair_vector;
 
   void setListOfObjects();
   void setListOfViews();
