@@ -106,7 +106,7 @@ int main(int argc, char** argv){
   auto* renderState = new ITMLib::ITMRenderState(imgSize, 0.1, 2.0, MEMORYDEVICE_CPU);
 
   auto* engine_cpu = new ITMLib::ITMSceneReconstructionEngine_CPU<ITMVoxel, ITMVoxelIndex>;
-  auto* engine_gpu = new ITMLib::ITMSceneReconstructionEngine_CUDA<ITMVoxel, ITMVoxelIndex>;
+//  auto* engine_gpu = new ITMLib::ITMSceneReconstructionEngine_CUDA<ITMVoxel, ITMVoxelIndex>;
 
   //This gives weird linker errors
   //  ITMLib::ITMSceneReconstructionEngine<ITMVoxel, ITMVoxelIndex>* engine2 = ITMLib::ITMSceneReconstructionEngineFactory::MakeSceneReconstructionEngine<ITMVoxel,ITMVoxelIndex>(ITMLib::ITMLibSettings::DEVICE_CPU);
