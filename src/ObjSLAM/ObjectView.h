@@ -42,6 +42,9 @@ namespace ObjSLAM {
        ITMView(  calibration,  imgSize_rgb,  imgSize_d,  useGPU), camera_Pose(&pose){
 
      setListOfObjects();
+     rgb=rgb_Image;
+     depth=depth_Image;
+
 
      //TODO debug info
      std::cout<<"ObjectView simple ceated!\n";

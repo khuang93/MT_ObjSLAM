@@ -101,10 +101,10 @@ int main(int argc, char** argv){
 
   //Tracking State
   auto* trackingState = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
-//  trackingState.
+//  trackingState->pose_d = pose->getSE3Pose();
 
   //RenderState
-  auto* renderState = new ITMLib::ITMRenderState(imgSize, 0.1, 2.0, MEMORYDEVICE_CPU);
+  auto* renderState = new ITMLib::ITMRenderState_VH(1,imgSize, object->sceneParams->viewFrustum_min, object->sceneParams->viewFrustum_min, MEMORYDEVICE_CPU);
 
   auto* engine_cpu = new ITMLib::ITMSceneReconstructionEngine_CPU<ITMVoxel, ITMVoxelIndex>;
 //  auto* engine_gpu = new ITMLib::ITMSceneReconstructionEngine_CUDA<ITMVoxel, ITMVoxelIndex>;
@@ -113,8 +113,8 @@ int main(int argc, char** argv){
 //  ITMLib::ITMSceneReconstructionEngine<ITMVoxel, ITMVoxelIndex>* engine2 = ITMLib::ITMSceneReconstructionEngineFactory::MakeSceneReconstructionEngine<ITMVoxel,ITMVoxelIndex>(ITMLib::ITMLibSettings::DEVICE_CPU);
   engine_cpu->ResetScene(object);
 
-//  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,(ITMLib::ITMView*)view0,trackingState,renderState);
-
+  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,(ITMLib::ITMView*)view0,trackingState,renderState);
+  engine_cpu->IntegrateIntoScene(object,view0,trackingState,renderState);
 
   return 0;
 }
