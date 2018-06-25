@@ -101,6 +101,7 @@ int main(int argc, char** argv){
 
   //Tracking State
   auto* trackingState = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
+//  trackingState.
 
   //RenderState
   auto* renderState = new ITMLib::ITMRenderState(imgSize, 0.1, 2.0, MEMORYDEVICE_CPU);
@@ -108,9 +109,11 @@ int main(int argc, char** argv){
   auto* engine_cpu = new ITMLib::ITMSceneReconstructionEngine_CPU<ITMVoxel, ITMVoxelIndex>;
 //  auto* engine_gpu = new ITMLib::ITMSceneReconstructionEngine_CUDA<ITMVoxel, ITMVoxelIndex>;
 
-  //This gives weird linker errors
-  //  ITMLib::ITMSceneReconstructionEngine<ITMVoxel, ITMVoxelIndex>* engine2 = ITMLib::ITMSceneReconstructionEngineFactory::MakeSceneReconstructionEngine<ITMVoxel,ITMVoxelIndex>(ITMLib::ITMLibSettings::DEVICE_CPU);
+//  This gives weird linker errors
+//  ITMLib::ITMSceneReconstructionEngine<ITMVoxel, ITMVoxelIndex>* engine2 = ITMLib::ITMSceneReconstructionEngineFactory::MakeSceneReconstructionEngine<ITMVoxel,ITMVoxelIndex>(ITMLib::ITMLibSettings::DEVICE_CPU);
+  engine_cpu->ResetScene(object);
 
+//  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,(ITMLib::ITMView*)view0,trackingState,renderState);
 
 
   return 0;
