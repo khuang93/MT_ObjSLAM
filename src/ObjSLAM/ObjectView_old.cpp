@@ -2,7 +2,7 @@
 // Created by khuang on 6/6/18.
 //
 
-#include "ObjectView.h"
+#include "ObjectView_old.h"
 #include "External/InfiniTAM/InfiniTAM/ORUtils/MemoryBlock.h"
 #include "External/InfiniTAM/InfiniTAM/ORUtils/Image.h"
 #include <algorithm>
@@ -10,17 +10,17 @@
 
 namespace ObjSLAM{
 
-ObjCameraPose* ObjectView::getCameraPose(){
+ObjCameraPose* ObjectView_old::getCameraPose(){
   return camera_Pose;
 }
 
 
-void ObjectView::setCameraPose(ObjCameraPose *_pose)
+void ObjectView_old::setCameraPose(ObjCameraPose *_pose)
 {
 camera_Pose = _pose;
 }
 
-void ObjectView::setListOfObjects(){
+void ObjectView_old::setListOfObjects(){
 
   std::cout<<"Setting Obj List..."<<std::endl;
 

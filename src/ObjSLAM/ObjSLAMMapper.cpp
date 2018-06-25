@@ -8,7 +8,7 @@
 #include "DatasetReader_LPD_Dataset.h"
 #include "ObjSLAMDataTypes.h"
 #include "ObjectInstanceScene.h"
-#include "ObjectView.h"
+#include "ObjectView_old.h"
 
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Tracking/ITMTrackingState.h"
@@ -21,6 +21,7 @@
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMPlainVoxelArray.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/ITMSceneReconstructionEngineFactory.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMLibSettings.h"
+#include "ObjectView_New.h"
 
 using namespace std;
 
@@ -86,10 +87,12 @@ int main(int argc, char** argv){
   Vector2i imgSize = reader.getSize();
 //  ObjSLAM::ObjCameraPose dummyPose1;
 
-  ObjSLAM::ObjectView* view0=new ObjSLAM::ObjectView (*calib, imgSize, imgSize, false, *pose, depth_img, rgb_img, label_img);
+  ObjSLAM::ObjectView_old* view0=new ObjSLAM::ObjectView_old (*calib, imgSize, imgSize, false, *pose, depth_img, rgb_img, label_img);
+
+  ObjSLAM::ObjectView_New* view0_new=new ObjSLAM::ObjectView_New (*calib, imgSize, imgSize, false, *pose, depth_img, rgb_img, label_img);
 
   //View List
-  vector<ObjSLAM::ObjectView*> table_list_view = {view0};
+  vector<ObjSLAM::ObjectView_old*> table_list_view = {view0};
 
 //  ObjSLAM::ObjectInstance* objectInstanceDummy_table = new ObjSLAM::ObjectInstance(label_table);
 //  std::vector <ObjSLAM::ObjectInstance> objectVector = {*objectInstanceDummy_table};
@@ -115,6 +118,8 @@ int main(int argc, char** argv){
 
   engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,(ITMLib::ITMView*)view0,trackingState,renderState);
   engine_cpu->IntegrateIntoScene(object,view0,trackingState,renderState);
+
+  cout<<"Scene Integration finish\n";
 
   return 0;
 }

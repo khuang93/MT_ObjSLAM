@@ -8,7 +8,11 @@
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/CPU/ITMSceneReconstructionEngine_CPU.h"
 namespace ObjSLAM{
 
-class ObjSceneReconstructionEngine_CPU{
+template<class TVoxel, class TIndex>
+class ObjSceneReconstructionEngine_CPU : public ITMLib::ITMSceneReconstructionEngine_CPU<TVoxel, TIndex>{
+ private:
+
+ public:
 
 
 

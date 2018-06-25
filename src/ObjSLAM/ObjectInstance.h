@@ -11,14 +11,14 @@
 
 #include "ObjectClassLabel.h"
 
-//#include "ObjectView.h"
+//#include "ObjectView_old.h"
 
 namespace ObjSLAM {
 
 class ObjectInstance {
  private:
   ObjectClassLabel label;
-//  std::vector<ObjectView> listOfVisibleViews;
+//  std::vector<ObjectView_old> listOfVisibleViews;
 
   //TODO: complete the class with voxel blocks:
   //private member of allocated voxels;
@@ -39,13 +39,13 @@ class ObjectInstance {
   ObjectClassLabel getClassLabel();
 
 
-//  std::vector<ObjectView>  getListOfVisibleViews();
+//  std::vector<ObjectView_old>  getListOfVisibleViews();
 
 
   //setters
   void setClassLabel(ObjectClassLabel _label);
 
-//  void setListOfVisibleViews(std::vector<ObjectView> _views);
+//  void setListOfVisibleViews(std::vector<ObjectView_old> _views);
 
 };
 
