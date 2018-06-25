@@ -65,7 +65,7 @@ set(Mapper_Sources
         src/ObjSLAM/ObjectInstanceScene.cpp src/ObjSLAM/ObjectInstanceScene.h src/ObjSLAM/ObjSLAMDataTypes.h
 
         src/ObjSLAM/DatasetReader_LPD_Dataset.h
-        src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h)
+        src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h src/ObjSLAM/ObjSceneReconstructionEngine_CPU.cpp src/ObjSLAM/ObjSceneReconstructionEngine_CPU.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)

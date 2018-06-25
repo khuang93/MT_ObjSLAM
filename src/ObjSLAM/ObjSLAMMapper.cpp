@@ -11,6 +11,8 @@
 #include "ObjectView.h"
 
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Tracking/ITMTrackingState.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderState.h"
 
 using namespace std;
 
@@ -87,6 +89,17 @@ int main(int argc, char** argv){
   //const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType, ObjectVector* _objVector, ViewVector* _viewVector
   auto* object = new ObjSLAM::ObjectInstanceScene<ITMVoxel, ITMVoxelIndex>(
       params, true, MEMORYDEVICE_CPU, /*objectVector, */table_list_view);
+
+
+  //Tracking State
+  auto* trackingState = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
+
+  //RenderState
+  auto* renderState = new ITMLib::ITMRenderState(imgSize, 0.1, 2.0, MEMORYDEVICE_CPU);
+
+
+
+
 
 
   return 0;
