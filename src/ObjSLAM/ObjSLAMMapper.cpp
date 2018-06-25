@@ -13,6 +13,13 @@
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Tracking/ITMTrackingState.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderState.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderState_VH.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/CPU/ITMSceneReconstructionEngine_CPU.h"
+//#include "External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/Interface/ITMSceneReconstructionEngine.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMVoxelBlockHash.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMPlainVoxelArray.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/ITMSceneReconstructionEngineFactory.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMLibSettings.h"
 
 using namespace std;
 
@@ -97,8 +104,10 @@ int main(int argc, char** argv){
   //RenderState
   auto* renderState = new ITMLib::ITMRenderState(imgSize, 0.1, 2.0, MEMORYDEVICE_CPU);
 
+  auto* engine = new ITMLib::ITMSceneReconstructionEngine_CPU<ITMVoxel, ITMVoxelIndex>;
 
-
+  //This gives weird linker errors
+  //  ITMLib::ITMSceneReconstructionEngine<ITMVoxel, ITMVoxelIndex>* engine2 = ITMLib::ITMSceneReconstructionEngineFactory::MakeSceneReconstructionEngine<ITMVoxel,ITMVoxelIndex>(ITMLib::ITMLibSettings::DEVICE_CPU);
 
 
 

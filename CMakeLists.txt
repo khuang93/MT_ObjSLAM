@@ -4,6 +4,9 @@ set(CMAKE_CXX_STANDARD 11)
 
 project(MT_ObjSLAM)
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
 set (PROJECT_DIR "/local/MT/MT_ObjSLAM")
 set (SOURCE_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
@@ -73,5 +76,5 @@ set(Mapper_Sources
 
 
 add_executable(Mapper ${Mapper_Sources}  /usr/include)
-TARGET_LINK_LIBRARIES(Mapper cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)
+TARGET_LINK_LIBRARIES(Mapper cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads)
 #looks like it needs link cudart
