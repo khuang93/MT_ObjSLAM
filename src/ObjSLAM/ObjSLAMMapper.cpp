@@ -64,9 +64,9 @@ int main(int argc, char** argv){
   ObjSLAM::ObjFloatImage* depth_img = reader.ReadDepth(depth_path);
   const char* name = (to_string(img_number)+".pgm").c_str();
   SaveImageToFile(depth_img,name);
-
+  const char* name_rgb = (to_string(img_number)+".ppm").c_str();
   ObjSLAM::ObjUChar4Image* rgb_img = reader.ReadRGB(rgb_path);
-  SaveImageToFile(rgb_img,"RGB1");
+  SaveImageToFile(rgb_img,name_rgb);
 //  ObjSLAM::ObjFloat4Image* depth_normal = reader.ReadNormal(normal_path);
   ObjSLAM::ObjUIntImage* label_img = reader.ReadLabel(label_path);
   ObjSLAM::LPD_RAW_Pose* raw_pose = reader.ReadLPDRawPose(pose_path, time);
