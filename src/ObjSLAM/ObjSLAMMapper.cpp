@@ -119,6 +119,8 @@ int main(int argc, char** argv){
   engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,(ITMLib::ITMView*)view0,trackingState,renderState);
   engine_cpu->IntegrateIntoScene(object,view0,trackingState,renderState);
 
+//  cout<<view0_new->getObjMap().find(10)->second.first->getClassLabel().getLabelIndex()<<endl;
+
   cout<<"Scene Integration finish\n";
 
   return 0;

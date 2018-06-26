@@ -17,6 +17,7 @@
 #include "ObjectInstance.h"
 
 #include <utility>
+#include <map>
 
 #include "External/InfiniTAM/InfiniTAM/ORUtils/MemoryBlock.h"
 #include "External/InfiniTAM/InfiniTAM/ORUtils/Image.h"
@@ -44,6 +45,8 @@ class ObjectView_New {
 
   std::vector<Object_View_Pair> object_view_pair_vector;
 
+  std::map<int, Object_View_Pair> obj_map;
+
   void setListOfObjects();
   void setListOfViews();
 
@@ -53,7 +56,7 @@ class ObjectView_New {
   //Constructor
   //using ITMLib::ITMView::ITMView;
 
-  ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize bool useGPU, ObjCameraPose pose):
+  ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize, bool useGPU, ObjCameraPose pose):
       calibration(_calibration), imgSize(_imgSize), camera_Pose(&pose){
 
     setListOfObjects();
@@ -87,6 +90,7 @@ class ObjectView_New {
 
 
   ObjCameraPose* getCameraPose();
+  std::map<int, Object_View_Pair> getObjMap();
 
   void setCameraPose(ObjCameraPose *_pose);
 

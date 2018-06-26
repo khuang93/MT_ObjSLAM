@@ -46,15 +46,24 @@ void ObjectView_New::setListOfObjects(){
 
     Object_View_Pair tmp_pair (newObjInstance,single_obj_ITMView );
     object_view_pair_vector.push_back(tmp_pair);
+
+    obj_map.insert(std::pair<int, Object_View_Pair >(labelIndexVector.at(i),tmp_pair));
+
   }
 }
 
 void ObjectView_New::setListOfViews() {
 
   for(int i=0; i  < segmentation_Mask->dataSize; i++){
-    if(segmentation_Mask->GetElement(i, MEMORYDEVICE_CPU))
+//    if(segmentation_Mask->GetElement(i, MEMORYDEVICE_CPU))
   }
 
 }
+
+
+std::map<int, Object_View_Pair> ObjectView_New::getObjMap(){
+  return obj_map;
+}
+
 
 }
