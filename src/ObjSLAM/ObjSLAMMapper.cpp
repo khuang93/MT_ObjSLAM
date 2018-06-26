@@ -62,6 +62,9 @@ int main(int argc, char** argv){
 
 
   ObjSLAM::ObjFloatImage* depth_img = reader.ReadDepth(depth_path);
+  const char* name = (to_string(img_number)+".pgm").c_str();
+  SaveImageToFile(depth_img,name);
+
   ObjSLAM::ObjUChar4Image* rgb_img = reader.ReadRGB(rgb_path);
   SaveImageToFile(rgb_img,"RGB1");
 //  ObjSLAM::ObjFloat4Image* depth_normal = reader.ReadNormal(normal_path);
@@ -127,7 +130,7 @@ int main(int argc, char** argv){
 
 
 
-  ObjSLAM::Object_View_Tuple view_tuple = view0_new->getObjMap().find(0)->second;
+  ObjSLAM::Object_View_Tuple view_tuple = view0_new->getObjMap().find(6)->second;
 
   engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,std::get<1>(view_tuple),trackingState,renderState);
   engine_cpu->IntegrateIntoScene(object,std::get<1>(view_tuple),trackingState,renderState);
@@ -146,7 +149,23 @@ int main(int argc, char** argv){
 //visualize
   ObjSLAM::ObjUChar4Image* img;
   auto* vis_eng_cpu = new ITMLib::ITMVisualisationEngine_CPU<ITMVoxel, ITMVoxelIndex>;
+
+
+
+
+
+
+
+
+//  vis_eng_cpu->FindVisibleBlocks(scene, pose, intrinsics, renderState_freeview);
+//  vis_eng_cpu->CreateExpectedDepths(scene, pose, intrinsics, renderState_freeview);
+//  vis_eng_cpu->RenderImage(scene, pose, intrinsics, renderState_freeview, renderState_freeview->raycastImage, type);
+
+
+  vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
+  vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
   vis_eng_cpu->RenderImage((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d),renderState,img);
+
   SaveImageToFile(img,"recon");
 
 //  delete params;

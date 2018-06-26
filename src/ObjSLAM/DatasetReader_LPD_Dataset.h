@@ -83,6 +83,8 @@ class DatasetReader_LPD_Dataset {
       }
 
     }
+
+    SaveImageToFile(res, "testD");
     return res;
 
   }
