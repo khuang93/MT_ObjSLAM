@@ -26,7 +26,8 @@
 
 namespace ObjSLAM {
 
-using Object_View_Pair = std::pair<ObjectInstance*, ITMLib::ITMView*>;
+using Object_View_Tuple = std::tuple<ObjectInstance*, ITMLib::ITMView*>;
+
 class ObjectView_New {
 
  private:
@@ -35,17 +36,20 @@ class ObjectView_New {
   ObjUIntImage *segmentation_Mask;
   ObjUChar4Image *rgb_Image;
   ObjFloatImage *depth_Image;
+  ObjFloat4Image *depth_normal;
 
   const ITMLib::ITMRGBDCalib& calibration;
-  Vector2i imgSize;
+  Vector2i imgSize_rgb;
+  Vector2i imgSize_d;
+
 
   std::vector<ObjectInstance> objectInstanceVector;
   std::vector<ITMLib::ITMView*> ITMViewVector_each_Object;
 
 
-  std::vector<Object_View_Pair> object_view_pair_vector;
+  std::vector<Object_View_Tuple> object_view_pair_vector;
 
-  std::map<int, Object_View_Pair> obj_map;
+  std::map<int, Object_View_Tuple> obj_map; //int is the raw value in seg mask and tuple contains a obj instance and corresbonding ITMView
 
   void setListOfObjects();
   void setListOfViews();
@@ -57,7 +61,7 @@ class ObjectView_New {
   //using ITMLib::ITMView::ITMView;
 
   ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize, bool useGPU, ObjCameraPose pose):
-      calibration(_calibration), imgSize(_imgSize), camera_Pose(&pose){
+      calibration(_calibration), imgSize_rgb(_imgSize), camera_Pose(&pose){
 
     setListOfObjects();
 
@@ -69,9 +73,9 @@ class ObjectView_New {
 
   //Constructor
   //using ITMLib::ITMView::ITMView;
-  ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i imgSize_rgb, Vector2i imgSize_d, bool useGPU, ObjCameraPose pose,
+  ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize_rgb, Vector2i _imgSize_d, bool useGPU, ObjCameraPose pose,
                  ObjFloatImage* _depth, ObjUChar4Image* _rgb, ObjUIntImage* _label):
-      calibration(_calibration), camera_Pose(&pose), depth_Image(_depth), rgb_Image(_rgb), segmentation_Mask(_label){
+      calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d), camera_Pose(&pose), depth_Image(_depth), rgb_Image(_rgb), segmentation_Mask(_label){
 
     setListOfObjects();
     //TODO debug info
@@ -90,7 +94,7 @@ class ObjectView_New {
 
 
   ObjCameraPose* getCameraPose();
-  std::map<int, Object_View_Pair> getObjMap();
+  std::map<int, Object_View_Tuple> getObjMap();
 
   void setCameraPose(ObjCameraPose *_pose);
 

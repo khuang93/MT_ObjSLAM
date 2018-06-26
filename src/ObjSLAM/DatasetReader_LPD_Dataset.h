@@ -103,9 +103,31 @@ class DatasetReader_LPD_Dataset {
 
     ReadImageFromFile(res, Path.c_str());
 
+    SaveImageToFile(res, "testRGB");
+
 
     return res;
   }
+
+/*  ObjSLAM::ObjFloat4Image* ReadNormal(std::string Path) {
+
+    ifstream in;
+
+    in.open(Path);
+    //read rgb from png file
+
+
+    ORUtils::Vector2<int> newDims(width, height);
+    auto *res = new ObjSLAM::ObjFloat4Image(newDims, MEMORYDEVICE_CPU);
+
+
+    res->ChangeDims(newDims);
+
+    ReadImageFromFile(res, Path.c_str());
+
+
+    return res;
+  }*/
 
   ObjSLAM::ObjUIntImage* ReadLabel(std::string Path) {
     ifstream in;

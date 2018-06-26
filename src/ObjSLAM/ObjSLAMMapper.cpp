@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <tuple>
 
 #include "DatasetReader_LPD_Dataset.h"
 #include "ObjSLAMDataTypes.h"
@@ -22,6 +23,10 @@
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/ITMSceneReconstructionEngineFactory.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMLibSettings.h"
 #include "ObjectView_New.h"
+
+#include "External/InfiniTAM/InfiniTAM/ORUtils/FileUtils.h"
+
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Engines/Visualisation/CPU/ITMVisualisationEngine_CPU.h"
 
 using namespace std;
 
@@ -42,6 +47,7 @@ int main(int argc, char** argv){
   //TODO make the path using os path join instead of slash
   string depth_path =path + "/depth/cam0/" + to_string(img_number) + ".exr";
   string rgb_path =path + "/rgb/cam0/" + to_string(img_number) + ".png";
+  string normal_path = path + "/normal/cam0/" + to_string(img_number) + ".png";
   string label_path =path + "/pixel_label/cam0/" + to_string(img_number) /*+ ".png"*/;
   string pose_path = path + "groundTruthPoseVel_imu.txt";
 
@@ -57,6 +63,8 @@ int main(int argc, char** argv){
 
   ObjSLAM::ObjFloatImage* depth_img = reader.ReadDepth(depth_path);
   ObjSLAM::ObjUChar4Image* rgb_img = reader.ReadRGB(rgb_path);
+  SaveImageToFile(rgb_img,"RGB1");
+//  ObjSLAM::ObjFloat4Image* depth_normal = reader.ReadNormal(normal_path);
   ObjSLAM::ObjUIntImage* label_img = reader.ReadLabel(label_path);
   ObjSLAM::LPD_RAW_Pose* raw_pose = reader.ReadLPDRawPose(pose_path, time);
   ObjSLAM::ObjCameraPose* pose = reader.convertRawPose_to_Pose(raw_pose);
@@ -65,6 +73,7 @@ int main(int argc, char** argv){
   //TODO Debug output
   cout <<"** Debug: "<<depth_img->GetElement(0, MEMORYDEVICE_CPU)<<endl;
   cout <<"** Debug: "<<(int)(rgb_img->GetElement(0, MEMORYDEVICE_CPU).r)<<endl;
+  cout <<"** Debug: "<<(int)(rgb_img->GetElement(0, MEMORYDEVICE_CPU).x)<<endl;
   cout <<"** Debug: "<<label_img->GetElement(64120, MEMORYDEVICE_CPU)<<endl;
   cout <<"** Debug: "<<raw_pose->qw<<" "<<raw_pose->qx<<endl;
   cout <<"** Debug: "<<pose->getSE3Pose()->GetT().x<<endl;
@@ -86,10 +95,9 @@ int main(int argc, char** argv){
   ITMLib::ITMRGBDCalib* calib = reader.getCalib();
   Vector2i imgSize = reader.getSize();
 //  ObjSLAM::ObjCameraPose dummyPose1;
-
   ObjSLAM::ObjectView_old* view0=new ObjSLAM::ObjectView_old (*calib, imgSize, imgSize, false, *pose, depth_img, rgb_img, label_img);
 
-  ObjSLAM::ObjectView_New* view0_new=new ObjSLAM::ObjectView_New (*calib, imgSize, imgSize, false, *pose, depth_img, rgb_img, label_img);
+  ObjSLAM::ObjectView_New* view0_new=new ObjSLAM::ObjectView_New (*calib, imgSize, imgSize, false, *pose, depth_img, rgb_img,  label_img);
 
   //View List
   vector<ObjSLAM::ObjectView_old*> table_list_view = {view0};
@@ -116,12 +124,38 @@ int main(int argc, char** argv){
 //  ITMLib::ITMSceneReconstructionEngine<ITMVoxel, ITMVoxelIndex>* engine2 = ITMLib::ITMSceneReconstructionEngineFactory::MakeSceneReconstructionEngine<ITMVoxel,ITMVoxelIndex>(ITMLib::ITMLibSettings::DEVICE_CPU);
   engine_cpu->ResetScene(object);
 
-  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,(ITMLib::ITMView*)view0,trackingState,renderState);
-  engine_cpu->IntegrateIntoScene(object,view0,trackingState,renderState);
 
-//  cout<<view0_new->getObjMap().find(10)->second.first->getClassLabel().getLabelIndex()<<endl;
+
+
+  ObjSLAM::Object_View_Tuple view_tuple = view0_new->getObjMap().find(0)->second;
+
+  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,std::get<1>(view_tuple),trackingState,renderState);
+  engine_cpu->IntegrateIntoScene(object,std::get<1>(view_tuple),trackingState,renderState);
+
+
+
+  cout<<std::get<0>(view_tuple)->getClassLabel().getLabelIndex()<<endl;
+  cout<<std::get<1>(view_tuple)->depth->GetElement(154610,MEMORYDEVICE_CPU)<<endl;
+  cout<<(int)(std::get<1>(view_tuple)->rgb->GetElement(154610,MEMORYDEVICE_CPU).w)<<endl;
 
   cout<<"Scene Integration finish\n";
+
+  SaveImageToFile(std::get<1>(view_tuple)->depth,"DEPTH");
+  SaveImageToFile(std::get<1>(view_tuple)->rgb,"RGB");
+
+//visualize
+  ObjSLAM::ObjUChar4Image* img;
+  auto* vis_eng_cpu = new ITMLib::ITMVisualisationEngine_CPU<ITMVoxel, ITMVoxelIndex>;
+  vis_eng_cpu->RenderImage((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d),renderState,img);
+  SaveImageToFile(img,"recon");
+
+//  delete params;
+//  delete depth_img;
+//  delete rgb_img;
+//  delete raw_pose;
+//  delete pose;
+//  delete view0;
+//  delete view0_new;
 
   return 0;
 }

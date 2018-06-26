@@ -16,6 +16,8 @@ typedef ORUtils::Image<bool> ObjBoolImage;
 typedef ORUtils::Image<float> ObjFloatImage;
 //RGBA Img
 typedef ORUtils::Image<Vector4u> ObjUChar4Image;
+typedef ORUtils::Image<Vector4f> ObjFloat4Image;
+
 //Segmentation Mask
 typedef ORUtils::Image<uint> ObjUIntImage;
 

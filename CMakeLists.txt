@@ -76,5 +76,5 @@ set(Mapper_Sources
 
 
 add_executable(Mapper ${Mapper_Sources}  /usr/include)
-TARGET_LINK_LIBRARIES(Mapper cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads)
+TARGET_LINK_LIBRARIES(Mapper cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)
 #looks like it needs link cudart
