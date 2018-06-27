@@ -233,7 +233,7 @@ class DatasetReader_LPD_Dataset {
     calib_Ext.m02=0;calib_Ext.m12=0;calib_Ext.m22=0.5;calib_Ext.m32=0;
     calib_Ext.m03=0;calib_Ext.m13=0;calib_Ext.m23=0;calib_Ext.m33=1;
     calib->trafo_rgb_to_depth.SetFrom(calib_Ext);
-    calib->disparityCalib.SetFrom(0.0,0.0,ITMLib::ITMDisparityCalib::TRAFO_AFFINE);
+    calib->disparityCalib.SetFrom(0.01,0.4,ITMLib::ITMDisparityCalib::TRAFO_AFFINE);
   }
 
 
