@@ -7,8 +7,9 @@
 
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMScene.h"
 
-#include "ObjectView_old.h"
+
 #include "ObjectInstance.h"
+#include "ObjectView_New.h"
 
 #include <vector>
 #include <iostream>
@@ -17,7 +18,7 @@ namespace ObjSLAM {
 
 using ObjectVector = std::vector <ObjSLAM::ObjectInstance>;
 //access view using pointer because copy constructor supressed
-using ViewVector = std::vector <ObjSLAM::ObjectView_old*>;
+using ViewVector = std::vector <ObjSLAM::ObjectView_New*>;
 
 //Scene for each single object
 template<class TVoxel, class TIndex>
