@@ -84,7 +84,7 @@ class DatasetReader_LPD_Dataset {
 
     }
 
-    SaveImageToFile(res, "testD");
+//    SaveImageToFile(res, "testD");
     return res;
 
   }
@@ -105,7 +105,7 @@ class DatasetReader_LPD_Dataset {
 
     ReadImageFromFile(res, Path.c_str());
 
-    SaveImageToFile(res, "testRGB");
+//    SaveImageToFile(res, "testRGB");
 
 
     return res;
@@ -227,7 +227,7 @@ class DatasetReader_LPD_Dataset {
 
 
     float fx = this->calib->intrinsics_d.projectionParamsSimple.fx;
-    cout<<"fx"<<fx;
+//    cout<<"fx"<<fx;
     float bxf=8.0f*this->calib->disparityCalib.GetParams().y*fx;
 
     for (int y = 0; y < newDims.y; y++){
@@ -238,7 +238,7 @@ class DatasetReader_LPD_Dataset {
         float disparity_tmp = bxf/depth_pixel;
         int disparity_pixel = this->calib->disparityCalib.GetParams().x-disparity_tmp;
 
-        cout<<disparity_pixel;
+//        cout<<disparity_pixel;
       }
     }
   }

@@ -25,7 +25,7 @@ void ObjectView_New::setListOfObjects() {
   for (int i = 0; i < segmentation_Mask->dataSize; i++) {
 
     int labelIndex = segmentation_Mask->GetElement(i, MEMORYDEVICE_CPU);
-//    std::cout<<"Get index "<<labelIndex<<std::endl;
+
 
     //if vector does not contain this label
     //then it is a new label
@@ -58,6 +58,7 @@ void ObjectView_New::setListOfObjects() {
 
       Object_View_Tuple view_tuple = obj_map.find(labelIndex)->second;
       //<0> is ObjectInstance <1> is ITMView
+//      std::cout << "DEBUG" << std::endl;
       std::get<1>(view_tuple)->depth->GetData(MEMORYDEVICE_CPU)[i]=this->depth_Image->GetData(MEMORYDEVICE_CPU)[i];
       std::get<1>(view_tuple)->rgb->GetData(MEMORYDEVICE_CPU)[i]=this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
 

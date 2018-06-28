@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
   string depth_path = path + "/depth/cam0/" + to_string(img_number) + ".exr";
   string rgb_path = path + "/rgb/cam0/" + to_string(img_number) + ".png";
   string normal_path = path + "/normal/cam0/" + to_string(img_number) + ".png";
-  string label_path = path + "/pixel_label/cam0/" + to_string(img_number) /*+ ".png"*/;
+  string label_path = path + "/pixel_label/cam0/" + to_string(img_number) + ".txt";
   string pose_path = path + "groundTruthPoseVel_imu.txt";
 
   //TODO debug
@@ -54,10 +54,10 @@ int main(int argc, char **argv) {
 
   ObjSLAM::ObjFloatImage *depth_img = reader.ReadDepth(depth_path);
   const char *name = (to_string(img_number) + ".pgm").c_str();
-  SaveImageToFile(depth_img, name);
+//  SaveImageToFile(depth_img, name);
   const char *name_rgb = (to_string(img_number) + ".ppm").c_str();
   ObjSLAM::ObjUChar4Image *rgb_img = reader.ReadRGB(rgb_path);
-  SaveImageToFile(rgb_img, name_rgb);
+//  SaveImageToFile(rgb_img, name_rgb);
 //  ObjSLAM::ObjFloat4Image* depth_normal = reader.ReadNormal(normal_path);
   ObjSLAM::ObjUIntImage *label_img = reader.ReadLabel(label_path);
   ObjSLAM::LPD_RAW_Pose *raw_pose = reader.ReadLPDRawPose(pose_path, time);
@@ -126,15 +126,15 @@ int main(int argc, char **argv) {
 //  ITMLib::ITMSceneReconstructionEngine<ITMVoxel, ITMVoxelIndex>* engine2 = ITMLib::ITMSceneReconstructionEngineFactory::MakeSceneReconstructionEngine<ITMVoxel,ITMVoxelIndex>(ITMLib::ITMLibSettings::DEVICE_CPU);
   engine_cpu->ResetScene(object);
 
-  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(6)->second;
+  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
 
-  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex> *) object,
-                                     std::get<1>(view_tuple),
-                                     trackingState,
-                                     renderState);
-  engine_cpu->IntegrateIntoScene(object, std::get<1>(view_tuple), trackingState, renderState);
+//  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex> *) object,
+//                                     std::get<1>(view_tuple),
+//                                     trackingState,
+//                                     renderState);
+//  engine_cpu->IntegrateIntoScene(object, std::get<1>(view_tuple), trackingState, renderState);
 
-  cout << std::get<0>(view_tuple)->getClassLabel().getLabelIndex() << endl;
+  cout << std::get<0>(view_tuple)->getClassLabel().getLabelIndex() << endl;  std::cout << "DEBUG" << std::endl;
   cout << std::get<1>(view_tuple)->depth->GetElement(154610, MEMORYDEVICE_CPU) << endl;
   cout << (int) (std::get<1>(view_tuple)->rgb->GetElement(154610, MEMORYDEVICE_CPU).w) << endl;
 
