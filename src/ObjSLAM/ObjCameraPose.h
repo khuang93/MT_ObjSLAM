@@ -42,7 +42,6 @@ class ObjCameraPose  {
     ORUtils::Matrix3<float > OR_mat(m00,m01,m02,m10,m11,m12,m20,m21,m22);
     ORUtils::Vector3<float > OR_vec(tx,ty,tz);
 
-
     ORUtils::SE3Pose _pose(OR_mat, OR_vec);
 
     se3Pose=_pose;

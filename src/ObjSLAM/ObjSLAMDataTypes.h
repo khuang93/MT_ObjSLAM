@@ -14,6 +14,8 @@ namespace ObjSLAM {
 typedef ORUtils::Image<bool> ObjBoolImage;
 //DepthImg
 typedef ORUtils::Image<float> ObjFloatImage;
+//Disparity
+typedef ORUtils::Image<short> ObjShortImage;
 //RGBA Img
 typedef ORUtils::Image<Vector4u> ObjUChar4Image;
 typedef ORUtils::Image<Vector4f> ObjFloat4Image;

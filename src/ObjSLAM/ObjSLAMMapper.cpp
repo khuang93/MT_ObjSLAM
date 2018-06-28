@@ -63,8 +63,12 @@ int main(int argc, char **argv) {
   ObjSLAM::LPD_RAW_Pose *raw_pose = reader.ReadLPDRawPose(pose_path, time);
   ObjSLAM::ObjCameraPose *pose = reader.convertRawPose_to_Pose(raw_pose);
 
-  ORUtils::Image<short>* image_s = (ORUtils::Image<short>*)depth_img;
-  SaveImageToFile(image_s, "short_depth");
+//  auto* image_s = new ObjSLAM::ObjShortImage();
+
+    reader.calculateDisparityFromDepth(depth_img);
+
+
+//  SaveImageToFile(image_s, "short_depth");
   //read pose
 
   //TODO Debug output

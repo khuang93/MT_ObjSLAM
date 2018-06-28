@@ -220,6 +220,29 @@ class DatasetReader_LPD_Dataset {
 
   }
 
+  ObjSLAM::ObjShortImage*  calculateDisparityFromDepth(ObjSLAM::ObjFloatImage* depth){
+
+    ORUtils::Vector2<int> newDims(width, height);
+    auto *disparity = new ObjSLAM::ObjShortImage(newDims, MEMORYDEVICE_CPU);
+
+
+    float fx = this->calib->intrinsics_d.projectionParamsSimple.fx;
+    cout<<"fx"<<fx;
+    float bxf=8.0f*this->calib->disparityCalib.GetParams().y*fx;
+
+    for (int y = 0; y < newDims.y; y++){
+      for (int x = 0; x < newDims.x; x++){
+        int locId = x + y * newDims.x;
+
+        float depth_pixel= depth->GetData(MEMORYDEVICE_CPU)[locId];
+        float disparity_tmp = bxf/depth_pixel;
+        int disparity_pixel = this->calib->disparityCalib.GetParams().x-disparity_tmp;
+
+        cout<<disparity_pixel;
+      }
+    }
+  }
+
   void setCalib_LPD(){
     calib = new ITMLib::ITMRGBDCalib();
 
@@ -233,8 +256,29 @@ class DatasetReader_LPD_Dataset {
     calib_Ext.m02=0;calib_Ext.m12=0;calib_Ext.m22=0.5;calib_Ext.m32=0;
     calib_Ext.m03=0;calib_Ext.m13=0;calib_Ext.m23=0;calib_Ext.m33=1;
     calib->trafo_rgb_to_depth.SetFrom(calib_Ext);
-    calib->disparityCalib.SetFrom(0.01,0.4,ITMLib::ITMDisparityCalib::TRAFO_AFFINE);
+
+    //Calib Extrinsics is between RGB and D, for LPD Dataset it is identity
+    ObjSLAM::ObjMatrix4f mat(1,0,0, 0,0,1,0, 0,0,0,1,0,0,0,0,1);
+    calib->trafo_rgb_to_depth.SetFrom(mat);
+
+    //disparity calib a b physical meanings?
+    calib->disparityCalib.SetFrom(0.01,0.4,ITMLib::ITMDisparityCalib::TRAFO_AFFINE); //TODO get the values
+
+
   }
+
+//  void readExtrnsics(string Path){
+//
+//    ObjSLAM::ObjMatrix4f calib_Ext;
+//    Eigen::Quaterniond R(0.5, -0.5,0.5,-0.5);
+//    Eigen::Matrix3d eigen_mat = R.normalized().toRotationMatrix();
+//
+//    double m00 = eigen_mat(0,0);double m01 = eigen_mat(0,1);double m02 = eigen_mat(0,2);
+//    double m10 = eigen_mat(1,0);double m11 = eigen_mat(1,1);double m12 = eigen_mat(1,2);
+//    double m20 = eigen_mat(2,0);double m21 = eigen_mat(2,1);double m22 = eigen_mat(2,2);
+//    ObjSLAM::ObjMatrix4f mat(1,0,0, 0,0,1,0, 0,0,0,1,0,0,0,0,1);
+//    calib->trafo_rgb_to_depth.SetFrom(mat);
+//  }
 
 
 
