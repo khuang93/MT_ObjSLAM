@@ -4,10 +4,13 @@
 #include <iostream>
 #include <fstream>
 #include <tuple>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderStateFactory.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMBasicEngine.h>
 
 #include "DatasetReader_LPD_Dataset.h"
 #include "ObjectInstanceScene.h"
 #include "ObjectView_old.h"
+#include "ObjSLAMBasicEngine.h"
 
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Tracking/ITMTrackingState.h"
@@ -118,6 +121,8 @@ int main(int argc, char **argv) {
                                                     object->sceneParams->viewFrustum_min,
                                                     MEMORYDEVICE_CPU);
 
+
+
   auto *engine_cpu = new ITMLib::ITMSceneReconstructionEngine_CPU<ITMVoxel, ITMVoxelIndex>;
 //  auto* engine_gpu = new ITMLib::ITMSceneReconstructionEngine_CUDA<ITMVoxel, ITMVoxelIndex>;
 
@@ -162,7 +167,11 @@ int main(int argc, char **argv) {
   vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
   vis_eng_cpu->RenderImage((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d),renderState,img);
 
-  SaveImageToFile(img,"recon");
+  SaveImageToFile(img,"recon.ppm");
+
+  ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
+
+  auto* basicEngine = ObjSLAM::ObjSLAMBasicEngine<ITMVoxel,ITMVoxelIndex>(internalSettings, *calib, imgSize, imgSize);
 
 //  delete params;
 //  delete depth_img;
