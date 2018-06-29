@@ -162,16 +162,20 @@ int main(int argc, char **argv) {
 //  vis_eng_cpu->CreateExpectedDepths(scene, pose, intrinsics, renderState_freeview);
 //  vis_eng_cpu->RenderImage(scene, pose, intrinsics, renderState_freeview, renderState_freeview->raycastImage, type);
 
-//
-  vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
-  vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
-  vis_eng_cpu->RenderImage((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d),renderState,img);
-
-  SaveImageToFile(img,"recon.ppm");
-
+//  cout << "Debug\n";
+//  vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
+//  vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
+//  vis_eng_cpu->RenderImage((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d),renderState,img);
+//  cout << "Debug\n";
+//  SaveImageToFile(img,"recon.ppm");
+  cout << "Debug\n";
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
 
-  auto* basicEngine = ObjSLAM::ObjSLAMBasicEngine<ITMVoxel,ITMVoxelIndex>(internalSettings, *calib, imgSize, imgSize);
+ // auto* basicEngine = new ObjSLAM::ObjSLAMBasicEngine<ITMVoxel,ITMVoxelIndex>(internalSettings, *calib, imgSize, imgSize);
+
+     //try do the work of ITMBasic Engine directly here.
+
+
 
 //  delete params;
 //  delete depth_img;
