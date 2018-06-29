@@ -16,7 +16,7 @@ void ObjectView_New::setCameraPose(ObjCameraPose *_pose)
   camera_Pose = _pose;
 }
 
-void ObjectView_New::setListOfObjects() {
+void ObjectView_New::setListOfObjects_old() {
 
   std::cout << "Setting Obj List..." << std::endl;
 

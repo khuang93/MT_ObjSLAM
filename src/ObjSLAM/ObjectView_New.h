@@ -51,7 +51,7 @@ class ObjectView_New {
 
   std::map<int, Object_View_Tuple> obj_map; //int is the raw value in seg mask and tuple contains a obj instance and corresbonding ITMView
 
-  void setListOfObjects();
+  void setListOfObjects_old();
   void setListOfViews();
 
 
@@ -63,7 +63,7 @@ class ObjectView_New {
   ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize, bool useGPU, ObjCameraPose pose):
       calibration(_calibration), imgSize_rgb(_imgSize), camera_Pose(&pose){
 
-    setListOfObjects();
+    setListOfObjects_old();
 
 
 
@@ -77,7 +77,7 @@ class ObjectView_New {
                  ObjFloatImage* _depth, ObjUChar4Image* _rgb, ObjUIntImage* _label):
       calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d), camera_Pose(&pose), depth_Image(_depth), rgb_Image(_rgb), segmentation_Mask(_label){
 
-    setListOfObjects();
+    setListOfObjects_old();
     //TODO debug info
     std::cout<<"ObjectView_New complete created!\n";
 

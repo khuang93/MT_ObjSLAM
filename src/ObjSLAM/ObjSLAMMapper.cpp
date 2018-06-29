@@ -52,7 +52,10 @@ int main(int argc, char **argv) {
 //  cout<<reader.getHeight()<<" "<<reader.getWidth()<<endl;
 
 
-  ObjSLAM::ObjFloatImage *depth_img = reader.ReadDepth(depth_path);
+  ObjSLAM::ObjFloatImage *ray_depth_img = reader.ReadDepth(depth_path);
+  ObjSLAM::ObjFloatImage *depth_img = reader.convertRayDepthToZDepth(ray_depth_img);
+  cout << "**Debug" << endl;
+
   const char *name = (to_string(img_number) + ".pgm").c_str();
 //  SaveImageToFile(depth_img, name);
   const char *name_rgb = (to_string(img_number) + ".ppm").c_str();
@@ -62,6 +65,8 @@ int main(int argc, char **argv) {
   ObjSLAM::ObjUIntImage *label_img = reader.ReadLabel(label_path);
   ObjSLAM::LPD_RAW_Pose *raw_pose = reader.ReadLPDRawPose(pose_path, time);
   ObjSLAM::ObjCameraPose *pose = reader.convertRawPose_to_Pose(raw_pose);
+
+
 
 //  auto* image_s = new ObjSLAM::ObjShortImage();
 
