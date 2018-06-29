@@ -45,39 +45,41 @@ int main(int argc, char **argv) {
   //TODO debug
   cout << "pose_path  " << pose_path << endl;
 
-  //create a reader
+  //create a reader and read inputs
   DatasetReader_LPD_Dataset reader(640, 480);
 
   reader.setCalib_LPD();
-//  cout<<reader.getHeight()<<" "<<reader.getWidth()<<endl;
 
-
+//  depth
   ObjSLAM::ObjFloatImage *ray_depth_img = reader.ReadDepth(depth_path);
   ObjSLAM::ObjFloatImage *depth_img = reader.convertRayDepthToZDepth(ray_depth_img);
   const char *name = (to_string(img_number) + ".pgm").c_str();
 //  SaveImageToFile(depth_img, name);
-  const char *name_rgb = (to_string(img_number) + ".ppm").c_str();
+
+// RGB
   ObjSLAM::ObjUChar4Image *rgb_img = reader.ReadRGB(rgb_path);
+  const char *name_rgb = (to_string(img_number) + ".ppm").c_str();
 //  SaveImageToFile(rgb_img, name_rgb);
 //  ObjSLAM::ObjFloat4Image* depth_normal = reader.ReadNormal(normal_path);
-  ObjSLAM::ObjUIntImage *label_img = reader.ReadLabel(label_path);
+//  Label
+  ObjSLAM::ObjUIntImage *label_img = reader.ReadLabel_OneFile(label_path);
   ObjSLAM::LPD_RAW_Pose *raw_pose = reader.ReadLPDRawPose(pose_path, time);
-  ObjSLAM::ObjCameraPose *pose = reader.convertRawPose_to_Pose(raw_pose);
-
-
+  //T_bw
+  ObjSLAM::ObjCameraPose *T_bw = reader.convertRawPose_to_Pose(raw_pose);
+  //T_cb
+  ObjSLAM::ObjCameraPose *T_cb = new ObjSLAM::ObjCameraPose(0.5, -0.5, 0.5, -0.5, 0, 0, 0);
+  auto * T_cw_SE3 = new ORUtils::SE3Pose(T_cb->getSE3Pose()->GetM()*T_bw->getSE3Pose()->GetM());
+  auto *pose = new ObjSLAM::ObjCameraPose(T_cw_SE3);
 
 //  auto* image_s = new ObjSLAM::ObjShortImage();
-
 //    reader.calculateDisparityFromDepth(depth_img);
-
-
 //  SaveImageToFile(image_s, "short_depth");
-  //read pose
+
 
   //TODO Debug output
   cout << "** Debug: " << depth_img->GetElement(10, MEMORYDEVICE_CPU) << endl;
   cout << "** Debug: " << (int) (rgb_img->GetElement(0, MEMORYDEVICE_CPU).r) << endl;
-//  cout << "** Debug: " << (int) (rgb_img->GetElement(0, MEMORYDEVICE_CPU).x) << endl;
+
   cout << "** Debug: " << label_img->GetElement(64120, MEMORYDEVICE_CPU) << endl;
   cout << "** Debug: " << raw_pose->qw << " " << raw_pose->qx << endl;
   cout << "** Debug: " << pose->getSE3Pose()->GetT().x << endl;
@@ -89,17 +91,11 @@ int main(int argc, char **argv) {
   //float mu, int maxW, float voxelSize, float viewFrustum_min, float viewFrustum_max, bool stopIntegratingAtMaxW
   ITMLib::ITMSceneParams *params = new ITMLib::ITMSceneParams(0.5, 4, 0.01, 0.1, 2.0, false);
 
-  //dummy objVector and scene vector:
-  //objvector only one obj
-//  ObjSLAM::ObjectClassLabel label_table(1, "table");
-
 
   //Init View:
   //const ITMLib::ITMRGBDCalib& calibration, Vector2i imgSize_rgb, Vector2i imgSize_d, bool useGPU, ObjCameraPose pose
   ITMLib::ITMRGBDCalib *calib = reader.getCalib();
   Vector2i imgSize = reader.getSize();
-//  ObjSLAM::ObjCameraPose dummyPose1;
-
 
   auto *view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *pose, depth_img, rgb_img, label_img);
 
@@ -131,11 +127,11 @@ int main(int argc, char **argv) {
 
   ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
 
-//  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex> *) object,
-//                                     std::get<1>(view_tuple),
-//                                     trackingState,
-//                                     renderState);
-//  engine_cpu->IntegrateIntoScene(object, std::get<1>(view_tuple), trackingState, renderState);
+  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex> *) object,
+                                     std::get<1>(view_tuple),
+                                     trackingState,
+                                     renderState);
+  engine_cpu->IntegrateIntoScene(object, std::get<1>(view_tuple), trackingState, renderState);
 
   cout << std::get<0>(view_tuple)->getClassLabel().getLabelIndex() << endl;  std::cout << "DEBUG" << std::endl;
   cout << std::get<1>(view_tuple)->depth->GetElement(154610, MEMORYDEVICE_CPU) << endl;

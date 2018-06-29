@@ -157,7 +157,7 @@ class DatasetReader_LPD_Dataset {
     return res;
   }*/
 
-  ObjSLAM::ObjUIntImage *ReadLabel(std::string Path) {
+  ObjSLAM::ObjUIntImage *ReadLabel_OneFile(std::string Path) {
     ifstream in;
 
     in.open(Path);
