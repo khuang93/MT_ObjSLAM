@@ -102,18 +102,18 @@ class DatasetReader_LPD_Dataset {
     K(2, 2) = 1;
 
     Eigen::Matrix3f K_inv = K.inverse();
+
+    //TODO: Make this a camera Projection function
     for(int i = 0; i < height;i++){
       for(int j = 0; j< width;j++){
         Eigen::Vector3f Pix(j,i,1.0);
-//        Pix(0) = j;
-//        Pix(1) = i;
-//        Pix(2) = 1;
         Eigen::Vector3f WorldVec = K_inv*Pix;
         WorldVec.normalize();
         WorldVec = WorldVec*in->GetElement(i*width+j,MEMORYDEVICE_CPU);
         res->GetData(MEMORYDEVICE_CPU)[i*width+j]=WorldVec(2);
       }
     }
+    return  res;
   }
 
   ObjSLAM::ObjUChar4Image *ReadRGB(std::string Path) {

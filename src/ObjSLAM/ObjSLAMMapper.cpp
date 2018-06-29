@@ -54,8 +54,6 @@ int main(int argc, char **argv) {
 
   ObjSLAM::ObjFloatImage *ray_depth_img = reader.ReadDepth(depth_path);
   ObjSLAM::ObjFloatImage *depth_img = reader.convertRayDepthToZDepth(ray_depth_img);
-  cout << "**Debug" << endl;
-
   const char *name = (to_string(img_number) + ".pgm").c_str();
 //  SaveImageToFile(depth_img, name);
   const char *name_rgb = (to_string(img_number) + ".ppm").c_str();
@@ -70,16 +68,16 @@ int main(int argc, char **argv) {
 
 //  auto* image_s = new ObjSLAM::ObjShortImage();
 
-    reader.calculateDisparityFromDepth(depth_img);
+//    reader.calculateDisparityFromDepth(depth_img);
 
 
 //  SaveImageToFile(image_s, "short_depth");
   //read pose
 
   //TODO Debug output
-  cout << "** Debug: " << depth_img->GetElement(0, MEMORYDEVICE_CPU) << endl;
+  cout << "** Debug: " << depth_img->GetElement(10, MEMORYDEVICE_CPU) << endl;
   cout << "** Debug: " << (int) (rgb_img->GetElement(0, MEMORYDEVICE_CPU).r) << endl;
-  cout << "** Debug: " << (int) (rgb_img->GetElement(0, MEMORYDEVICE_CPU).x) << endl;
+//  cout << "** Debug: " << (int) (rgb_img->GetElement(0, MEMORYDEVICE_CPU).x) << endl;
   cout << "** Debug: " << label_img->GetElement(64120, MEMORYDEVICE_CPU) << endl;
   cout << "** Debug: " << raw_pose->qw << " " << raw_pose->qx << endl;
   cout << "** Debug: " << pose->getSE3Pose()->GetT().x << endl;
