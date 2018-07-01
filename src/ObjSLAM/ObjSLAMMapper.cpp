@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
   //create scene:
 
   //float mu, int maxW, float voxelSize, float viewFrustum_min, float viewFrustum_max, bool stopIntegratingAtMaxW
-  ITMLib::ITMSceneParams *params = new ITMLib::ITMSceneParams(0.5, 4, 0.01, 0.1, 2.0, false);
+  ITMLib::ITMSceneParams *params = new ITMLib::ITMSceneParams(0.5, 4, 0.01, 0.1, 4.0, false);
 
 
   //Init View:
@@ -130,32 +130,32 @@ int main(int argc, char **argv) {
 //  ITMLib::ITMSceneReconstructionEngine<ITMVoxel, ITMVoxelIndex>* engine2 = ITMLib::ITMSceneReconstructionEngineFactory::MakeSceneReconstructionEngine<ITMVoxel,ITMVoxelIndex>(ITMLib::ITMLibSettings::DEVICE_CPU);
   engine_cpu->ResetScene(object);
 
+  string save_path = "";
+
+  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
+
+
   ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
 
   engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex> *) object,
                                      std::get<1>(view_tuple),
                                      trackingState,
                                      renderState);
-  engine_cpu->IntegrateIntoScene(object, std::get<1>(view_tuple), trackingState, renderState);
+//  engine_cpu->IntegrateIntoScene(object, std::get<1>(view_tuple), trackingState, renderState);
 
-  cout << std::get<0>(view_tuple)->getClassLabel().getLabelIndex() << endl;  std::cout << "DEBUG" << std::endl;
-  cout << std::get<1>(view_tuple)->depth->GetElement(154610, MEMORYDEVICE_CPU) << endl;
-  cout << (int) (std::get<1>(view_tuple)->rgb->GetElement(154610, MEMORYDEVICE_CPU).w) << endl;
+//  cout << std::get<0>(view_tuple)->getClassLabel().getLabelIndex() << endl;  std::cout << "DEBUG" << std::endl;
+//  cout << std::get<1>(view_tuple)->depth->GetElement(154610, MEMORYDEVICE_CPU) << endl;
+//  cout << (int) (std::get<1>(view_tuple)->rgb->GetElement(154610, MEMORYDEVICE_CPU).w) << endl;
 
   cout << "Scene Integration finish\n";
-
-  SaveImageToFile(std::get<1>(view_tuple)->depth, "DEPTH");
-  SaveImageToFile(std::get<1>(view_tuple)->rgb, "RGB");
+  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
+  object->SaveToDirectory(save_path);
+//  SaveImageToFile(std::get<1>(view_tuple)->depth, "DEPTH");
+//  SaveImageToFile(std::get<1>(view_tuple)->rgb, "RGB");
 
 //visualize
-  ObjSLAM::ObjUChar4Image *img;
+  ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
   auto *vis_eng_cpu = new ITMLib::ITMVisualisationEngine_CPU<ITMVoxel, ITMVoxelIndex>;
-
-
-
-
-
-
 
 //
 //  vis_eng_cpu->FindVisibleBlocks(scene, pose, intrinsics, renderState_freeview);
@@ -163,11 +163,13 @@ int main(int argc, char **argv) {
 //  vis_eng_cpu->RenderImage(scene, pose, intrinsics, renderState_freeview, renderState_freeview->raycastImage, type);
 
 //  cout << "Debug\n";
-//  vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
-//  vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
-//  vis_eng_cpu->RenderImage((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d),renderState,img);
-//  cout << "Debug\n";
-//  SaveImageToFile(img,"recon.ppm");
+  vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
+  vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
+  vis_eng_cpu->RenderImage((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d),renderState,img);
+
+  cout<<(int)img->GetElement(1,MEMORYDEVICE_CPU).x<<endl;
+  SaveImageToFile(img,"recon.ppm");
+
   cout << "Debug\n";
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
 

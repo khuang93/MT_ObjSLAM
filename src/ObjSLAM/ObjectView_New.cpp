@@ -63,22 +63,6 @@ void ObjectView_New::setListOfObjects_old() {
       std::get<1>(view_tuple)->rgb->GetData(MEMORYDEVICE_CPU)[i]=this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
 
     }
-
-
-
-//  for(int i = 0; i < labelIndexVector.size();i++){
-//    ObjectClassLabel newLabel (labelIndexVector.at(i),std::to_string(labelIndexVector.at(i)));
-//    ObjectInstance* newObjInstance= new ObjSLAM::ObjectInstance(newLabel);
-//    objectInstanceVector.push_back(*newObjInstance);
-//
-//    auto* single_obj_ITMView = new ITMLib::ITMView(calibration,imgSize_rgb,imgSize_d, false);
-//
-//    Object_View_Tuple tmp_pair (newObjInstance,single_obj_ITMView );
-//    object_view_pair_vector.push_back(tmp_pair);
-//
-//    obj_map.insert(std::pair<int, Object_View_Tuple >(labelIndexVector.at(i),tmp_pair));
-//
-//  }
   }
 }
 
