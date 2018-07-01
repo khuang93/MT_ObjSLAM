@@ -130,8 +130,8 @@ int main(int argc, char **argv) {
 //  ITMLib::ITMSceneReconstructionEngine<ITMVoxel, ITMVoxelIndex>* engine2 = ITMLib::ITMSceneReconstructionEngineFactory::MakeSceneReconstructionEngine<ITMVoxel,ITMVoxelIndex>(ITMLib::ITMLibSettings::DEVICE_CPU);
   engine_cpu->ResetScene(object);
 
-  string save_path = "";
-
+  string save_path = "./before/";
+  object->SaveToDirectory(save_path);
   cout<<"noEntries"<<object->index.noTotalEntries<<endl;
 
 
@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
                                      std::get<1>(view_tuple),
                                      trackingState,
                                      renderState);
-//  engine_cpu->IntegrateIntoScene(object, std::get<1>(view_tuple), trackingState, renderState);
+  engine_cpu->IntegrateIntoScene(object, std::get<1>(view_tuple), trackingState, renderState);
 
 //  cout << std::get<0>(view_tuple)->getClassLabel().getLabelIndex() << endl;  std::cout << "DEBUG" << std::endl;
 //  cout << std::get<1>(view_tuple)->depth->GetElement(154610, MEMORYDEVICE_CPU) << endl;
@@ -149,6 +149,7 @@ int main(int argc, char **argv) {
 
   cout << "Scene Integration finish\n";
   cout<<"noEntries"<<object->index.noTotalEntries<<endl;
+  save_path = "./aft/";
   object->SaveToDirectory(save_path);
 //  SaveImageToFile(std::get<1>(view_tuple)->depth, "DEPTH");
 //  SaveImageToFile(std::get<1>(view_tuple)->rgb, "RGB");
@@ -165,7 +166,7 @@ int main(int argc, char **argv) {
 //  cout << "Debug\n";
   vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
   vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
-  vis_eng_cpu->RenderImage((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d),renderState,img);
+  vis_eng_cpu->RenderImage((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d),renderState,img, ITMLib::ITMVisualisationEngine<ITMVoxel,ITMVoxelIndex>::RENDER_COLOUR_FROM_VOLUME);
 
   cout<<(int)img->GetElement(1,MEMORYDEVICE_CPU).x<<endl;
   SaveImageToFile(img,"recon.ppm");
@@ -173,9 +174,14 @@ int main(int argc, char **argv) {
   cout << "Debug\n";
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
 
- // auto* basicEngine = new ObjSLAM::ObjSLAMBasicEngine<ITMVoxel,ITMVoxelIndex>(internalSettings, *calib, imgSize, imgSize);
+  auto *denseMapper = new ITMLib::ITMDenseMapper<ITMVoxel,ITMVoxelIndex>(internalSettings);
+  denseMapper->ProcessFrame(std::get<1>(view_tuple),trackingState,(ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,renderState);
 
-     //try do the work of ITMBasic Engine directly here.
+  cout << "Debug\n";
+  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
+  save_path = "./aft_2/";
+  object->SaveToDirectory(save_path);
+
 
 
 
