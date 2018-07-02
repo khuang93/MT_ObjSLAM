@@ -90,9 +90,9 @@ int main(int argc, char **argv) {
 //  ITMLib::ITMSceneReconstructionEngine<ITMVoxel, ITMVoxelIndex>* engine2 = ITMLib::ITMSceneReconstructionEngineFactory::MakeSceneReconstructionEngine<ITMVoxel,ITMVoxelIndex>(ITMLib::ITMLibSettings::DEVICE_CPU);
   engine_cpu->ResetScene(object);
 
-  string save_path = "./before/";
-  object->SaveToDirectory(save_path);
-  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
+//  string save_path = "./before/";
+//  object->SaveToDirectory(save_path);
+//  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
 
 
   ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
@@ -108,9 +108,9 @@ int main(int argc, char **argv) {
 //  cout << (int) (std::get<1>(view_tuple)->rgb->GetElement(154610, MEMORYDEVICE_CPU).w) << endl;
 
   cout << "Scene Integration finish\n";
-  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
-  save_path = "./aft/";
-  object->SaveToDirectory(save_path);
+//  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
+//  save_path = "./aft/";
+//  object->SaveToDirectory(save_path);
 //  SaveImageToFile(std::get<1>(view_tuple)->depth, "DEPTH");
 //  SaveImageToFile(std::get<1>(view_tuple)->rgb, "RGB");
 
@@ -154,26 +154,20 @@ int main(int argc, char **argv) {
   basicEngine->SetScene((ITMLib::ITMScene<ITMVoxel,ITMVoxelIndex>*)object);
   basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(58)->second)->rgb,std::get<1>(view0->getObjMap().find(58)->second)->depth);
 
-  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_ORIGINAL_RGB,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
-  SaveImageToFile(img,"orig_rgb.ppm");
-  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
-  SaveImageToFile(img,"vol.ppm");
-  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_FREECAMERA_SHADED,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
-  SaveImageToFile(img,"shaded.ppm");
-  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_SCENERAYCAST,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
-  SaveImageToFile(img,"ray.ppm");
+//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_ORIGINAL_RGB,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+//  SaveImageToFile(img,"orig_rgb.ppm");
+//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+//  SaveImageToFile(img,"vol.ppm");
+//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_FREECAMERA_SHADED,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+//  SaveImageToFile(img,"shaded.ppm");
+//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_SCENERAYCAST,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+//  SaveImageToFile(img,"ray.ppm");
 
 //  InfiniTAM::Engine::UIEngine::Instance()->Initialise(argc, argv, imageSource, NULL, mainEngine, "./Files/Out", internalSettings->deviceType);
 //  InfiniTAM::Engine::UIEngine::Instance()->Run();
 //  InfiniTAM::Engine::UIEngine::Instance()->Shutdown();
 
-//  delete params;
-//  delete depth_img;
-//  delete rgb_img;
-//  delete raw_pose;
-//  delete pose;
-//  delete view0;
-//  delete view0_new;
+
 
   return 0;
 }
