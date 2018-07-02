@@ -112,6 +112,7 @@ int main(int argc, char **argv) {
       params, true, MEMORYDEVICE_CPU, /*objectVector, */table_list_view);
 
 
+/*
   //Tracking State
   auto *trackingState = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
   trackingState->pose_d = pose->getSE3Pose();
@@ -184,7 +185,22 @@ int main(int argc, char **argv) {
   cout<<"noEntries"<<object->index.noTotalEntries<<endl;
   save_path = "./aft_2/";
   object->SaveToDirectory(save_path);
+*/
 
+
+  //basic engine
+  ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
+  internalSettings->deviceType=internalSettings->DEVICE_CPU;
+
+  ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
+  auto* basicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(internalSettings,*calib,imgSize);
+  basicEngine->SetScene((ITMLib::ITMScene<ITMVoxel,ITMVoxelIndex>*)object);
+  basicEngine->ProcessFrame(rgb_img,depth_img);
+
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_ORIGINAL_RGB,pose->getSE3Pose(),&(calib->intrinsics_d));
+  SaveImageToFile(img,"orig_rgb.ppm");
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_FREECAMERA_SHADED,pose->getSE3Pose(),&(calib->intrinsics_d));
+  SaveImageToFile(img,"shaded.ppm");
 
 //  InfiniTAM::Engine::UIEngine::Instance()->Initialise(argc, argv, imageSource, NULL, mainEngine, "./Files/Out", internalSettings->deviceType);
 //  InfiniTAM::Engine::UIEngine::Instance()->Run();
