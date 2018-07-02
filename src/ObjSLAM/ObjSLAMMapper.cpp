@@ -19,6 +19,8 @@
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/CPU/ITMSceneReconstructionEngine_CPU.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/CUDA/ITMSceneReconstructionEngine_CUDA.h"
 //#include "External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/Interface/ITMSceneReconstructionEngine.h"
+
+#include "External/InfiniTAM/InfiniTAM/Apps/InfiniTAM/UIEngine.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/ITMSceneReconstructionEngineFactory.h"
 
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Engines/Visualisation/CPU/ITMVisualisationEngine_CPU.h"
@@ -173,6 +175,7 @@ int main(int argc, char **argv) {
 
   cout << "Debug\n";
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
+  internalSettings->deviceType=internalSettings->DEVICE_CPU;
 
   auto *denseMapper = new ITMLib::ITMDenseMapper<ITMVoxel,ITMVoxelIndex>(internalSettings);
   denseMapper->ProcessFrame(std::get<1>(view_tuple),trackingState,(ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,renderState);
@@ -183,7 +186,9 @@ int main(int argc, char **argv) {
   object->SaveToDirectory(save_path);
 
 
-
+//  InfiniTAM::Engine::UIEngine::Instance()->Initialise(argc, argv, imageSource, NULL, mainEngine, "./Files/Out", internalSettings->deviceType);
+//  InfiniTAM::Engine::UIEngine::Instance()->Run();
+//  InfiniTAM::Engine::UIEngine::Instance()->Shutdown();
 
 //  delete params;
 //  delete depth_img;
