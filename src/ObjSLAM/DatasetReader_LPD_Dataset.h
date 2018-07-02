@@ -30,6 +30,20 @@ class DatasetReader_LPD_Dataset {
   ITMLib::ITMRGBDCalib *calib;
 
  public:
+  ObjSLAM::ObjUChar4Image *rgb_img;
+  ObjSLAM::ObjFloatImage *depth_img;
+  ObjSLAM::ObjUIntImage *label_img;
+
+  ObjSLAM::ObjUChar4Image *rgb_img_prev;
+  ObjSLAM::ObjFloatImage *depth_img_prev;
+  ObjSLAM::ObjUIntImage *label_img_prev;
+
+  ObjSLAM::ObjCameraPose* pose_cw;
+  ObjSLAM::ObjCameraPose* pose_cw_prev;
+
+  int img_number=1;
+
+ public:
   DatasetReader_LPD_Dataset() {};
 
   DatasetReader_LPD_Dataset(int w, int h) : width(w), height(h) {};
@@ -51,7 +65,56 @@ class DatasetReader_LPD_Dataset {
     return res;
   }
 
-  ObjSLAM::ObjFloatImage *ReadDepth(std::string Path) {
+  void readNext(string path){
+    if(img_number>1){
+      img_number++;
+      //delete old stuffs
+      delete rgb_img_prev;
+      delete depth_img_prev;
+      delete label_img_prev;
+      delete pose_cw_prev;
+
+      //make current to prev
+      rgb_img_prev=rgb_img;
+      depth_img_prev=depth_img;
+      label_img_prev=label_img;
+      pose_cw_prev=pose_cw;
+    }
+
+
+
+    //TODO make the path using os path join instead of slash
+    string depth_path = path + "/depth/cam0/" + to_string(img_number) + ".exr";
+    string rgb_path = path + "/rgb/cam0/" + to_string(img_number) + ".png";
+    string normal_path = path + "/normal/cam0/" + to_string(img_number) + ".png";
+    string label_path = path + "/pixel_label/cam0/" + to_string(img_number) + ".txt";
+    string pose_path = path + "groundTruthPoseVel_imu.txt";
+
+    //depth
+    ObjSLAM::ObjFloatImage *ray_depth_img = ReadOneDepth(depth_path);
+    depth_img = convertRayDepthToZDepth(ray_depth_img);
+    delete ray_depth_img;
+
+    rgb_img = ReadOneRGB(rgb_path);
+
+    label_img = ReadLabel_OneFile(label_path);
+
+    double time = img_number * 0.1;
+    ObjSLAM::LPD_RAW_Pose *raw_pose = ReadLPDRawPose(pose_path, time);
+    //T_bw
+    ObjSLAM::ObjCameraPose *T_bw = convertRawPose_to_Pose(raw_pose);
+    //T_cb
+    ObjSLAM::ObjCameraPose *T_cb = new ObjSLAM::ObjCameraPose(0.5, -0.5, 0.5, -0.5, 0, 0, 0);
+    auto * T_cw_SE3 = new ORUtils::SE3Pose(T_cb->getSE3Pose()->GetM()*T_bw->getSE3Pose()->GetM());
+    pose_cw = new ObjSLAM::ObjCameraPose(T_cw_SE3);
+
+    delete raw_pose;
+    delete T_bw;
+    delete T_cb;
+    delete T_cw_SE3;
+  }
+
+  ObjSLAM::ObjFloatImage *ReadOneDepth(std::string Path) {
     ifstream in;
 
     in.open(Path);
@@ -79,7 +142,7 @@ class DatasetReader_LPD_Dataset {
       for (int j = 0; j < width; j++) {
 //        res[height * i + j] = vector_in.at(height * i + j);
 
-        res->GetData(MEMORYDEVICE_CPU)[width * i + j] = vector_in.at(height * i + j);
+        res->GetData(MEMORYDEVICE_CPU)[width * i + j] = vector_in.at(width * i + j);
       }
 
     }
@@ -116,7 +179,7 @@ class DatasetReader_LPD_Dataset {
     return  res;
   }
 
-  ObjSLAM::ObjUChar4Image *ReadRGB(std::string Path) {
+  ObjSLAM::ObjUChar4Image *ReadOneRGB(std::string Path) {
 
     ifstream in;
 
@@ -246,7 +309,7 @@ class DatasetReader_LPD_Dataset {
 
   }
 
-  ObjSLAM::ObjShortImage *calculateDisparityFromDepth(ObjSLAM::ObjFloatImage *depth) {
+  ObjSLAM::ObjShortImage *calculateAffineDFromDepth(ObjSLAM::ObjFloatImage *depth) {
 
     ORUtils::Vector2<int> newDims(width, height);
     auto *disparity = new ObjSLAM::ObjShortImage(newDims, MEMORYDEVICE_CPU);
@@ -258,14 +321,18 @@ class DatasetReader_LPD_Dataset {
     for (int y = 0; y < newDims.y; y++) {
       for (int x = 0; x < newDims.x; x++) {
         int locId = x + y * newDims.x;
+//
+//        float depth_pixel = depth->GetData(MEMORYDEVICE_CPU)[locId];
+//        float disparity_tmp = bxf / depth_pixel;
+//        short disparity_pixel = this->calib->disparityCalib.GetParams().x - disparity_tmp;
 
-        float depth_pixel = depth->GetData(MEMORYDEVICE_CPU)[locId];
-        float disparity_tmp = bxf / depth_pixel;
-        int disparity_pixel = this->calib->disparityCalib.GetParams().x - disparity_tmp;
+        short short_D_pixel =  depth->GetData(MEMORYDEVICE_CPU)[locId]/this->calib->disparityCalib.GetParams().x;
 
-//        cout<<disparity_pixel;
+        disparity->GetData(MEMORYDEVICE_CPU)[locId]=short_D_pixel;
+
       }
     }
+    return  disparity;
   }
 
   void setCalib_LPD() {
@@ -298,10 +365,13 @@ class DatasetReader_LPD_Dataset {
     calib->trafo_rgb_to_depth.SetFrom(mat);
 
     //disparity calib a b physical meanings?
-    calib->disparityCalib.SetFrom(0.01, 0.4, ITMLib::ITMDisparityCalib::TRAFO_AFFINE); //TODO get the values
+    calib->disparityCalib.SetFrom(/*1135.09*/0.0002, 0.0, ITMLib::ITMDisparityCalib::TRAFO_AFFINE); //TODO get the values
 
 
   }
+
+
+
 
 //  void readExtrnsics(string Path){
 //

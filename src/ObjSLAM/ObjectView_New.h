@@ -60,8 +60,8 @@ class ObjectView_New {
   //Constructor
   //using ITMLib::ITMView::ITMView;
 
-  ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize, bool useGPU, ObjCameraPose pose):
-      calibration(_calibration), imgSize_rgb(_imgSize), camera_Pose(&pose){
+  ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize, bool useGPU, ObjCameraPose* pose):
+      calibration(_calibration), imgSize_rgb(_imgSize), camera_Pose(pose){
 
     setListOfObjects_old();
 
@@ -73,9 +73,9 @@ class ObjectView_New {
 
   //Constructor
   //using ITMLib::ITMView::ITMView;
-  ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize_rgb, Vector2i _imgSize_d, bool useGPU, ObjCameraPose pose,
+  ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize_rgb, Vector2i _imgSize_d, bool useGPU, ObjCameraPose* pose,
                  ObjFloatImage* _depth, ObjUChar4Image* _rgb, ObjUIntImage* _label):
-      calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d), camera_Pose(&pose), depth_Image(_depth), rgb_Image(_rgb), segmentation_Mask(_label){
+      calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d), camera_Pose(pose), depth_Image(_depth), rgb_Image(_rgb), segmentation_Mask(_label){
 
     setListOfObjects_old();
     //TODO debug info

@@ -20,7 +20,7 @@ class ObjSLAMEngine : ITMLib::ITMBasicEngine<TVoxel, TIndex> {
   ObjCameraPose *pose;
 
 
-  ObjectScene<TVoxel, TIndex> *scene;
+  ObjectInstanceScene<TVoxel, TIndex> *scene;
 
 
 

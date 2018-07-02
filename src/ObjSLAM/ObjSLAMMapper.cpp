@@ -40,54 +40,12 @@ int main(int argc, char **argv) {
   iss >> img_number;
   double time = img_number * 0.1;
 
-  //TODO make the path using os path join instead of slash
-  string depth_path = path + "/depth/cam0/" + to_string(img_number) + ".exr";
-  string rgb_path = path + "/rgb/cam0/" + to_string(img_number) + ".png";
-  string normal_path = path + "/normal/cam0/" + to_string(img_number) + ".png";
-  string label_path = path + "/pixel_label/cam0/" + to_string(img_number) + ".txt";
-  string pose_path = path + "groundTruthPoseVel_imu.txt";
-
-  //TODO debug
-  cout << "pose_path  " << pose_path << endl;
-
   //create a reader and read inputs
   DatasetReader_LPD_Dataset reader(640, 480);
 
   reader.setCalib_LPD();
 
-//  depth
-  ObjSLAM::ObjFloatImage *ray_depth_img = reader.ReadDepth(depth_path);
-  ObjSLAM::ObjFloatImage *depth_img = reader.convertRayDepthToZDepth(ray_depth_img);
-  const char *name = (to_string(img_number) + ".pgm").c_str();
-//  SaveImageToFile(depth_img, name);
-
-// RGB
-  ObjSLAM::ObjUChar4Image *rgb_img = reader.ReadRGB(rgb_path);
-  const char *name_rgb = (to_string(img_number) + ".ppm").c_str();
-//  SaveImageToFile(rgb_img, name_rgb);
-//  ObjSLAM::ObjFloat4Image* depth_normal = reader.ReadNormal(normal_path);
-//  Label
-  ObjSLAM::ObjUIntImage *label_img = reader.ReadLabel_OneFile(label_path);
-  ObjSLAM::LPD_RAW_Pose *raw_pose = reader.ReadLPDRawPose(pose_path, time);
-  //T_bw
-  ObjSLAM::ObjCameraPose *T_bw = reader.convertRawPose_to_Pose(raw_pose);
-  //T_cb
-  ObjSLAM::ObjCameraPose *T_cb = new ObjSLAM::ObjCameraPose(0.5, -0.5, 0.5, -0.5, 0, 0, 0);
-  auto * T_cw_SE3 = new ORUtils::SE3Pose(T_cb->getSE3Pose()->GetM()*T_bw->getSE3Pose()->GetM());
-  auto *pose = new ObjSLAM::ObjCameraPose(T_cw_SE3);
-
-//  auto* image_s = new ObjSLAM::ObjShortImage();
-//    reader.calculateDisparityFromDepth(depth_img);
-//  SaveImageToFile(image_s, "short_depth");
-
-
-  //TODO Debug output
-  cout << "** Debug: " << depth_img->GetElement(10, MEMORYDEVICE_CPU) << endl;
-  cout << "** Debug: " << (int) (rgb_img->GetElement(0, MEMORYDEVICE_CPU).r) << endl;
-
-  cout << "** Debug: " << label_img->GetElement(64120, MEMORYDEVICE_CPU) << endl;
-  cout << "** Debug: " << raw_pose->qw << " " << raw_pose->qx << endl;
-  cout << "** Debug: " << pose->getSE3Pose()->GetT().x << endl;
+  reader.readNext(path);
 
 
 
@@ -102,20 +60,19 @@ int main(int argc, char **argv) {
   ITMLib::ITMRGBDCalib *calib = reader.getCalib();
   Vector2i imgSize = reader.getSize();
 
-  auto *view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *pose, depth_img, rgb_img, label_img);
+  auto *view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, reader.pose_cw, reader.depth_img, reader.rgb_img, reader.label_img);
 
   //View List
-  vector<ObjSLAM::ObjectView_New *> table_list_view = {view0};
+  vector<ObjSLAM::ObjectView_New *> ListofAllViews = {view0};
 
   //const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType, ObjectVector* _objVector, ViewVector* _viewVector
   auto *object = new ObjSLAM::ObjectInstanceScene<ITMVoxel, ITMVoxelIndex>(
-      params, true, MEMORYDEVICE_CPU, /*objectVector, */table_list_view);
+      params, true, MEMORYDEVICE_CPU/*, objectVector*/, ListofAllViews);
 
 
-/*
   //Tracking State
   auto *trackingState = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
-  trackingState->pose_d = pose->getSE3Pose();
+  trackingState->pose_d = reader.pose_cw->getSE3Pose();
 
   //RenderState
   auto *renderState = new ITMLib::ITMRenderState_VH(1,
@@ -158,7 +115,7 @@ int main(int argc, char **argv) {
 //  SaveImageToFile(std::get<1>(view_tuple)->rgb, "RGB");
 
 //visualize
-  ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
+//  ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
   auto *vis_eng_cpu = new ITMLib::ITMVisualisationEngine_CPU<ITMVoxel, ITMVoxelIndex>;
 
 //
@@ -167,9 +124,9 @@ int main(int argc, char **argv) {
 //  vis_eng_cpu->RenderImage(scene, pose, intrinsics, renderState_freeview, renderState_freeview->raycastImage, type);
 
 //  cout << "Debug\n";
-  vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
-  vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d), renderState);
-  vis_eng_cpu->RenderImage((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, pose->getSE3Pose(), &(calib->intrinsics_d),renderState,img, ITMLib::ITMVisualisationEngine<ITMVoxel,ITMVoxelIndex>::RENDER_COLOUR_FROM_VOLUME);
+  /*vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.pose_cw->getSE3Pose(), &(calib->intrinsics_d), renderState);
+  vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.pose_cw->getSE3Pose(), &(calib->intrinsics_d), renderState);
+  vis_eng_cpu->RenderImage((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.pose_cw->getSE3Pose(), &(calib->intrinsics_d),renderState,img, ITMLib::ITMVisualisationEngine<ITMVoxel,ITMVoxelIndex>::RENDER_COLOUR_FROM_VOLUME);
 
   cout<<(int)img->GetElement(1,MEMORYDEVICE_CPU).x<<endl;
   SaveImageToFile(img,"recon.ppm");
@@ -184,8 +141,8 @@ int main(int argc, char **argv) {
   cout << "Debug\n";
   cout<<"noEntries"<<object->index.noTotalEntries<<endl;
   save_path = "./aft_2/";
-  object->SaveToDirectory(save_path);
-*/
+  object->SaveToDirectory(save_path);*/
+
 
 
   //basic engine
@@ -195,12 +152,16 @@ int main(int argc, char **argv) {
   ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
   auto* basicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(internalSettings,*calib,imgSize);
   basicEngine->SetScene((ITMLib::ITMScene<ITMVoxel,ITMVoxelIndex>*)object);
-  basicEngine->ProcessFrame(rgb_img,depth_img);
+  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(58)->second)->rgb,std::get<1>(view0->getObjMap().find(58)->second)->depth);
 
-  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_ORIGINAL_RGB,pose->getSE3Pose(),&(calib->intrinsics_d));
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_ORIGINAL_RGB,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
   SaveImageToFile(img,"orig_rgb.ppm");
-  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_FREECAMERA_SHADED,pose->getSE3Pose(),&(calib->intrinsics_d));
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+  SaveImageToFile(img,"vol.ppm");
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_FREECAMERA_SHADED,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
   SaveImageToFile(img,"shaded.ppm");
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_SCENERAYCAST,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+  SaveImageToFile(img,"ray.ppm");
 
 //  InfiniTAM::Engine::UIEngine::Instance()->Initialise(argc, argv, imageSource, NULL, mainEngine, "./Files/Out", internalSettings->deviceType);
 //  InfiniTAM::Engine::UIEngine::Instance()->Run();
@@ -216,3 +177,5 @@ int main(int argc, char **argv) {
 
   return 0;
 }
+
+

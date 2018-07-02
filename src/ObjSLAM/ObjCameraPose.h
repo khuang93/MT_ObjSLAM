@@ -47,7 +47,7 @@ class ObjCameraPose  {
     se3Pose=_pose;
 
     //TODO Debug msg
-    cout<<"ObjCameraPose from Q created\n";
+    cout<<"ObjCameraPose from Quaternion created\n";
   }
 
   ObjCameraPose(ORUtils::SE3Pose* _se3pose):se3Pose(_se3pose){
