@@ -57,7 +57,7 @@ set(ObjSLAM_Sources
         src/ObjSLAM/DatasetReader_LPD_Dataset.h
         )
 set(Mapper_Sources
-        src/ObjSLAM/ObjSLAMMapper.cpp
+        src/ObjSLAM/ObjSLAMMapper_Test.cpp
         src/ObjSLAM/ObjSLAMEngine.h
         src/ObjSLAM/ObjSLAMEngine.tpp
         src/ObjSLAM/InfiniTAMEngine.cpp src/ObjSLAM/InfiniTAMEngine.h

@@ -49,6 +49,7 @@ int main(int argc, char **argv) {
 
 
 
+
   //create scene:
 
   //float mu, int maxW, float voxelSize, float viewFrustum_min, float viewFrustum_max, bool stopIntegratingAtMaxW
@@ -154,14 +155,14 @@ int main(int argc, char **argv) {
   basicEngine->SetScene((ITMLib::ITMScene<ITMVoxel,ITMVoxelIndex>*)object);
   basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(58)->second)->rgb,std::get<1>(view0->getObjMap().find(58)->second)->depth);
 
-//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_ORIGINAL_RGB,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
-//  SaveImageToFile(img,"orig_rgb.ppm");
-//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
-//  SaveImageToFile(img,"vol.ppm");
-//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_FREECAMERA_SHADED,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
-//  SaveImageToFile(img,"shaded.ppm");
-//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_SCENERAYCAST,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
-//  SaveImageToFile(img,"ray.ppm");
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_ORIGINAL_RGB,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+  SaveImageToFile(img,"orig_rgb.ppm");
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+  SaveImageToFile(img,"vol.ppm");
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_FREECAMERA_SHADED,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+  SaveImageToFile(img,"shaded.ppm");
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_SCENERAYCAST,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+  SaveImageToFile(img,"ray.ppm");
 
 //  InfiniTAM::Engine::UIEngine::Instance()->Initialise(argc, argv, imageSource, NULL, mainEngine, "./Files/Out", internalSettings->deviceType);
 //  InfiniTAM::Engine::UIEngine::Instance()->Run();
