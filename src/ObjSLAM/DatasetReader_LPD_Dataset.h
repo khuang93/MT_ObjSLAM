@@ -20,7 +20,6 @@
 #include <eigen3/Eigen/Geometry>
 #include <eigen3/Eigen/Dense>
 
-//#include <eigen3/Eigen/Dense>
 
 using namespace std;
 
@@ -34,12 +33,12 @@ class DatasetReader_LPD_Dataset {
   ObjSLAM::ObjFloatImage *depth_img;
   ObjSLAM::ObjUIntImage *label_img;
 
-  ObjSLAM::ObjUChar4Image *rgb_img_prev;
-  ObjSLAM::ObjFloatImage *depth_img_prev;
-  ObjSLAM::ObjUIntImage *label_img_prev;
+//  ObjSLAM::ObjUChar4Image *rgb_img_prev;
+//  ObjSLAM::ObjFloatImage *depth_img_prev;
+//  ObjSLAM::ObjUIntImage *label_img_prev;
 
   ObjSLAM::ObjCameraPose* pose_cw;
-  ObjSLAM::ObjCameraPose* pose_cw_prev;
+//  ObjSLAM::ObjCameraPose* pose_cw_prev;
 
   int img_number=1;
 
@@ -66,21 +65,10 @@ class DatasetReader_LPD_Dataset {
   }
 
   void readNext(string path){
+    cout<<"img_number = "<<img_number<<endl;
     if(img_number>1){
-      img_number++;
-      //delete old stuffs
-      delete rgb_img_prev;
-      delete depth_img_prev;
-      delete label_img_prev;
-      delete pose_cw_prev;
-
-      //make current to prev
-      rgb_img_prev=rgb_img;
-      depth_img_prev=depth_img;
-      label_img_prev=label_img;
-      pose_cw_prev=pose_cw;
+      deleteVariables();
     }
-
 
 
     //TODO make the path using os path join instead of slash
@@ -88,7 +76,7 @@ class DatasetReader_LPD_Dataset {
     string rgb_path = path + "/rgb/cam0/" + to_string(img_number) + ".png";
     string normal_path = path + "/normal/cam0/" + to_string(img_number) + ".png";
     string label_path = path + "/pixel_label/cam0/" + to_string(img_number) + ".txt";
-    string pose_path = path + "groundTruthPoseVel_imu.txt";
+    string pose_path = path + "/groundTruthPoseVel_imu.txt";
 
     //depth
     ObjSLAM::ObjFloatImage *ray_depth_img = ReadOneDepth(depth_path);
@@ -100,6 +88,7 @@ class DatasetReader_LPD_Dataset {
     label_img = ReadLabel_OneFile(label_path);
 
     double time = img_number * 0.1;
+
     ObjSLAM::LPD_RAW_Pose *raw_pose = ReadLPDRawPose(pose_path, time);
     //T_bw
     ObjSLAM::ObjCameraPose *T_bw = convertRawPose_to_Pose(raw_pose);
@@ -112,6 +101,8 @@ class DatasetReader_LPD_Dataset {
     delete T_bw;
     delete T_cb;
     delete T_cw_SE3;
+
+    img_number++;
   }
 
   ObjSLAM::ObjFloatImage *ReadOneDepth(std::string Path) {
@@ -263,21 +254,27 @@ class DatasetReader_LPD_Dataset {
     in.open(Path);
 
     ObjSLAM::LPD_RAW_Pose *res = new ObjSLAM::LPD_RAW_Pose();
-
+    double currentT = 0.0;
     string currentLine;
+//    cout<<"Current T"<<currentT<<endl;
     //TODO get a more efficient way to do the read in instead of loop from begin every time...(one loop to read in every time step)
     while (getline(in, currentLine)) {
       istringstream iss(currentLine);
-      double currentT = 0.0;
+
       iss >> currentT;
+//      cout<<"Current T"<<currentT<<endl;
       if (currentT == t) {
         iss >> res->qw;
         iss >> res->qx;
         iss >> res->qy;
         iss >> res->qz;
+        cout<<"read q "<< res->qw<<res->qx<<res->qy<<res->qz<<endl;
         iss >> res->x;
+
         iss >> res->y;
+
         iss >> res->z;
+
         iss >> res->vx;
         iss >> res->vy;
         iss >> res->vz;
@@ -390,6 +387,18 @@ class DatasetReader_LPD_Dataset {
 
   ITMLib::ITMRGBDCalib *getCalib() {
     return calib;
+  }
+
+  void deleteVariables(){
+
+//    delete(this->label_img);
+//    delete(this->rgb_img);
+//    delete(this->depth_img);
+//    delete(this->pose_cw);
+    delete this->label_img;
+    delete this->rgb_img;
+    delete this->depth_img;
+    delete this->pose_cw;
   }
 
 };

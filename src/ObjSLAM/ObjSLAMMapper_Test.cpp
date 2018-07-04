@@ -49,7 +49,6 @@ int main(int argc, char **argv) {
 
 
 
-
   //create scene:
 
   //float mu, int maxW, float voxelSize, float viewFrustum_min, float viewFrustum_max, bool stopIntegratingAtMaxW
@@ -98,26 +97,26 @@ int main(int argc, char **argv) {
 
   ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
 
-  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex> *) object,
-                                     std::get<1>(view_tuple),
-                                     trackingState,
-                                     renderState);
-  engine_cpu->IntegrateIntoScene(object, std::get<1>(view_tuple), trackingState, renderState);
+/*//  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex> *) object,
+//                                     std::get<1>(view_tuple),
+//                                     trackingState,
+//                                     renderState);
+//  engine_cpu->IntegrateIntoScene(object, std::get<1>(view_tuple), trackingState, renderState);
 
 //  cout << std::get<0>(view_tuple)->getClassLabel().getLabelIndex() << endl;  std::cout << "DEBUG" << std::endl;
 //  cout << std::get<1>(view_tuple)->depth->GetElement(154610, MEMORYDEVICE_CPU) << endl;
 //  cout << (int) (std::get<1>(view_tuple)->rgb->GetElement(154610, MEMORYDEVICE_CPU).w) << endl;
 
-  cout << "Scene Integration finish\n";
+//  cout << "Scene Integration finish\n";
 //  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
 //  save_path = "./aft/";
 //  object->SaveToDirectory(save_path);
 //  SaveImageToFile(std::get<1>(view_tuple)->depth, "DEPTH");
-//  SaveImageToFile(std::get<1>(view_tuple)->rgb, "RGB");
+//  SaveImageToFile(std::get<1>(view_tuple)->rgb, "RGB");*/
 
 //visualize
-//  ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
-  auto *vis_eng_cpu = new ITMLib::ITMVisualisationEngine_CPU<ITMVoxel, ITMVoxelIndex>;
+  ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
+/*//  auto *vis_eng_cpu = new ITMLib::ITMVisualisationEngine_CPU<ITMVoxel, ITMVoxelIndex>;
 
 //
 //  vis_eng_cpu->FindVisibleBlocks(scene, pose, intrinsics, renderState_freeview);
@@ -125,49 +124,67 @@ int main(int argc, char **argv) {
 //  vis_eng_cpu->RenderImage(scene, pose, intrinsics, renderState_freeview, renderState_freeview->raycastImage, type);
 
 //  cout << "Debug\n";
-  /*vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.pose_cw->getSE3Pose(), &(calib->intrinsics_d), renderState);
-  vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.pose_cw->getSE3Pose(), &(calib->intrinsics_d), renderState);
-  vis_eng_cpu->RenderImage((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.pose_cw->getSE3Pose(), &(calib->intrinsics_d),renderState,img, ITMLib::ITMVisualisationEngine<ITMVoxel,ITMVoxelIndex>::RENDER_COLOUR_FROM_VOLUME);
 
-  cout<<(int)img->GetElement(1,MEMORYDEVICE_CPU).x<<endl;
-  SaveImageToFile(img,"recon.ppm");
+//  vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.pose_cw->getSE3Pose(), &(calib->intrinsics_d), renderState);
+//  vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.pose_cw->getSE3Pose(), &(calib->intrinsics_d), renderState);
+//  vis_eng_cpu->RenderImage((ITMLi/*b::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.pose_cw->getSE3Pose(), &(calib->intrinsics_d),renderState,img,
+//                           ITMLib::ITMVisualisationEngine<ITMVoxel,ITMVoxelIndex>::RENDER_COLOUR_FROM_VOLUME,
+//                           ITMLib::ITMVisualisationEngine<ITMVoxel,ITMVoxelIndex>::RENDER_FROM_NEW_RAYCAST);
 
-  cout << "Debug\n";
-  ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
-  internalSettings->deviceType=internalSettings->DEVICE_CPU;
+//  cout<<(int)img->GetElement(1,MEMORYDEVICE_CPU).x<<endl;
+//  SaveImageToFile(img,"recon.ppm");
 
-  auto *denseMapper = new ITMLib::ITMDenseMapper<ITMVoxel,ITMVoxelIndex>(internalSettings);
-  denseMapper->ProcessFrame(std::get<1>(view_tuple),trackingState,(ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,renderState);
-
-  cout << "Debug\n";
-  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
-  save_path = "./aft_2/";
-  object->SaveToDirectory(save_path);*/
+//  cout << "Debug\n";
+//  ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
+//  internalSettings->deviceType=internalSettings->DEVICE_CPU;
+//
+//  auto *denseMapper = new ITMLib::ITMDenseMapper<ITMVoxel,ITMVoxelIndex>(internalSettings);
+//  denseMapper->ProcessFrame(std::get<1>(view_tuple),trackingState,(ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,renderState);
+//
+//  cout << "Debug\n";
+//  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
+//  string save_path = "./aft_2/";
+//  object->SaveToDirectory(save_path);*/
 
 
 
   //basic engine
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
   internalSettings->deviceType=internalSettings->DEVICE_CPU;
-
-  ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
+  int obj_class_num = 58;
+//  ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
   auto* basicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(internalSettings,*calib,imgSize);
   basicEngine->SetScene((ITMLib::ITMScene<ITMVoxel,ITMVoxelIndex>*)object);
-  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(58)->second)->rgb,std::get<1>(view0->getObjMap().find(58)->second)->depth);
+  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
 
-  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_ORIGINAL_RGB,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
-  SaveImageToFile(img,"orig_rgb.ppm");
-  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+  reader.readNext(path);
+  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, reader.pose_cw, reader.depth_img, reader.rgb_img, reader.label_img);
+  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
+
+  reader.readNext(path);
+  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, reader.pose_cw, reader.depth_img, reader.rgb_img, reader.label_img);
+  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
+  reader.readNext(path);
+  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, reader.pose_cw, reader.depth_img, reader.rgb_img, reader.label_img);
+  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
+
+
+//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_ORIGINAL_RGB,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+//  SaveImageToFile(img,"orig_rgb.ppm");
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,basicEngine->GetTrackingState()->pose_d,&(calib->intrinsics_d));
   SaveImageToFile(img,"vol.ppm");
-  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_FREECAMERA_SHADED,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
-  SaveImageToFile(img,"shaded.ppm");
-  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_SCENERAYCAST,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
-  SaveImageToFile(img,"ray.ppm");
+//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_FREECAMERA_SHADED,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+//  SaveImageToFile(img,"shaded.ppm");
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+  SaveImageToFile(img,"vol_otherPose.ppm");
 
-//  InfiniTAM::Engine::UIEngine::Instance()->Initialise(argc, argv, imageSource, NULL, mainEngine, "./Files/Out", internalSettings->deviceType);
-//  InfiniTAM::Engine::UIEngine::Instance()->Run();
-//  InfiniTAM::Engine::UIEngine::Instance()->Shutdown();
 
+  ofstream of;
+  of.open("track.txt");
+  of<<"TrackingState\n";
+  of<<basicEngine->GetTrackingState()->pose_d->GetM()<<endl;
+  of<<"GroundTruth\n";
+  of<<reader.pose_cw->getSE3Pose()->GetM()<<endl;
 
 
   return 0;

@@ -47,7 +47,7 @@ class ObjectView_New {
   std::vector<ITMLib::ITMView*> ITMViewVector_each_Object;
 
 
-  std::vector<Object_View_Tuple> object_view_pair_vector;
+//  std::vector<Object_View_Tuple> object_view_pair_vector;
 
   std::map<int, Object_View_Tuple> obj_map; //int is the raw value in seg mask and tuple contains a obj instance and corresbonding ITMView
 
@@ -93,10 +93,11 @@ class ObjectView_New {
   }
 
 
-  ObjCameraPose* getCameraPose();
   std::map<int, Object_View_Tuple> getObjMap();
 
+  ObjCameraPose* getCameraPose();
   void setCameraPose(ObjCameraPose *_pose);
+
 
 
 
