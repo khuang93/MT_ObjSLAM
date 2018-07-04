@@ -6,12 +6,12 @@
 
 namespace ObjSLAM{
 
-ObjCameraPose* ObjectView_New::getCameraPose(){
+ObjCameraPose ObjectView_New::getCameraPose(){
   return camera_Pose;
 }
 
 
-void ObjectView_New::setCameraPose(ObjCameraPose *_pose)
+void ObjectView_New::setCameraPose(ObjCameraPose _pose)
 {
   camera_Pose = _pose;
 }
@@ -34,7 +34,7 @@ void ObjectView_New::setListOfObjects_old() {
     if (std::find(labelIndexVector.begin(), labelIndexVector.end(), labelIndex) == labelIndexVector.end()) {
       //add index in vector
       labelIndexVector.push_back(labelIndex);
-      std::cout << "Added index " << labelIndex << std::endl;
+//      std::cout << "Added index " << labelIndex << std::endl;
 
       //add index in map
       ObjectClassLabel label(labelIndex, std::to_string(labelIndex));

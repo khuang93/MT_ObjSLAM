@@ -45,7 +45,9 @@ int main(int argc, char **argv) {
 
   reader.setCalib_LPD();
 
+
   reader.readNext(path);
+  cout<<reader.getPose()->getSE3Pose().GetM()<<endl;
 
 
 
@@ -60,7 +62,11 @@ int main(int argc, char **argv) {
   ITMLib::ITMRGBDCalib *calib = reader.getCalib();
   Vector2i imgSize = reader.getSize();
 
-  auto *view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, reader.pose_cw, reader.depth_img, reader.rgb_img, reader.label_img);
+  ObjSLAM::ObjCameraPose tmpPose = *reader.getPose();
+  cout<<tmpPose.getSE3Pose().GetM()<<endl;
+
+  auto *view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, tmpPose, reader.depth_img, reader.rgb_img, reader.label_img);
+  cout<<tmpPose.getSE3Pose().GetM()<<endl;
 
   //View List
   vector<ObjSLAM::ObjectView_New *> ListofAllViews = {view0};
@@ -72,7 +78,8 @@ int main(int argc, char **argv) {
 
   //Tracking State
   auto *trackingState = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
-  trackingState->pose_d = reader.pose_cw->getSE3Pose();
+  ORUtils::SE3Pose pose_tstate = reader.getPose()->getSE3Pose();
+  trackingState->pose_d = &(pose_tstate);
 
   //RenderState
   auto *renderState = new ITMLib::ITMRenderState_VH(1,
@@ -125,9 +132,9 @@ int main(int argc, char **argv) {
 
 //  cout << "Debug\n";
 
-//  vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.pose_cw->getSE3Pose(), &(calib->intrinsics_d), renderState);
-//  vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.pose_cw->getSE3Pose(), &(calib->intrinsics_d), renderState);
-//  vis_eng_cpu->RenderImage((ITMLi/*b::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.pose_cw->getSE3Pose(), &(calib->intrinsics_d),renderState,img,
+//  vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.getPose()->getSE3Pose(), &(calib->intrinsics_d), renderState);
+//  vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.getPose()->getSE3Pose(), &(calib->intrinsics_d), renderState);
+//  vis_eng_cpu->RenderImage((ITMLi/*b::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.getPose()->getSE3Pose(), &(calib->intrinsics_d),renderState,img,
 //                           ITMLib::ITMVisualisationEngine<ITMVoxel,ITMVoxelIndex>::RENDER_COLOUR_FROM_VOLUME,
 //                           ITMLib::ITMVisualisationEngine<ITMVoxel,ITMVoxelIndex>::RENDER_FROM_NEW_RAYCAST);
 
@@ -151,31 +158,43 @@ int main(int argc, char **argv) {
   //basic engine
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
   internalSettings->deviceType=internalSettings->DEVICE_CPU;
-  int obj_class_num = 58;
+  int obj_class_num = 0;
 //  ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
   auto* basicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(internalSettings,*calib,imgSize);
   basicEngine->SetScene((ITMLib::ITMScene<ITMVoxel,ITMVoxelIndex>*)object);
   basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
-
+//
   reader.readNext(path);
-  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, reader.pose_cw, reader.depth_img, reader.rgb_img, reader.label_img);
+  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
   basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
 
   reader.readNext(path);
-  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, reader.pose_cw, reader.depth_img, reader.rgb_img, reader.label_img);
+  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
   basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
   reader.readNext(path);
-  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, reader.pose_cw, reader.depth_img, reader.rgb_img, reader.label_img);
+  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
   basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
 
+  reader.readNext(path);
+  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
+  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
+  reader.readNext(path);
+  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
+  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
+  reader.readNext(path);
+  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
+  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
+  reader.readNext(path);
+  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
+  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
 
-//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_ORIGINAL_RGB,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_ORIGINAL_RGB,reader.getPose()->getSE3Pose(),&(calib->intrinsics_d));
 //  SaveImageToFile(img,"orig_rgb.ppm");
   basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,basicEngine->GetTrackingState()->pose_d,&(calib->intrinsics_d));
   SaveImageToFile(img,"vol.ppm");
-//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_FREECAMERA_SHADED,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+//  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_FREECAMERA_SHADED,reader.getPose()->getSE3Pose(),&(calib->intrinsics_d));
 //  SaveImageToFile(img,"shaded.ppm");
-  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,reader.pose_cw->getSE3Pose(),&(calib->intrinsics_d));
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,basicEngine->GetTrackingState()->pose_d,&(calib->intrinsics_d));
   SaveImageToFile(img,"vol_otherPose.ppm");
 
 
@@ -184,7 +203,7 @@ int main(int argc, char **argv) {
   of<<"TrackingState\n";
   of<<basicEngine->GetTrackingState()->pose_d->GetM()<<endl;
   of<<"GroundTruth\n";
-  of<<reader.pose_cw->getSE3Pose()->GetM()<<endl;
+  of<<reader.getPose()->getSE3Pose().GetM()<<endl;
 
 
   return 0;

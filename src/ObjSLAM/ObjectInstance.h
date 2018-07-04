@@ -31,7 +31,7 @@ class ObjectInstance {
       label(_label){
 
     //debug
-    std::cout<<"Created ObjectInstance of class "<<label.getLabelClassName()<<std::endl;
+//    std::cout<<"Created ObjectInstance of class "<<label.getLabelClassName()<<std::endl;
   }
 
   //getters

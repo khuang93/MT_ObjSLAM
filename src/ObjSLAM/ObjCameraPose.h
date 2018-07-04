@@ -28,7 +28,7 @@ class ObjCameraPose  {
  private:
   Eigen::Quaterniond eigen_pose;
 //  double tx,ty,tz;
-  ORUtils::SE3Pose* se3Pose;
+  ORUtils::SE3Pose se3Pose;
 
 
  public:
@@ -46,21 +46,21 @@ class ObjCameraPose  {
 
     auto* _pose = new ORUtils::SE3Pose(OR_mat, OR_vec);
     cout<<"**DEBUG: Mat"<<_pose->GetM()<<endl;
-    se3Pose=_pose;
-
+    se3Pose=*_pose;
+    delete _pose;
     //TODO Debug msg
     cout<<"ObjCameraPose from Quaternion created\n";
   }
 
-  ObjCameraPose(ORUtils::SE3Pose* _se3pose):se3Pose(_se3pose){
+  ObjCameraPose(ORUtils::SE3Pose _se3pose):se3Pose(_se3pose){
 
     Eigen::Matrix3d eigen_mat;
-    eigen_mat(0,0) = se3Pose->GetR().m00;eigen_mat(0,1) = se3Pose->GetR().m10;eigen_mat(0,2) = se3Pose->GetR().m20;
-    eigen_mat(1,0) = se3Pose->GetR().m01;eigen_mat(1,1) = se3Pose->GetR().m11;eigen_mat(1,2) = se3Pose->GetR().m21;
-    eigen_mat(2,0) = se3Pose->GetR().m02;eigen_mat(2,1) = se3Pose->GetR().m12;eigen_mat(2,2) = se3Pose->GetR().m22;
+    eigen_mat(0,0) = se3Pose.GetR().m00;eigen_mat(0,1) = se3Pose.GetR().m10;eigen_mat(0,2) = se3Pose.GetR().m20;
+    eigen_mat(1,0) = se3Pose.GetR().m01;eigen_mat(1,1) = se3Pose.GetR().m11;eigen_mat(1,2) = se3Pose.GetR().m21;
+    eigen_mat(2,0) = se3Pose.GetR().m02;eigen_mat(2,1) = se3Pose.GetR().m12;eigen_mat(2,2) = se3Pose.GetR().m22;
 
     eigen_pose=Eigen::Quaterniond(eigen_mat);
-    cout<<"**DEBUG: Mat"<<this->getSE3Pose()->GetM()<<endl;
+    cout<<"**DEBUG: SE3Mat\n"<<this->getSE3Pose().GetM()<<endl;
     //TODO Debug msg
     cout<<"ObjCameraPose from SE3Pose created\n";
   }
@@ -70,7 +70,7 @@ class ObjCameraPose  {
 
   Eigen::Quaterniond getQuaternion();
 
-  ORUtils::SE3Pose* getSE3Pose();
+  ORUtils::SE3Pose getSE3Pose();
 
   void setQuaternion(double w, double x, double y, double z);
 

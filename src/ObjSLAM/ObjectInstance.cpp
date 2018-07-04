@@ -20,7 +20,7 @@ namespace ObjSLAM{
   //setters
   void ObjectInstance::setClassLabel(ObjectClassLabel _label){
     label = _label;
-    std::cout<<"Label set: "<<label.getLabelClassName()<<std::endl;
+//    std::cout<<"Label set: "<<label.getLabelClassName()<<std::endl;
   }
 
 //  void ObjectInstance::setListOfVisibleViews(std::vector<ObjectView_old> _views){

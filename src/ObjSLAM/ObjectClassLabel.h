@@ -15,7 +15,7 @@ class ObjectClassLabel {
 
  public:
   ObjectClassLabel(int _index, std::string _labelClassName):LabelIndex(_index), LabelClassName(_labelClassName){
-    std::cout << "ObjectClassLabel "<< LabelClassName << " created! \n";
+//    std::cout << "ObjectClassLabel "<< LabelClassName << " created! \n";
   }
   
   int getLabelIndex();

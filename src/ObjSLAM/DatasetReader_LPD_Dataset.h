@@ -27,7 +27,8 @@ class DatasetReader_LPD_Dataset {
  private:
   int width, height;
   ITMLib::ITMRGBDCalib *calib;
-
+  ifstream pose_in;
+  ObjSLAM::ObjCameraPose* pose_cw;
  public:
   ObjSLAM::ObjUChar4Image *rgb_img;
   ObjSLAM::ObjFloatImage *depth_img;
@@ -37,7 +38,7 @@ class DatasetReader_LPD_Dataset {
 //  ObjSLAM::ObjFloatImage *depth_img_prev;
 //  ObjSLAM::ObjUIntImage *label_img_prev;
 
-  ObjSLAM::ObjCameraPose* pose_cw;
+
 //  ObjSLAM::ObjCameraPose* pose_cw_prev;
 
   int img_number=1;
@@ -47,22 +48,7 @@ class DatasetReader_LPD_Dataset {
 
   DatasetReader_LPD_Dataset(int w, int h) : width(w), height(h) {};
 
-  void setWidth(int w) {
-    width = w;
-  }
-  void setHeight(int h) {
-    height = h;
-  }
-  int getWidth() {
-    return width;
-  }
-  int getHeight() {
-    return height;
-  }
-  Vector2i getSize() {
-    Vector2i res(width, height);
-    return res;
-  }
+
 
   void readNext(string path){
     cout<<"img_number = "<<img_number<<endl;
@@ -78,6 +64,11 @@ class DatasetReader_LPD_Dataset {
     string label_path = path + "/pixel_label/cam0/" + to_string(img_number) + ".txt";
     string pose_path = path + "/groundTruthPoseVel_imu.txt";
 
+    if(!pose_in.is_open()){
+      pose_in.open(pose_path);
+      cout<<"ifstream open: "<<pose_path<<endl;
+    }
+
     //depth
     ObjSLAM::ObjFloatImage *ray_depth_img = ReadOneDepth(depth_path);
     depth_img = convertRayDepthToZDepth(ray_depth_img);
@@ -89,13 +80,14 @@ class DatasetReader_LPD_Dataset {
 
     double time = img_number * 0.1;
 
-    ObjSLAM::LPD_RAW_Pose *raw_pose = ReadLPDRawPose(pose_path, time);
+    ObjSLAM::LPD_RAW_Pose *raw_pose = ReadLPDRawPose(pose_in, time);
     //T_bw
     ObjSLAM::ObjCameraPose *T_bw = convertRawPose_to_Pose(raw_pose);
     //T_cb
     ObjSLAM::ObjCameraPose *T_cb = new ObjSLAM::ObjCameraPose(0.5, -0.5, 0.5, -0.5, 0, 0, 0);
-    auto * T_cw_SE3 = new ORUtils::SE3Pose(T_cb->getSE3Pose()->GetM()*T_bw->getSE3Pose()->GetM());
-    pose_cw = new ObjSLAM::ObjCameraPose(T_cw_SE3);
+    auto * T_cw_SE3 = new ORUtils::SE3Pose(T_cb->getSE3Pose().GetM()*T_bw->getSE3Pose().GetM());
+    pose_cw = new ObjSLAM::ObjCameraPose(*T_cw_SE3);
+    cout<<"DEBUG"<<pose_cw->getSE3Pose().GetM()<<endl;
 
     delete raw_pose;
     delete T_bw;
@@ -249,21 +241,24 @@ class DatasetReader_LPD_Dataset {
     return res;
   }
 
-  ObjSLAM::LPD_RAW_Pose *ReadLPDRawPose(std::string Path, double t) {
-    ifstream in;
-    in.open(Path);
+  ObjSLAM::LPD_RAW_Pose *ReadLPDRawPose(ifstream& in, double t) {
+
+    /*    ifstream in;
+    in.open(Path);*/
+
 
     ObjSLAM::LPD_RAW_Pose *res = new ObjSLAM::LPD_RAW_Pose();
     double currentT = 0.0;
     string currentLine;
-//    cout<<"Current T"<<currentT<<endl;
+    double TH = 0.0005;
     //TODO get a more efficient way to do the read in instead of loop from begin every time...(one loop to read in every time step)
     while (getline(in, currentLine)) {
       istringstream iss(currentLine);
 
       iss >> currentT;
 //      cout<<"Current T"<<currentT<<endl;
-      if (currentT == t) {
+
+      if (abs(currentT-t)<TH) {
         iss >> res->qw;
         iss >> res->qx;
         iss >> res->qy;
@@ -400,6 +395,25 @@ class DatasetReader_LPD_Dataset {
     delete this->depth_img;
     delete this->pose_cw;
   }
+
+  void setWidth(int w) {
+    width = w;
+  }
+  void setHeight(int h) {
+    height = h;
+  }
+  int getWidth() {
+    return width;
+  }
+  int getHeight() {
+    return height;
+  }
+  Vector2i getSize() {
+    Vector2i res(width, height);
+    return res;
+  }
+
+  ObjSLAM::ObjCameraPose* getPose(){ return pose_cw;}
 
 };
 
