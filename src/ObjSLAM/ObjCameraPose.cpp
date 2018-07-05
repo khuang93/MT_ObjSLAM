@@ -12,7 +12,7 @@ Eigen::Quaterniond ObjCameraPose::getQuaternion(){
 }
 
 
-ORUtils::SE3Pose ObjCameraPose::getSE3Pose() {
+ORUtils::SE3Pose& ObjCameraPose::getSE3Pose() {
     return se3Pose;
 }
 

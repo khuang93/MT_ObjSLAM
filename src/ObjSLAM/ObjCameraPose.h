@@ -70,7 +70,7 @@ class ObjCameraPose  {
 
   Eigen::Quaterniond getQuaternion();
 
-  ORUtils::SE3Pose getSE3Pose();
+  ORUtils::SE3Pose& getSE3Pose();
 
   void setQuaternion(double w, double x, double y, double z);
 

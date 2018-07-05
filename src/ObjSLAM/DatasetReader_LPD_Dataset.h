@@ -85,14 +85,15 @@ class DatasetReader_LPD_Dataset {
     ObjSLAM::ObjCameraPose *T_bw = convertRawPose_to_Pose(raw_pose);
     //T_cb
     ObjSLAM::ObjCameraPose *T_cb = new ObjSLAM::ObjCameraPose(0.5, -0.5, 0.5, -0.5, 0, 0, 0);
-    auto * T_cw_SE3 = new ORUtils::SE3Pose(T_cb->getSE3Pose().GetM()*T_bw->getSE3Pose().GetM());
-    pose_cw = new ObjSLAM::ObjCameraPose(*T_cw_SE3);
+//    auto * T_cw_SE3 = new ORUtils::SE3Pose(T_cb->getSE3Pose().GetM()*T_bw->getSE3Pose().GetM());
+    ORUtils::SE3Pose T_cw_SE3_=T_cb->getSE3Pose().GetM()*T_bw->getSE3Pose().GetM();
+    pose_cw = new ObjSLAM::ObjCameraPose(T_cw_SE3_);
     cout<<"DEBUG"<<pose_cw->getSE3Pose().GetM()<<endl;
 
     delete raw_pose;
     delete T_bw;
     delete T_cb;
-    delete T_cw_SE3;
+//    delete T_cw_SE3;
 
     img_number++;
   }
@@ -251,7 +252,7 @@ class DatasetReader_LPD_Dataset {
     double currentT = 0.0;
     string currentLine;
     double TH = 0.0005;
-    //TODO get a more efficient way to do the read in instead of loop from begin every time...(one loop to read in every time step)
+
     while (getline(in, currentLine)) {
       istringstream iss(currentLine);
 
@@ -365,7 +366,7 @@ class DatasetReader_LPD_Dataset {
 
 
 
-//  void readExtrnsics(string Path){
+/*//  void readExtrnsics(string Path){
 //
 //    ObjSLAM::ObjMatrix4f calib_Ext;
 //    Eigen::Quaterniond R(0.5, -0.5,0.5,-0.5);
@@ -376,7 +377,7 @@ class DatasetReader_LPD_Dataset {
 //    double m20 = eigen_mat(2,0);double m21 = eigen_mat(2,1);double m22 = eigen_mat(2,2);
 //    ObjSLAM::ObjMatrix4f mat(1,0,0, 0,0,1,0, 0,0,0,1,0,0,0,0,1);
 //    calib->trafo_rgb_to_depth.SetFrom(mat);
-//  }
+//  }*/
 
 
 

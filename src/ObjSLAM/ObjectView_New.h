@@ -34,8 +34,8 @@ class ObjectView_New {
   ObjCameraPose camera_Pose;
 
   ObjUIntImage *segmentation_Mask;
-  ObjUChar4Image *rgb_Image;
-  ObjFloatImage *depth_Image;
+  const ObjUChar4Image *rgb_Image;
+  const ObjFloatImage *depth_Image;
   ObjFloat4Image *depth_normal;
 
   const ITMLib::ITMRGBDCalib& calibration;
