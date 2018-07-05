@@ -8,4 +8,4 @@ echo "make"
 make
 
 echo "run"
-./Mapper ../Dataset/RealisticRenderingDataset 1
+./Mapper ../Dataset/RealisticRenderingDataset

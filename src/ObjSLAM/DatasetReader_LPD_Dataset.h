@@ -26,9 +26,11 @@ using namespace std;
 class DatasetReader_LPD_Dataset {
  private:
   int width, height;
+  Vector2i imgSize;
   ITMLib::ITMRGBDCalib *calib;
   ifstream pose_in;
   ObjSLAM::ObjCameraPose* pose_cw;
+  string path;
  public:
   ObjSLAM::ObjUChar4Image *rgb_img;
   ObjSLAM::ObjFloatImage *depth_img;
@@ -46,11 +48,19 @@ class DatasetReader_LPD_Dataset {
  public:
   DatasetReader_LPD_Dataset() {};
 
-  DatasetReader_LPD_Dataset(int w, int h) : width(w), height(h) {};
+  DatasetReader_LPD_Dataset(string _path, int w, int h) :path(_path), width(w), height(h) {
+    imgSize=Vector2i(w,h);
+    setCalib_LPD();
+  };
+
+  DatasetReader_LPD_Dataset(string _path, Vector2i _imgSize) :path(_path), imgSize(_imgSize) {
+    width=imgSize.x;
+    height=imgSize.y;
+    setCalib_LPD();
+  };
 
 
-
-  void readNext(string path){
+  void readNext(){
     cout<<"img_number = "<<img_number<<endl;
     if(img_number>1){
       deleteVariables();
@@ -114,10 +124,10 @@ class DatasetReader_LPD_Dataset {
     //TODO debug output
     cout << "**Input size is " << vector_in.size() << endl;
 
-    ORUtils::Vector2<int> newDims(width, height);
-    auto *res = new ObjSLAM::ObjFloatImage(newDims, MEMORYDEVICE_CPU);
+//    ORUtils::Vector2<int> imgSize(width, height);
+    auto *res = new ObjSLAM::ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
 
-    res->ChangeDims(newDims);
+    res->ChangeDims(imgSize);
 
 
 //
@@ -137,8 +147,8 @@ class DatasetReader_LPD_Dataset {
   }
 
   ObjSLAM::ObjFloatImage *convertRayDepthToZDepth(ObjSLAM::ObjFloatImage *in) {
-    ORUtils::Vector2<int> newDims(width, height);
-    auto *res = new ObjSLAM::ObjFloatImage(newDims, MEMORYDEVICE_CPU);
+//    ORUtils::Vector2<int> imgSize(width, height);
+    auto *res = new ObjSLAM::ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
 
     Eigen::Matrix3f K;/* = Eigen::Matrix3d::Zero();*/
     K(0,0)= this->calib->intrinsics_d.projectionParamsSimple.fx;
@@ -171,10 +181,10 @@ class DatasetReader_LPD_Dataset {
     //read rgb from png file
 
 
-    ORUtils::Vector2<int> newDims(width, height);
-    auto *res = new ObjSLAM::ObjUChar4Image(newDims, MEMORYDEVICE_CPU);
+//    ORUtils::Vector2<int> imgSize(width, height);
+    auto *res = new ObjSLAM::ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
 
-    res->ChangeDims(newDims);
+    res->ChangeDims(imgSize);
 
     ReadImageFromFile(res, Path.c_str());
 
@@ -192,11 +202,11 @@ class DatasetReader_LPD_Dataset {
     //read rgb from png file
 
 
-    ORUtils::Vector2<int> newDims(width, height);
-    auto *res = new ObjSLAM::ObjFloat4Image(newDims, MEMORYDEVICE_CPU);
+//    ORUtils::Vector2<int> imgSize(width, height);
+    auto *res = new ObjSLAM::ObjFloat4Image(imgSize, MEMORYDEVICE_CPU);
 
 
-    res->ChangeDims(newDims);
+    res->ChangeDims(imgSize);
 
     ReadImageFromFile(res, Path.c_str());
 
@@ -221,12 +231,12 @@ class DatasetReader_LPD_Dataset {
     cout << "**Input size of label is " << vector_in.size() << endl;
 
     //set dimension
-    ORUtils::Vector2<int> newDims(width, height);
+//    ORUtils::Vector2<int> imgSize(width, height);
 
     //create UintImage object
-    auto *res = new ObjSLAM::ObjUIntImage(newDims, MEMORYDEVICE_CPU);
+    auto *res = new ObjSLAM::ObjUIntImage(imgSize, MEMORYDEVICE_CPU);
 
-    res->ChangeDims(newDims);
+    res->ChangeDims(imgSize);
 
 
 //
@@ -304,16 +314,16 @@ class DatasetReader_LPD_Dataset {
 
   ObjSLAM::ObjShortImage *calculateAffineDFromDepth(ObjSLAM::ObjFloatImage *depth) {
 
-    ORUtils::Vector2<int> newDims(width, height);
-    auto *disparity = new ObjSLAM::ObjShortImage(newDims, MEMORYDEVICE_CPU);
+//    ORUtils::Vector2<int> imgSize(width, height);
+    auto *disparity = new ObjSLAM::ObjShortImage(imgSize, MEMORYDEVICE_CPU);
 
     float fx = this->calib->intrinsics_d.projectionParamsSimple.fx;
 //    cout<<"fx"<<fx;
     float bxf = 8.0f * this->calib->disparityCalib.GetParams().y * fx;
 
-    for (int y = 0; y < newDims.y; y++) {
-      for (int x = 0; x < newDims.x; x++) {
-        int locId = x + y * newDims.x;
+    for (int y = 0; y < imgSize.y; y++) {
+      for (int x = 0; x < imgSize.x; x++) {
+        int locId = x + y * imgSize.x;
 //
 //        float depth_pixel = depth->GetData(MEMORYDEVICE_CPU)[locId];
 //        float disparity_tmp = bxf / depth_pixel;

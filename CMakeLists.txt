@@ -44,17 +44,24 @@ add_subdirectory(External/InfiniTAM/InfiniTAM)
 
 
 set(ObjSLAM_Sources
-
-        src/ObjSLAM/ObjSLAMApp.cpp src/ObjSLAM/ObjSLAMEngine.h
+        src/ObjSLAM/ObjSLAMMapper_Test.cpp
+        src/ObjSLAM/ObjSLAMEngine.h
         src/ObjSLAM/ObjSLAMEngine.tpp
         src/ObjSLAM/InfiniTAMEngine.cpp src/ObjSLAM/InfiniTAMEngine.h
         src/ObjSLAM/ObjectSLAMTracker.cpp src/ObjSLAM/ObjectSLAMTracker.h
         src/ObjSLAM/ObjectView_old.cpp src/ObjSLAM/ObjectView_old.h
         src/ObjSLAM/ObjectClassLabel.cpp src/ObjSLAM/ObjectClassLabel.h
         src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
-        src/ObjSLAM/ObjectInstanceScene.cpp src/ObjSLAM/ObjectInstanceScene.h src/ObjSLAM/ObjSLAMDataTypes.h
+        src/ObjSLAM/ObjectInstanceScene.cpp src/ObjSLAM/ObjectInstanceScene.h
+        src/ObjSLAM/ObjSLAMDataTypes.h
 
         src/ObjSLAM/DatasetReader_LPD_Dataset.h
+        src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
+        src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h
+        src/ObjSLAM/ObjSceneReconstructionEngine_CPU.cpp src/ObjSLAM/ObjSceneReconstructionEngine_CPU.h
+        src/ObjSLAM/ObjectView_New.cpp src/ObjSLAM/ObjectView_New.h
+        #[[        src/ObjSLAM/ObjSLAMBasicEngine.cpp src/ObjSLAM/ObjSLAMBasicEngine.h]]
+        src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h
         )
 set(Mapper_Sources
         src/ObjSLAM/ObjSLAMMapper_Test.cpp
@@ -65,17 +72,19 @@ set(Mapper_Sources
         src/ObjSLAM/ObjectView_old.cpp src/ObjSLAM/ObjectView_old.h
         src/ObjSLAM/ObjectClassLabel.cpp src/ObjSLAM/ObjectClassLabel.h
         src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
-        src/ObjSLAM/ObjectInstanceScene.cpp src/ObjSLAM/ObjectInstanceScene.h src/ObjSLAM/ObjSLAMDataTypes.h
+        src/ObjSLAM/ObjectInstanceScene.cpp src/ObjSLAM/ObjectInstanceScene.h
+        src/ObjSLAM/ObjSLAMDataTypes.h
 
         src/ObjSLAM/DatasetReader_LPD_Dataset.h
         src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
         src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h
         src/ObjSLAM/ObjSceneReconstructionEngine_CPU.cpp src/ObjSLAM/ObjSceneReconstructionEngine_CPU.h
         src/ObjSLAM/ObjectView_New.cpp src/ObjSLAM/ObjectView_New.h
-#[[        src/ObjSLAM/ObjSLAMBasicEngine.cpp src/ObjSLAM/ObjSLAMBasicEngine.h]])
+#[[        src/ObjSLAM/ObjSLAMBasicEngine.cpp src/ObjSLAM/ObjSLAMBasicEngine.h]]
+        src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
-#TARGET_LINK_LIBRARIES(ObjSLAM InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib)
+#TARGET_LINK_LIBRARIES(ObjSLAM cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)
 
 
 

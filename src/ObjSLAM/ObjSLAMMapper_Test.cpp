@@ -34,19 +34,19 @@ int main(int argc, char **argv) {
   //Path of the depth image file
   string path = argv[1];
 
-  std::istringstream iss(argv[2]);
-  //for LPD dataset 1 -13
-  int img_number;
-  iss >> img_number;
-  double time = img_number * 0.1;
+//  std::istringstream iss(argv[2]);
+//  //for LPD dataset 1 -13
+//  int img_number;
+//  iss >> img_number;
+//  double time = img_number * 0.1;
 
   //create a reader and read inputs
-  DatasetReader_LPD_Dataset reader(640, 480);
+  DatasetReader_LPD_Dataset reader(path, 640, 480);
 
-  reader.setCalib_LPD();
+//  reader.setCalib_LPD();
 
 
-  reader.readNext(path);
+  reader.readNext();
   cout<<reader.getPose()->getSE3Pose().GetM()<<endl;
 
 
@@ -158,35 +158,16 @@ int main(int argc, char **argv) {
   //basic engine
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
   internalSettings->deviceType=internalSettings->DEVICE_CPU;
-  int obj_class_num = 0;
+  int obj_class_num =58;
 //  ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
   auto* basicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(internalSettings,*calib,imgSize);
   basicEngine->SetScene((ITMLib::ITMScene<ITMVoxel,ITMVoxelIndex>*)object);
   basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
 //
-  reader.readNext(path);
+  reader.readNext();
   view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
   basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
 
-  reader.readNext(path);
-  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
-  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
-  reader.readNext(path);
-  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
-  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
-
-  reader.readNext(path);
-  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
-  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
-  reader.readNext(path);
-  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
-  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
-  reader.readNext(path);
-  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
-  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
-  reader.readNext(path);
-  view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
-  basicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
 
 //  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_ORIGINAL_RGB,reader.getPose()->getSE3Pose(),&(calib->intrinsics_d));
 //  SaveImageToFile(img,"orig_rgb.ppm");
@@ -194,7 +175,7 @@ int main(int argc, char **argv) {
   SaveImageToFile(img,"vol.ppm");
 //  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_FREECAMERA_SHADED,reader.getPose()->getSE3Pose(),&(calib->intrinsics_d));
 //  SaveImageToFile(img,"shaded.ppm");
-  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,basicEngine->GetTrackingState()->pose_d,&(calib->intrinsics_d));
+  basicEngine->GetImage(img,basicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,&reader.getPose()->getSE3Pose(),&(calib->intrinsics_d));
   SaveImageToFile(img,"vol_otherPose.ppm");
 
 
@@ -208,5 +189,3 @@ int main(int argc, char **argv) {
 
   return 0;
 }
-
-
