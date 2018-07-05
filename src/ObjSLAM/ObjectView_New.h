@@ -65,8 +65,6 @@ class ObjectView_New {
 
     setListOfObjects_old();
 
-
-
     //TODO debug info
     std::cout<<"ObjectView_New simple created!\n";
   }
