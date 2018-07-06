@@ -65,8 +65,7 @@ set(ObjSLAM_Sources
         )
 set(Mapper_Sources
         src/ObjSLAM/ObjSLAMMapper_Test.cpp
-        src/ObjSLAM/ObjSLAMEngine.h
-        src/ObjSLAM/ObjSLAMEngine.tpp
+
         src/ObjSLAM/InfiniTAMEngine.cpp src/ObjSLAM/InfiniTAMEngine.h
         src/ObjSLAM/ObjectSLAMTracker.cpp src/ObjSLAM/ObjectSLAMTracker.h
         src/ObjSLAM/ObjectView_old.cpp src/ObjSLAM/ObjectView_old.h

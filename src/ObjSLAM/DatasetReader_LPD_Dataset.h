@@ -20,7 +20,6 @@
 #include <eigen3/Eigen/Geometry>
 #include <eigen3/Eigen/Dense>
 
-
 using namespace std;
 
 class DatasetReader_LPD_Dataset {
@@ -29,7 +28,7 @@ class DatasetReader_LPD_Dataset {
   Vector2i imgSize;
   ITMLib::ITMRGBDCalib *calib;
   ifstream pose_in;
-  ObjSLAM::ObjCameraPose* pose_cw;
+  ObjSLAM::ObjCameraPose *pose_cw;
   string path;
  public:
   ObjSLAM::ObjUChar4Image *rgb_img;
@@ -43,26 +42,25 @@ class DatasetReader_LPD_Dataset {
 
 //  ObjSLAM::ObjCameraPose* pose_cw_prev;
 
-  int img_number=1;
+  int img_number = 1;
 
  public:
   DatasetReader_LPD_Dataset() {};
 
-  DatasetReader_LPD_Dataset(string _path, int w, int h) :path(_path), width(w), height(h) {
-    imgSize=Vector2i(w,h);
+  DatasetReader_LPD_Dataset(string _path, int w, int h) : path(_path), width(w), height(h) {
+    imgSize = Vector2i(w, h);
     setCalib_LPD();
   };
 
-  DatasetReader_LPD_Dataset(string _path, Vector2i _imgSize) :path(_path), imgSize(_imgSize) {
-    width=imgSize.x;
-    height=imgSize.y;
+  DatasetReader_LPD_Dataset(string _path, Vector2i _imgSize) : path(_path), imgSize(_imgSize) {
+    width = imgSize.x;
+    height = imgSize.y;
     setCalib_LPD();
   };
 
-
-  void readNext(){
-    cout<<"img_number = "<<img_number<<endl;
-    if(img_number>1){
+  void readNext() {
+    cout << "img_number = " << img_number << endl;
+    if (img_number > 1) {
       deleteVariables();
     }
 
@@ -73,10 +71,10 @@ class DatasetReader_LPD_Dataset {
     string normal_path = path + "/normal/cam0/" + to_string(img_number) + ".png";
     string label_path = path + "/pixel_label/cam0/" + to_string(img_number) + ".txt";
     string pose_path = path + "/groundTruthPoseVel_imu.txt";
-
-    if(!pose_in.is_open()){
+    cout << rgb_path << endl;
+    if (!pose_in.is_open()) {
       pose_in.open(pose_path);
-      cout<<"ifstream open: "<<pose_path<<endl;
+      cout << "ifstream open: " << pose_path << endl;
     }
 
     //depth
@@ -96,9 +94,9 @@ class DatasetReader_LPD_Dataset {
     //T_cb
     ObjSLAM::ObjCameraPose *T_cb = new ObjSLAM::ObjCameraPose(0.5, -0.5, 0.5, -0.5, 0, 0, 0);
 //    auto * T_cw_SE3 = new ORUtils::SE3Pose(T_cb->getSE3Pose().GetM()*T_bw->getSE3Pose().GetM());
-    ORUtils::SE3Pose T_cw_SE3_=T_cb->getSE3Pose().GetM()*T_bw->getSE3Pose().GetM();
+    ORUtils::SE3Pose T_cw_SE3_ = T_cb->getSE3Pose().GetM() * T_bw->getSE3Pose().GetM();
     pose_cw = new ObjSLAM::ObjCameraPose(T_cw_SE3_);
-    cout<<"DEBUG"<<pose_cw->getSE3Pose().GetM()<<endl;
+    cout << "DEBUG" << pose_cw->getSE3Pose().GetM() << endl;
 
     delete raw_pose;
     delete T_bw;
@@ -151,7 +149,7 @@ class DatasetReader_LPD_Dataset {
     auto *res = new ObjSLAM::ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
 
     Eigen::Matrix3f K;/* = Eigen::Matrix3d::Zero();*/
-    K(0,0)= this->calib->intrinsics_d.projectionParamsSimple.fx;
+    K(0, 0) = this->calib->intrinsics_d.projectionParamsSimple.fx;
 
     K(1, 1) = this->calib->intrinsics_d.projectionParamsSimple.fy;
     K(0, 2) = this->calib->intrinsics_d.projectionParamsSimple.px;
@@ -161,16 +159,17 @@ class DatasetReader_LPD_Dataset {
     Eigen::Matrix3f K_inv = K.inverse();
 
     //TODO: Make this a camera Projection function
-    for(int i = 0; i < height;i++){
-      for(int j = 0; j< width;j++){
-        Eigen::Vector3f Pix(j,i,1.0);
-        Eigen::Vector3f WorldVec = K_inv*Pix;
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        Eigen::Vector3f Pix(j, i, 1.0);
+        Eigen::Vector3f WorldVec = K_inv * Pix;
         WorldVec.normalize();
-        WorldVec = WorldVec*in->GetElement(i*width+j,MEMORYDEVICE_CPU);
-        res->GetData(MEMORYDEVICE_CPU)[i*width+j]=WorldVec(2);
+        WorldVec = WorldVec * in->GetElement(i * width + j, MEMORYDEVICE_CPU);
+        res->GetData(MEMORYDEVICE_CPU)[i * width + j] = WorldVec(2);
       }
     }
-    return  res;
+
+    return res;
   }
 
   ObjSLAM::ObjUChar4Image *ReadOneRGB(std::string Path) {
@@ -181,15 +180,14 @@ class DatasetReader_LPD_Dataset {
     //read rgb from png file
 
 
-//    ORUtils::Vector2<int> imgSize(width, height);
+    
     auto *res = new ObjSLAM::ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
 
     res->ChangeDims(imgSize);
 
     ReadImageFromFile(res, Path.c_str());
 
-//    SaveImageToFile(res, "testRGB");
-
+    SaveImageToFile(res, "testRGB");
 
     return res;
   }
@@ -252,7 +250,7 @@ class DatasetReader_LPD_Dataset {
     return res;
   }
 
-  ObjSLAM::LPD_RAW_Pose *ReadLPDRawPose(ifstream& in, double t) {
+  ObjSLAM::LPD_RAW_Pose *ReadLPDRawPose(ifstream &in, double t) {
 
     /*    ifstream in;
     in.open(Path);*/
@@ -269,12 +267,12 @@ class DatasetReader_LPD_Dataset {
       iss >> currentT;
 //      cout<<"Current T"<<currentT<<endl;
 
-      if (abs(currentT-t)<TH) {
+      if (abs(currentT - t) < TH) {
         iss >> res->qw;
         iss >> res->qx;
         iss >> res->qy;
         iss >> res->qz;
-        cout<<"read q "<< res->qw<<res->qx<<res->qy<<res->qz<<endl;
+        cout << "read q " << res->qw << res->qx << res->qy << res->qz << endl;
         iss >> res->x;
 
         iss >> res->y;
@@ -329,13 +327,13 @@ class DatasetReader_LPD_Dataset {
 //        float disparity_tmp = bxf / depth_pixel;
 //        short disparity_pixel = this->calib->disparityCalib.GetParams().x - disparity_tmp;
 
-        short short_D_pixel =  depth->GetData(MEMORYDEVICE_CPU)[locId]/this->calib->disparityCalib.GetParams().x;
+        short short_D_pixel = depth->GetData(MEMORYDEVICE_CPU)[locId] / this->calib->disparityCalib.GetParams().x;
 
-        disparity->GetData(MEMORYDEVICE_CPU)[locId]=short_D_pixel;
+        disparity->GetData(MEMORYDEVICE_CPU)[locId] = short_D_pixel;
 
       }
     }
-    return  disparity;
+    return disparity;
   }
 
   void setCalib_LPD() {
@@ -368,13 +366,12 @@ class DatasetReader_LPD_Dataset {
     calib->trafo_rgb_to_depth.SetFrom(mat);
 
     //disparity calib a b physical meanings?
-    calib->disparityCalib.SetFrom(/*1135.09*/0.0002, 0.0, ITMLib::ITMDisparityCalib::TRAFO_AFFINE); //TODO get the values
+    calib->disparityCalib.SetFrom(/*1135.09*/0.0002,
+                                             0.0,
+                                             ITMLib::ITMDisparityCalib::TRAFO_AFFINE); //TODO get the values
 
 
   }
-
-
-
 
 /*//  void readExtrnsics(string Path){
 //
@@ -395,7 +392,7 @@ class DatasetReader_LPD_Dataset {
     return calib;
   }
 
-  void deleteVariables(){
+  void deleteVariables() {
 
 //    delete(this->label_img);
 //    delete(this->rgb_img);
@@ -420,11 +417,10 @@ class DatasetReader_LPD_Dataset {
     return height;
   }
   Vector2i getSize() {
-    Vector2i res(width, height);
-    return res;
+    return imgSize;
   }
 
-  ObjSLAM::ObjCameraPose* getPose(){ return pose_cw;}
+  ObjSLAM::ObjCameraPose *getPose() { return pose_cw; }
 
 };
 
