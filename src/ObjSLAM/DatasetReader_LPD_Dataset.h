@@ -71,10 +71,10 @@ class DatasetReader_LPD_Dataset {
     string normal_path = path + "/normal/cam0/" + to_string(img_number) + ".png";
     string label_path = path + "/pixel_label/cam0/" + to_string(img_number) + ".txt";
     string pose_path = path + "/groundTruthPoseVel_imu.txt";
-    cout << rgb_path << endl;
+
     if (!pose_in.is_open()) {
       pose_in.open(pose_path);
-      cout << "ifstream open: " << pose_path << endl;
+//      cout << "ifstream open: " << pose_path << endl;
     }
 
     //depth
@@ -93,10 +93,9 @@ class DatasetReader_LPD_Dataset {
     ObjSLAM::ObjCameraPose *T_bw = convertRawPose_to_Pose(raw_pose);
     //T_cb
     ObjSLAM::ObjCameraPose *T_cb = new ObjSLAM::ObjCameraPose(0.5, -0.5, 0.5, -0.5, 0, 0, 0);
-//    auto * T_cw_SE3 = new ORUtils::SE3Pose(T_cb->getSE3Pose().GetM()*T_bw->getSE3Pose().GetM());
     ORUtils::SE3Pose T_cw_SE3_ = T_cb->getSE3Pose().GetM() * T_bw->getSE3Pose().GetM();
     pose_cw = new ObjSLAM::ObjCameraPose(T_cw_SE3_);
-    cout << "DEBUG" << pose_cw->getSE3Pose().GetM() << endl;
+
 
     delete raw_pose;
     delete T_bw;
@@ -120,7 +119,7 @@ class DatasetReader_LPD_Dataset {
     }
 
     //TODO debug output
-    cout << "**Input size is " << vector_in.size() << endl;
+//    cout << "**Input size is " << vector_in.size() << endl;
 
 //    ORUtils::Vector2<int> imgSize(width, height);
     auto *res = new ObjSLAM::ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
@@ -180,7 +179,7 @@ class DatasetReader_LPD_Dataset {
     //read rgb from png file
 
 
-    
+
     auto *res = new ObjSLAM::ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
 
     res->ChangeDims(imgSize);
@@ -226,7 +225,7 @@ class DatasetReader_LPD_Dataset {
     }
 
     //TODO debug output
-    cout << "**Input size of label is " << vector_in.size() << endl;
+//    cout << "**Input size of label is " << vector_in.size() << endl;
 
     //set dimension
 //    ORUtils::Vector2<int> imgSize(width, height);
@@ -272,7 +271,7 @@ class DatasetReader_LPD_Dataset {
         iss >> res->qx;
         iss >> res->qy;
         iss >> res->qz;
-        cout << "read q " << res->qw << res->qx << res->qy << res->qz << endl;
+//        cout << "read q " << res->qw << res->qx << res->qy << res->qz << endl;
         iss >> res->x;
 
         iss >> res->y;
