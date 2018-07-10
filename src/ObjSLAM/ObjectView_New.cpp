@@ -101,6 +101,7 @@ void ObjectView_New::setListOfObjects() {
       //create a object instance
       auto * new_obj_instance = new ObjectInstance(label);
       Object_View_Tuple object_view_tuple(new_obj_instance, single_obj_ITMView);
+//      std::cout<<"key"<<obj_map.size()+1<<endl;
       obj_map.insert(std::pair<int, Object_View_Tuple>(obj_map.size()+1, object_view_tuple));
     }
   }

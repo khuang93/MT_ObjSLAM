@@ -12,6 +12,8 @@ set (SOURCE_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 
 
+
+
 #set (INFINITAM_DIR "External/InfiniTAM/InfiniTAM")
 
 
@@ -27,7 +29,13 @@ set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 #INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense.cmake)
 #INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense2.cmake)
 #INCLUDE(${INFINITAM_DIR}/cmake/UseUVC.cmake)
-find_package( Boost )
+find_package( Boost REQUIRED)
+find_package( OpenMP REQUIRED)
+if(OPENMP_FOUND)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+endif()
 
 include_directories($(HEADER_DIR)
         /usr/local/cuda/include
@@ -39,6 +47,7 @@ include_directories($(HEADER_DIR)
 
 
 add_subdirectory(External/InfiniTAM/InfiniTAM)
+INCLUDE(External/InfiniTAM/InfiniTAM/cmake/UseCUDA.cmake)
 
 #add_subdirectory(External/g2o/g2o)
 
@@ -53,7 +62,7 @@ set(ObjSLAM_Sources
         src/ObjSLAM/ObjectView_old.cpp src/ObjSLAM/ObjectView_old.h
         src/ObjSLAM/ObjectClassLabel.cpp src/ObjSLAM/ObjectClassLabel.h
         src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
-        src/ObjSLAM/ObjectInstanceScene.cpp src/ObjSLAM/ObjectInstanceScene.h
+        src/ObjSLAM/ObjectInstanceScene.tpp src/ObjSLAM/ObjectInstanceScene.h
         src/ObjSLAM/ObjSLAMDataTypes.h
 
         src/ObjSLAM/DatasetReader_LPD_Dataset.h
@@ -72,7 +81,7 @@ set(Mapper_Sources
         src/ObjSLAM/ObjectView_old.cpp src/ObjSLAM/ObjectView_old.h
         src/ObjSLAM/ObjectClassLabel.cpp src/ObjSLAM/ObjectClassLabel.h
         src/ObjSLAM/ObjectInstance.cpp src/ObjSLAM/ObjectInstance.h
-        src/ObjSLAM/ObjectInstanceScene.cpp src/ObjSLAM/ObjectInstanceScene.h
+        src/ObjSLAM/ObjectInstanceScene.tpp src/ObjSLAM/ObjectInstanceScene.h
         src/ObjSLAM/ObjSLAMDataTypes.h
 
         src/ObjSLAM/DatasetReader_LPD_Dataset.h
@@ -81,7 +90,9 @@ set(Mapper_Sources
         src/ObjSLAM/ObjSceneReconstructionEngine_CPU.cpp src/ObjSLAM/ObjSceneReconstructionEngine_CPU.h
         src/ObjSLAM/ObjectView_New.cpp src/ObjSLAM/ObjectView_New.h
 #[[        src/ObjSLAM/ObjSLAMBasicEngine.cpp src/ObjSLAM/ObjSLAMBasicEngine.h]]
-        src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h src/ObjSLAM/IOUtils.cpp src/ObjSLAM/IOUtils.h src/ObjSLAM/ObjectInstanceScene_old.cpp src/ObjSLAM/ObjectInstanceScene_old.h)
+        src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h
+        src/ObjSLAM/IOUtils.cpp src/ObjSLAM/IOUtils.h
+        src/ObjSLAM/ObjectInstanceScene_old.cpp src/ObjSLAM/ObjectInstanceScene_old.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)
@@ -89,5 +100,6 @@ set(Mapper_Sources
 
 
 add_executable(Mapper ${Mapper_Sources}  /usr/include)
-TARGET_LINK_LIBRARIES(Mapper  boost_system  boost_filesystem  cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)
+
+TARGET_LINK_LIBRARIES(Mapper  boost_system  boost_filesystem  cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png)
 #looks like it needs link cudart

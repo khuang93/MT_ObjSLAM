@@ -6,12 +6,14 @@
 
 #include "DatasetReader_LPD_Dataset.h"
 #include "ObjectInstanceScene.h"
+//#include "ObjectInstanceScene.tpp"
 #include "ObjectView_old.h"
 
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
 
 #include "ObjSLAMMappingEngine.h"
-#include "ObjSLAMMappingEngine.tpp"
+
+//#include "ObjSLAMMappingEngine.tpp"
 
 using namespace std;
 
@@ -23,6 +25,7 @@ int main(int argc, char **argv) {
   string path = argv[1];
   Vector2i imgSize(640,480);
   auto * mappingEngine = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(path, imgSize);
+
 
 //  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
 
