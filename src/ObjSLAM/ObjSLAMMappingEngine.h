@@ -19,6 +19,10 @@
 
 
 namespace ObjSLAM {
+using ObjectInstanceSceneVector = vector<ObjSLAM::ObjectInstanceScene>;
+using ObjectInstancePair = pair<ObjectInstance, ObjectInstanceScene>;
+using ObjectInstanceVector = vector<ObjectInstancePair>;
+
 template <typename TVoxel, typename TIndex>
 class ObjSLAMMappingEngine {
 
@@ -29,14 +33,22 @@ class ObjSLAMMappingEngine {
   ITMLib::ITMBasicEngine<TVoxel, TIndex>* itmBasicEngine;
   DatasetReader_LPD_Dataset reader;
   Vector2i imgSize;
+  ObjectInstanceVector object_instance_vector;
+//  std::vector<ObjectInstanceScene> listOfObjectScenes;
 
  public:
   //Constructor with LPD Dataset
   ObjSLAMMappingEngine(string path, Vector2i _imgSize);
 
-  void test(){
-    cout<<"test\n"<<reader.getPose()->getSE3Pose().GetM()<<endl;
-  }
+//  void GetNextFrame();
+//
+//  void CreateObjectScenes();
+//
+//  void ProcessFrame();
+
+
+
+//  void
 
 
 

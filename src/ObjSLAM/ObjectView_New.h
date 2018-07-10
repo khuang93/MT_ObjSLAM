@@ -27,6 +27,8 @@
 namespace ObjSLAM {
 
 using Object_View_Tuple = std::tuple<ObjectInstance*, ITMLib::ITMView*>;
+using LabelImgVector = std::vector<ObjSLAM::ObjUIntImage *>;
+
 
 class ObjectView_New {
 
@@ -34,6 +36,7 @@ class ObjectView_New {
   ObjCameraPose camera_Pose;
 
   ObjUIntImage *segmentation_Mask;
+  LabelImgVector label_img_vector;
   const ObjUChar4Image *rgb_Image;
   const ObjFloatImage *depth_Image;
   ObjFloat4Image *depth_normal;
@@ -52,6 +55,7 @@ class ObjectView_New {
   std::map<int, Object_View_Tuple> obj_map; //int is the raw value in seg mask and tuple contains a obj instance and corresbonding ITMView
 
   void setListOfObjects_old();
+  void setListOfObjects();
   void setListOfViews();
 
 
@@ -73,9 +77,21 @@ class ObjectView_New {
   //using ITMLib::ITMView::ITMView;
   ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize_rgb, Vector2i _imgSize_d, bool useGPU, ObjCameraPose pose,
                  ObjFloatImage* _depth, ObjUChar4Image* _rgb, ObjUIntImage* _label):
-      calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d), camera_Pose(pose), depth_Image(_depth), rgb_Image(_rgb), segmentation_Mask(_label){
+      calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d), camera_Pose(pose),
+      depth_Image(_depth), rgb_Image(_rgb), segmentation_Mask(_label){
 
     setListOfObjects_old();
+    //TODO debug info
+    std::cout<<"ObjectView_New complete created!\n";
+
+  }
+
+  ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize_rgb, Vector2i _imgSize_d, bool useGPU, ObjCameraPose pose,
+                 ObjFloatImage* _depth, ObjUChar4Image* _rgb, LabelImgVector _label_img_vector):
+      calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d), camera_Pose(pose),
+      depth_Image(_depth), rgb_Image(_rgb), label_img_vector(_label_img_vector){
+
+    setListOfObjects();
     //TODO debug info
     std::cout<<"ObjectView_New complete created!\n";
 

@@ -27,6 +27,7 @@ set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 #INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense.cmake)
 #INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense2.cmake)
 #INCLUDE(${INFINITAM_DIR}/cmake/UseUVC.cmake)
+find_package( Boost )
 
 include_directories($(HEADER_DIR)
         /usr/local/cuda/include
@@ -88,5 +89,5 @@ set(Mapper_Sources
 
 
 add_executable(Mapper ${Mapper_Sources}  /usr/include)
-TARGET_LINK_LIBRARIES(Mapper cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)
+TARGET_LINK_LIBRARIES(Mapper  boost_system  boost_filesystem  cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)
 #looks like it needs link cudart

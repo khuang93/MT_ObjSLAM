@@ -19,8 +19,12 @@
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMRGBDCalib.h"
 #include <eigen3/Eigen/Geometry>
 #include <eigen3/Eigen/Dense>
+#include <boost/filesystem.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 
 using namespace std;
+
+using LabelImgVector = std::vector<ObjSLAM::ObjUIntImage *>;
 
 class DatasetReader_LPD_Dataset {
  private:
@@ -34,6 +38,7 @@ class DatasetReader_LPD_Dataset {
   ObjSLAM::ObjUChar4Image *rgb_img;
   ObjSLAM::ObjFloatImage *depth_img;
   ObjSLAM::ObjUIntImage *label_img;
+  LabelImgVector label_img_vector;
 
 //  ObjSLAM::ObjUChar4Image *rgb_img_prev;
 //  ObjSLAM::ObjFloatImage *depth_img_prev;
@@ -62,6 +67,7 @@ class DatasetReader_LPD_Dataset {
     cout << "img_number = " << img_number << endl;
     if (img_number > 1) {
       deleteVariables();
+
     }
 
 
@@ -71,6 +77,18 @@ class DatasetReader_LPD_Dataset {
     string normal_path = path + "/normal/cam0/" + to_string(img_number) + ".png";
     string label_path = path + "/pixel_label/cam0/" + to_string(img_number) + ".txt";
     string pose_path = path + "/groundTruthPoseVel_imu.txt";
+
+    std::vector<string> fileNames = getFileNames(path+ "/pixel_label/cam0/");
+    std::vector<string> filteredNames;
+    for(int i = 0; i<fileNames.size();i++){
+      if(boost::starts_with(fileNames.at(i),"1.")&&fileNames.at(i)!=(to_string(img_number) + ".txt"))
+        filteredNames.push_back(fileNames.at(i));
+    }
+    std::sort(filteredNames.begin(), filteredNames.end());
+
+    for(int i = 0; i<filteredNames.size();i++){
+      label_img_vector.push_back(ReadLabel_OneFile(path + "/pixel_label/cam0/"+filteredNames.at(i)));
+    }
 
     if (!pose_in.is_open()) {
       pose_in.open(pose_path);
@@ -103,6 +121,26 @@ class DatasetReader_LPD_Dataset {
 //    delete T_cw_SE3;
 
     img_number++;
+  }
+
+  std::vector<std::string> getFileNames(std::string directoryPath)
+  {
+    namespace fs = boost::filesystem ;
+    std::vector<std::string> names ;
+
+    if ( fs::exists(directoryPath) )
+    {
+      fs::directory_iterator it(directoryPath) ;
+      fs::directory_iterator end ;
+
+      while ( it != end )
+      {
+        names.push_back(it->path().filename().string()) ;
+        ++it ;
+      }
+    }
+
+    return names ;
   }
 
   ObjSLAM::ObjFloatImage *ReadOneDepth(std::string Path) {
@@ -401,6 +439,7 @@ class DatasetReader_LPD_Dataset {
     delete this->rgb_img;
     delete this->depth_img;
     delete this->pose_cw;
+    label_img_vector.clear();
   }
 
   void setWidth(int w) {

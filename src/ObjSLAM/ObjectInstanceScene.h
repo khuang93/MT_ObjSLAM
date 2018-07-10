@@ -33,11 +33,11 @@ template<class TVoxel, class TIndex>
  public:
 
   //Constructor
-  ObjectInstanceScene(const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType, /*ObjectVector& _objVector,*/ ViewVector& _viewVector):
-      ITMLib::ITMScene<TVoxel,TIndex>(_sceneParams, _useSwapping, _memoryType), /*ListOfAllObjects(_objVector),*/ ListofAllViews(_viewVector){
-
-    //debug msg
-    std::cout << "Created ObjectInstanceScene! \n";
+  ObjectInstanceScene(const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType,  ObjectView_New* _firstView):
+      ITMLib::ITMScene<TVoxel,TIndex>(_sceneParams, _useSwapping, _memoryType){
+   ListofAllViews.push_back(_firstView);
+    //TODO debug msg
+    std::cout << "** Created ObjectInstanceScene! \n";
   }
 
 
