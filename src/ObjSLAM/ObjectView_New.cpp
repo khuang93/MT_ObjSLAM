@@ -18,7 +18,7 @@ void ObjectView_New::setCameraPose(ObjCameraPose _pose)
 
 void ObjectView_New::setListOfObjects_old() {
 
-  std::cout << "Setting Obj List..." << std::endl;
+  std::cout << "Setting Obj List old..." << std::endl;
 
   std::vector<int> labelIndexVector;
 
@@ -72,33 +72,36 @@ void ObjectView_New::setListOfObjects() {
 
     int labelIndex = 0;
     auto* single_obj_ITMView =  new ITMLib::ITMView(calibration, imgSize_rgb, imgSize_d, false);
-    //Init size of depth in ITMView
-    single_obj_ITMView->depth->ChangeDims(imgSize_d);
-    //Init size of rgb in ITMView
-    single_obj_ITMView->rgb->ChangeDims(imgSize_rgb);
+//    //Init size of depth in ITMView
+//    single_obj_ITMView->depth->ChangeDims(imgSize_d);
+//    //Init size of rgb in ITMView
+//    single_obj_ITMView->rgb->ChangeDims(imgSize_rgb);
 
     //it over pixels
     for (int i = 0; i < (*it)->dataSize; i++) {
+
       if((*it)->GetElement(i, MEMORYDEVICE_CPU)!=0){
         if(labelIndex==0) {labelIndex = (*it)->GetElement(i, MEMORYDEVICE_CPU);}
 
         //Set value of the each pixel
         single_obj_ITMView->depth->GetData(MEMORYDEVICE_CPU)[i]=this->depth_Image->GetData(MEMORYDEVICE_CPU)[i];
         single_obj_ITMView->rgb->GetData(MEMORYDEVICE_CPU)[i]=this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
+//        cout<<(*it)->GetElement(i, MEMORYDEVICE_CPU)<<endl;
       }
-      //set all object instance map
-      if(labelIndex!=0){
-        //label
-        ObjectClassLabel label(labelIndex, std::to_string(labelIndex));
+    }
+    //set all object instance map
+    if(labelIndex!=0){
+//      cout<<labelIndex<<endl;
+      //label
+      ObjectClassLabel label(labelIndex, std::to_string(labelIndex));
 
-        //is new object?
-        //if yes:
+      //is new object?
+      //if yes:
 
-        //create a object instance
-        auto * new_obj_instance = new ObjectInstance(label);
-        Object_View_Tuple object_view_tuple(new_obj_instance, single_obj_ITMView);
-        obj_map.insert(std::pair<int, Object_View_Tuple>(obj_map.size()+1, object_view_tuple));
-      }
+      //create a object instance
+      auto * new_obj_instance = new ObjectInstance(label);
+      Object_View_Tuple object_view_tuple(new_obj_instance, single_obj_ITMView);
+      obj_map.insert(std::pair<int, Object_View_Tuple>(obj_map.size()+1, object_view_tuple));
     }
   }
 

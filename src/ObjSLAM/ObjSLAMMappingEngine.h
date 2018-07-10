@@ -15,13 +15,13 @@
 
 #include "ObjectView_New.h"
 #include "DatasetReader_LPD_Dataset.h"
-#include "ObjectInstanceScene.h"
+#include "ObjectInstanceScene_old.h"
 
 
 namespace ObjSLAM {
-using ObjectInstanceSceneVector = vector<ObjSLAM::ObjectInstanceScene>;
-using ObjectInstancePair = pair<ObjectInstance, ObjectInstanceScene>;
-using ObjectInstanceVector = vector<ObjectInstancePair>;
+//using ObjectInstanceSceneVector = std::vector<ObjSLAM::ObjectInstanceScene_old>;
+//using ObjectInstancePair = std::pair<ObjectInstance, ObjectInstanceScene_old>;
+//using ObjectInstanceVector = vector<ObjectInstancePair>;
 
 template <typename TVoxel, typename TIndex>
 class ObjSLAMMappingEngine {
@@ -33,8 +33,8 @@ class ObjSLAMMappingEngine {
   ITMLib::ITMBasicEngine<TVoxel, TIndex>* itmBasicEngine;
   DatasetReader_LPD_Dataset reader;
   Vector2i imgSize;
-  ObjectInstanceVector object_instance_vector;
-//  std::vector<ObjectInstanceScene> listOfObjectScenes;
+//  ObjectInstanceSceneVector object_instance_scene_vector;
+//  std::vector<ObjectInstanceScene_old> listOfObjectScenes;
 
  public:
   //Constructor with LPD Dataset

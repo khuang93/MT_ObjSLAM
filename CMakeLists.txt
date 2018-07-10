@@ -81,7 +81,7 @@ set(Mapper_Sources
         src/ObjSLAM/ObjSceneReconstructionEngine_CPU.cpp src/ObjSLAM/ObjSceneReconstructionEngine_CPU.h
         src/ObjSLAM/ObjectView_New.cpp src/ObjSLAM/ObjectView_New.h
 #[[        src/ObjSLAM/ObjSLAMBasicEngine.cpp src/ObjSLAM/ObjSLAMBasicEngine.h]]
-        src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h src/ObjSLAM/IOUtils.cpp src/ObjSLAM/IOUtils.h)
+        src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h src/ObjSLAM/IOUtils.cpp src/ObjSLAM/IOUtils.h src/ObjSLAM/ObjectInstanceScene_old.cpp src/ObjSLAM/ObjectInstanceScene_old.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)

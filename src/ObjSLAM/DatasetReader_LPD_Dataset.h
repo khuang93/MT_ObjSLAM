@@ -47,7 +47,7 @@ class DatasetReader_LPD_Dataset {
 
 //  ObjSLAM::ObjCameraPose* pose_cw_prev;
 
-  int img_number = 1;
+  int img_number =1;
 
  public:
   DatasetReader_LPD_Dataset() {};
@@ -65,10 +65,9 @@ class DatasetReader_LPD_Dataset {
 
   void readNext() {
     cout << "img_number = " << img_number << endl;
-    if (img_number > 1) {
-      deleteVariables();
-
-    }
+//    if (img_number > 1) {
+//      deleteVariables();
+//    }
 
 
     //TODO make the path using os path join instead of slash
@@ -80,9 +79,12 @@ class DatasetReader_LPD_Dataset {
 
     std::vector<string> fileNames = getFileNames(path+ "/pixel_label/cam0/");
     std::vector<string> filteredNames;
+
     for(int i = 0; i<fileNames.size();i++){
-      if(boost::starts_with(fileNames.at(i),"1.")&&fileNames.at(i)!=(to_string(img_number) + ".txt"))
+      string prefix = to_string(img_number)+".";
+      if(boost::starts_with(fileNames.at(i),prefix)&&fileNames.at(i)!=prefix) {
         filteredNames.push_back(fileNames.at(i));
+      }
     }
     std::sort(filteredNames.begin(), filteredNames.end());
 
@@ -97,9 +99,11 @@ class DatasetReader_LPD_Dataset {
 
     //depth
     ObjSLAM::ObjFloatImage *ray_depth_img = ReadOneDepth(depth_path);
+
     depth_img = convertRayDepthToZDepth(ray_depth_img);
     delete ray_depth_img;
-
+    string name = to_string(img_number)+".ppm";
+    SaveImageToFile(depth_img,name.c_str());
     rgb_img = ReadOneRGB(rgb_path);
 
     label_img = ReadLabel_OneFile(label_path);

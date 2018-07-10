@@ -22,14 +22,14 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(string path, Vector2i
 
   auto* calib = reader.getCalib();
 
-//  auto* view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector.at(11));
+  auto* view0_o = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img);
 
   auto* view0 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
 
   vector<ObjSLAM::ObjectView_New *> ListofAllViews = {view0};
 
   //const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType, ViewVector* _viewVector
-  auto *object = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(
+  auto *object = new ObjSLAM::ObjectInstanceScene_old<TVoxel, TIndex>(
       params, true, MEMORYDEVICE_CPU, view0);
 
   //Tracking State
@@ -55,7 +55,7 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(string path, Vector2i
   //basic engine
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
   internalSettings->deviceType=internalSettings->DEVICE_CPU;
-  int obj_class_num =30;
+  int obj_class_num =0;
 
   itmBasicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(internalSettings,*calib,imgSize);
 
@@ -63,19 +63,22 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(string path, Vector2i
 
 //  itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,itmBasicEngine->GetTrackingState()->pose_d,&(calib->intrinsics_d));
 
-//  reader.readNext();
-//  itmBasicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
-//  reader.readNext();
-//  itmBasicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
-//  reader.readNext();
-//  itmBasicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
+  reader.readNext();
+//  delete view0;
+  auto * view1 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  itmBasicEngine->ProcessFrame(std::get<1>(view1->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view1->getObjMap().find(obj_class_num)->second)->depth);
+
 //  reader.readNext();
 //  itmBasicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
 
   itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,itmBasicEngine->GetTrackingState()->pose_d,&(calib->intrinsics_d));
 
   SaveImageToFile(img,"vol.ppm");
+  itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_ORIGINAL_DEPTH,itmBasicEngine->GetTrackingState()->pose_d,&(calib->intrinsics_d));
+  SaveImageToFile(img,"orig.ppm");
 
+//  cout<<itmBasicEngine->GetTrackingState()->pose_d->GetM();
+//  cout<<reader.getPose()->getSE3Pose().GetM();
 }
 
 

@@ -18,6 +18,8 @@ namespace ObjSLAM {
 class ObjectInstance {
  private:
   ObjectClassLabel label;
+  int objectIndex;
+
 //  std::vector<ObjectView_old> listOfVisibleViews;
 
   //TODO: complete the class with voxel blocks:
