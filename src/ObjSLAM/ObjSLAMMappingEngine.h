@@ -34,7 +34,7 @@ class ObjSLAMMappingEngine {
   ITMLib::ITMRenderState *r_state;
   ITMLib::ITMBasicEngine<TVoxel, TIndex> *itmBasicEngine;
   ITMLib::ITMSceneParams* params = new ITMLib::ITMSceneParams(0.5, 4, 0.01, 0.1, 4.0, false);
-  ITMLib::ITMVisualisationEngine * visualisationEngine;
+  ITMLib::ITMVisualisationEngine<TVoxel, TIndex>  * visualisationEngine;
   DatasetReader_LPD_Dataset reader;
   Vector2i imgSize;
   std::vector<ObjectInstanceScene<TVoxel,TIndex>*> object_instance_scene_vector;
@@ -54,7 +54,8 @@ class ObjSLAMMappingEngine {
   void CreateView(ObjCameraPose pose, ObjFloatImage* _depth, ObjUChar4Image* _rgb, LabelImgVector _label_img_vector);
 
   void ProcessFrame();
-  void ProcessOneObject(Object_View_Tuple& view_tuple, ObjectInstanceScene* scene);
+
+  void ProcessOneObject(Object_View_Tuple& view_tuple, ObjectInstanceScene<TVoxel, TIndex>* scene);
 
   void UpdateTrackingState(const ORUtils::SE3Pose* _pose);
 

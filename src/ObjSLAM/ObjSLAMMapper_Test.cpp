@@ -32,9 +32,14 @@ int main(int argc, char **argv) {
 
 
 //  auto * mappingEngine = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, path, imgSize);
+  cout<<"dbg"<<endl;
+  //TODO here error
   auto * mappingEngine2 = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
+  cout<<"dbg"<<endl;
   mappingEngine2->CreateView(*reader.getPose(),reader.depth_img,reader.rgb_img,reader.label_img_vector);
+  cout<<"dbg"<<endl;
   mappingEngine2->UpdateTrackingState(&(reader.getPose()->getSE3Pose()));
+  cout<<"dbg"<<endl;
   mappingEngine2->ProcessFrame();
 
 

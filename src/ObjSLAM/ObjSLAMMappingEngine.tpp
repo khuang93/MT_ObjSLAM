@@ -119,7 +119,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame(){
   bool useSwapping = (settings->swappingMode==ITMLib::ITMLibSettings::SWAPPINGMODE_ENABLED);
   if(view->getObjMap().size()>0){
     for(int t =0; t < view->getObjMap().size();t++){
-      Object_View_Tuple view_tuple = view->getObjMap().at(t)
+      Object_View_Tuple view_tuple = view->getObjMap().at(t);
       ObjectClassLabel label = std::get<0>(view_tuple)->getClassLabel();
       auto * obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(label, t, &(settings->sceneParams),useSwapping, MEMORYDEVICE_CPU, view);
       this->object_instance_scene_vector.push_back(obj_inst_scene);
@@ -131,7 +131,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame(){
 }
 
 template <typename TVoxel, typename TIndex>
-void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple& view_tuple, ObjectInstanceScene* scene){
+void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple& view_tuple, ObjectInstanceScene<TVoxel, TIndex> * scene){
 
   //  denseMapper->ProcessFrame(view, tstate, scene, rstate, reset)
   auto * itmView = std::get<1>(view_tuple);
