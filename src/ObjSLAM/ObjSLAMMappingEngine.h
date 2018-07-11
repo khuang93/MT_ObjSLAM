@@ -37,11 +37,21 @@ class ObjSLAMMappingEngine {
   DatasetReader_LPD_Dataset reader;
   Vector2i imgSize;
   std::vector<ObjectInstanceScene<TVoxel,TIndex>*> object_instance_scene_vector;
+  const ITMLib::ITMLibSettings * settings;
+  const ITMLib::ITMRGBDCalib* calib;
 //  std::vector<ObjectInstanceScene_old> listOfObjectScenes;
+
+  ITMLib::ITMDenseMapper<TVoxel, TIndex> *denseMapper;
+
 
  public:
   //Constructor with LPD Dataset
-  ObjSLAMMappingEngine(string path, Vector2i _imgSize);
+  ObjSLAMMappingEngine(ITMLib::ITMLibSettings* _settings,string path, Vector2i _imgSize);
+
+  ObjSLAMMappingEngine(ITMLib::ITMLibSettings* _settings, ITMLib::ITMRGBDCalib* _calib, Vector2i _imgSize);
+
+  void CreateView(ObjCameraPose pose, ObjFloatImage* _depth, ObjUChar4Image* _rgb, LabelImgVector _label_img_vector);
+
   void bla();
 
 //  void GetNextFrame();

@@ -11,7 +11,7 @@ namespace ObjSLAM{
 
 //Constructor with LPD Dataset
 template <typename TVoxel, typename TIndex>
-ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(string path, Vector2i _imgSize):imgSize(_imgSize){
+ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(ITMLib::ITMLibSettings* _settings, string path, Vector2i _imgSize):settings(_settings),imgSize(_imgSize){
 #ifndef COMPILE_WITHOUT_CUDA
   cout<<"cuda"<<endl;
 #endif
@@ -81,43 +81,26 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(string path, Vector2i
   }
 
 
-
-
-//  engine_cpu->ResetScene(object);
-
-//  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
-
-
-  //basic engine
-
-//  int obj_class_num =0;
-
-//  itmBasicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(internalSettings,*calib,imgSize);
-
-//  itmBasicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
-
-//  itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,itmBasicEngine->GetTrackingState()->pose_d,&(calib->intrinsics_d));
-
-//  reader.readNext();
-//  auto * view1 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-//  itmBasicEngine->ProcessFrame(std::get<1>(view1->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view1->getObjMap().find(obj_class_num)->second)->depth);
-//  reader.readNext();
-//   view1 = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-//  itmBasicEngine->ProcessFrame(std::get<1>(view1->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view1->getObjMap().find(obj_class_num)->second)->depth);
-
-
-//  reader.readNext();
-//  itmBasicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth);
-//
-//  itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,itmBasicEngine->GetTrackingState()->pose_d,&(calib->intrinsics_d));
-//
-//  SaveImageToFile(img,"vol.ppm");
-//  itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_ORIGINAL_DEPTH,itmBasicEngine->GetTrackingState()->pose_d,&(calib->intrinsics_d));
-//  SaveImageToFile(img,"orig.ppm");
-
-//  cout<<itmBasicEngine->GetTrackingState()->pose_d->GetM();
-//  cout<<reader.getPose()->getSE3Pose().GetM();
 }
+
+template <typename TVoxel, typename TIndex>
+ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(ITMLib::ITMLibSettings* _settings, ITMLib::ITMRGBDCalib* _calib, Vector2i _imgSize):
+settings(_settings),calib(_calib),imgSize(_imgSize){
+
+  denseMapper = new ITMLib::ITMDenseMapper<TVoxel,TIndex>(settings);
+
+  view = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+
+}
+
+template <typename TVoxel, typename TIndex>
+void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjCameraPose pose, ObjFloatImage* _depth, ObjUChar4Image* _rgb, LabelImgVector _label_img_vector){
+  if(settings->deviceType!=ITMLib::ITMLibSettings::DEVICE_CUDA){
+    this->view=new ObjectView_New(*calib,imgSize,imgSize, false ,pose,_depth,_rgb,_label_img_vector);
+  }else{
+    this->view=new ObjectView_New(*calib,imgSize,imgSize, true ,pose,_depth,_rgb,_label_img_vector);
+  }
+};
 
 template <typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::bla(){

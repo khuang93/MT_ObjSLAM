@@ -24,7 +24,14 @@ int main(int argc, char **argv) {
   //Path of the depth image file
   string path = argv[1];
   Vector2i imgSize(640,480);
-  auto * mappingEngine = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(path, imgSize);
+
+  ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
+  internalSettings->deviceType=ITMLib::ITMLibSettings::DEVICE_CPU;
+  DatasetReader_LPD_Dataset reader(path, imgSize);
+  reader.readNext();
+
+
+  auto * mappingEngine = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, path, imgSize);
 
 
 //  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
