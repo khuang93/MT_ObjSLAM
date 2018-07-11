@@ -5,6 +5,9 @@
 #pragma once
 #include "ObjSLAMMappingEngine.h"
 #include <External/InfiniTAM/InfiniTAM/ORUtils/FileUtils.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Visualisation/ITMVisualisationEngineFactory.h>
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderStateFactory.h"
+
 
 
 namespace ObjSLAM{
@@ -95,6 +98,9 @@ settings(_settings),calib(_calib),imgSize(_imgSize){
   this->t_state = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
   t_state->trackerResult=ITMLib::ITMTrackingState::TRACKING_GOOD;
 
+  r_state = ITMLib::ITMRenderStateFactory<TIndex>::CreateRenderState(imgSize, &(settings->sceneParams), MEMORYDEVICE_CPU);
+
+  visualisationEngine = ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel,TIndex>(settings->deviceType);
 
 }
 
@@ -116,18 +122,33 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame(){
       Object_View_Tuple view_tuple = view->getObjMap().at(t)
       ObjectClassLabel label = std::get<0>(view_tuple)->getClassLabel();
       auto * obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(label, t, &(settings->sceneParams),useSwapping, MEMORYDEVICE_CPU, view);
+      this->object_instance_scene_vector.push_back(obj_inst_scene);
 
+      //ProcessOneObject
+      ProcessOneObject(view_tuple, obj_inst_scene);
     }
   }
-
 }
 
 template <typename TVoxel, typename TIndex>
-void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple view_tuple, ){
+void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple& view_tuple, ObjectInstanceScene* scene){
 
-//  denseMapper->ProcessFrame(view, tstate, scene, rstate, reset)
+  //  denseMapper->ProcessFrame(view, tstate, scene, rstate, reset)
+  auto * itmView = std::get<1>(view_tuple);
+  denseMapper->ProcessFrame(itmView,t_state, scene, r_state);
 
 }
+
+
+template <typename TVoxel, typename TIndex>
+void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(const ORUtils::SE3Pose * _pose){
+  if(t_state==NULL){
+    t_state = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
+  }
+  t_state->pose_d->SetFrom(_pose);
+}
+
+
 
 template <typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::bla(){
