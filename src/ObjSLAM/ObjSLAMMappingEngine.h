@@ -52,6 +52,9 @@ class ObjSLAMMappingEngine {
 
   void CreateView(ObjCameraPose pose, ObjFloatImage* _depth, ObjUChar4Image* _rgb, LabelImgVector _label_img_vector);
 
+  void ProcessFrame();
+  void ProcessOneObject();
+
   void bla();
 
 //  void GetNextFrame();

@@ -89,7 +89,12 @@ settings(_settings),calib(_calib),imgSize(_imgSize){
 
   denseMapper = new ITMLib::ITMDenseMapper<TVoxel,TIndex>(settings);
 
+
   view = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+
+  this->t_state = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
+  t_state->trackerResult=ITMLib::ITMTrackingState::TRACKING_GOOD;
+
 
 }
 
@@ -101,6 +106,28 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjCameraPose pose, ObjFlo
     this->view=new ObjectView_New(*calib,imgSize,imgSize, true ,pose,_depth,_rgb,_label_img_vector);
   }
 };
+
+
+template <typename TVoxel, typename TIndex>
+void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame(){
+  bool useSwapping = (settings->swappingMode==ITMLib::ITMLibSettings::SWAPPINGMODE_ENABLED);
+  if(view->getObjMap().size()>0){
+    for(int t =0; t < view->getObjMap().size();t++){
+      Object_View_Tuple view_tuple = view->getObjMap().at(t)
+      ObjectClassLabel label = std::get<0>(view_tuple)->getClassLabel();
+      auto * obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(label, t, &(settings->sceneParams),useSwapping, MEMORYDEVICE_CPU, view);
+
+    }
+  }
+
+}
+
+template <typename TVoxel, typename TIndex>
+void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple view_tuple, ){
+
+//  denseMapper->ProcessFrame(view, tstate, scene, rstate, reset)
+
+}
 
 template <typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::bla(){

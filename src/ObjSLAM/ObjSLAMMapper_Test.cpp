@@ -32,6 +32,8 @@ int main(int argc, char **argv) {
 
 
   auto * mappingEngine = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, path, imgSize);
+  auto * mappingEngine2 = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
+  mappingEngine2->CreateView(*reader.getPose(),reader.depth_img,reader.rgb_img,reader.label_img_vector);
 
 
 //  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
