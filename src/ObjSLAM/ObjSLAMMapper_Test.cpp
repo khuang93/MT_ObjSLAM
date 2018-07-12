@@ -31,16 +31,16 @@ int main(int argc, char **argv) {
   reader.readNext();
 
 
-//  auto * mappingEngine = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, path, imgSize);
-  cout<<"dbg"<<endl;
-  //TODO here error
-  auto * mappingEngine2 = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
-  cout<<"dbg"<<endl;
-  mappingEngine2->CreateView(*reader.getPose(),reader.depth_img,reader.rgb_img,reader.label_img_vector);
-  cout<<"dbg"<<endl;
-  mappingEngine2->UpdateTrackingState(&(reader.getPose()->getSE3Pose()));
-  cout<<"dbg"<<endl;
-  mappingEngine2->ProcessFrame();
+  auto * mappingEngine = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, path, imgSize);
+//  cout<<"dbg"<<endl;
+//  //TODO here error
+//  auto * mappingEngine2 = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
+//  cout<<"dbg"<<endl;
+//  mappingEngine2->CreateView(*reader.getPose(),reader.depth_img,reader.rgb_img,reader.label_img_vector);
+//  cout<<"dbg"<<endl;
+//  mappingEngine2->UpdateTrackingState(&(reader.getPose()->getSE3Pose()));
+//  cout<<"dbg"<<endl;
+//  mappingEngine2->ProcessFrame();
 
 
 //  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
