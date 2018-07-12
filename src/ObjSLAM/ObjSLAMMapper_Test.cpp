@@ -12,7 +12,7 @@
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
 
 #include "ObjSLAMMappingEngine.h"
-
+#include "External/InfiniTAM/InfiniTAM/ORUtils/Matrix.h"
 //#include "ObjSLAMMappingEngine.tpp"
 
 using namespace std;
@@ -31,16 +31,42 @@ int main(int argc, char **argv) {
   reader.readNext();
 
 
-  auto * mappingEngine = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, path, imgSize);
-//  cout<<"dbg"<<endl;
+//  Eigen::Quaterniond quat(0.93579, 0.0281295, 0.0740478, -0.343544);
+
+
+//  Eigen::Matrix3d pose = reader.getPose()->getQuaternion().normalized().toRotationMatrix();
+//  Eigen::Matrix3d pose = quat.normalized().toRotationMatrix();
+//  ORUtils::Matrix3<float> pose_OR = reader.getPose()->getSE3Pose().GetR();
+//
+//  Eigen::Vector3d vec_Eigen(1.0f,1.0f,1.0f);
+//  ORUtils::Vector3<float> vec_OR(1,1,1);
+//
+//  Eigen::VectorXd res = pose*vec_Eigen;
+//  ORUtils::Vector3<float> res_OR =pose_OR*vec_OR;
+
+
+
+//  cout<<pose<<endl;
+//  cout<<pose_OR<<endl;
+//
+//  cout<<res<<endl;
+//  cout<<res_OR<<endl;
+
+//  auto * mappingEngine = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, path, imgSize);
+
 //  //TODO here error
-//  auto * mappingEngine2 = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
-//  cout<<"dbg"<<endl;
-//  mappingEngine2->CreateView(*reader.getPose(),reader.depth_img,reader.rgb_img,reader.label_img_vector);
-//  cout<<"dbg"<<endl;
-//  mappingEngine2->UpdateTrackingState(&(reader.getPose()->getSE3Pose()));
-//  cout<<"dbg"<<endl;
-//  mappingEngine2->ProcessFrame();
+  auto * mappingEngine2 = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
+
+  mappingEngine2->CreateView(*reader.getPose(),reader.depth_img,reader.rgb_img,reader.label_img_vector);
+
+  auto * pose_test = new ORUtils::SE3Pose(0.0f,0.0f,0.0f,0.0f,0.0f,0.0f);
+
+//  mappingEngine2->UpdateTrackingState(pose_test);
+    cout<<reader.getPose()->getSE3Pose();
+  mappingEngine2->UpdateTrackingState(&(reader.getPose()->getSE3Pose()));
+
+  cout<<"dbg"<<endl;
+  mappingEngine2->ProcessFrame();
 
 
 //  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;

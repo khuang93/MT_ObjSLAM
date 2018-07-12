@@ -34,10 +34,11 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(ITMLib::ITMLibSetting
 
   vector<ObjSLAM::ObjectView_New *> ListofAllViews = {view0};
 
-  //const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType, ViewVector* _viewVector
+//  const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType, ViewVector* _viewVector
 //  auto *object = new ObjSLAM::ObjectInstanceScene_old<TVoxel, TIndex>(
 //      params, true, MEMORYDEVICE_CPU, view0);
-  //TODO DEBUG
+
+//TODO DEBUG
 //  std::cout << "ObjectInstanceScene: " << std::is_copy_assignable<ObjSLAM::ObjectInstanceScene<ITMVoxel,ITMVoxelIndex>>::value << std::endl;
 
   //Tracking State
@@ -52,8 +53,8 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(ITMLib::ITMLibSetting
 
 //#pragma omp parallel
 //#pragma omp for
-  for(int t =0; t<view0->getObjMap().size();t++){
-//    ObjectClassLabel lbl = std::get<0>(view0->getObjMap().at(t))->getClassLabel();
+  for(int t =0; t<view0->getObjMap().size()-10;t++){
+/*//    ObjectClassLabel lbl = std::get<0>(view0->getObjMap().at(t))->getClassLabel();
 //    std::cout<<t<<endl;
 //    ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>* obj_inst_scene = NULL;
 //    if(t==0)
@@ -69,11 +70,12 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(ITMLib::ITMLibSetting
 //                                            obj_inst_scene->sceneParams->viewFrustum_min,
 //                                            MEMORYDEVICE_CPU);
 //
-//    engine_cpu->ResetScene(obj_inst_scene);
+//    engine_cpu->ResetScene(obj_inst_scene);*/
     ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
     int obj_class_num=t;
     itmBasicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(internalSettings,*calib,imgSize);
     itmBasicEngine->ProcessFrame(std::get<1>(view0->getObjMap().find(obj_class_num)->second)->rgb,std::get<1>(view0->getObjMap().find(obj_class_num)->second)->depth, NULL, reader.getPose()->getSE3Pose());
+
     itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME,itmBasicEngine->GetTrackingState()->pose_d,&(calib->intrinsics_d));
 
     string name = to_string(t)+".ppm";
@@ -91,9 +93,6 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(ITMLib::ITMLibSetting
 settings(_settings),calib(_calib),imgSize(_imgSize){
 
   denseMapper = new ITMLib::ITMDenseMapper<TVoxel,TIndex>(settings);
-
-
-  view = new ObjSLAM::ObjectView_New(*calib, imgSize, imgSize, false, *reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
 
   this->t_state = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
   t_state->trackerResult=ITMLib::ITMTrackingState::TRACKING_GOOD;
@@ -123,7 +122,6 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame(){
       ObjectClassLabel label = std::get<0>(view_tuple)->getClassLabel();
       auto * obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(label, t, &(settings->sceneParams),useSwapping, MEMORYDEVICE_CPU, view);
       this->object_instance_scene_vector.push_back(obj_inst_scene);
-
       //ProcessOneObject
       ProcessOneObject(view_tuple, obj_inst_scene);
     }
@@ -135,8 +133,24 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple& v
 
   //  denseMapper->ProcessFrame(view, tstate, scene, rstate, reset)
   auto * itmView = std::get<1>(view_tuple);
-  denseMapper->ProcessFrame(itmView,t_state, scene, r_state);
+  int index = std::get<0>(view_tuple)->getClassLabel().getLabelIndex();
+  string name = to_string(index) + "_new.ppm";
 
+  denseMapper->ProcessFrame(itmView,t_state, scene, r_state);
+  cout<<"dbg"<<endl;
+  ObjUChar4Image * img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
+
+  visualisationEngine->RenderImage(scene, t_state->pose_d, &itmView->calib.intrinsics_d, r_state, r_state->raycastImage, ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME, ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
+
+//  itmBasicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(settings,*calib,imgSize);
+//  itmBasicEngine->SetScene(scene);
+//  itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME);
+
+//  img->ChangeDims(r_state->raycastImage->noDims);
+//  img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
+
+  SaveImageToFile(img,name.c_str());
+  cout<<"dbg"<<endl;
 }
 
 
@@ -146,6 +160,8 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(const ORUtils::SE
     t_state = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
   }
   t_state->pose_d->SetFrom(_pose);
+  t_state->pose_d->Coerce();
+//  t_state->Reset();
 }
 
 

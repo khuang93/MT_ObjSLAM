@@ -102,8 +102,8 @@ class DatasetReader_LPD_Dataset {
 
     depth_img = convertRayDepthToZDepth(ray_depth_img);
     delete ray_depth_img;
-    string name = to_string(img_number)+".ppm";
-    SaveImageToFile(depth_img,name.c_str());
+//    string name = to_string(img_number)+".ppm";
+//    SaveImageToFile(depth_img,name.c_str());
     rgb_img = ReadOneRGB(rgb_path);
 
     label_img = ReadLabel_OneFile(label_path);
@@ -295,7 +295,6 @@ class DatasetReader_LPD_Dataset {
 
     /*    ifstream in;
     in.open(Path);*/
-
 
     ObjSLAM::LPD_RAW_Pose *res = new ObjSLAM::LPD_RAW_Pose();
     double currentT = 0.0;

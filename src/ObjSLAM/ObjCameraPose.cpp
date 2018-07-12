@@ -23,7 +23,8 @@ ObjCameraPose::ObjCameraPose(ORUtils::SE3Pose _se3pose):se3Pose(_se3pose) {
 
 ObjCameraPose::ObjCameraPose(double qw, double qx, double qy, double qz, double tx, double ty, double tz) :eigen_pose(qw,qx,qy,qz){
     Eigen::Matrix3d eigen_mat = eigen_pose.normalized().toRotationMatrix();
-    double m00 = eigen_mat(0,0);    double m01 = eigen_mat(0,1);    double m02 = eigen_mat(0,2);
+    eigen_mat=eigen_mat.inverse().eval(); //definition of Pose inversed in ITM vs LPD Dataset
+    double m00 = eigen_mat(0,0);double m01 = eigen_mat(0,1);double m02 = eigen_mat(0,2);
     double m10 = eigen_mat(1,0);double m11 = eigen_mat(1,1);double m12 = eigen_mat(1,2);
     double m20 = eigen_mat(2,0);double m21 = eigen_mat(2,1);double m22 = eigen_mat(2,2);
 
@@ -50,8 +51,11 @@ ORUtils::SE3Pose& ObjCameraPose::getSE3Pose() {
 }
 
 void ObjCameraPose::setQuaternion(double w, double x, double y, double z){
-    Eigen::Quaterniond temp(w,x,y,z);
-
+    Eigen::Quaterniond temp;
+    temp.w()=w;
+    temp.x()=x;
+    temp.y()=y;
+    temp.z()=z;
     eigen_pose=temp;
 }
 
