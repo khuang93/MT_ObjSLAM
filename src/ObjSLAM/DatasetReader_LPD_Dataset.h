@@ -10,7 +10,7 @@
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
-
+#include <memory>
 //#include <opencv2/opencv.hpp>
 #include "ObjSLAMDataTypes.h"
 #include "ObjCameraPose.h"
@@ -24,7 +24,7 @@
 
 using namespace std;
 
-using LabelImgVector = std::vector<ObjSLAM::ObjUIntImage *>;
+using LabelImgVector = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
 
 class DatasetReader_LPD_Dataset {
  private:
@@ -32,12 +32,12 @@ class DatasetReader_LPD_Dataset {
   Vector2i imgSize;
   ITMLib::ITMRGBDCalib *calib;
   ifstream pose_in;
-  ObjSLAM::ObjCameraPose *pose_cw;
+  ObjSLAM::ObjCameraPose *pose_wc;
   string path;
  public:
   ObjSLAM::ObjUChar4Image *rgb_img;
   ObjSLAM::ObjFloatImage *depth_img;
-  ObjSLAM::ObjUIntImage *label_img;
+  std::shared_ptr<ObjSLAM::ObjUIntImage> label_img;
   LabelImgVector label_img_vector;
 
 //  ObjSLAM::ObjUChar4Image *rgb_img_prev;
@@ -47,7 +47,7 @@ class DatasetReader_LPD_Dataset {
 
 //  ObjSLAM::ObjCameraPose* pose_cw_prev;
 
-  int img_number =1;
+  int img_number = 1;
 
  public:
   DatasetReader_LPD_Dataset() {};
@@ -77,19 +77,19 @@ class DatasetReader_LPD_Dataset {
     string label_path = path + "/pixel_label/cam0/" + to_string(img_number) + ".txt";
     string pose_path = path + "/groundTruthPoseVel_imu.txt";
 
-    std::vector<string> fileNames = getFileNames(path+ "/pixel_label/cam0/");
+    std::vector<string> fileNames = getFileNames(path + "/pixel_label/cam0/");
     std::vector<string> filteredNames;
 
-    for(int i = 0; i<fileNames.size();i++){
-      string prefix = to_string(img_number)+".";
-      if(boost::starts_with(fileNames.at(i),prefix)&&fileNames.at(i)!=prefix) {
+    for (int i = 0; i < fileNames.size(); i++) {
+      string prefix = to_string(img_number) + ".";
+      if (boost::starts_with(fileNames.at(i), prefix) && fileNames.at(i) != prefix) {
         filteredNames.push_back(fileNames.at(i));
       }
     }
     std::sort(filteredNames.begin(), filteredNames.end());
 
-    for(int i = 0; i<filteredNames.size();i++){
-      label_img_vector.push_back(ReadLabel_OneFile(path + "/pixel_label/cam0/"+filteredNames.at(i)));
+    for (int i = 0; i < filteredNames.size(); i++) {
+      label_img_vector.push_back(ReadLabel_OneFile(path + "/pixel_label/cam0/" + filteredNames.at(i)));
     }
 
     if (!pose_in.is_open()) {
@@ -115,9 +115,11 @@ class DatasetReader_LPD_Dataset {
     ObjSLAM::ObjCameraPose *T_bw = convertRawPose_to_Pose(raw_pose);
     //T_cb
     ObjSLAM::ObjCameraPose *T_cb = new ObjSLAM::ObjCameraPose(0.5, -0.5, 0.5, -0.5, 0, 0, 0);
-    ORUtils::SE3Pose T_cw_SE3_ = T_cb->getSE3Pose().GetM() * T_bw->getSE3Pose().GetM();
-    pose_cw = new ObjSLAM::ObjCameraPose(T_cw_SE3_);
-
+    //Cam to World
+    ORUtils::SE3Pose T_cw_SE3 = T_cb->getSE3Pose().GetM() * T_bw->getSE3Pose().GetM();
+    ORUtils::SE3Pose T_wc_SE3(T_cw_SE3.GetInvM());
+    //world to cam
+    pose_wc = new ObjSLAM::ObjCameraPose(T_wc_SE3);
 
     delete raw_pose;
     delete T_bw;
@@ -127,24 +129,21 @@ class DatasetReader_LPD_Dataset {
     img_number++;
   }
 
-  std::vector<std::string> getFileNames(std::string directoryPath)
-  {
-    namespace fs = boost::filesystem ;
-    std::vector<std::string> names ;
+  std::vector<std::string> getFileNames(std::string directoryPath) {
+    namespace fs = boost::filesystem;
+    std::vector<std::string> names;
 
-    if ( fs::exists(directoryPath) )
-    {
-      fs::directory_iterator it(directoryPath) ;
-      fs::directory_iterator end ;
+    if (fs::exists(directoryPath)) {
+      fs::directory_iterator it(directoryPath);
+      fs::directory_iterator end;
 
-      while ( it != end )
-      {
-        names.push_back(it->path().filename().string()) ;
-        ++it ;
+      while (it != end) {
+        names.push_back(it->path().filename().string());
+        ++it;
       }
     }
 
-    return names ;
+    return names;
   }
 
   ObjSLAM::ObjFloatImage *ReadOneDepth(std::string Path) {
@@ -253,7 +252,7 @@ class DatasetReader_LPD_Dataset {
     return res;
   }*/
 
-  ObjSLAM::ObjUIntImage *ReadLabel_OneFile(std::string Path) {
+  std::shared_ptr<ObjSLAM::ObjUIntImage> ReadLabel_OneFile(std::string Path) {
     ifstream in;
 
     in.open(Path);
@@ -273,7 +272,8 @@ class DatasetReader_LPD_Dataset {
 //    ORUtils::Vector2<int> imgSize(width, height);
 
     //create UintImage object
-    auto *res = new ObjSLAM::ObjUIntImage(imgSize, MEMORYDEVICE_CPU);
+//    auto *res = new ObjSLAM::ObjUIntImage(imgSize, MEMORYDEVICE_CPU);
+    std::shared_ptr<ObjSLAM::ObjUIntImage> res = std::make_shared<ObjSLAM::ObjUIntImage>(imgSize,MEMORYDEVICE_CPU);
 
     res->ChangeDims(imgSize);
 
@@ -438,10 +438,10 @@ class DatasetReader_LPD_Dataset {
 //    delete(this->rgb_img);
 //    delete(this->depth_img);
 //    delete(this->pose_cw);
-    delete this->label_img;
+//    delete this->label_img;
     delete this->rgb_img;
     delete this->depth_img;
-    delete this->pose_cw;
+    delete this->pose_wc;
     label_img_vector.clear();
   }
 
@@ -461,7 +461,7 @@ class DatasetReader_LPD_Dataset {
     return imgSize;
   }
 
-  ObjSLAM::ObjCameraPose *getPose() { return pose_cw; }
+  ObjSLAM::ObjCameraPose *getPose() { return pose_wc; }
 
 };
 

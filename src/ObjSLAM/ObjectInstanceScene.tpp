@@ -22,4 +22,9 @@ label(_label),objectIndex(_objectIndex),ITMLib::ITMScene<TVoxel,TIndex>(_scenePa
 }
 
 
+template <typename TVoxel, typename TIndex>
+void ObjectInstanceScene<TVoxel, TIndex>::deleteAll() {
+
+}
+
 }

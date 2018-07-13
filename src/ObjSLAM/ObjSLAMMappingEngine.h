@@ -49,7 +49,7 @@ class ObjSLAMMappingEngine {
   //Constructor with LPD Dataset
   ObjSLAMMappingEngine(ITMLib::ITMLibSettings* _settings,string path, Vector2i _imgSize);
 
-  ObjSLAMMappingEngine(ITMLib::ITMLibSettings* _settings, ITMLib::ITMRGBDCalib* _calib, Vector2i _imgSize);
+  ObjSLAMMappingEngine(const ITMLib::ITMLibSettings* _settings, const ITMLib::ITMRGBDCalib* _calib, const Vector2i _imgSize);
 
   void CreateView(ObjCameraPose pose, ObjFloatImage* _depth, ObjUChar4Image* _rgb, LabelImgVector _label_img_vector);
 
@@ -59,8 +59,11 @@ class ObjSLAMMappingEngine {
 
   void UpdateTrackingState(const ORUtils::SE3Pose* _pose);
 
-  void bla();
+  void deleteAll();
 
+  ~ObjSLAMMappingEngine(){
+    deleteAll();
+  }
 //  void GetNextFrame();
 //
 //  void CreateObjectScenes();

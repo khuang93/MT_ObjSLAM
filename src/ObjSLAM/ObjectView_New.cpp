@@ -38,9 +38,10 @@ void ObjectView_New::setListOfObjects_old() {
 
       //add index in map
       ObjectClassLabel label(labelIndex, std::to_string(labelIndex));
-      auto *new_obj_instance = new ObjSLAM::ObjectInstance(label);
-      auto *single_obj_ITMView = new ITMLib::ITMView(calibration, imgSize_rgb, imgSize_d, false);
-
+//      auto *new_obj_instance = new ObjSLAM::ObjectInstance(label);
+      auto new_obj_instance = std::make_shared<ObjSLAM::ObjectInstance>(label);
+//      auto *single_obj_ITMView = new ITMLib::ITMView(calibration, imgSize_rgb, imgSize_d, false);
+      auto single_obj_ITMView = std::make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
       //Init size of depth in ITMView
       single_obj_ITMView->depth->ChangeDims(imgSize_d);
       //Init size of rgb in ITMView
@@ -71,7 +72,8 @@ void ObjectView_New::setListOfObjects() {
   for(LabelImgVector::iterator it = label_img_vector.begin(); it!=label_img_vector.end();it++){
 
     int labelIndex = 0;
-    auto* single_obj_ITMView =  new ITMLib::ITMView(calibration, imgSize_rgb, imgSize_d, false);
+//    auto* single_obj_ITMView =  new ITMLib::ITMView(calibration, imgSize_rgb, imgSize_d, false);
+    auto single_obj_ITMView = std::make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
 //    //Init size of depth in ITMView
 //    single_obj_ITMView->depth->ChangeDims(imgSize_d);
 //    //Init size of rgb in ITMView
@@ -99,7 +101,8 @@ void ObjectView_New::setListOfObjects() {
       //if yes:
 
       //create a object instance
-      auto * new_obj_instance = new ObjectInstance(label);
+//      auto * new_obj_instance = new ObjectInstance(label);
+      auto new_obj_instance = std::make_shared<ObjectInstance>(label);
       Object_View_Tuple object_view_tuple(new_obj_instance, single_obj_ITMView);
 //      std::cout<<"key"<<obj_map.size()+1<<endl;
       obj_map.insert(std::pair<int, Object_View_Tuple>(obj_map.size()+1, object_view_tuple));
@@ -108,10 +111,12 @@ void ObjectView_New::setListOfObjects() {
 
 
   //background
-  auto* single_obj_ITMView =  new ITMLib::ITMView(calibration, imgSize_rgb, imgSize_d, false);
+//  auto* single_obj_ITMView =  new ITMLib::ITMView(calibration, imgSize_rgb, imgSize_d, false);
+  auto single_obj_ITMView = std::make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
 
   ObjectClassLabel label(0, std::to_string(0));
-  auto * new_obj_instance = new ObjectInstance(label);
+//  auto * new_obj_instance = new ObjectInstance(label);
+  auto new_obj_instance = std::make_shared<ObjectInstance>(label);
   Object_View_Tuple object_view_tuple(new_obj_instance, single_obj_ITMView);
   obj_map.insert(std::pair<int, Object_View_Tuple>(0, object_view_tuple));
 

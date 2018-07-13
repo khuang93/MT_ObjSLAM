@@ -12,7 +12,6 @@
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
 
 #include "ObjSLAMMappingEngine.h"
-#include "External/InfiniTAM/InfiniTAM/ORUtils/Matrix.h"
 //#include "ObjSLAMMappingEngine.tpp"
 
 using namespace std;
@@ -23,14 +22,15 @@ int main(int argc, char **argv) {
 
   //Path of the depth image file
   string path = argv[1];
-  Vector2i imgSize(640,480);
+  Vector2i imgSize(640, 480);
 
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
-  internalSettings->deviceType=ITMLib::ITMLibSettings::DEVICE_CPU;
+  internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
   DatasetReader_LPD_Dataset reader(path, imgSize);
   reader.readNext();
 
-
+//test the matrix multiplication
+  /*
 //  Eigen::Quaterniond quat(0.93579, 0.0281295, 0.0740478, -0.343544);
 
 
@@ -51,27 +51,30 @@ int main(int argc, char **argv) {
 //
 //  cout<<res<<endl;
 //  cout<<res_OR<<endl;
+*/
 
 //  auto * mappingEngine = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, path, imgSize);
 
 //  //TODO here error
-  auto * mappingEngine2 = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
+  auto *mappingEngine2 =
+      new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
 
-  mappingEngine2->CreateView(*reader.getPose(),reader.depth_img,reader.rgb_img,reader.label_img_vector);
+  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
 
-  auto * pose_test = new ORUtils::SE3Pose(0.0f,0.0f,0.0f,0.0f,0.0f,0.0f);
+  auto *pose_test = new ORUtils::SE3Pose(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
 //  mappingEngine2->UpdateTrackingState(pose_test);
-    cout<<reader.getPose()->getSE3Pose();
+  cout << reader.getPose()->getSE3Pose();
   mappingEngine2->UpdateTrackingState(&(reader.getPose()->getSE3Pose()));
 
-  cout<<"dbg"<<endl;
+  cout << "dbg" << endl;
   mappingEngine2->ProcessFrame();
 
-
+  //old stuffs
+  /*
 //  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
 
-/*//  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex> *) object,
+//  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex> *) object,
 //                                     std::get<1>(view_tuple),
 //                                     trackingState,
 //                                     renderState);
@@ -114,9 +117,12 @@ int main(int argc, char **argv) {
 //  cout << "Debug\n";
 //  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
 //  string save_path = "./aft_2/";
-//  object->SaveToDirectory(save_path);*/
+//  object->SaveToDirectory(save_path);
 
+*/
 
+  delete mappingEngine2;
+  delete pose_test;
 
   return 0;
 }

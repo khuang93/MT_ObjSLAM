@@ -7,6 +7,7 @@
 
 
 #include <vector>
+#include <memory>
 
 #include "src/ObjSLAM/ObjSLAMDataTypes.h"
 
@@ -26,8 +27,8 @@
 
 namespace ObjSLAM {
 
-using Object_View_Tuple = std::tuple<ObjectInstance*, ITMLib::ITMView*>;
-using LabelImgVector = std::vector<ObjSLAM::ObjUIntImage *>;
+using Object_View_Tuple = std::tuple<std::shared_ptr<ObjectInstance>, std::shared_ptr<ITMLib::ITMView>>;
+using LabelImgVector = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
 
 
 class ObjectView_New {
@@ -35,7 +36,7 @@ class ObjectView_New {
  private:
   ObjCameraPose camera_Pose;
 
-  ObjUIntImage *segmentation_Mask;
+  std::shared_ptr<ObjUIntImage> segmentation_Mask;
   LabelImgVector label_img_vector;
   const ObjUChar4Image *rgb_Image;
   const ObjFloatImage *depth_Image;
@@ -75,8 +76,8 @@ class ObjectView_New {
 
   //Constructor
   //using ITMLib::ITMView::ITMView;
-  ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize_rgb, Vector2i _imgSize_d, bool useGPU, ObjCameraPose pose,
-                 ObjFloatImage* _depth, ObjUChar4Image* _rgb, ObjUIntImage* _label):
+/*  ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize_rgb, Vector2i _imgSize_d, bool useGPU, ObjCameraPose pose,
+                 ObjFloatImage* _depth, ObjUChar4Image* _rgb, std::shared_ptr<ObjUIntImage> _label):
       calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d), camera_Pose(pose),
       depth_Image(_depth), rgb_Image(_rgb), segmentation_Mask(_label){
 
@@ -84,7 +85,7 @@ class ObjectView_New {
     //TODO debug info
     std::cout<<"ObjectView_New complete created!\n";
 
-  }
+  }*/
 
   ObjectView_New(const ITMLib::ITMRGBDCalib& _calibration, Vector2i _imgSize_rgb, Vector2i _imgSize_d, bool useGPU, ObjCameraPose pose,
                  ObjFloatImage* _depth, ObjUChar4Image* _rgb, LabelImgVector _label_img_vector):
@@ -102,8 +103,13 @@ class ObjectView_New {
 //    delete camera_Pose;
     delete rgb_Image;
     delete depth_Image;
-    delete segmentation_Mask;
-//     ITMLib::ITMView::~ITMView();
+//    delete segmentation_Mask;
+    if(depth_normal!=NULL){
+      delete depth_normal;
+    }
+/*    for(std::map<int, Object_View_Tuple>::iterator itr = obj_map.begin(); itr != obj_map.end(); itr++){
+      delete itr->second;
+    }*/
   }
 
 

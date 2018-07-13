@@ -47,8 +47,11 @@ class ObjCameraPose  {
 
   void setQuaternion(Eigen::Quaterniond _pose);
 
+  friend std::ostream& operator<<(std::ostream& os, ObjCameraPose& obj_cam_pose){
+    os<<obj_cam_pose.getSE3Pose().GetM();
 
-
+    return os;
+  }
 
 };
 
