@@ -164,7 +164,6 @@ template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &view_tuple,
                                                             ObjectInstanceScene<TVoxel, TIndex> *scene) {
 
-  //  denseMapper->ProcessFrame(view, tstate, scene, rstate, reset)
   std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 
   int index = std::get<0>(view_tuple)->getClassLabel().getLabelIndex();
@@ -172,7 +171,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &v
 
   cout<<t_state->pose_d->GetM();
 
-  denseMapper->ProcessFrame(itmView.get(), t_state, scene, r_state);
+  denseMapper->ProcessFrame(itmView.get(), t_state, scene, r_state, true);
   cout << "dbg" << endl;
   ObjUChar4Image *img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
 
@@ -184,9 +183,9 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &v
                                    ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                    ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
 
-//  itmBasicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(settings,*calib,imgSize);
-//  itmBasicEngine->SetScene(scene);
-//  itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME);
+  itmBasicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(settings,*calib,imgSize);
+  itmBasicEngine->SetScene(scene);
+  itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME);
 
 //  img->ChangeDims(r_state->raycastImage->noDims);
 //  img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
@@ -207,7 +206,6 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(const ORUtils::SE
 
 template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::deleteAll() {
-  std::cout << "deleteAll" << endl;
   delete this->itmBasicEngine;
   delete this->visualisationEngine;
   delete this->denseMapper;

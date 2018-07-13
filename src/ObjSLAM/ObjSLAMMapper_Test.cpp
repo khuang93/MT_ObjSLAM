@@ -64,10 +64,9 @@ int main(int argc, char **argv) {
   auto *pose_test = new ORUtils::SE3Pose(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
 //  mappingEngine2->UpdateTrackingState(pose_test);
-  cout << reader.getPose()->getSE3Pose();
+//  cout << reader.getPose()->getSE3Pose();
   mappingEngine2->UpdateTrackingState(&(reader.getPose()->getSE3Pose()));
 
-  cout << "dbg" << endl;
   mappingEngine2->ProcessFrame();
 
   //old stuffs
