@@ -61,11 +61,11 @@ int main(int argc, char **argv) {
 
   mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
 
-  auto *pose_test = new ORUtils::SE3Pose(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+  auto *pose_test = new ORUtils::SE3Pose(0.0f, 0.4f, 0.6f, 0.0f, 0.3f, 0.5f);
 
-//  mappingEngine2->UpdateTrackingState(pose_test);
+  mappingEngine2->UpdateTrackingState(pose_test);
 //  cout << reader.getPose()->getSE3Pose();
-  mappingEngine2->UpdateTrackingState(&(reader.getPose()->getSE3Pose()));
+ // mappingEngine2->UpdateTrackingState(&(reader.getPose()->getSE3Pose()));
 
   mappingEngine2->ProcessFrame();
 

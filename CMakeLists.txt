@@ -101,5 +101,6 @@ set(Mapper_Sources
 
 add_executable(Mapper ${Mapper_Sources}  /usr/include)
 
-TARGET_LINK_LIBRARIES(Mapper  boost_system  boost_filesystem  cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png)
+TARGET_LINK_LIBRARIES(Mapper  boost_system  boost_filesystem  InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png)
+#TARGET_LINK_LIBRARIES(Mapper  boost_system  boost_filesystem  cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png)
 #looks like it needs link cudart
