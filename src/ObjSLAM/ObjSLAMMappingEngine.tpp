@@ -9,6 +9,9 @@
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/LowLevel/ITMLowLevelEngineFactory.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Trackers/ITMTrackerFactory.h>
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderStateFactory.h"
+#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMLibSettings.h"
+#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Trackers/ITMTrackerFactory.h"
+#include "../../External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMTrackingController.h"
 
 namespace ObjSLAM {
 
@@ -157,20 +160,26 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       //this line for only recon background
       if(label.getLabelIndex()!=0) break;
 
-      //TODO method for determin if new object or not
-      auto *obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(label,
-                                                                              t,
-                                                                              &(settings->sceneParams),
-                                                                              useSwapping,
-                                                                              MEMORYDEVICE_CPU,
-                                                                              view);
-      this->object_instance_scene_vector.push_back(obj_inst_scene);
+      //TODO method for determin if new object or not, try fusion of background
+      //ObjSLAM::ObjectInstanceScene<TVoxel, TIndex> *obj_inst_scene;
+      //if(object_instance_scene_vector.size()==0) {
+        auto* obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(label,
+                                                                          t,
+                                                                          &(settings->sceneParams),
+                                                                          useSwapping,
+                                                                          MEMORYDEVICE_CPU,
+                                                                          view);
+
+        this->object_instance_scene_vector.push_back(obj_inst_scene);
+      //}else{
+      //  obj_inst_scene=object_instance_scene_vector.at(0);
+     // }
       //ProcessOneObject
 
 
       //TODO method for match old object
       ProcessOneObject(view_tuple, obj_inst_scene, t);
-      delete obj_inst_scene;
+     // delete obj_inst_scene;
     }
   }
 }
