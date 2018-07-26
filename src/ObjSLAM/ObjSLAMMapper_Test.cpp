@@ -53,21 +53,40 @@ int main(int argc, char **argv) {
 //  cout<<res_OR<<endl;
 */
 
-//  auto * mappingEngine = new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, path, imgSize);
-
-//  //TODO here error
   auto *mappingEngine2 =
       new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
 
   mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
 
-  auto *pose_test = new ORUtils::SE3Pose(0.0f, 0.4f, 0.6f, 0.0f, 0.3f, 0.5f);
+  //Pose test
+/*//  auto *pose_test = new ORUtils::SE3Pose(0.0f, 0.4f, 0.6f, 0.0f, 0.3f, 0.5f);
 
-  mappingEngine2->UpdateTrackingState(pose_test);
 //  cout << reader.getPose()->getSE3Pose();
- // mappingEngine2->UpdateTrackingState(&(reader.getPose()->getSE3Pose()));
+ // mappingEngine2->UpdateTrackingState(&(reader.getPose()->getSE3Pose()));*/
 
   mappingEngine2->ProcessFrame();
+
+  reader.readNext();
+  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+  mappingEngine2->ProcessFrame();
+
+  reader.readNext();
+  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+  mappingEngine2->ProcessFrame();
+
+  reader.readNext();
+  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+  mappingEngine2->ProcessFrame();
+
+  reader.readNext();
+  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+  mappingEngine2->ProcessFrame();
+
 
   //old stuffs
   /*
@@ -121,7 +140,7 @@ int main(int argc, char **argv) {
 */
 
   delete mappingEngine2;
-  delete pose_test;
+//  delete pose_test;
 
   return 0;
 }

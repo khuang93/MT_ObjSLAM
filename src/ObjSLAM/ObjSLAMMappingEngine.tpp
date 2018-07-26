@@ -150,8 +150,14 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
   bool useSwapping = (settings->swappingMode == ITMLib::ITMLibSettings::SWAPPINGMODE_ENABLED);
   if (view->getObjMap().size() > 0) {
     for (int t = 0; t < view->getObjMap().size(); t++) {
+
       Object_View_Tuple view_tuple = view->getObjMap().at(t);
       ObjectClassLabel label = std::get<0>(view_tuple)->getClassLabel();
+
+      //this line for only recon background
+      if(label.getLabelIndex()!=0) break;
+
+      //TODO method for determin if new object or not
       auto *obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(label,
                                                                               t,
                                                                               &(settings->sceneParams),
@@ -160,7 +166,10 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
                                                                               view);
       this->object_instance_scene_vector.push_back(obj_inst_scene);
       //ProcessOneObject
-      ProcessOneObject(view_tuple, obj_inst_scene);
+
+
+      //TODO method for match old object
+      ProcessOneObject(view_tuple, obj_inst_scene, t);
       delete obj_inst_scene;
     }
   }
@@ -168,7 +177,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
 template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &view_tuple,
-                                                            ObjectInstanceScene<TVoxel, TIndex> *scene) {
+                                                            ObjectInstanceScene<TVoxel, TIndex> *scene, int obj_idx) {
 
   tracker =ITMLib::ITMTrackerFactory::Instance().Make(imgSize, imgSize, settings, lowEngine, new ITMLib::ITMIMUCalibrator_iPad(), scene->sceneParams);
   t_controller= new ITMLib::ITMTrackingController(tracker, settings);
@@ -177,7 +186,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &v
   std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 
   int index = std::get<0>(view_tuple)->getClassLabel().getLabelIndex();
-  string name = to_string(index) + "_new.ppm";
+  string name = to_string(obj_idx)+"."+to_string(index) + ".ppm";
   denseMapper->ResetScene(scene);
   denseMapper->ProcessFrame(itmView.get(), t_state, scene, r_state, true);
   denseMapper->UpdateVisibleList(itmView.get(), t_state, scene, r_state, true);
