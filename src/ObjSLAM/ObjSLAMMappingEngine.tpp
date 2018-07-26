@@ -178,18 +178,13 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &v
 
   int index = std::get<0>(view_tuple)->getClassLabel().getLabelIndex();
   string name = to_string(index) + "_new.ppm";
-  ObjUChar4Image *img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
-/*
+  denseMapper->ResetScene(scene);
   denseMapper->ProcessFrame(itmView.get(), t_state, scene, r_state, true);
   denseMapper->UpdateVisibleList(itmView.get(), t_state, scene, r_state, true);
-  cout << "dbg" << endl;
+//  cout << "dbg" << endl;
   ObjUChar4Image *img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
 
-  //TODO
-  cout << "PCL?"<< t_state->HasValidPointCloud() << endl;
   t_controller->Prepare(t_state, scene, itmView.get(), visualisationEngine, r_state);
-
-  cout << "PCL?"<< t_state->HasValidPointCloud() << endl;
 
   visualisationEngine->RenderImage(scene,
                                    t_state->pose_d,
@@ -197,24 +192,27 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &v
                                    r_state,
                                    r_state->raycastImage,
                                    ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
-                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
+  //Old stuffs with itmbasicengine
+  /*
+//  itmBasicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(settings,*calib,imgSize);
+//  cout<<t_state->pose_d->GetM();
+//  itmBasicEngine->ProcessFrame(itmView.get()->rgb, itmView.get()->depth, t_state->pose_d);
+////    itmBasicEngine->SetScene(scene);
+//  itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME);
 */
-  itmBasicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(settings,*calib,imgSize);
-  cout<<t_state->pose_d->GetM();
-  itmBasicEngine->ProcessFrame(itmView.get()->rgb, itmView.get()->depth, t_state->pose_d);
-  //  itmBasicEngine->SetScene(scene);
-  itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME);
 
 
 
-//  img->ChangeDims(r_state->raycastImage->noDims);
-//  img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
+  img->ChangeDims(r_state->raycastImage->noDims);
+  img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
   SaveImageToFile(img, name.c_str());
   delete tracker;
   delete t_controller;
+
   delete img;
-//  cout << "dbg" << endl;
+
 }
 
 template<typename TVoxel, typename TIndex>
