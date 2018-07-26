@@ -43,6 +43,8 @@ class ObjCameraPose  {
 
   ORUtils::SE3Pose& getSE3Pose();
 
+  ObjCameraPose& GetTransformationFromPose(ObjCameraPose& otherPose);
+
   void setQuaternion(double w, double x, double y, double z);
 
   void setQuaternion(Eigen::Quaterniond _pose);

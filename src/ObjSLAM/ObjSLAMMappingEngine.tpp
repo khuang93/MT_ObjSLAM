@@ -217,6 +217,10 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &v
   img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
   SaveImageToFile(img, name.c_str());
+
+//  for(int i = 0; i<640*480;i++)
+  cout<<r_state->raycastResult->GetData(MEMORYDEVICE_CPU)[0];
+
   delete tracker;
   delete t_controller;
 
