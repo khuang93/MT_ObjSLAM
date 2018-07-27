@@ -68,7 +68,7 @@ void ObjectView_New::setListOfObjects_old() {
 }
 
 void ObjectView_New::setListOfObjects() {
-  std::cout << "Setting Obj List..." << std::endl;
+  std::cout << "Setting Obj List...";
   for(LabelImgVector::iterator it = label_img_vector.begin(); it!=label_img_vector.end();it++){
 
     int labelIndex = 0;
@@ -135,7 +135,7 @@ void ObjectView_New::setListOfObjects() {
       single_obj_ITMView->rgb->GetData(MEMORYDEVICE_CPU)[i] = this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
     }
   }
-
+  std::cout << "FINISHED" << std::endl;
 }
 
 void ObjectView_New::setListOfViews() {

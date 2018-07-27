@@ -58,12 +58,23 @@ int main(int argc, char **argv) {
 
   mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
   mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+  mappingEngine2->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
 
   //Pose test
-/*//  auto *pose_test = new ORUtils::SE3Pose(0.0f, 0.4f, 0.6f, 0.0f, 0.3f, 0.5f);
+  /*auto *pose_test = new ORUtils::SE3Pose(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
-//  cout << reader.getPose()->getSE3Pose();
- // mappingEngine2->UpdateTrackingState(&(reader.getPose()->getSE3Pose()));*/
+  cout << pose_test->GetM();
+  mappingEngine2->UpdateTrackingState(pose_test);
+  mappingEngine2->UpdateTrackingState_Orig(pose_test);*/
+
+  mappingEngine2->ProcessFrame();
+
+
+
+/*
+  reader.readNext();
+  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
 
   mappingEngine2->ProcessFrame();
 
@@ -71,21 +82,10 @@ int main(int argc, char **argv) {
   mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
   mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
   mappingEngine2->ProcessFrame();
+*/
 
-  reader.readNext();
-  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-  mappingEngine2->ProcessFrame();
 
-  reader.readNext();
-  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-  mappingEngine2->ProcessFrame();
 
-  reader.readNext();
-  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-  mappingEngine2->ProcessFrame();
 
 
   //old stuffs
@@ -139,7 +139,7 @@ int main(int argc, char **argv) {
 
 */
 
-  delete mappingEngine2;
+  //delete mappingEngine2;
 //  delete pose_test;
 
   return 0;

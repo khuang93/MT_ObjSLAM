@@ -2,6 +2,7 @@
 // Created by khuang on 6/24/18.
 //
 
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMMath.h>
 #include "ObjCameraPose.h"
 
 namespace ObjSLAM {
@@ -18,8 +19,13 @@ ObjCameraPose::ObjCameraPose(ORUtils::SE3Pose _se3pose) : se3Pose(_se3pose) {
   eigen_mat(2, 0) = se3Pose.GetR().m02;
   eigen_mat(2, 1) = se3Pose.GetR().m12;
   eigen_mat(2, 2) = se3Pose.GetR().m22;
+  ORUtils::Vector3<float> t = se3Pose.GetT();
 
   eigen_pose = Eigen::Quaterniond(eigen_mat);
+  Eigen::Affine3d rot(eigen_pose.normalized().toRotationMatrix());
+  Eigen::Affine3d trans(Eigen::Translation3d(t.x,t.y,t.z));
+  eigen_pose_mat = (rot*trans).matrix();
+
 //    cout<<"**DEBUG: SE3Mat\n"<<this->getSE3Pose().GetM()<<endl;
 //    //TODO Debug msg
 //    cout<<"ObjCameraPose from SE3Pose created\n";
@@ -31,6 +37,11 @@ ObjCameraPose::ObjCameraPose(double qw, double qx, double qy, double qz, double 
     qy,
     qz) {
   Eigen::Matrix3d eigen_mat = eigen_pose.normalized().toRotationMatrix();
+  Eigen::Affine3d rot(eigen_pose.normalized().toRotationMatrix());
+  Eigen::Affine3d trans(Eigen::Translation3d(tx,ty,tz));
+  eigen_pose_mat = (rot*trans).matrix();
+
+
   double m00 = eigen_mat(0, 0);
   double m01 = eigen_mat(0, 1);
   double m02 = eigen_mat(0, 2);
@@ -56,6 +67,11 @@ ObjCameraPose::ObjCameraPose(Eigen::Quaterniond _pose) : eigen_pose(_pose) {}
 
 Eigen::Quaterniond ObjCameraPose::getQuaternion() {
   return eigen_pose;
+}
+
+
+Eigen::Matrix4d ObjCameraPose::getEigenMat() {
+  return eigen_pose_mat;
 }
 
 ORUtils::SE3Pose &ObjCameraPose::getSE3Pose() {
