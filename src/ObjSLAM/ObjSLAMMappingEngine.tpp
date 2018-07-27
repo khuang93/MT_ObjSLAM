@@ -232,6 +232,9 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &v
   ObjFloatImage *out = new ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
   cam->projectPointCloud2Img(r_state->raycastResult, out, *t_state_orig->pose_d);
 
+  auto* pcl = new ORUtils::Image<Vector4f>(imgSize,MEMORYDEVICE_CPU);
+  cam->projectImg2PointCloud(itmView.get()->depth,pcl, *t_state_orig->pose_d);
+
 
   img->ChangeDims(r_state->raycastImage->noDims);
   img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);

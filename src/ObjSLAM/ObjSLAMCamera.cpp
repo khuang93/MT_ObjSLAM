@@ -23,7 +23,7 @@ bool ObjSLAMCamera::projectPointCloud2Img(ORUtils::Image<Vector4f> * PCL, ObjFlo
 
   Eigen::Matrix3f K_inv = K.inverse();
   std::cout<<"K"<<K<<std::endl;*/
-
+  std::cout<<"PCL2IMG\n";
   ORUtils::Matrix3<float> K(this->calib->intrinsics_d.projectionParamsSimple.fx, 0.0f, 0.0f, 0.0f, this->calib->intrinsics_d.projectionParamsSimple.fy, 0.0f,
                             this->calib->intrinsics_d.projectionParamsSimple.px,
                             this->calib->intrinsics_d.projectionParamsSimple.py,
@@ -44,12 +44,46 @@ bool ObjSLAMCamera::projectPointCloud2Img(ORUtils::Image<Vector4f> * PCL, ObjFlo
 
     Vector3f pix = K*(point_camera_frame.toVector3());
     Vector2i pix_int (round(pix.x/pix.z), round(pix.y/pix.z));
-    if(i>250+640*400&&i<350+640*400){
+    if(i==0){
       std::cout<<point<<std::endl<<std::endl;
       std::cout<<point_camera_frame<<std::endl<<std::endl;
       std::cout<<pix_int<<std::endl<<std::endl;
     }
   }
+
+
+}
+
+bool ObjSLAMCamera::projectImg2PointCloud(ObjSLAM::ObjFloatImage *in,
+                                          ORUtils::Image<Vector4f> *PCL,
+                                          ObjSLAM::ObjCameraPose pose) {
+  ORUtils::Matrix4<float> K(this->calib->intrinsics_d.projectionParamsSimple.fx, 0.0f, 0.0f, 0.0f, 0.0f, this->calib->intrinsics_d.projectionParamsSimple.fy, 0.0f, 0.0f,
+                            this->calib->intrinsics_d.projectionParamsSimple.px,
+                            this->calib->intrinsics_d.projectionParamsSimple.py,
+                            1.0f, 0.0f,
+                            0.0f, 0.0f, 0.0f, 1.0f);
+  ORUtils::Matrix4<float> K_inv;
+  K.inv(K_inv);
+  Matrix4f pose_mat = pose.getSE3Pose().GetM();
+  Matrix4f pose_inv;
+  pose_mat.inv(pose_inv);
+  Matrix4f projMat = pose_inv*K_inv;
+  std::cout<<"IMG2PCL\n";
+
+  for(int u= 0; u<imgSize.width;u++){
+    for(int v = 0; v<imgSize.height;v++){
+      float zc= in->GetData(MEMORYDEVICE_CPU)[v*imgSize.width+u];
+      Vector4f pt(u*zc,v*zc,zc,0);
+      Vector4f res = projMat*pt;
+      if(u==0&&v==0){
+        std::cout<<pt<<std::endl<<std::endl;
+        std::cout<<res<<std::endl<<std::endl;
+
+      }
+    }
+  }
+
+
 
 
 }
