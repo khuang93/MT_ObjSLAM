@@ -27,6 +27,7 @@ class ObjCameraPose  {
 
  private:
   Eigen::Quaterniond eigen_pose;
+  Eigen::Matrix4d eigen_pose_mat;
 //  double tx,ty,tz;
   ORUtils::SE3Pose se3Pose;
 
@@ -40,8 +41,11 @@ class ObjCameraPose  {
   ObjCameraPose(Eigen::Quaterniond _pose);
 
   Eigen::Quaterniond getQuaternion();
+  Eigen::Matrix4d getEigenMat();
 
   ORUtils::SE3Pose& getSE3Pose();
+
+  ObjCameraPose& GetTransformationFromPose(ObjCameraPose& otherPose);
 
   void setQuaternion(double w, double x, double y, double z);
 

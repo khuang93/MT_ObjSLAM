@@ -31,6 +31,7 @@ class ObjSLAMMappingEngine {
  private:
   ObjectView_New *view;
   ITMLib::ITMTrackingState *t_state;
+  ITMLib::ITMTrackingState *t_state_orig;
   ITMLib::ITMRenderState *r_state;
   ITMLib::ITMBasicEngine<TVoxel, TIndex> *itmBasicEngine;
   ITMLib::ITMSceneParams* params = new ITMLib::ITMSceneParams(0.5, 4, 0.01, 0.1, 4.0, false);
@@ -61,6 +62,8 @@ class ObjSLAMMappingEngine {
   void ProcessOneObject(Object_View_Tuple& view_tuple, ObjectInstanceScene<TVoxel, TIndex>* scene, int obj_idx);
 
   void UpdateTrackingState(const ORUtils::SE3Pose* _pose);
+
+  void UpdateTrackingState_Orig(const ORUtils::SE3Pose* _pose);
 
   void deleteAll();
 

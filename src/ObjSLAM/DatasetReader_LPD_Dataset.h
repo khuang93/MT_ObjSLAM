@@ -5,7 +5,7 @@
 #ifndef DATASETREADER_LPD_DATASET_H
 #define DATASETREADER_LPD_DATASET_H
 
-#include <eigen3/Eigen/Dense>
+
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -174,7 +174,7 @@ class DatasetReader_LPD_Dataset {
       for (int j = 0; j < width; j++) {
 //        res[height * i + j] = vector_in.at(height * i + j);
 
-        res->GetData(MEMORYDEVICE_CPU)[width * i + j] = vector_in.at(width * i + j);
+        res->GetData(MEMORYDEVICE_CPU)[width * i + j] = vector_in.at(width * i + j); //in meters
       }
 
     }
@@ -382,31 +382,13 @@ class DatasetReader_LPD_Dataset {
     calib->intrinsics_rgb.SetFrom(640, 480, 320, 320, 320, 240);
     calib->intrinsics_d.SetFrom(640, 480, 320, 320, 320, 240);
 
-    ObjSLAM::ObjMatrix4f calib_Ext;
-    calib_Ext.m00 = 0.5;
-    calib_Ext.m10 = 0;
-    calib_Ext.m20 = 0;
-    calib_Ext.m30 = 0;
-    calib_Ext.m01 = 0;
-    calib_Ext.m11 = 0.5;
-    calib_Ext.m21 = 0;
-    calib_Ext.m31 = 0;
-    calib_Ext.m02 = 0;
-    calib_Ext.m12 = 0;
-    calib_Ext.m22 = 0.5;
-    calib_Ext.m32 = 0;
-    calib_Ext.m03 = 0;
-    calib_Ext.m13 = 0;
-    calib_Ext.m23 = 0;
-    calib_Ext.m33 = 1;
-    calib->trafo_rgb_to_depth.SetFrom(calib_Ext);
 
     //Calib Extrinsics is between RGB and D, for LPD Dataset it is identity
     ObjSLAM::ObjMatrix4f mat(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     calib->trafo_rgb_to_depth.SetFrom(mat);
 
     //disparity calib a b physical meanings?
-    calib->disparityCalib.SetFrom(/*1135.09*/0.0002,
+    calib->disparityCalib.SetFrom(/*1135.09*//*0.0002*/1.0,
                                              0.0,
                                              ITMLib::ITMDisparityCalib::TRAFO_AFFINE); //TODO get the values
 
