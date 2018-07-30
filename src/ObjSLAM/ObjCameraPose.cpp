@@ -70,6 +70,27 @@ Eigen::Quaterniond ObjCameraPose::getQuaternion() {
 }
 
 
+ObjCameraPose ObjCameraPose::GetTransformation(ObjCameraPose& fromPose, ObjCameraPose& toPose){
+  ORUtils::Matrix4<float> fromMatrix = fromPose.getSE3Pose().GetM();
+  ORUtils::Matrix4<float> toMatrix = toPose.getSE3Pose().GetM();
+  ORUtils::Matrix4<float>  inv_fromMatrix;
+  fromMatrix.inv(inv_fromMatrix);
+  ORUtils::Matrix4<float> resMatrix = toMatrix*inv_fromMatrix;
+  ORUtils::SE3Pose resPose(resMatrix);
+  return ObjCameraPose(resPose);
+}
+
+ObjCameraPose ObjCameraPose::GetTransformation(ORUtils::SE3Pose& fromPose, ORUtils::SE3Pose& toPose){
+  ORUtils::Matrix4<float> fromMatrix = fromPose.GetM();
+  ORUtils::Matrix4<float> toMatrix = toPose.GetM();
+  ORUtils::Matrix4<float>  inv_fromMatrix;
+  fromMatrix.inv(inv_fromMatrix);
+  ORUtils::Matrix4<float> resMatrix = toMatrix*inv_fromMatrix;
+  ORUtils::SE3Pose resPose(resMatrix);
+  return ObjCameraPose(resPose);
+}
+
+
 Eigen::Matrix4d ObjCameraPose::getEigenMat() {
   return eigen_pose_mat;
 }
@@ -90,5 +111,11 @@ void ObjCameraPose::setQuaternion(double w, double x, double y, double z) {
 void ObjCameraPose::setQuaternion(Eigen::Quaterniond _pose) {
   eigen_pose = _pose;
 }
+
+/*void ObjCameraPose::setCamera(const ObjSLAMCamera* _cam){
+  camera=_cam;
+}*/
+
+
 
 }

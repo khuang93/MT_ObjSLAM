@@ -16,11 +16,13 @@
 
 #include "LPD_RAW_Pose.h"
 
+
 using namespace std;
 //using namespace Eigen;
 
 namespace ObjSLAM {
 
+//unless specified, it saves Twc from World to Cam
 class ObjCameraPose  {
 
 
@@ -30,6 +32,9 @@ class ObjCameraPose  {
   Eigen::Matrix4d eigen_pose_mat;
 //  double tx,ty,tz;
   ORUtils::SE3Pose se3Pose;
+
+  //allocated when needed
+
 
 
  public:
@@ -45,7 +50,9 @@ class ObjCameraPose  {
 
   ORUtils::SE3Pose& getSE3Pose();
 
-  ObjCameraPose& GetTransformationFromPose(ObjCameraPose& otherPose);
+  static ObjCameraPose GetTransformation(ObjCameraPose& fromPose, ObjCameraPose& toPose);
+
+  static ObjCameraPose GetTransformation(ORUtils::SE3Pose& fromPose, ORUtils::SE3Pose& toPose);
 
   void setQuaternion(double w, double x, double y, double z);
 
@@ -56,6 +63,9 @@ class ObjCameraPose  {
 
     return os;
   }
+
+
+
 
 };
 
