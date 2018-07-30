@@ -189,7 +189,8 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       string nameIn = "in"+to_string(t)+".ppm";
       SaveImageToFile(itmView.get()->depth, nameIn.c_str());
 
-
+      delete pcl;
+      delete out;
 //      }
 
 
