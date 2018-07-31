@@ -163,7 +163,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       ObjSLAM::ObjectInstanceScene<TVoxel, TIndex> *obj_inst_scene = NULL;
 //      if (label.getLabelIndex() != 0&&t_state->pose_d->GetM()!=t_state_orig->pose_d->GetM()){
         //TODO method for determin if new object or not, try fusion of background
-        if (label.getLabelIndex() != 0) break;
+        if (t> 12) break;
         //projection
         std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 
@@ -175,15 +175,10 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
         cam->projectImg2PointCloud(itmView.get()->depth,pcl, *t_state->pose_d);
 
-        std::cout<<"PCL"<<pcl->GetElement(32, MEMORYDEVICE_CPU);
 
-//        ORUtils::Matrix3<float> R_temp= t_state->pose_d->GetR();
-//        R_temp.m00+=0.1;
-//        t_state_orig->pose_d->SetR(R_temp);
-
-
-        ObjFloatImage *out = new ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
+      ObjFloatImage *out = new ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
         cam->projectPointCloud2Img(pcl, out, *t_state_orig->pose_d);
+
       string name = "out"+to_string(t)+".ppm";
       SaveImageToFile(out, name.c_str());
       string nameIn = "in"+to_string(t)+".ppm";
@@ -270,8 +265,8 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &v
   SaveImageToFile(img, name.c_str());
 
 //  for(int i = 0; i<640*480;i++)
-  cout << r_state->raycastResult->GetData(MEMORYDEVICE_CPU)[0];
-  cout << t_state->pointCloud->locations->GetElement(0,MEMORYDEVICE_CPU);
+//  cout << r_state->raycastResult->GetData(MEMORYDEVICE_CPU)[0];
+//  cout << t_state->pointCloud->locations->GetElement(0,MEMORYDEVICE_CPU);
 
   delete tracker;
   delete t_controller;

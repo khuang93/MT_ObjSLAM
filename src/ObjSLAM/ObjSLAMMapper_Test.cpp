@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
   mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
   mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
   mappingEngine2->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
-
+//  cout << reader.getPose()->getSE3Pose().GetM();
   //Pose test
 /*  auto *pose_test = new ORUtils::SE3Pose(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 //  auto *pose_test2 = new ORUtils::SE3Pose(5.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.1f);
@@ -71,47 +71,18 @@ int main(int argc, char **argv) {
   mappingEngine2->ProcessFrame();
 
 
-
- /* reader.readNext();
-  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-
-  mappingEngine2->ProcessFrame();
-
-
   reader.readNext();
   mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
   mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-
-  mappingEngine2->ProcessFrame();
-
-  reader.readNext();
-  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-
-  mappingEngine2->ProcessFrame();
-
-  reader.readNext();
-  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-
+  cout << reader.getPose()->getSE3Pose().GetM();
   mappingEngine2->ProcessFrame();
 
 
-  reader.readNext();
-  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
 
-  mappingEngine2->ProcessFrame();
 
-  reader.readNext();
-  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
 
-  mappingEngine2->ProcessFrame();
-*/
+
   //old stuffs
-  /*
 //  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
 
 //  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex> *) object,
@@ -159,7 +130,6 @@ int main(int argc, char **argv) {
 //  string save_path = "./aft_2/";
 //  object->SaveToDirectory(save_path);
 
-*/
 
   //delete mappingEngine2;
 //  delete pose_test;

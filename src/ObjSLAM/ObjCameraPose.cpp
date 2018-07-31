@@ -46,29 +46,31 @@ ObjCameraPose::ObjCameraPose(Eigen::Quaterniond _pose) : eigen_pose(_pose) {
 void ObjCameraPose::setAllFromQuaternion(double tx, double ty, double tz) {
   Eigen::Matrix3d eigen_mat = eigen_pose.normalized().toRotationMatrix();
 
-  Eigen::Affine3d rot(eigen_pose.normalized().toRotationMatrix());
-  Eigen::Affine3d trans(Eigen::Translation3d(tx,ty,tz));
-  eigen_pose_mat = (rot*trans).matrix();
-
-  double m00 = eigen_pose_mat(0, 0);
-  double m01 = eigen_pose_mat(0, 1);
-  double m02 = eigen_pose_mat(0, 2);
-  double m10 = eigen_pose_mat(1, 0);
-  double m11 = eigen_pose_mat(1, 1);
-  double m12 = eigen_pose_mat(1, 2);
-  double m20 = eigen_pose_mat(2, 0);
-  double m21 = eigen_pose_mat(2, 1);
-  double m22 = eigen_pose_mat(2, 2);
+//  Eigen::Affine3d rot(eigen_pose.normalized().toRotationMatrix());
+//  Eigen::Affine3d trans(Eigen::Translation3d(tx,ty,tz));
+//  eigen_pose_mat = (rot).matrix()+trans.matrix();
+//  cout<<"rot\n"<<rot.matrix()<<"\n";
+//  cout<<"trans\n"<<trans.matrix()<<"\n";
+//  cout<<"pose\n"<<eigen_pose_mat<<"\n";
+  double m00 = eigen_mat(0, 0);
+  double m01 = eigen_mat(0, 1);
+  double m02 = eigen_mat(0, 2);
+  double m10 = eigen_mat(1, 0);
+  double m11 = eigen_mat(1, 1);
+  double m12 = eigen_mat(1, 2);
+  double m20 = eigen_mat(2, 0);
+  double m21 = eigen_mat(2, 1);
+  double m22 = eigen_mat(2, 2);
 
   ORUtils::Matrix3<float> OR_mat(m00, m10, m20, m01, m11, m21, m02, m12, m22);
   ORUtils::Vector3<float> OR_vec(tx, ty, tz);
 
-  auto *_pose = new ORUtils::SE3Pose(OR_mat, OR_mat*OR_vec);
+  auto *_pose = new ORUtils::SE3Pose(OR_mat, OR_vec);
 //    cout<<"**DEBUG: Mat"<<_pose->GetM()<<endl;
   se3Pose = *_pose;
   delete _pose;
   //TODO Debug msg
-  cout << "ObjCameraPose from Quaternion created\n";
+//  cout << "ObjCameraPose from Quaternion created\n";
 }
 
 Eigen::Quaterniond ObjCameraPose::getQuaternion() {
