@@ -36,6 +36,14 @@ ObjCameraPose::ObjCameraPose(double qw, double qx, double qy, double qz, double 
     qx,
     qy,
     qz) {
+  setAllFromQuaternion(tx, ty, tz);
+}
+
+ObjCameraPose::ObjCameraPose(Eigen::Quaterniond _pose) : eigen_pose(_pose) {
+  setAllFromQuaternion(0,0,0);
+}
+
+void ObjCameraPose::setAllFromQuaternion(double tx, double ty, double tz) {
   Eigen::Matrix3d eigen_mat = eigen_pose.normalized().toRotationMatrix();
 
   Eigen::Affine3d rot(eigen_pose.normalized().toRotationMatrix());
@@ -62,8 +70,6 @@ ObjCameraPose::ObjCameraPose(double qw, double qx, double qy, double qz, double 
   //TODO Debug msg
   cout << "ObjCameraPose from Quaternion created\n";
 }
-
-ObjCameraPose::ObjCameraPose(Eigen::Quaterniond _pose) : eigen_pose(_pose) {}
 
 Eigen::Quaterniond ObjCameraPose::getQuaternion() {
   return eigen_pose;
