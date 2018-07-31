@@ -37,20 +37,21 @@ ObjCameraPose::ObjCameraPose(double qw, double qx, double qy, double qz, double 
     qy,
     qz) {
   Eigen::Matrix3d eigen_mat = eigen_pose.normalized().toRotationMatrix();
+
   Eigen::Affine3d rot(eigen_pose.normalized().toRotationMatrix());
   Eigen::Affine3d trans(Eigen::Translation3d(tx,ty,tz));
   eigen_pose_mat = (rot*trans).matrix();
+  cout<<rot.matrix();
 
-
-  double m00 = eigen_mat(0, 0);
-  double m01 = eigen_mat(0, 1);
-  double m02 = eigen_mat(0, 2);
-  double m10 = eigen_mat(1, 0);
-  double m11 = eigen_mat(1, 1);
-  double m12 = eigen_mat(1, 2);
-  double m20 = eigen_mat(2, 0);
-  double m21 = eigen_mat(2, 1);
-  double m22 = eigen_mat(2, 2);
+  double m00 = eigen_pose_mat(0, 0);
+  double m01 = eigen_pose_mat(0, 1);
+  double m02 = eigen_pose_mat(0, 2);
+  double m10 = eigen_pose_mat(1, 0);
+  double m11 = eigen_pose_mat(1, 1);
+  double m12 = eigen_pose_mat(1, 2);
+  double m20 = eigen_pose_mat(2, 0);
+  double m21 = eigen_pose_mat(2, 1);
+  double m22 = eigen_pose_mat(2, 2);
 
   ORUtils::Matrix3<float> OR_mat(m00, m10, m20, m01, m11, m21, m02, m12, m22);
   ORUtils::Vector3<float> OR_vec(tx, ty, tz);

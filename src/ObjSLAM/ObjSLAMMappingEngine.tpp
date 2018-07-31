@@ -163,7 +163,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       ObjSLAM::ObjectInstanceScene<TVoxel, TIndex> *obj_inst_scene = NULL;
 //      if (label.getLabelIndex() != 0&&t_state->pose_d->GetM()!=t_state_orig->pose_d->GetM()){
         //TODO method for determin if new object or not, try fusion of background
-
+        if (label.getLabelIndex() != 0) break;
         //projection
         std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 
@@ -177,9 +177,9 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
         std::cout<<"PCL"<<pcl->GetElement(32, MEMORYDEVICE_CPU);
 
-        ORUtils::Matrix3<float> R_temp= t_state->pose_d->GetR();
-        R_temp.m00+=0.1;
-        t_state_orig->pose_d->SetR(R_temp);
+//        ORUtils::Matrix3<float> R_temp= t_state->pose_d->GetR();
+//        R_temp.m00+=0.1;
+//        t_state_orig->pose_d->SetR(R_temp);
 
 
         ObjFloatImage *out = new ObjFloatImage(imgSize, MEMORYDEVICE_CPU);

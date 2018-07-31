@@ -72,6 +72,25 @@ int main(int argc, char **argv) {
 
 
 
+ /* reader.readNext();
+  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+
+  mappingEngine2->ProcessFrame();
+
+
+  reader.readNext();
+  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+
+  mappingEngine2->ProcessFrame();
+
+  reader.readNext();
+  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+
+  mappingEngine2->ProcessFrame();
+
   reader.readNext();
   mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
   mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
@@ -79,10 +98,18 @@ int main(int argc, char **argv) {
   mappingEngine2->ProcessFrame();
 
 
+  reader.readNext();
+  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
 
+  mappingEngine2->ProcessFrame();
 
+  reader.readNext();
+  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
 
-
+  mappingEngine2->ProcessFrame();
+*/
   //old stuffs
   /*
 //  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
