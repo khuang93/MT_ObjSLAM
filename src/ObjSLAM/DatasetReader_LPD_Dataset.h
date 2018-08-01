@@ -113,10 +113,10 @@ class DatasetReader_LPD_Dataset {
     ObjSLAM::LPD_RAW_Pose *raw_pose = ReadLPDRawPose(pose_in, time);
     //T_bw
     ObjSLAM::ObjCameraPose *T_bw = convertRawPose_to_Pose(raw_pose);
-
+//    cout<<T_bw->getSE3Pose().GetM();
     //T_cb
     ObjSLAM::ObjCameraPose *T_cb = new ObjSLAM::ObjCameraPose(0.5, -0.5, 0.5, -0.5, 0, 0, 0);
-
+//    cout<<T_cb->getSE3Pose().GetM();
     //Cam to World
 //    ORUtils::SE3Pose T_cw_SE3 = T_cb->getSE3Pose().GetM() * T_bw->getSE3Pose().GetM();
     ORUtils::SE3Pose T_cw_SE3 = T_bw->getSE3Pose().GetM() * T_cb->getSE3Pose().GetM();

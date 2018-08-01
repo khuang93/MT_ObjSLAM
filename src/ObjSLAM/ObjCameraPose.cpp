@@ -65,10 +65,10 @@ void ObjCameraPose::setAllFromQuaternion(double tx, double ty, double tz) {
   ORUtils::Matrix3<float> OR_mat(m00, m10, m20, m01, m11, m21, m02, m12, m22);
   ORUtils::Vector3<float> OR_vec(tx, ty, tz);
 
-  auto *_pose = new ORUtils::SE3Pose(OR_mat, OR_vec);
+/*  auto *_pose = new*/ ORUtils::SE3Pose _pose(OR_mat, OR_vec);
 //    cout<<"**DEBUG: Mat"<<_pose->GetM()<<endl;
-  se3Pose = *_pose;
-  delete _pose;
+  se3Pose = _pose;
+//  delete _pose;
   //TODO Debug msg
 //  cout << "ObjCameraPose from Quaternion created\n";
 }

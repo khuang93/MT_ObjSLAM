@@ -163,7 +163,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       ObjSLAM::ObjectInstanceScene<TVoxel, TIndex> *obj_inst_scene = NULL;
 //      if (label.getLabelIndex() != 0&&t_state->pose_d->GetM()!=t_state_orig->pose_d->GetM()){
         //TODO method for determin if new object or not, try fusion of background
-        if (t> 12) break;
+        if (t> 0) break;
         //projection
         std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 
@@ -192,7 +192,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
 
 
-//      if (object_instance_scene_vector.size() == 0) {
+      if (object_instance_scene_vector.size() == 0) {
         /*auto* */obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(label,
                                                                                     t,
                                                                                     &(settings->sceneParams),
@@ -202,15 +202,21 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
         this->object_instance_scene_vector.push_back(obj_inst_scene);
         denseMapper->ResetScene(obj_inst_scene);
-//      } else {
-//        obj_inst_scene = object_instance_scene_vector.at(0);
-//      }
+      } else {
+        obj_inst_scene = object_instance_scene_vector.at(0);
+      }
       //ProcessOneObject
-
+      tracker = ITMLib::ITMTrackerFactory::Instance().Make(imgSize,
+                                                           imgSize,
+                                                           settings,
+                                                           lowEngine,
+                                                           new ITMLib::ITMIMUCalibrator_iPad(),
+                                                           obj_inst_scene->sceneParams);
+      t_controller = new ITMLib::ITMTrackingController(tracker, settings);
 
       //TODO method for match old object
       ProcessOneObject(view_tuple, obj_inst_scene, t);
-      // delete obj_inst_scene;
+       delete obj_inst_scene;//prevent memory full, but it will be needed for mapping
     }
   }
 }
@@ -219,13 +225,7 @@ template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &view_tuple,
                                                             ObjectInstanceScene<TVoxel, TIndex> *scene, int obj_idx) {
 
-  tracker = ITMLib::ITMTrackerFactory::Instance().Make(imgSize,
-                                                       imgSize,
-                                                       settings,
-                                                       lowEngine,
-                                                       new ITMLib::ITMIMUCalibrator_iPad(),
-                                                       scene->sceneParams);
-  t_controller = new ITMLib::ITMTrackingController(tracker, settings);
+
 
   std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 
@@ -234,13 +234,13 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &v
 
   denseMapper->ProcessFrame(itmView.get(), t_state, scene, r_state, true);
   denseMapper->UpdateVisibleList(itmView.get(), t_state, scene, r_state, true);
-//  cout << "dbg" << endl;
+  cout << "dbg" << endl;
   ObjUChar4Image *img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
 
-  t_controller->Prepare(t_state, scene, itmView.get(), visualisationEngine, r_state);
+  t_controller->Prepare(t_state_orig, scene, itmView.get(), visualisationEngine, r_state);
 
   visualisationEngine->RenderImage(scene,
-                                   t_state->pose_d,
+                                   t_state_orig->pose_d,
                                    &itmView->calib.intrinsics_d,
                                    r_state,
                                    r_state->raycastImage,
@@ -268,8 +268,8 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tuple &v
 //  cout << r_state->raycastResult->GetData(MEMORYDEVICE_CPU)[0];
 //  cout << t_state->pointCloud->locations->GetElement(0,MEMORYDEVICE_CPU);
 
-  delete tracker;
-  delete t_controller;
+//  delete tracker;
+//  delete t_controller;
 
   delete img;
 
