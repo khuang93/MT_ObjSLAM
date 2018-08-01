@@ -12,7 +12,9 @@
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
 
 #include "ObjSLAMMappingEngine.h"
-//#include "ObjSLAMMappingEngine.tpp"
+//#include "ObjectClassLabel_Group.h"
+#include "ObjectInstance_New.h"
+
 
 using namespace std;
 
@@ -29,29 +31,12 @@ int main(int argc, char **argv) {
   DatasetReader_LPD_Dataset reader(path, imgSize);
   reader.readNext();
 
-//test the matrix multiplication
-  /*
-//  Eigen::Quaterniond quat(0.93579, 0.0281295, 0.0740478, -0.343544);
-
-
-//  Eigen::Matrix3d pose = reader.getPose()->getQuaternion().normalized().toRotationMatrix();
-//  Eigen::Matrix3d pose = quat.normalized().toRotationMatrix();
-//  ORUtils::Matrix3<float> pose_OR = reader.getPose()->getSE3Pose().GetR();
-//
-//  Eigen::Vector3d vec_Eigen(1.0f,1.0f,1.0f);
-//  ORUtils::Vector3<float> vec_OR(1,1,1);
-//
-//  Eigen::VectorXd res = pose*vec_Eigen;
-//  ORUtils::Vector3<float> res_OR =pose_OR*vec_OR;
 
 
 
-//  cout<<pose<<endl;
-//  cout<<pose_OR<<endl;
-//
-//  cout<<res<<endl;
-//  cout<<res_OR<<endl;
-*/
+
+//  ObjSLAM::ObjectClassLabel_Group<ITMVoxel, ITMVoxelIndex> label_test_1(1, "test1");
+
 
   auto *mappingEngine2 =
       new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
@@ -78,19 +63,6 @@ int main(int argc, char **argv) {
 
   mappingEngine2->ProcessFrame();
 
-  reader.readNext();
-  cout << reader.getPose()->getSE3Pose().GetM();
-  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-
-  mappingEngine2->ProcessFrame();
-
-  reader.readNext();
-  cout << reader.getPose()->getSE3Pose().GetM();
-  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-
-  mappingEngine2->ProcessFrame();
 
 
 

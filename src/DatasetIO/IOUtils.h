@@ -7,7 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <eigen3/Eigen/Core>
-#include "ObjSLAMDataTypes.h"
+#include "src/ObjSLAM/ObjSLAMDataTypes.h"
 //#include <eigen3/Eigen/src/Core/Matrix.h>
 
 class IOUtils {

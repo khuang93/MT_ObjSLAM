@@ -2,8 +2,8 @@
 // Created by khuang on 6/6/18.
 //
 
-#ifndef MT_OBJSLAM_OBJECTVIEW_H
-#define MT_OBJSLAM_OBJECTVIEW_H
+#ifndef MT_OBJSLAM_OBJECTVIEW_OLD_H
+#define MT_OBJSLAM_OBJECTVIEW_OLD_H
 #include <vector>
 
 #include "src/ObjSLAM/ObjSLAMDataTypes.h"

@@ -69,7 +69,7 @@ set(ObjSLAM_Sources
         src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
         src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h
         src/ObjSLAM/ObjSceneReconstructionEngine_CPU.cpp src/ObjSLAM/ObjSceneReconstructionEngine_CPU.h
-        src/ObjSLAM/ObjectView_New.cpp src/ObjSLAM/ObjectView_New.h
+        src/ObjSLAM/ObjectView.cpp src/ObjSLAM/ObjectView.h
         #[[        src/ObjSLAM/ObjSLAMBasicEngine.cpp src/ObjSLAM/ObjSLAMBasicEngine.h]]
         src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h
         )
@@ -88,11 +88,14 @@ set(Mapper_Sources
         src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
         src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h
         src/ObjSLAM/ObjSceneReconstructionEngine_CPU.cpp src/ObjSLAM/ObjSceneReconstructionEngine_CPU.h
-        src/ObjSLAM/ObjectView_New.cpp src/ObjSLAM/ObjectView_New.h
+        src/ObjSLAM/ObjectView.cpp src/ObjSLAM/ObjectView.h
 #[[        src/ObjSLAM/ObjSLAMBasicEngine.cpp src/ObjSLAM/ObjSLAMBasicEngine.h]]
         src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h
-        src/ObjSLAM/IOUtils.cpp src/ObjSLAM/IOUtils.h
-        src/ObjSLAM/ObjectInstanceScene_old.cpp src/ObjSLAM/ObjectInstanceScene_old.h src/ObjSLAM/ObjSLAMCamera.cpp src/ObjSLAM/ObjSLAMCamera.h)
+        src/DatasetIO/IOUtils.cpp src/DatasetIO/IOUtils.h
+        src/ObjSLAM/ObjectInstanceScene_old.cpp src/ObjSLAM/ObjectInstanceScene_old.h
+        src/ObjSLAM/ObjSLAMCamera.cpp src/ObjSLAM/ObjSLAMCamera.h
+        src/ObjSLAM/ObjectInstance_New.tpp src/ObjSLAM/ObjectInstance_New.h
+        src/ObjSLAM/ObjectClassLabel_Group.tpp src/ObjSLAM/ObjectClassLabel_Group.h src/ObjSLAM/ObjectView_New.tpp src/ObjSLAM/ObjectView_New.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)

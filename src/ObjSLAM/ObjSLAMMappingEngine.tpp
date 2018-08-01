@@ -13,6 +13,7 @@
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/Trackers/ITMTrackerFactory.h"
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMTrackingController.h"
 #include "ObjSLAMCamera.h"
+#include "ObjectInstance_New.h"
 
 namespace ObjSLAM {
 
@@ -35,7 +36,7 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(ITMLib::ITMLibSetting
 
   auto *calib = reader.getCalib();
 
-/*  auto *view0_o = new ObjSLAM::ObjectView_New(*calib,
+/*  auto *view0_o = new ObjSLAM::ObjectView(*calib,
                                               imgSize,
                                               imgSize,
                                               false,
@@ -44,7 +45,7 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(ITMLib::ITMLibSetting
                                               reader.rgb_img,
                                               reader.label_img);*/
 
-  auto *view0 = new ObjSLAM::ObjectView_New(*calib,
+  auto *view0 = new ObjSLAM::ObjectView(*calib,
                                             imgSize,
                                             imgSize,
                                             false,
@@ -53,7 +54,7 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(ITMLib::ITMLibSetting
                                             reader.rgb_img,
                                             reader.label_img_vector);
 
-  vector<ObjSLAM::ObjectView_New *> ListofAllViews = {view0};
+  vector<ObjSLAM::ObjectView *> ListofAllViews = {view0};
 
 //  const ITMLib::ITMSceneParams *_sceneParams, bool _useSwapping, MemoryDeviceType _memoryType, ViewVector* _viewVector
 //  auto *object = new ObjSLAM::ObjectInstanceScene_old<TVoxel, TIndex>(
@@ -143,9 +144,9 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjCameraPose pose,
                                                       LabelImgVector _label_img_vector) {
 //  if(this->view!=NULL) delete this->view;
   if (settings->deviceType != ITMLib::ITMLibSettings::DEVICE_CUDA) {
-    this->view = new ObjectView_New(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
+    this->view = new ObjectView(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
   } else {
-    this->view = new ObjectView_New(*calib, imgSize, imgSize, true, pose, _depth, _rgb, _label_img_vector);
+    this->view = new ObjectView(*calib, imgSize, imgSize, true, pose, _depth, _rgb, _label_img_vector);
   }
 };
 
@@ -193,8 +194,8 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
 
       if (object_instance_scene_vector.size() == 0) {
-        /*auto* */obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(label,
-                                                                                    t,
+        /*auto* */obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(/*label,
+                                                                                    t,*/
                                                                                     &(settings->sceneParams),
                                                                                     useSwapping,
                                                                                     MEMORYDEVICE_CPU,
@@ -202,6 +203,22 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
         this->object_instance_scene_vector.push_back(obj_inst_scene);
         denseMapper->ResetScene(obj_inst_scene);
+
+
+        //testing
+        ObjectClassLabel_Group<TVoxel, TIndex> label_group(1,"test1");
+//        ObjSLAM::ObjectInstance_New<ITMVoxel, ITMVoxelIndex> obj;
+
+        auto obj_ptr = std::make_shared<ObjSLAM::ObjectInstance_New<ITMVoxel, ITMVoxelIndex> >(label_group);
+        obj_ptr.get()->setScene(std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(&(settings->sceneParams),
+                                                                           useSwapping,
+                                                                           MEMORYDEVICE_CPU,
+                                                                           view));
+
+        label_group.addObjectInstance(obj_ptr);
+
+        obj_ptr.get()->getScene();
+
       } else {
         obj_inst_scene = object_instance_scene_vector.at(0);
       }

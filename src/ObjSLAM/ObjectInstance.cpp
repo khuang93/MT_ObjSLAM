@@ -3,6 +3,7 @@
 //
 
 #include "ObjectInstance.h"
+#include "ObjectView.h"
 
 namespace ObjSLAM{
 

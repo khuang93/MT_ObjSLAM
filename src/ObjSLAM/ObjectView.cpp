@@ -2,21 +2,22 @@
 // Created by khuang on 6/25/18.
 //
 
-#include "ObjectView_New.h"
+#include "ObjectView.h"
+#include "ObjectInstance.h"
 
 namespace ObjSLAM{
 
-ObjCameraPose ObjectView_New::getCameraPose(){
+ObjCameraPose ObjectView::getCameraPose(){
   return camera_Pose;
 }
 
 
-void ObjectView_New::setCameraPose(ObjCameraPose _pose)
+void ObjectView::setCameraPose(ObjCameraPose _pose)
 {
   camera_Pose = _pose;
 }
 
-void ObjectView_New::setListOfObjects_old() {
+void ObjectView::setListOfObjects_old() {
 
   std::cout << "Setting Obj List old..." << std::endl;
 
@@ -67,7 +68,7 @@ void ObjectView_New::setListOfObjects_old() {
   }
 }
 
-void ObjectView_New::setListOfObjects() {
+void ObjectView::setListOfObjects() {
   std::cout << "Setting Obj List...";
   for(LabelImgVector::iterator it = label_img_vector.begin(); it!=label_img_vector.end();it++){
 
@@ -138,7 +139,7 @@ void ObjectView_New::setListOfObjects() {
   std::cout << "FINISHED" << std::endl;
 }
 
-void ObjectView_New::setListOfViews() {
+void ObjectView::setListOfViews() {
 
   for(int i=0; i  < segmentation_Mask->dataSize; i++){
 //    if(segmentation_Mask->GetElement(i, MEMORYDEVICE_CPU))
@@ -147,7 +148,7 @@ void ObjectView_New::setListOfViews() {
 }
 
 
-std::map<int, Object_View_Tuple> ObjectView_New::getObjMap(){
+std::map<int, Object_View_Tuple> ObjectView::getObjMap(){
   return obj_map;
 }
 

@@ -15,10 +15,11 @@
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/CPU/ITMSceneReconstructionEngine_CPU.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMMath.h>
 
-#include "ObjectView_New.h"
+#include "ObjectView.h"
 #include "DatasetReader_LPD_Dataset.h"
 #include "ObjectInstanceScene_old.h"
 #include "ObjectInstanceScene.h"
+#include "ObjectView_New.h"
 
 namespace ObjSLAM {
 //using ObjectInstanceSceneVector = std::vector<ObjectInstanceScene*>;
@@ -29,7 +30,8 @@ template<typename TVoxel, typename TIndex>
 class ObjSLAMMappingEngine {
 
  private:
-  ObjectView_New *view;
+  ObjectView *view;
+  ObjectView_New<TVoxel, TIndex> * view_new;
   ITMLib::ITMTrackingState *t_state;
   ITMLib::ITMTrackingState *t_state_orig;
   ITMLib::ITMRenderState *r_state;
