@@ -16,14 +16,14 @@ template<typename TVoxel, typename TIndex>
 class ObjectInstance_New {
 
  private:
-  ObjectClassLabel_Group<TVoxel,TIndex> label;
+  std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> label;
   std::shared_ptr<ObjectView_New<TVoxel,TIndex>> anchor_view;
   std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> scene;
 
 
  public:
   //Constructor
-  ObjectInstance_New(ObjectClassLabel_Group<TVoxel,TIndex> _label):
+  ObjectInstance_New(std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> _label):
   label(_label){}
 
   void setScene(std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> _scene);
@@ -31,6 +31,8 @@ class ObjectInstance_New {
   void setAnchorView(std::shared_ptr<ObjectView_New<TVoxel,TIndex>> _anchor_view);
 
   std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> getScene();
+
+  std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> getClassLabel();
 
 };
 

@@ -22,4 +22,10 @@ std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> ObjectInstance_New<TVoxel, 
   return scene;
 }
 
+template<typename TVoxel, typename TIndex>
+std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> ObjectInstance_New<TVoxel, TIndex>::getClassLabel(){
+  return label;
+};
+
+
 }

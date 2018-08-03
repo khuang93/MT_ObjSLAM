@@ -61,6 +61,8 @@ class ObjSLAMMappingEngine {
 
   void ProcessFrame();
 
+  void ProcessOneObject(Object_View_Tup<TVoxel,TIndex>& view_tuple, ObjectInstanceScene<TVoxel, TIndex>* scene, int obj_idx);
+
   void ProcessOneObject(Object_View_Tuple& view_tuple, ObjectInstanceScene<TVoxel, TIndex>* scene, int obj_idx);
 
   void UpdateTrackingState(const ORUtils::SE3Pose* _pose);

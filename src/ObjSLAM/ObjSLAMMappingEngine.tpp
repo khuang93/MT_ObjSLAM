@@ -158,9 +158,10 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
   if (view_new->getObjMap().size() > 0) {
     for (int t = 0; t < view_new->getObjMap().size(); t++) {
-
-      Object_View_Tuple view_tuple = view_new->getObjMap().at(t);
-      ObjectClassLabel label = std::get<0>(view_tuple)->getClassLabel();
+//      Object_View_Tuple view_tuple = view_new->getObjMap().at(t);
+      Object_View_Tup<TVoxel,TIndex> view_tuple = view_new->getObjMap().at(t);
+//      ObjectClassLabel label = std::get<0>(view_tuple).get()->getClassLabel();
+      auto label = std::get<0>(view_tuple).get()->getClassLabel();
 
       bool isNewObject = true;
       ObjSLAM::ObjectInstanceScene<TVoxel, TIndex> *obj_inst_scene = NULL;
@@ -207,7 +208,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
         denseMapper->ResetScene(obj_inst_scene);
 
 
-        //testing
+        /*//testing
         ObjectClassLabel_Group<TVoxel, TIndex> label_group(1,"test1");
 //        ObjSLAM::ObjectInstance_New<ITMVoxel, ITMVoxelIndex> obj;
 
@@ -219,7 +220,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
         label_group.addObjectInstance(obj_ptr);
 
-        obj_ptr.get()->getScene();
+        obj_ptr.get()->getScene();*/
 
       } else {
         obj_inst_scene =new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(/*label,
@@ -245,6 +246,60 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
        delete obj_inst_scene;//prevent memory full, but it will be needed for mapping
     }
   }
+}
+
+template<typename TVoxel, typename TIndex>
+void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tup<TVoxel,TIndex> &view_tuple,
+                                                            ObjectInstanceScene<TVoxel, TIndex> *scene, int obj_idx) {
+
+
+
+  std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
+
+  int index = std::get<0>(view_tuple).get()->getClassLabel().get()->getLabelIndex();
+  string name = to_string(obj_idx) + "." + to_string(index) + ".ppm";
+
+  denseMapper->ProcessFrame(itmView.get(), t_state, scene, r_state, true);
+  denseMapper->UpdateVisibleList(itmView.get(), t_state, scene, r_state, true);
+  cout << "dbg" << endl;
+  ObjUChar4Image *img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
+
+  t_controller->Prepare(t_state_orig, scene, itmView.get(), visualisationEngine, r_state);
+
+  visualisationEngine->RenderImage(scene,
+                                   t_state_orig->pose_d,
+                                   &itmView->calib.intrinsics_d,
+                                   r_state,
+                                   r_state->raycastImage,
+                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
+                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
+  //Old stuffs with itmbasicengine
+  /*
+//  itmBasicEngine = new ITMLib::ITMBasicEngine<ITMVoxel,ITMVoxelIndex>(settings,*calib,imgSize);
+//  cout<<t_state->pose_d->GetM();
+//  itmBasicEngine->ProcessFrame(itmView.get()->rgb, itmView.get()->depth, t_state->pose_d);
+////    itmBasicEngine->SetScene(scene);
+//  itmBasicEngine->GetImage(img,itmBasicEngine->InfiniTAM_IMAGE_COLOUR_FROM_VOLUME);
+*/
+
+
+
+
+
+  img->ChangeDims(r_state->raycastImage->noDims);
+  img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
+
+  SaveImageToFile(img, name.c_str());
+
+//  for(int i = 0; i<640*480;i++)
+//  cout << r_state->raycastResult->GetData(MEMORYDEVICE_CPU)[0];
+//  cout << t_state->pointCloud->locations->GetElement(0,MEMORYDEVICE_CPU);
+
+//  delete tracker;
+//  delete t_controller;
+
+  delete img;
+
 }
 
 template<typename TVoxel, typename TIndex>
