@@ -28,12 +28,16 @@ template<typename TVoxel, typename TIndex>
 class ObjectInstance_New;
 
 template<typename TVoxel, typename TIndex>
+class ObjectClassLabel_Group;
+
+
+template<typename TVoxel, typename TIndex>
 using Object_View_Tup = std::tuple<std::shared_ptr<ObjectInstance_New<TVoxel,TIndex>>, std::shared_ptr<ITMLib::ITMView>>;
 
 using LabelImgVec = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
 
 template<typename TVoxel, typename TIndex>
-class ObjectView_New {
+class ObjectView_New :public enable_shared_from_this<ObjectView_New<TVoxel,TIndex>> {
  private:
   ObjCameraPose camera_Pose;
 
@@ -55,7 +59,7 @@ class ObjectView_New {
   std::map<int, Object_View_Tup<TVoxel,TIndex>> obj_map; //int is the raw value in seg mask and tuple contains a obj instance and corresbonding ITMView
 
 
-  void setListOfObjects();
+
   void setListOfViews();
 
 
@@ -76,7 +80,7 @@ class ObjectView_New {
       calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d), camera_Pose(pose),
       depth_Image(_depth), rgb_Image(_rgb), label_img_vector(_label_img_vector){
 
-    setListOfObjects();
+
     //TODO debug info
     std::cout<<"ObjectView complete created!\n";
 
@@ -92,6 +96,7 @@ class ObjectView_New {
     }
   }
 
+  std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>> setListOfObjects();
 
   std::map<int, Object_View_Tup<TVoxel,TIndex>> getObjMap();
 

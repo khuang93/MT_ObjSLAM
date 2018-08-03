@@ -25,6 +25,8 @@ namespace ObjSLAM {
 //using ObjectInstanceSceneVector = std::vector<ObjectInstanceScene*>;
 //using ObjectInstancePair = std::pair<ObjectInstance, ObjectInstanceScene_old>;
 //using ObjectInstanceVector = vector<ObjectInstancePair>;
+template<typename TVoxel, typename TIndex>
+using obj_inst_ptr = std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>;
 
 template<typename TVoxel, typename TIndex>
 class ObjSLAMMappingEngine {
@@ -44,12 +46,13 @@ class ObjSLAMMappingEngine {
   DatasetReader_LPD_Dataset reader;
   Vector2i imgSize;
   std::vector<ObjectInstanceScene<TVoxel,TIndex>*> object_instance_scene_vector;
+  std::vector<obj_inst_ptr<TVoxel, TIndex>> obj_inst_ptr_vector;
   const ITMLib::ITMLibSettings * settings;
   const ITMLib::ITMRGBDCalib* calib;
 //  std::vector<ObjectInstanceScene_old> listOfObjectScenes;
 
   ITMLib::ITMDenseMapper<TVoxel, TIndex> *denseMapper;
-
+  std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> label_ptr_vector;
 
  public:
   //Constructor with LPD Dataset
@@ -65,9 +68,15 @@ class ObjSLAMMappingEngine {
 
   void ProcessOneObject(Object_View_Tuple& view_tuple, ObjectInstanceScene<TVoxel, TIndex>* scene, int obj_idx);
 
+  bool checkIsNewObject(std::shared_ptr<ObjectInstance_New<TVoxel,TIndex>> obj_ptr);
+
+
+
   void UpdateTrackingState(const ORUtils::SE3Pose* _pose);
 
   void UpdateTrackingState_Orig(const ORUtils::SE3Pose* _pose);
+
+  void UpdateViewPose();
 
   void deleteAll();
 

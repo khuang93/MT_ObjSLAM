@@ -20,7 +20,8 @@ void ObjectView_New<TVoxel,TIndex>::setCameraPose(ObjCameraPose _pose)
 }
 
 template<typename TVoxel, typename TIndex>
-void ObjectView_New<TVoxel,TIndex>::setListOfObjects() {
+std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>  ObjectView_New<TVoxel,TIndex>::setListOfObjects() {
+
   std::cout << "Setting Obj List...";
   for(LabelImgVec::iterator it = label_img_vector.begin(); it!=label_img_vector.end();it++){
 
@@ -44,14 +45,27 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects() {
     if(labelIndex!=0){
       //label
 //      ObjectClassLabel_Group<TVoxel,TIndex> label(labelIndex, std::to_string(labelIndex));
-      auto label = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(labelIndex, std::to_string(labelIndex));
+      std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>> label_ptr_vector;
+
+
+      //TODO find a way to check label existence before creating new ones
+      auto label_ptr = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(labelIndex, std::to_string(labelIndex));
+      //if vector not have this
+      if(std::find(label_ptr_vector.begin(), label_ptr_vector.end(),label_ptr)==label_ptr_vector.end()){
+        label_ptr_vector.push_back(label_ptr);
+      }
+
+
 
       //TODO
       //is new object?
       //if yes:
 
       //create a object instance
-      auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label);
+      auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr);
+
+      new_obj_instance.get()->setAnchorView(this->shared_from_this());
+
       Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, single_obj_ITMView);
 
       obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(obj_map.size()+1, object_view_tuple));
@@ -63,11 +77,12 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects() {
 //  auto* single_obj_ITMView =  new ITMLib::ITMView(calibration, imgSize_rgb, imgSize_d, false);
   auto single_obj_ITMView = std::make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
 
-//  ObjectClassLabel_Group<TVoxel,TIndex> label(0, std::to_string(0));
-  auto label = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(0, std::to_string(0));
+//  ObjectClassLabel_Group<TVoxel,TIndex> label_ptr(0, std::to_string(0));
+  auto label_ptr = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(0, std::to_string(0));
 
-  auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label);
-  
+  auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr);
+  new_obj_instance.get()->setAnchorView(this->shared_from_this());
+
   Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, single_obj_ITMView);
   obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(0, object_view_tuple));
 
