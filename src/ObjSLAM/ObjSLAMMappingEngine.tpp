@@ -145,8 +145,10 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjCameraPose pose,
 //  if(this->view!=NULL) delete this->view;
   if (settings->deviceType != ITMLib::ITMLibSettings::DEVICE_CUDA) {
     this->view = new ObjectView(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
+    this->view_new = new ObjectView_New<TVoxel,TIndex>(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
   } else {
     this->view = new ObjectView(*calib, imgSize, imgSize, true, pose, _depth, _rgb, _label_img_vector);
+    this->view_new = new ObjectView_New<TVoxel,TIndex>(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
   }
 };
 
@@ -220,7 +222,14 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
         obj_ptr.get()->getScene();
 
       } else {
-        obj_inst_scene = object_instance_scene_vector.at(0);
+        obj_inst_scene =new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(/*label,
+                                                                                    t,*/
+            &(settings->sceneParams),
+            useSwapping,
+            MEMORYDEVICE_CPU,
+            view);
+        denseMapper->ResetScene(obj_inst_scene);
+//        obj_inst_scene= object_instance_scene_vector.at(0);
       }
       //ProcessOneObject
       tracker = ITMLib::ITMTrackerFactory::Instance().Make(imgSize,

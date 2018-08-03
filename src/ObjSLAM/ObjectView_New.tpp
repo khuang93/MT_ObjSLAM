@@ -62,7 +62,7 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects() {
 //  auto* single_obj_ITMView =  new ITMLib::ITMView(calibration, imgSize_rgb, imgSize_d, false);
   auto single_obj_ITMView = std::make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
 
-  ObjectClassLabel_Group<TVoxel,TIndex> git (0, std::to_string(0));
+  ObjectClassLabel_Group<TVoxel,TIndex> label(0, std::to_string(0));
 
   auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label);
   
