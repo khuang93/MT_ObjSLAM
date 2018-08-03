@@ -68,9 +68,11 @@ class ObjSLAMMappingEngine {
 
   void ProcessOneObject(Object_View_Tuple& view_tuple, ObjectInstanceScene<TVoxel, TIndex>* scene, int obj_idx);
 
-  bool checkIsNewObject(std::shared_ptr<ObjectInstance_New<TVoxel,TIndex>> obj_ptr);
+  bool checkIsNewObject(obj_inst_ptr<TVoxel,TIndex> obj_ptr);
 
+  bool checkIsSameObject(obj_inst_ptr<TVoxel,TIndex> obj_ptr_1, obj_inst_ptr<TVoxel,TIndex> obj_ptr_2);
 
+  bool checkImageOverlap(ObjSLAM::ObjFloatImage* first, ObjSLAM::ObjFloatImage* second);
 
   void UpdateTrackingState(const ORUtils::SE3Pose* _pose);
 

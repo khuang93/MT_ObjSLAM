@@ -365,11 +365,27 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsNewObject(std::shared_ptr<Obje
   bool isNew = true;
   auto new_obj_anchor = obj_ptr.get()->getAnchorView();
 
+  auto *cam = new ObjSLAMCamera(this->calib, this->imgSize);
   std::shared_ptr<ObjectInstance_New<TVoxel,TIndex>> existing_obj_ptr;
   for(auto it=obj_inst_ptr_vector.begin();it!=obj_inst_ptr_vector.end();++it){
     existing_obj_ptr=*it;
 
   }
+}
+
+
+template<typename TVoxel, typename TIndex>
+bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsSameObject(obj_inst_ptr<TVoxel,TIndex> obj_ptr_1, obj_inst_ptr<TVoxel,TIndex> obj_ptr_2){
+  bool isSame = false;
+  ObjSLAM::ObjFloatImage* first = obj_ptr_1.get()->getAnchorView().get()->
+
+}
+
+template<typename TVoxel, typename TIndex>
+bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkImageOverlap(ObjSLAM::ObjFloatImage* first, ObjSLAM::ObjFloatImage* second){
+  bool has_enough_overlap = false;
+
+  return has_enough_overlap;
 }
 
 
