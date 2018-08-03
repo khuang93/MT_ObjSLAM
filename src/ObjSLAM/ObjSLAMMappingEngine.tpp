@@ -156,10 +156,10 @@ template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
   bool useSwapping = (settings->swappingMode == ITMLib::ITMLibSettings::SWAPPINGMODE_ENABLED);
 
-  if (view->getObjMap().size() > 0) {
-    for (int t = 0; t < view->getObjMap().size(); t++) {
+  if (view_new->getObjMap().size() > 0) {
+    for (int t = 0; t < view_new->getObjMap().size(); t++) {
 
-      Object_View_Tuple view_tuple = view->getObjMap().at(t);
+      Object_View_Tuple view_tuple = view_new->getObjMap().at(t);
       ObjectClassLabel label = std::get<0>(view_tuple)->getClassLabel();
 
       bool isNewObject = true;
