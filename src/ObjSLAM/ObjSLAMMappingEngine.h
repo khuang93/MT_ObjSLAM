@@ -33,7 +33,7 @@ class ObjSLAMMappingEngine {
 
  private:
   ObjectView *view;
-  ObjectView_New<TVoxel, TIndex> * view_new;
+  shared_ptr<ObjectView_New<TVoxel, TIndex>> view_new;
   ITMLib::ITMTrackingState *t_state;
   ITMLib::ITMTrackingState *t_state_orig;
   ITMLib::ITMRenderState *r_state;

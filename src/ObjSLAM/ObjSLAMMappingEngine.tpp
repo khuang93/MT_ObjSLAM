@@ -145,10 +145,10 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjCameraPose pose,
 //  if(this->view!=NULL) delete this->view;
   if (settings->deviceType != ITMLib::ITMLibSettings::DEVICE_CUDA) {
     this->view = new ObjectView(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
-    this->view_new = new ObjectView_New<TVoxel,TIndex>(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
+    this->view_new = std::make_shared<ObjectView_New<TVoxel, TIndex>>(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
   } else {
     this->view = new ObjectView(*calib, imgSize, imgSize, true, pose, _depth, _rgb, _label_img_vector);
-    this->view_new = new ObjectView_New<TVoxel,TIndex>(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
+    this->view_new = std::make_shared<ObjectView_New<TVoxel, TIndex>>(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
   }
 };
 
@@ -158,6 +158,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
   //init all objects in view
   auto label_ptr_vector_temp = view_new->setListOfObjects();
+  cout<<"ProcessFrame...\n";
   for(int i = 0; i<label_ptr_vector_temp.size();i++){
     auto label_ptr_tmp = label_ptr_vector_temp.at(i);
     if(std::find(label_ptr_vector.begin(), label_ptr_vector.end(),label_ptr_tmp)==label_ptr_vector.end()){
@@ -377,8 +378,10 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsNewObject(std::shared_ptr<Obje
 template<typename TVoxel, typename TIndex>
 bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsSameObject(obj_inst_ptr<TVoxel,TIndex> obj_ptr_1, obj_inst_ptr<TVoxel,TIndex> obj_ptr_2){
   bool isSame = false;
-  ObjSLAM::ObjFloatImage* first = obj_ptr_1.get()->getAnchorView().get()->
+  ObjSLAM::ObjFloatImage* first = obj_ptr_1.get()->getAnchorView_ITM().get()->depth;
+  ObjSLAM::ObjFloatImage* second = obj_ptr_2.get()->getAnchorView_ITM().get()->depth;
 
+  return checkImageOverlap(first, second);
 }
 
 template<typename TVoxel, typename TIndex>

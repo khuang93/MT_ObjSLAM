@@ -23,6 +23,7 @@ template<typename TVoxel, typename TIndex>
 std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>  ObjectView_New<TVoxel,TIndex>::setListOfObjects() {
 
   std::cout << "Setting Obj List...";
+  std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>> label_ptr_vector;
   for(LabelImgVec::iterator it = label_img_vector.begin(); it!=label_img_vector.end();it++){
 
     int labelIndex = 0;
@@ -45,7 +46,7 @@ std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>  ObjectView_New<T
     if(labelIndex!=0){
       //label
 //      ObjectClassLabel_Group<TVoxel,TIndex> label(labelIndex, std::to_string(labelIndex));
-      std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>> label_ptr_vector;
+
 
 
       //TODO find a way to check label existence before creating new ones
@@ -65,10 +66,16 @@ std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>  ObjectView_New<T
       auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr);
 
       new_obj_instance.get()->setAnchorView(this->shared_from_this());
+      new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView);
+
+      new_obj_instance.get()->addObjectInstanceToLabel();
+
+
 
       Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, single_obj_ITMView);
 
       obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(obj_map.size()+1, object_view_tuple));
+
     }
   }
 
@@ -82,6 +89,9 @@ std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>  ObjectView_New<T
 
   auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr);
   new_obj_instance.get()->setAnchorView(this->shared_from_this());
+  new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView);
+  new_obj_instance.get()->addObjectInstanceToLabel();
+
 
   Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, single_obj_ITMView);
   obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(0, object_view_tuple));
@@ -102,6 +112,9 @@ std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>  ObjectView_New<T
     }
   }
   std::cout << "FINISHED" << std::endl;
+
+
+  return label_ptr_vector;
 }
 
 
