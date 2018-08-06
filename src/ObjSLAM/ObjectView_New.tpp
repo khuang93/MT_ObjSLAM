@@ -20,10 +20,33 @@ void ObjectView_New<TVoxel,TIndex>::setCameraPose(ObjCameraPose _pose)
 }
 
 template<typename TVoxel, typename TIndex>
-std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>  ObjectView_New<TVoxel,TIndex>::setListOfObjects() {
+std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> ObjectView_New<TVoxel,TIndex>::addLabelToVector(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>& label_ptr_vector, std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> new_label){
+  if(label_ptr_vector.size()==0) {
+    label_ptr_vector.push_back(new_label);
+//    cout<<new_label.get()->getLabelIndex();
+    return new_label ;
+  }else{
+    bool isNew=true;
+    for(size_t t=0; t<label_ptr_vector.size();++t){
+      if(label_ptr_vector.at(t).get()->getLabelIndex()==new_label.get()->getLabelIndex()){
+        isNew=false;
+        return label_ptr_vector.at(t);
+//        break;
+      }
+    }
+    if(isNew){
+      label_ptr_vector.push_back(new_label);
+      return new_label;
+//      cout<<new_label.get()->getLabelIndex()<<endl;
+    }
+  }
+}
+
+template<typename TVoxel, typename TIndex>
+void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>& label_ptr_vector) {
 
   std::cout << "Setting Obj List...";
-  std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>> label_ptr_vector;
+//  std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>> label_ptr_vector;
   for(LabelImgVec::iterator it = label_img_vector.begin(); it!=label_img_vector.end();it++){
 
     int labelIndex = 0;
@@ -50,11 +73,8 @@ std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>  ObjectView_New<T
 
 
       //TODO find a way to check label existence before creating new ones
-      auto label_ptr = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(labelIndex, std::to_string(labelIndex));
-      //if vector not have this
-      if(std::find(label_ptr_vector.begin(), label_ptr_vector.end(),label_ptr)==label_ptr_vector.end()){
-        label_ptr_vector.push_back(label_ptr);
-      }
+      auto label_ptr_new = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(labelIndex, std::to_string(labelIndex));
+      auto label_ptr = addLabelToVector(label_ptr_vector,label_ptr_new);
 
 
 
@@ -114,7 +134,7 @@ std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>  ObjectView_New<T
   std::cout << "FINISHED" << std::endl;
 
 
-  return label_ptr_vector;
+//  return label_ptr_vector;
 }
 
 

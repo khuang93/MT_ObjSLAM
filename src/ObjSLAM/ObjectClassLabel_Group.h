@@ -33,6 +33,8 @@ class ObjectClassLabel_Group {
 
   void addObjectInstance(std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> object_ptr);
 
+  std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>> getObjPtrVector();
+
 //  void addObjectInstance(ObjectInstance_New<TVoxel, TIndex>* object_ptr);
 
 };

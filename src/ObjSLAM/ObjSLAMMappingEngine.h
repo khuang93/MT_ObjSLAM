@@ -74,6 +74,8 @@ class ObjSLAMMappingEngine {
 
   bool checkImageOverlap(ObjSLAM::ObjFloatImage* first, ObjSLAM::ObjFloatImage* second);
 
+  ORUtils::Vector4<int> getBoundingBox(ObjFloatImage* input);
+
   void UpdateTrackingState(const ORUtils::SE3Pose* _pose);
 
   void UpdateTrackingState_Orig(const ORUtils::SE3Pose* _pose);
