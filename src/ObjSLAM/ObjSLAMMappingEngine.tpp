@@ -173,40 +173,37 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
   if (view_new->getObjMap().size() > 0) {
     for (int t = 0; t < view_new->getObjMap().size(); t++) {
-              if (t> 0) break;
+//              if (t> 0) break;
       //      Object_View_Tuple view_tuple = view_new->getObjMap().at(t);
-      Object_View_Tup<TVoxel,TIndex> view_tuple = view_new->getObjMap().at(12); //TODO hard coded for test
+      Object_View_Tup<TVoxel,TIndex> view_tuple = view_new->getObjMap().at(t);
 //      ObjectClassLabel label = std::get<0>(view_tuple).get()->getClassLabel();
       auto obj_inst_ptr  = std::get<0>(view_tuple);
       auto label_ptr = obj_inst_ptr.get()->getClassLabel();
 
+      //TODO hard coded for sofa 58
+      if(label_ptr.get()->getLabelIndex()!=58) continue;
+
       auto obj_ptr_vec = label_ptr.get()->getObjPtrVector();
-      cout<<"obj_ptr_vec size"<<obj_ptr_vec.size();
-      for(size_t i = 0; i < obj_ptr_vec.size();++i){
+      cout<<"obj_ptr_vec size"<<obj_ptr_vec.size()<<endl;
+      if(obj_ptr_vec.size()==0){
+        obj_inst_ptr.get()->addObjectInstanceToLabel();
+      }else{
+        for(size_t i = 0; i < obj_ptr_vec.size();++i){
           auto existing_obj_ptr = obj_ptr_vec.at(i);
-          cout<<"check "<<t<<" "<<this->checkIsSameObject(existing_obj_ptr, obj_inst_ptr);
+          cout<<"check "<<label_ptr.get()->getLabelIndex()<<" "<<this->checkIsSameObject(existing_obj_ptr, obj_inst_ptr)<<endl;
+        }
       }
-
-
-
-//    bool isNewLabel=false;
-//      if(label_ptr_vector.size()!=0){
-//        std::find(label_ptr_vector.begin(), label_ptr_vector.end(),label_ptr)!=label_ptr_vector.end();
-//      }
-//      if(isNewLabel) label_ptr_vector.push_back(label_ptr);
-
-//      bool isNewObject = checkIsNewObject(obj_inst_ptr);
 
 
 
       ObjSLAM::ObjectInstanceScene<TVoxel, TIndex> *obj_inst_scene = NULL;
       shared_ptr<ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>> obj_inst_scene_ptr;
-//      if (label.getLabelIndex() != 0&&t_state->pose_d->GetM()!=t_state_orig->pose_d->GetM()){
+
 
 
         //TODO method for determin if new object or not, try fusion of background
 
-        //projection
+        //projection tests
 /*        std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 
 
@@ -396,15 +393,16 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsSameObject(obj_inst_ptr<TVoxel
   ObjSLAM::ObjFloatImage* first = obj_ptr_1.get()->getAnchorView_ITM().get()->depth;
   ObjSLAM::ObjFloatImage* second = obj_ptr_2.get()->getAnchorView_ITM().get()->depth;
 
-//  auto *cam = new ObjSLAMCamera(this->calib, this->imgSize);
-//
-//  auto* pcl = new ORUtils::Image<Vector4f>(imgSize,MEMORYDEVICE_CPU);//in world coordinate
-//
-//  cam->projectImg2PointCloud(second,pcl, *t_state->pose_d);
-//
-//  ObjFloatImage *out = new ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
-//  cam->projectPointCloud2Img(pcl, out, *t_state_orig->pose_d);
+  auto *cam = new ObjSLAMCamera(this->calib, this->imgSize);
 
+  auto* pcl = new ORUtils::Image<Vector4f>(imgSize,MEMORYDEVICE_CPU);//in world coordinate
+  //TODO change pose to the pose from obj anchor view. add pose to itm view or let the obj inst save the pose itself.
+  cam->projectImg2PointCloud(second,pcl, *t_state->pose_d);
+  cout<<*t_state->pose_d;
+
+  ObjFloatImage *out = new ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
+  cam->projectPointCloud2Img(pcl, out, *t_state_orig->pose_d);
+  cout<<*t_state_orig->pose_d;
 
 
   return checkImageOverlap(first, second);
@@ -441,7 +439,7 @@ template<typename TVoxel, typename TIndex>
 bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkImageOverlap(ObjSLAM::ObjFloatImage* first, ObjSLAM::ObjFloatImage* second){
   bool has_enough_overlap = false;
   //parameter to set which % of the pixels must match
-  double threshold = 0.99;
+  double threshold = 0.8;
   double true_count = 0.0;
   double unmatch_count = 0.0;
   for(size_t i= 0; i<imgSize.x*imgSize.y; ++i){

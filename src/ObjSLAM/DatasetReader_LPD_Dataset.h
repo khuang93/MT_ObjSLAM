@@ -68,7 +68,9 @@ class DatasetReader_LPD_Dataset {
 //    if (img_number > 1) {
 //      deleteVariables();
 //    }
-
+    if(label_img_vector.size()!=0){
+      label_img_vector.clear();
+    }
 
     //TODO make the path using os path join instead of slash
     string depth_path = path + "/depth/cam0/" + to_string(img_number) + ".exr";
