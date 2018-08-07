@@ -173,7 +173,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
   if (view_new->getObjMap().size() > 0) {
     for (int t = 0; t < view_new->getObjMap().size(); t++) {
-//              if (t> 0) break;
+              if (t== 0) continue;
       //      Object_View_Tuple view_tuple = view_new->getObjMap().at(t);
       Object_View_Tup<TVoxel,TIndex> view_tuple = view_new->getObjMap().at(t);
 //      ObjectClassLabel label = std::get<0>(view_tuple).get()->getClassLabel();
@@ -181,7 +181,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       auto label_ptr = obj_inst_ptr.get()->getClassLabel();
 
       //TODO hard coded for sofa 58
-      if(label_ptr.get()->getLabelIndex()!=58) continue;
+//      if(label_ptr.get()->getLabelIndex()!=58) continue;
 
       auto obj_ptr_vec = label_ptr.get()->getObjPtrVector();
       cout<<"obj_ptr_vec size"<<obj_ptr_vec.size()<<endl;
