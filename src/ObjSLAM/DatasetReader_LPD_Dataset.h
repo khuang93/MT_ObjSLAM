@@ -63,7 +63,7 @@ class DatasetReader_LPD_Dataset {
     setCalib_LPD();
   };
 
-  void readNext() {
+  int readNext() {
     cout << "img_number = " << img_number << endl;
 //    if (img_number > 1) {
 //      deleteVariables();
@@ -133,7 +133,8 @@ class DatasetReader_LPD_Dataset {
     delete T_cb;
 //    delete T_cw_SE3;
 
-    img_number++;
+
+    return img_number++;
   }
 
   std::vector<std::string> getFileNames(std::string directoryPath) {

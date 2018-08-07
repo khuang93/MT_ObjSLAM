@@ -29,22 +29,16 @@ int main(int argc, char **argv) {
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
   internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
   DatasetReader_LPD_Dataset reader(path, imgSize);
-  reader.readNext();
-
-
-
-
-
-//  ObjSLAM::ObjectClassLabel_Group<ITMVoxel, ITMVoxelIndex> label_test_1(1, "test1");
-
+  int imgNum = reader.readNext();
 
   auto *mappingEngine2 =
       new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
-
+  mappingEngine2->UpdateImgNumber(imgNum);
   mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
   mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
   mappingEngine2->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
 //  cout << reader.getPose()->getSE3Pose().GetM();
+
   //Pose test
 /*  auto *pose_test = new ORUtils::SE3Pose(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 //  auto *pose_test2 = new ORUtils::SE3Pose(5.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.1f);
@@ -58,17 +52,17 @@ int main(int argc, char **argv) {
 
   int totFrames = 12;
 for(int i = 0;i<totFrames;++i){
-  reader.readNext();
+  imgNum = reader.readNext();
+  mappingEngine2->UpdateImgNumber(imgNum);
 //  cout << reader.getPose()->getSE3Pose().GetM();
   mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
   mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
 
   mappingEngine2->ProcessFrame();
-
 }
 
   //old stuffs
-//  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
+/*//  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
 
 //  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex> *) object,
 //                                     std::get<1>(view_tuple),
@@ -117,7 +111,7 @@ for(int i = 0;i<totFrames;++i){
 
 
   //delete mappingEngine2;
-//  delete pose_test;
+//  delete pose_test;*/
 
   return 0;
 }

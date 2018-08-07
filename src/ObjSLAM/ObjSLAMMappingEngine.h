@@ -32,6 +32,7 @@ template<typename TVoxel, typename TIndex>
 class ObjSLAMMappingEngine {
 
  private:
+  int imgNumber;
   ObjectView *view;
   shared_ptr<ObjectView_New<TVoxel, TIndex>> view_new;
   ITMLib::ITMTrackingState *t_state;
@@ -85,6 +86,8 @@ class ObjSLAMMappingEngine {
   void UpdateTrackingState_Orig(const ORUtils::SE3Pose* _pose);
 
   void UpdateViewPose();
+
+  void UpdateImgNumber(int _imgNum){ imgNumber = _imgNum;};
 
   void deleteAll();
 

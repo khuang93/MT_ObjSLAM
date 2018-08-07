@@ -289,7 +289,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tup<TVox
   std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 
   int index = std::get<0>(view_tuple).get()->getClassLabel().get()->getLabelIndex();
-  string name = to_string(obj_idx) + "." + to_string(index) + ".ppm";
+  string name = to_string(imgNumber) + "." + to_string(index) + ".ppm";
 
   denseMapper->ProcessFrame(itmView.get(), t_state, scene, r_state, true);
   denseMapper->UpdateVisibleList(itmView.get(), t_state, scene, r_state, true);
