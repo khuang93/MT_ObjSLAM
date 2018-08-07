@@ -30,7 +30,7 @@ class ObjSLAMCamera {
  public:
   bool projectPointCloud2Img(ORUtils::Image<Vector4f> * PCL, ObjFloatImage* out, ObjCameraPose pose);
 
-  bool projectImg2PointCloud(ObjFloatImage* in, ORUtils::Image<Vector4f> * PCL,  ObjCameraPose pose);
+  ORUtils::Vector6<float> projectImg2PointCloud(ObjFloatImage* in, ORUtils::Image<Vector4f> * PCL,  ObjCameraPose pose);
 
   //getters
   const  ITMLib::ITMRGBDCalib * GetCalib(){ return calib;}

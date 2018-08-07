@@ -18,7 +18,7 @@ bool ObjSLAMCamera::projectPointCloud2Img(ORUtils::Image<Vector4f> *PCL, ObjFloa
 
   Eigen::Matrix3f K_inv = K.inverse();
   std::cout<<"K"<<K<<std::endl;*/
-  std::cout << "PCL2IMG\n";
+//  std::cout << "PCL2IMG\n";
   ORUtils::Matrix3<float> K(this->calib->intrinsics_d.projectionParamsSimple.fx,
                             0.0f,
                             0.0f,
@@ -51,7 +51,8 @@ bool ObjSLAMCamera::projectPointCloud2Img(ORUtils::Image<Vector4f> *PCL, ObjFloa
 
 }
 
-bool ObjSLAMCamera::projectImg2PointCloud(ObjSLAM::ObjFloatImage *in,
+//return value: min_xyz and then max_xyz
+ORUtils::Vector6<float> ObjSLAMCamera::projectImg2PointCloud(ObjSLAM::ObjFloatImage *in,
                                           ORUtils::Image<Vector4f> *PCL,
                                           ObjSLAM::ObjCameraPose pose) {
   ORUtils::Matrix4<float> K(this->calib->intrinsics_d.projectionParamsSimple.fx,
@@ -82,8 +83,13 @@ bool ObjSLAMCamera::projectImg2PointCloud(ObjSLAM::ObjFloatImage *in,
   Matrix4f projMat;
   (K * pose_mat).inv(projMat);
 
-  std::cout << "IMG2PCL\n";
-
+//  std::cout << "IMG2PCL\n";
+  double min_x=10000.0;
+  double min_y=min_x;
+  double min_z=min_x;
+  double max_x=0.0;
+  double max_y=max_x;
+  double max_z=max_x;
   for (int v = 0; v < imgSize.height; v++) {
     for (int u = 0; u < imgSize.width; u++) {
       int locId = v * imgSize.width + u;
@@ -91,10 +97,19 @@ bool ObjSLAMCamera::projectImg2PointCloud(ObjSLAM::ObjFloatImage *in,
       float zc = in->GetData(MEMORYDEVICE_CPU)[locId];
       Vector4f pt(u * zc, v * zc, zc, 1);
       Vector4f res = projMat * pt;
+      if(res.x>max_x) max_x=res.x;
+      if(res.x<min_x) min_x=res.x;
+      if(res.y>max_y) max_y=res.y;
+      if(res.y<min_y) min_y=res.y;
+      if(res.z>max_z) max_z=res.z;
+      if(res.z<min_z) min_z=res.z;
       PCL->GetData(MEMORYDEVICE_CPU)[locId] = res;
     }
   }
-
+  ORUtils::Vector6<float> boundingCube(min_x,min_y,min_z,max_x,max_y,max_z);
+//  cout<<"min xyz="<<min_x<<" "<<min_y<<" "<<min_z<<endl;
+//  cout<<"max xyz="<<max_x<<" "<<max_y<<" "<<max_z<<endl;
+  return boundingCube;
 }
 
 }

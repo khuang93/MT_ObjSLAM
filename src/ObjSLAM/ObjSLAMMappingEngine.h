@@ -72,6 +72,10 @@ class ObjSLAMMappingEngine {
 
   bool checkIsSameObject(obj_inst_ptr<TVoxel,TIndex> obj_ptr_1, obj_inst_ptr<TVoxel,TIndex> obj_ptr_2);
 
+  bool checkBoundingCubeOverlap(ORUtils::Vector6<float> first,ORUtils::Vector6<float> second);
+
+  double calculateCubeVolume(ORUtils::Vector6<float> corners);
+
   bool checkImageOverlap(ObjSLAM::ObjFloatImage* first, ObjSLAM::ObjFloatImage* second);
 
   ORUtils::Vector4<int> getBoundingBox(ObjFloatImage* input);
