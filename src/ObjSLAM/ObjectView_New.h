@@ -82,7 +82,7 @@ class ObjectView_New :public enable_shared_from_this<ObjectView_New<TVoxel,TInde
 
 
     //TODO debug info
-    std::cout<<"ObjectView complete created!\n";
+//    std::cout<<"ObjectView complete created!\n";
 
   }
   //Destructor

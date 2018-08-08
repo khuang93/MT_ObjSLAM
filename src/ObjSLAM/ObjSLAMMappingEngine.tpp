@@ -169,10 +169,12 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
 
   for(int i = 0; i<label_ptr_vector.size();i++){
-    cout<<label_ptr_vector.at(i).get()->getLabelClassName();
+    cout<<label_ptr_vector.at(i).get()->getLabelClassName()<<" ";
   }
+  cout<<endl;
 
   if (view_new->getObjMap().size() > 0) {
+    bool newObject = true;
     for (int t = 0; t < view_new->getObjMap().size(); t++) {
               if (t== 0) continue;
       //      Object_View_Tuple view_tuple = view_new->getObjMap().at(t);
@@ -184,25 +186,59 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       //TODO hard coded for sofa 58
       if(label_ptr.get()->getLabelIndex()!=58) continue;
 
+
       auto obj_ptr_vec = label_ptr.get()->getObjPtrVector();
-      cout<<"obj_ptr_vec size"<<obj_ptr_vec.size()<<endl;
-      if(obj_ptr_vec.size()==0){
-        obj_inst_ptr.get()->addObjectInstanceToLabel();
-      }else{
-        for(size_t i = 0; i < obj_ptr_vec.size();++i){
-          auto existing_obj_ptr = obj_ptr_vec.at(i);
-          cout<<"check "<<label_ptr.get()->getLabelIndex()<<" "<<this->checkIsSameObject(existing_obj_ptr, obj_inst_ptr)<<endl;
-        }
-      }
 
-
+      cout<<*label_ptr.get()<<endl<<"obj_ptr_vec size before"<<obj_ptr_vec->size()<<endl;
 
       ObjSLAM::ObjectInstanceScene<TVoxel, TIndex> *obj_inst_scene = NULL;
       shared_ptr<ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>> obj_inst_scene_ptr;
 
 
+      if(obj_ptr_vec->size()==0){
+        obj_inst_ptr.get()->addObjectInstanceToLabel();
+      }else{
+        for(size_t i = 0; i < obj_ptr_vec->size();++i){
+          std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> existing_obj_ptr = obj_ptr_vec->at(i);
+          newObject=!this->checkIsSameObject(existing_obj_ptr, obj_inst_ptr);
 
-        //TODO method for determin if new object or not, try fusion of background
+          if(!newObject){
+            //this is an existing object
+            //TODO take existing scene and do further recon
+            cout<<"existing\n";
+            obj_inst_scene_ptr = existing_obj_ptr.get()->getScene();
+            break;
+          }
+        }
+        if(newObject) obj_inst_ptr.get()->addObjectInstanceToLabel();
+      }
+      cout<<"isNew? "<<newObject<<endl;
+      if(newObject/*1*/){
+
+        //TODO create scene and start recon
+//        obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(&(settings->sceneParams),
+//                                                                            useSwapping,
+//                                                                            MEMORYDEVICE_CPU,
+//                                                                            view);
+          obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(&(settings->sceneParams),
+                                                                                   useSwapping,
+                                                                                   MEMORYDEVICE_CPU);
+        obj_inst_ptr.get()->setScene(obj_inst_scene_ptr);
+//        obj_inst_scene = obj_inst_scene_ptr.get();
+//          obj_inst_ptr.get()->setScene(obj_inst_scene_ptr);
+        this->object_instance_scene_vector.push_back(obj_inst_scene);
+        denseMapper->ResetScene(obj_inst_scene_ptr.get());
+
+      }else{
+
+      }
+      cout<<"obj_ptr_vec size aft "<<obj_ptr_vec->size()<<endl;
+
+
+
+
+
+
 
         //projection tests
 /*        std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
@@ -231,50 +267,57 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
 
 
-      obj_inst_ptr_vector.push_back(obj_inst_ptr);
-
-      if (object_instance_scene_vector.size() == 0) {
-        cout<<"dbg\n";
-        /*auto* */obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(/*label,
-                                                                                    t,*/
-                                                                                    &(settings->sceneParams),
-                                                                                    useSwapping,
-                                                                                    MEMORYDEVICE_CPU,
-                                                                                    view);
-        obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(&(settings->sceneParams),
-                                                                                   useSwapping,
-                                                                                   MEMORYDEVICE_CPU,
-                                                                                   view);
-        cout<<"dbg\n";
-        obj_inst_ptr.get()->setScene(obj_inst_scene_ptr);
-        this->object_instance_scene_vector.push_back(obj_inst_scene);
-        denseMapper->ResetScene(obj_inst_scene);
+//      obj_inst_ptr_vector.push_back(obj_inst_ptr);
 
 
 
-      } else {
-        obj_inst_scene =new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(/*label,
-                                                                                    t,*/
-            &(settings->sceneParams),
-            useSwapping,
-            MEMORYDEVICE_CPU,
-            view);
-        denseMapper->ResetScene(obj_inst_scene);
-//        obj_inst_scene= object_instance_scene_vector.at(0);
-      }
+//      if (object_instance_scene_vector.size() == 0) {
+//
+//        /*auto* */obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(/*label,
+//                                                                                    t,*/
+//                                                                                    &(settings->sceneParams),
+//                                                                                    useSwapping,
+//                                                                                    MEMORYDEVICE_CPU,
+//                                                                                    view);
+//        obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(&(settings->sceneParams),
+//                                                                                   useSwapping,
+//                                                                                   MEMORYDEVICE_CPU,
+//                                                                                   view);
+//
+//        obj_inst_ptr.get()->setScene(obj_inst_scene_ptr);
+//        this->object_instance_scene_vector.push_back(obj_inst_scene);
+//        denseMapper->ResetScene(obj_inst_scene);
+//
+//
+//
+//      } else {
+//        obj_inst_scene =new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(/*label,
+//                                                                                    t,*/
+//            &(settings->sceneParams),
+//            useSwapping,
+//            MEMORYDEVICE_CPU,
+//            view);
+//        denseMapper->ResetScene(obj_inst_scene);
+////        obj_inst_scene= object_instance_scene_vector.at(0);
+//      }
+
       //ProcessOneObject
       tracker = ITMLib::ITMTrackerFactory::Instance().Make(imgSize,
                                                            imgSize,
                                                            settings,
                                                            lowEngine,
                                                            new ITMLib::ITMIMUCalibrator_iPad(),
-                                                           obj_inst_scene->sceneParams);
-      t_controller = new ITMLib::ITMTrackingController(tracker, settings);
+                                                           obj_inst_scene_ptr.get()->sceneParams);
 
+      t_controller = new ITMLib::ITMTrackingController(tracker, settings);
+      cout<<"dbg\n";
       //TODO method for match old object
-      ProcessOneObject(view_tuple, obj_inst_scene, t);
+      ProcessOneObject(view_tuple, obj_inst_scene_ptr.get(), t);
+      newObject = true;
        delete obj_inst_scene;//prevent memory full, but it will be needed for mapping
     }
+    //re-init the bool of newObject
+
   }
 }
 
@@ -462,6 +505,9 @@ ORUtils::Vector4<int> ObjSLAMMappingEngine<TVoxel, TIndex>::getBoundingBox(ObjFl
 //using overlapping volumes. TODO add centroid position to further refine the estiamtion
 template<typename TVoxel, typename TIndex>
 bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkBoundingCubeOverlap(ORUtils::Vector6<float> first,ORUtils::Vector6<float> second){
+  double threshold_volumeChange = 0.5;
+  double threshold_overlap = 0.75;
+
   //case where there is 0 overlap
   if(second[0]>first[3]||second[1]>first[4]||second[2]>first[5]||first[0]>second[3]||first[1]>second[4]||first[2]>second[5])
     return false;
@@ -480,11 +526,11 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkBoundingCubeOverlap(ORUtils::Vec
   double v2 = calculateCubeVolume(second);
   double v_overlap = calculateCubeVolume(overlap);
 
-  cout<<v1<<" "<<v2<<" "<<v_overlap<<endl;
+  cout<<min(v1,v2)/max(v1,v2)<<" "<<v_overlap/min(v1,v2)<<endl;
   if(v1<=v2){
-    return v1/v2>0.8 && v_overlap/v2>0.5;
+    return v1/v2>threshold_volumeChange && v_overlap/v1>threshold_overlap;
   }else{
-    return v2/v1>0.8 && v_overlap/v1>0.5;
+    return v2/v1>threshold_volumeChange && v_overlap/v2>threshold_overlap;
   }
 };
 
@@ -554,6 +600,20 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateViewPose(){
   this->view_new->setCameraPose(_pose);
 };
 
+
+template<typename TVoxel, typename TIndex>
+void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllLabelStats() {
+  for(size_t i = 0; i< this->label_ptr_vector.size();++i){
+    std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr = label_ptr_vector.at(i);
+    std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>> obj_inst_vec = *(label_ptr.get()->getObjPtrVector());
+    cout<<"Label "<<*label_ptr.get()/*->getLabelClassName()*/<<" : "<<obj_inst_vec.size()<<endl;
+//    for(size_t j = 0; j<obj_inst_vec.size();++j){
+//      std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr = obj_inst_vec.at(j);
+//      cout<<j<<" ";
+//    }
+  }
+//  cout<<endl;
+};
 
 template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::deleteAll() {

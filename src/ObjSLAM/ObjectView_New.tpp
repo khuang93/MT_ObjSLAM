@@ -45,7 +45,7 @@ std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> ObjectView_New<TVoxel,TIn
 template<typename TVoxel, typename TIndex>
 void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>& label_ptr_vector) {
 
-  std::cout << "Setting Obj List...";
+//  std::cout << "Setting Obj List...";
 //  std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>> label_ptr_vector;
   for(LabelImgVec::iterator it = label_img_vector.begin(); it!=label_img_vector.end();++it){
 
@@ -54,7 +54,7 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
     auto single_obj_ITMView = std::make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
 
     //it over pixels
-    for (int i = 0; i < (*it)->dataSize; i++) {
+    for (int i = 0; i < (*it)->dataSize; ++i) {
       //if the label is not empty
       if((*it)->GetElement(i, MEMORYDEVICE_CPU)!=0){
         //if label index == 0 it means it is the first labeled pixel, only one possible number beside the 0s in one label img
@@ -133,7 +133,7 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
       single_obj_ITMView->rgb->GetData(MEMORYDEVICE_CPU)[i] = this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
     }
   }
-  std::cout << "FINISHED" << std::endl;
+//  std::cout << "FINISHED" << std::endl;
 
 
 //  return label_ptr_vector;

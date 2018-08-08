@@ -49,6 +49,8 @@ int main(int argc, char **argv) {
 
   mappingEngine2->ProcessFrame();
 
+  mappingEngine2->outputAllLabelStats();
+
 
   int totFrames = 12;
 for(int i = 0;i<totFrames;++i){
@@ -60,6 +62,8 @@ for(int i = 0;i<totFrames;++i){
 
   mappingEngine2->ProcessFrame();
 }
+
+  mappingEngine2->outputAllLabelStats();
 
   //old stuffs
 /*//  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;

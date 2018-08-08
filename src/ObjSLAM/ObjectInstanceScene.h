@@ -37,7 +37,7 @@ class ObjectInstanceScene : public ITMLib::ITMScene<TVoxel, TIndex>{
 
   //Constructor
   ObjectInstanceScene(/*ObjectClassLabel _label, int _objectIndex,*/ const ITMLib::ITMSceneParams *_sceneParams,
-                      bool _useSwapping, MemoryDeviceType _memoryType,  ObjectView* _firstView);
+                      bool _useSwapping, MemoryDeviceType _memoryType/*,  ObjectView* _firstView*/);
 
   /*:
                       label(_label),objectIndex(_objectIndex),

@@ -89,6 +89,8 @@ class ObjSLAMMappingEngine {
 
   void UpdateImgNumber(int _imgNum){ imgNumber = _imgNum;};
 
+  void outputAllLabelStats();
+
   void deleteAll();
 
   ~ObjSLAMMappingEngine(){

@@ -33,7 +33,12 @@ class ObjectClassLabel_Group {
 
   void addObjectInstance(std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> object_ptr);
 
-  std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>> getObjPtrVector();
+  std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>>* getObjPtrVector();
+
+
+  friend std::ostream& operator<< (std::ostream& stream, ObjectClassLabel_Group<TVoxel, TIndex>& label){
+    return stream<<"Class Label of "<<label.getLabelClassName();
+  }
 
 //  void addObjectInstance(ObjectInstance_New<TVoxel, TIndex>* object_ptr);
 
