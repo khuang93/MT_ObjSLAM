@@ -181,13 +181,21 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       if (t== 0) continue;
       //      Object_View_Tuple view_tuple = view_new->getObjMap().at(t);
       Object_View_Tup<TVoxel,TIndex> view_tuple = view_new->getObjMap().at(t);
+
+
 //      ObjectClassLabel label = std::get<0>(view_tuple).get()->getClassLabel();
       auto obj_inst_ptr  = std::get<0>(view_tuple);
       auto label_ptr = obj_inst_ptr.get()->getClassLabel();
 
       //TODO skid 76 to reduce memory
           int labelIndex = label_ptr.get()->getLabelIndex();
-      if(labelIndex==76||labelIndex==59||labelIndex==74||labelIndex==73||labelIndex==42) continue;
+      if(labelIndex!=76/*||labelIndex==59||labelIndex==74||labelIndex==73||labelIndex==42*/) continue;
+
+
+      std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
+      string name = "Input_Frame" +  to_string(imgNumber) +"."  + to_string(t)+".ppm";
+
+      SaveImageToFile(itmview.get()->depth, name.c_str());
 
 
       auto obj_ptr_vec = label_ptr.get()->getObjPtrVector();
@@ -628,6 +636,9 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
       img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
       SaveImageToFile(img, name.c_str());
+      string name2 = "Input_Label"+ label_ptr.get()->getLabelClassName() + ".Object" + to_string(j)+ ".Frame" +  to_string(imgNumber) + ".ppm";
+
+
 
     }
   }

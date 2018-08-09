@@ -65,7 +65,7 @@ for(int i = 1;i<totFrames;++i){
   mappingEngine2->outputAllObjImages();
 }
 
-  mappingEngine2->outputAllLabelStats();
+//  mappingEngine2->outputAllLabelStats();
 
   //old stuffs
 /*//  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
