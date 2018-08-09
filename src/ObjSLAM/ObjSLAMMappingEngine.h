@@ -91,6 +91,8 @@ class ObjSLAMMappingEngine {
 
   void outputAllLabelStats();
 
+  void outputAllObjImages();
+
   void deleteAll();
 
   ~ObjSLAMMappingEngine(){

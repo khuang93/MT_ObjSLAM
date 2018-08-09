@@ -50,10 +50,11 @@ int main(int argc, char **argv) {
   mappingEngine2->ProcessFrame();
 
   mappingEngine2->outputAllLabelStats();
+  mappingEngine2->outputAllObjImages();
 
 
-  int totFrames = 12;
-for(int i = 0;i<totFrames;++i){
+  int totFrames = 13;
+for(int i = 1;i<totFrames;++i){
   imgNum = reader.readNext();
   mappingEngine2->UpdateImgNumber(imgNum);
 //  cout << reader.getPose()->getSE3Pose().GetM();
@@ -61,6 +62,7 @@ for(int i = 0;i<totFrames;++i){
   mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
 
   mappingEngine2->ProcessFrame();
+  mappingEngine2->outputAllObjImages();
 }
 
   mappingEngine2->outputAllLabelStats();

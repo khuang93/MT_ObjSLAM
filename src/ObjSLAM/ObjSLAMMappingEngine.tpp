@@ -176,15 +176,18 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
   if (view_new->getObjMap().size() > 0) {
     bool newObject = true;
     for (int t = 0; t < view_new->getObjMap().size(); t++) {
-              if (t== 0) continue;
+
+      //TODO hard code skipped background
+      if (t== 0) continue;
       //      Object_View_Tuple view_tuple = view_new->getObjMap().at(t);
       Object_View_Tup<TVoxel,TIndex> view_tuple = view_new->getObjMap().at(t);
 //      ObjectClassLabel label = std::get<0>(view_tuple).get()->getClassLabel();
       auto obj_inst_ptr  = std::get<0>(view_tuple);
       auto label_ptr = obj_inst_ptr.get()->getClassLabel();
 
-      //TODO hard coded for sofa 58
-      if(label_ptr.get()->getLabelIndex()!=58) continue;
+      //TODO skid 76 to reduce memory
+          int labelIndex = label_ptr.get()->getLabelIndex();
+      if(labelIndex==76||labelIndex==59||labelIndex==74||labelIndex==73||labelIndex==42) continue;
 
 
       auto obj_ptr_vec = label_ptr.get()->getObjPtrVector();
@@ -205,7 +208,6 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
           if(!newObject){
             //this is an existing object
             //TODO take existing scene and do further recon
-            cout<<"existing\n";
             obj_inst_scene_ptr = existing_obj_ptr.get()->getScene();
             break;
           }
@@ -241,28 +243,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
 
         //projection tests
-/*        std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 
-
-        ObjCameraPose transformToOrigPose = ObjCameraPose::GetTransformation(*(t_state->pose_d), *(t_state_orig->pose_d));
-
-        auto *cam = new ObjSLAMCamera(this->calib, this->imgSize);
-
-        auto* pcl = new ORUtils::Image<Vector4f>(imgSize,MEMORYDEVICE_CPU);//in world coordinate
-
-        cam->projectImg2PointCloud(itmView.get()->depth,pcl, *t_state->pose_d);
-
-
-      ObjFloatImage *out = new ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
-        cam->projectPointCloud2Img(pcl, out, *t_state_orig->pose_d);
-
-      string name = "out"+to_string(t)+".ppm";
-      SaveImageToFile(out, name.c_str());
-      string nameIn = "in"+to_string(t)+".ppm";
-      SaveImageToFile(itmView.get()->depth, nameIn.c_str());
-
-      delete pcl;
-      delete out;*/
 //      }
 
 
@@ -331,28 +312,28 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tup<TVox
 
   std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 
-  int index = std::get<0>(view_tuple).get()->getClassLabel().get()->getLabelIndex();
-  string name = to_string(imgNumber) + "." + to_string(index) + ".ppm";
+
 
   denseMapper->ProcessFrame(itmView.get(), t_state, scene, r_state, true);
   denseMapper->UpdateVisibleList(itmView.get(), t_state, scene, r_state, true);
 //  cout << "dbg" << endl;
   ObjUChar4Image *img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
 
-  t_controller->Prepare(t_state, scene, itmView.get(), visualisationEngine, r_state);
+//  t_controller->Prepare(t_state, scene, itmView.get(), visualisationEngine, r_state);
 
-  visualisationEngine->RenderImage(scene,
+/*  visualisationEngine->RenderImage(scene,
                                    t_state->pose_d,
                                    &itmView->calib.intrinsics_d,
                                    r_state,
                                    r_state->raycastImage,
                                    ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                    ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
-
+  int index = std::get<0>(view_tuple).get()->getClassLabel().get()->getLabelIndex();
+  string name = to_string(imgNumber) + "." + to_string(index) + ".ppm";
   img->ChangeDims(r_state->raycastImage->noDims);
   img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
-  SaveImageToFile(img, name.c_str());
+  SaveImageToFile(img, name.c_str());*/
 
 //  for(int i = 0; i<640*480;i++)
 //  cout << r_state->raycastResult->GetData(MEMORYDEVICE_CPU)[0];
@@ -505,8 +486,8 @@ ORUtils::Vector4<int> ObjSLAMMappingEngine<TVoxel, TIndex>::getBoundingBox(ObjFl
 //using overlapping volumes. TODO add centroid position to further refine the estiamtion
 template<typename TVoxel, typename TIndex>
 bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkBoundingCubeOverlap(ORUtils::Vector6<float> first,ORUtils::Vector6<float> second){
-  double threshold_volumeChange = 0.5;
-  double threshold_overlap = 0.75;
+  double threshold_volumeChange = 0.4;
+  double threshold_overlap = 0.6;
 
   //case where there is 0 overlap
   if(second[0]>first[3]||second[1]>first[4]||second[2]>first[5]||first[0]>second[3]||first[1]>second[4]||first[2]>second[5])
@@ -611,6 +592,44 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllLabelStats() {
 //      std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr = obj_inst_vec.at(j);
 //      cout<<j<<" ";
 //    }
+  }
+//  cout<<endl;
+};
+
+
+template<typename TVoxel, typename TIndex>
+void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
+  for(size_t i = 0; i< this->label_ptr_vector.size();++i){
+    std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr = label_ptr_vector.at(i);
+    std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>> obj_inst_vec = *(label_ptr.get()->getObjPtrVector());
+    cout<<"Label "<<*label_ptr.get()/*->getLabelClassName()*/<<" : "<<obj_inst_vec.size()<<endl;
+    for(size_t j = 0; j<obj_inst_vec.size();++j){
+      std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr = obj_inst_vec.at(j);
+
+
+
+
+      auto scene = obj_inst_ptr.get()->getScene();
+
+      ObjUChar4Image *img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
+      t_controller->Prepare(t_state, scene.get(), obj_inst_ptr.get()->getAnchorView_ITM().get(), visualisationEngine, r_state);
+
+      visualisationEngine->RenderImage(scene.get(),
+                                       t_state->pose_d,
+                                       &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
+                                       r_state,
+                                       r_state->raycastImage,
+                                       ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
+                                       ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
+
+
+      string name = "Label"+ label_ptr.get()->getLabelClassName() + ".Object" + to_string(j)+ ".Frame" +  to_string(imgNumber) + ".ppm";
+      img->ChangeDims(r_state->raycastImage->noDims);
+      img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
+
+      SaveImageToFile(img, name.c_str());
+
+    }
   }
 //  cout<<endl;
 };
