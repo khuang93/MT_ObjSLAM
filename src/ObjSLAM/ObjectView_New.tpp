@@ -47,6 +47,9 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
 
 //  std::cout << "Setting Obj List...";
 //  std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>> label_ptr_vector;
+  auto label_ptr_bg_new = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(0, std::to_string(0));
+  shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> label_ptr_bg = addLabelToVector(label_ptr_vector,label_ptr_bg_new);
+
   for(LabelImgVec::iterator it = label_img_vector.begin(); it!=label_img_vector.end();++it){
 
     int labelIndex = 0;
@@ -101,6 +104,34 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
     }
   }
 
+  //background
+
+  shared_ptr<ITMLib::ITMView> single_obj_ITMView_bg = make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
+  auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr_bg);
+  new_obj_instance.get()->setAnchorView(this->shared_from_this());
+  new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView_bg);
+
+
+  Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, single_obj_ITMView_bg);
+  obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(0, object_view_tuple));
+
+  //it over pixels
+  for (int i = 0; i < this->depth_Image->dataSize; i++) {
+    bool is_background = true;
+    for(LabelImgVec::iterator it = label_img_vector.begin(); it!=label_img_vector.end();it++){
+
+      if((*it)->GetElement(i,MEMORYDEVICE_CPU)!=0){
+        is_background=false;
+        break;
+      }
+    }
+    if(is_background) {
+      single_obj_ITMView_bg->depth->GetData(MEMORYDEVICE_CPU)[i] = this->depth_Image->GetData(MEMORYDEVICE_CPU)[i];
+      single_obj_ITMView_bg->rgb->GetData(MEMORYDEVICE_CPU)[i] = this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
+    }
+  }
+
+  SaveImageToFile(single_obj_ITMView_bg.get()->depth,"test.ppm");
 /*
   //background
 //  auto* single_obj_ITMView =  new ITMLib::ITMView(calibration, imgSize_rgb, imgSize_d, false);
