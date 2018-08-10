@@ -178,10 +178,9 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
     for (int t = 0; t < view_new->getObjMap().size(); t++) {
 
       //TODO hard code skipped background
-      if (t== 0) continue;
-      //      Object_View_Tuple view_tuple = view_new->getObjMap().at(t);
-      Object_View_Tup<TVoxel,TIndex> view_tuple = view_new->getObjMap().at(t);
+//      if (t== 0) continue;
 
+      Object_View_Tup<TVoxel,TIndex> view_tuple = view_new->getObjMap().at(t);
 
 //      ObjectClassLabel label = std::get<0>(view_tuple).get()->getClassLabel();
       auto obj_inst_ptr  = std::get<0>(view_tuple);
@@ -189,11 +188,12 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
       //TODO skid 76 to reduce memory
           int labelIndex = label_ptr.get()->getLabelIndex();
-      if(labelIndex!=76/*||labelIndex==59||labelIndex==74||labelIndex==73||labelIndex==42*/) continue;
+
+      if(/*labelIndex!=76&&*/labelIndex!=0) continue;
 
 
       std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
-      string name = "Input_Frame" +  to_string(imgNumber) +"."  + to_string(t)+".ppm";
+      string name = "Input_Frame" +  to_string(imgNumber) +".Label." + to_string(labelIndex)  +"."+ to_string(t)+".ppm";
 
       SaveImageToFile(itmview.get()->depth, name.c_str());
 
@@ -226,16 +226,11 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       if(newObject/*1*/){
 
         //TODO create scene and start recon
-//        obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(&(settings->sceneParams),
-//                                                                            useSwapping,
-//                                                                            MEMORYDEVICE_CPU,
-//                                                                            view);
+
           obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(&(settings->sceneParams),
                                                                                    useSwapping,
                                                                                    MEMORYDEVICE_CPU);
         obj_inst_ptr.get()->setScene(obj_inst_scene_ptr);
-//        obj_inst_scene = obj_inst_scene_ptr.get();
-//          obj_inst_ptr.get()->setScene(obj_inst_scene_ptr);
         this->object_instance_scene_vector.push_back(obj_inst_scene);
         denseMapper->ResetScene(obj_inst_scene_ptr.get());
 

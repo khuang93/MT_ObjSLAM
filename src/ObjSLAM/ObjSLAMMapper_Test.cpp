@@ -49,11 +49,11 @@ int main(int argc, char **argv) {
 
   mappingEngine2->ProcessFrame();
 
-  mappingEngine2->outputAllLabelStats();
+//  mappingEngine2->outputAllLabelStats();
   mappingEngine2->outputAllObjImages();
 
 
-  int totFrames = 13;
+  int totFrames = 1;
 for(int i = 1;i<totFrames;++i){
   imgNum = reader.readNext();
   mappingEngine2->UpdateImgNumber(imgNum);
