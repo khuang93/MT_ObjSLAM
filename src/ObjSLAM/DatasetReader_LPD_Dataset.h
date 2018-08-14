@@ -88,11 +88,13 @@ class DatasetReader_LPD_Dataset {
         filteredNames.push_back(fileNames.at(i));
       }
     }
+
     std::sort(filteredNames.begin(), filteredNames.end());
 
     for (int i = 0; i < filteredNames.size(); i++) {
       label_img_vector.push_back(ReadLabel_OneFile(path + "/pixel_label/cam0/" + filteredNames.at(i)));
     }
+
 
     if (!pose_in.is_open()) {
       pose_in.open(pose_path);
@@ -108,7 +110,6 @@ class DatasetReader_LPD_Dataset {
 //    SaveImageToFile(depth_img,name.c_str());
     rgb_img = ReadOneRGB(rgb_path);
 
-    label_img = ReadLabel_OneFile(label_path);
 
     double time = img_number * 0.1;
 

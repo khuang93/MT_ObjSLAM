@@ -71,10 +71,10 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
 //      cout<<(*it)->GetElement(i, MEMORYDEVICE_CPU)<<endl;
       }
     }
+
     //set all object instance map
     if(labelIndex!=0){
       //label
-
       //create a new label
       auto label_ptr_new = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(labelIndex, std::to_string(labelIndex));
 
@@ -89,10 +89,9 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
 
       //create a object instance
       auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr);
-
-      new_obj_instance.get()->setAnchorView(this->shared_from_this());
-      new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView);
-
+//TODO
+//      new_obj_instance.get()->setAnchorView(this->shared_from_this());
+        new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView);
 //      new_obj_instance.get()->addObjectInstanceToLabel();
 
 
@@ -101,6 +100,7 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
 
       obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(obj_map.size()+1, object_view_tuple));
 
+      obj_vec.push_back(object_view_tuple);
     }
   }
 
@@ -125,51 +125,18 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
       single_obj_ITMView_bg->rgb->GetData(MEMORYDEVICE_CPU)[i] = this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
     }
   }
-
-  new_obj_instance.get()->setAnchorView(this->shared_from_this());
+//TODO
+//  new_obj_instance.get()->setAnchorView(this->shared_from_this());
   new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView_bg);
 
   Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, single_obj_ITMView_bg);
   obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(0, object_view_tuple));
+  obj_vec.push_back(object_view_tuple);
 
-
-  SaveImageToFile(single_obj_ITMView_bg.get()->depth,"test.ppm");
+//  SaveImageToFile(single_obj_ITMView_bg.get()->depth,"test.ppm");
   cout<<"size"<<this->obj_map.size()<<endl;
-/*
-  //background
-//  auto* single_obj_ITMView =  new ITMLib::ITMView(calibration, imgSize_rgb, imgSize_d, false);
-  auto single_obj_ITMView = std::make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
 
-//  ObjectClassLabel_Group<TVoxel,TIndex> label_ptr(0, std::to_string(0));
-  auto label_ptr = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(0, std::to_string(0));
-
-  auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr);
-  new_obj_instance.get()->setAnchorView(this->shared_from_this());
-  new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView);
-//  new_obj_instance.get()->addObjectInstanceToLabel();
-
-
-  Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, single_obj_ITMView);
-  obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(0, object_view_tuple));
-
-  //it over pixels
-  for (int i = 0; i < this->depth_Image->dataSize; i++) {
-    bool is_background = true;
-    for(LabelImgVec::iterator it = label_img_vector.begin(); it!=label_img_vector.end();it++){
-
-      if((*it)->GetElement(i,MEMORYDEVICE_CPU)!=0){
-        is_background=false;
-        break;
-      }
-    }
-    if(is_background) {
-      single_obj_ITMView->depth->GetData(MEMORYDEVICE_CPU)[i] = this->depth_Image->GetData(MEMORYDEVICE_CPU)[i];
-      single_obj_ITMView->rgb->GetData(MEMORYDEVICE_CPU)[i] = this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
-    }
-  }*/
-//  std::cout << "FINISHED" << std::endl;
-
-
+  //  std::cout << "FINISHED" << std::endl;
 //  return label_ptr_vector;
 }
 
@@ -186,6 +153,11 @@ void ObjectView_New<TVoxel,TIndex>::setListOfViews() {
 template<typename TVoxel, typename TIndex>
 std::map<int, Object_View_Tup<TVoxel,TIndex>> ObjectView_New<TVoxel,TIndex>::getObjMap(){
   return obj_map;
+}
+
+template<typename TVoxel, typename TIndex>
+std::vector<Object_View_Tup<TVoxel,TIndex>>  ObjectView_New<TVoxel,TIndex>::getObjVec(){
+  return obj_vec;
 }
 
 

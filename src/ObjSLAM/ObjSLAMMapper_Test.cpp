@@ -35,8 +35,11 @@ int main(int argc, char **argv) {
       new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
   mappingEngine2->UpdateImgNumber(imgNum);
   mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+
+
   mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
   mappingEngine2->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
+
 //  cout << reader.getPose()->getSE3Pose().GetM();
 
   //Pose test
@@ -53,7 +56,7 @@ int main(int argc, char **argv) {
   mappingEngine2->outputAllObjImages();
 
 
-  int totFrames = 8;
+  int totFrames = 2;
 for(int i = 1;i<totFrames;++i){
   imgNum = reader.readNext();
   mappingEngine2->UpdateImgNumber(imgNum);

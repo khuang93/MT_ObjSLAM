@@ -145,10 +145,10 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjCameraPose pose,
                                                       LabelImgVector _label_img_vector) {
 //  if(this->view!=NULL) delete this->view;
   if (settings->deviceType != ITMLib::ITMLibSettings::DEVICE_CUDA) {
-    this->view = new ObjectView(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
+//    this->view = new ObjectView(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
     this->view_new = std::make_shared<ObjectView_New<TVoxel, TIndex>>(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
   } else {
-    this->view = new ObjectView(*calib, imgSize, imgSize, true, pose, _depth, _rgb, _label_img_vector);
+//    this->view = new ObjectView(*calib, imgSize, imgSize, true, pose, _depth, _rgb, _label_img_vector);
     this->view_new = std::make_shared<ObjectView_New<TVoxel, TIndex>>(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
   }
 };
@@ -173,14 +173,14 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
   }
   cout<<endl;
 
-  if (view_new->getObjMap().size() > 0) {
+  if (view_new->getObjVec().size() > 0) {
     bool newObject = true;
-    for (int t = 0; t < view_new->getObjMap().size(); t++) {
+    for (int t = 0; t < view_new->getObjVec().size(); t++) {
 
       //TODO hard code skipped background
 //      if (t== 0) continue;
 
-      Object_View_Tup<TVoxel,TIndex> view_tuple = view_new->getObjMap().at(t);
+      Object_View_Tup<TVoxel,TIndex> view_tuple = view_new->getObjVec().at(t);
 
 //      ObjectClassLabel label = std::get<0>(view_tuple).get()->getClassLabel();
       auto obj_inst_ptr  = std::get<0>(view_tuple);
@@ -189,18 +189,18 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       //TODO skid 76 to reduce memory
           int labelIndex = label_ptr.get()->getLabelIndex();
 
-//      if(/*labelIndex!=76&&*/labelIndex!=0) continue;
+      if(/*labelIndex!=76&&*/labelIndex!=58) continue;
 
 
       std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
       string name = "Input_Frame" +  to_string(imgNumber) +".Label." + to_string(labelIndex)  +"."+ to_string(t)+".ppm";
 
-      SaveImageToFile(itmview.get()->depth, name.c_str());
+//      SaveImageToFile(itmview.get()->depth, name.c_str());
 
 
       auto obj_ptr_vec = label_ptr.get()->getObjPtrVector();
 
-      cout<<*label_ptr.get()<<endl<<"obj_ptr_vec size before"<<obj_ptr_vec->size()<<endl;
+      cout<<*label_ptr.get()<<endl<<"obj_ptr_vec size before "<<obj_ptr_vec->size()<<endl;
 
       ObjSLAM::ObjectInstanceScene<TVoxel, TIndex> *obj_inst_scene = NULL;
       shared_ptr<ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>> obj_inst_scene_ptr;
@@ -211,9 +211,12 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       }else{
         for(size_t i = 0; i < obj_ptr_vec->size();++i){
           std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> existing_obj_ptr = obj_ptr_vec->at(i);
+
           if(obj_inst_ptr.get()->getClassLabel().get()->getLabelIndex()==0){
+
             newObject=false;
           }else{
+            cout<<"isNew? "<<endl;
             newObject=!this->checkIsSameObject(existing_obj_ptr, obj_inst_ptr);
           }
 
@@ -298,7 +301,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
                                                            obj_inst_scene_ptr.get()->sceneParams);
 
       t_controller = new ITMLib::ITMTrackingController(tracker, settings);
-      cout<<"dbg\n";
+//      cout<<"dbg\n";
       //TODO method for match old object
       ProcessOneObject(view_tuple, obj_inst_scene_ptr.get(), t);
       newObject = true;
@@ -493,8 +496,9 @@ ORUtils::Vector4<int> ObjSLAMMappingEngine<TVoxel, TIndex>::getBoundingBox(ObjFl
 //using overlapping volumes. TODO add centroid position to further refine the estiamtion
 template<typename TVoxel, typename TIndex>
 bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkBoundingCubeOverlap(ORUtils::Vector6<float> first,ORUtils::Vector6<float> second){
-  double threshold_volumeChange = 0.4;
-  double threshold_overlap = 0.6;
+
+  double threshold_volumeChange = 0.35;
+  double threshold_overlap = 0.55;
 
   //case where there is 0 overlap
   if(second[0]>first[3]||second[1]>first[4]||second[2]>first[5]||first[0]>second[3]||first[1]>second[4]||first[2]>second[5])
@@ -514,7 +518,8 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkBoundingCubeOverlap(ORUtils::Vec
   double v2 = calculateCubeVolume(second);
   double v_overlap = calculateCubeVolume(overlap);
 
-  cout<<min(v1,v2)/max(v1,v2)<<" "<<v_overlap/min(v1,v2)<<endl;
+  cout<<"check"<<min(v1,v2)/max(v1,v2)<<" "<<v_overlap/min(v1,v2)<<endl;
+
   if(v1<=v2){
     return v1/v2>threshold_volumeChange && v_overlap/v1>threshold_overlap;
   }else{
