@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
   mappingEngine2->outputAllObjImages();
 
 
-  int totFrames = 1;
+  int totFrames = 6;
 for(int i = 1;i<totFrames;++i){
   imgNum = reader.readNext();
   mappingEngine2->UpdateImgNumber(imgNum);

@@ -178,7 +178,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
     for (int t = 0; t < view_new->getObjMap().size(); t++) {
 
       //TODO hard code skipped background
-//      if (t== 0) continue;
+      if (t== 0) continue;
 
       Object_View_Tup<TVoxel,TIndex> view_tuple = view_new->getObjMap().at(t);
 
@@ -189,13 +189,13 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       //TODO skid 76 to reduce memory
           int labelIndex = label_ptr.get()->getLabelIndex();
 
-      if(/*labelIndex!=76&&*/labelIndex!=0) continue;
+      if(labelIndex!=56&&labelIndex!=57&&labelIndex!=58&&labelIndex!=61) continue;
 
 
-      std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
-      string name = "Input_Frame" +  to_string(imgNumber) +".Label." + to_string(labelIndex)  +"."+ to_string(t)+".ppm";
+//      std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
+//      string name = "Input_Frame" +  to_string(imgNumber) +".Label." + to_string(labelIndex)  +"."+ to_string(t)+".ppm";
 
-      SaveImageToFile(itmview.get()->depth, name.c_str());
+//      SaveImageToFile(itmview.get()->depth, name.c_str());
 
 
       auto obj_ptr_vec = label_ptr.get()->getObjPtrVector();

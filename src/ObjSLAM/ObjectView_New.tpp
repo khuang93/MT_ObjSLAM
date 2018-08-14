@@ -105,7 +105,7 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
   }
 
   //background
-
+/*
   shared_ptr<ITMLib::ITMView> single_obj_ITMView_bg = make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
   auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr_bg);
 
@@ -134,7 +134,7 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
 
 
   SaveImageToFile(single_obj_ITMView_bg.get()->depth,"test.ppm");
-  cout<<"size"<<this->obj_map.size()<<endl;
+  cout<<"size"<<this->obj_map.size()<<endl;*/
 /*
   //background
 //  auto* single_obj_ITMView =  new ITMLib::ITMView(calibration, imgSize_rgb, imgSize_d, false);
