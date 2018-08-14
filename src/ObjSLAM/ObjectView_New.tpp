@@ -19,6 +19,8 @@ void ObjectView_New<TVoxel,TIndex>::setCameraPose(ObjCameraPose _pose)
   camera_Pose = _pose;
 }
 
+
+//returns the new label if it is new. if the same class already exists, return the old label instance and discard the new one.
 template<typename TVoxel, typename TIndex>
 std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> ObjectView_New<TVoxel,TIndex>::addLabelToVector(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>& label_ptr_vector, std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> new_label){
   if(label_ptr_vector.size()==0) {
@@ -49,7 +51,7 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
 //  std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>> label_ptr_vector;
   auto label_ptr_bg_new = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(0, std::to_string(0));
   shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> label_ptr_bg = addLabelToVector(label_ptr_vector,label_ptr_bg_new);
-  cout<<"label"<<label_ptr_bg.get()->getLabelIndex()<<endl;
+
   for(LabelImgVec::iterator it = label_img_vector.begin(); it!=label_img_vector.end();++it){
 
     int labelIndex = 0;
@@ -73,8 +75,6 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
     if(labelIndex!=0){
       //label
 
-
-      //TODO find a way to check label existence before creating new ones
       //create a new label
       auto label_ptr_new = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(labelIndex, std::to_string(labelIndex));
 
@@ -99,7 +99,7 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
 
       Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, single_obj_ITMView);
 
-      obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(obj_map.size(), object_view_tuple));
+      obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(obj_map.size()+1, object_view_tuple));
 
     }
   }
@@ -109,7 +109,7 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
   shared_ptr<ITMLib::ITMView> single_obj_ITMView_bg = make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
   auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr_bg);
 
-
+  cout<<"label"<<new_obj_instance.get()->getClassLabel()->getLabelIndex()<<endl;
   //it over pixels
   for (int i = 0; i < this->depth_Image->dataSize; i++) {
     bool is_background = true;

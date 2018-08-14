@@ -189,7 +189,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       //TODO skid 76 to reduce memory
           int labelIndex = label_ptr.get()->getLabelIndex();
 
-      if(/*labelIndex!=76&&*/labelIndex!=0) continue;
+//      if(/*labelIndex!=76&&*/labelIndex!=0) continue;
 
 
       std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
@@ -211,7 +211,11 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       }else{
         for(size_t i = 0; i < obj_ptr_vec->size();++i){
           std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> existing_obj_ptr = obj_ptr_vec->at(i);
-          newObject=!this->checkIsSameObject(existing_obj_ptr, obj_inst_ptr);
+          if(obj_inst_ptr.get()->getClassLabel().get()->getLabelIndex()==0){
+            newObject=false;
+          }else{
+            newObject=!this->checkIsSameObject(existing_obj_ptr, obj_inst_ptr);
+          }
 
           if(!newObject){
             //this is an existing object
@@ -605,7 +609,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
   for(size_t i = 0; i< this->label_ptr_vector.size();++i){
     std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr = label_ptr_vector.at(i);
     std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>> obj_inst_vec = *(label_ptr.get()->getObjPtrVector());
-    cout<<"Label "<<*label_ptr.get()/*->getLabelClassName()*/<<" : "<<obj_inst_vec.size()<<endl;
+    cout<<*label_ptr.get()/*->getLabelClassName()*/<<" : "<<obj_inst_vec.size()<<endl;
     for(size_t j = 0; j<obj_inst_vec.size();++j){
       std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr = obj_inst_vec.at(j);
 

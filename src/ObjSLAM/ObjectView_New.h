@@ -52,7 +52,7 @@ class ObjectView_New :public enable_shared_from_this<ObjectView_New<TVoxel,TInde
   Vector2i imgSize_d;
 
 
-  std::vector<ObjectInstance_New<TVoxel,TIndex>> objectInstanceVector;
+  std::vector<Object_View_Tup<TVoxel,TIndex>> obj_vec;
   std::vector<ITMLib::ITMView*> ITMViewVector_each_Object;
 
 
@@ -99,6 +99,7 @@ class ObjectView_New :public enable_shared_from_this<ObjectView_New<TVoxel,TInde
 void setListOfObjects(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>& label_ptr_vector);
 
   std::map<int, Object_View_Tup<TVoxel,TIndex>> getObjMap();
+  std::map<int, Object_View_Tup<TVoxel,TIndex>> getObjVec();
 
   static std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> addLabelToVector(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>& label_ptr_vector, std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> new_label);
 
