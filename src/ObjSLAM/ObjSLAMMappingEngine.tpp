@@ -150,7 +150,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjCameraPose pose,
 
     this->view_new = std::make_shared<ObjectView_New<TVoxel, TIndex>>(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
     this->view_new_vec.push_back(view_new);
-    cout<<"test\n";
+//    cout<<"test\n";
   } else {
 //    this->view = new ObjectView(*calib, imgSize, imgSize, true, pose, _depth, _rgb, _label_img_vector);
     this->view_new = std::make_shared<ObjectView_New<TVoxel, TIndex>>(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
@@ -580,6 +580,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(const ORUtils::SE
   t_state->pose_d->Coerce();
 
   this->UpdateViewPose();
+
 //  t_state->Reset();
 }
 
@@ -591,6 +592,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState_Orig(const ORUtil
   }
   t_state_orig->pose_d->SetFrom(_pose);
   t_state_orig->pose_d->Coerce();
+
 //  t_state->Reset();
 }
 

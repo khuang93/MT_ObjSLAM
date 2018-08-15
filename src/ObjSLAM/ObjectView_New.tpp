@@ -90,10 +90,9 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
       //create a object instance
       auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr);
 //TODO
-      cout<<"dbgg\n";
+
     new_obj_instance.get()->setAnchorView(this->shared_from_this());
-      cout<<"dbgg\n";
-        new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView);
+    new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView);
 //      new_obj_instance.get()->addObjectInstanceToLabel();
 
 

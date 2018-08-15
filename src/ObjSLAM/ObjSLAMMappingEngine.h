@@ -36,8 +36,8 @@ class ObjSLAMMappingEngine {
   ObjectView *view;
   shared_ptr<ObjectView_New<TVoxel, TIndex>> view_new;
   vector<shared_ptr<ObjectView_New<TVoxel, TIndex>>> view_new_vec;
-  ITMLib::ITMTrackingState *t_state;
-  ITMLib::ITMTrackingState *t_state_orig;
+  ITMLib::ITMTrackingState *t_state=NULL;
+  ITMLib::ITMTrackingState *t_state_orig=NULL;
   ITMLib::ITMRenderState *r_state;
   ITMLib::ITMBasicEngine<TVoxel, TIndex> *itmBasicEngine;
   ITMLib::ITMSceneParams* params = new ITMLib::ITMSceneParams(0.5, 4, 0.01, 0.1, 4.0, false);
