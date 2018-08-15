@@ -47,7 +47,7 @@ std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> ObjectView_New<TVoxel,TIn
 template<typename TVoxel, typename TIndex>
 void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>>& label_ptr_vector) {
 
-//  std::cout << "Setting Obj List...";
+  std::cout << "Setting Obj List...";
 //  std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>> label_ptr_vector;
   auto label_ptr_bg_new = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(0, std::to_string(0));
   shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> label_ptr_bg = addLabelToVector(label_ptr_vector,label_ptr_bg_new);
@@ -90,7 +90,9 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
       //create a object instance
       auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr);
 //TODO
-//      new_obj_instance.get()->setAnchorView(this->shared_from_this());
+      cout<<"dbgg\n";
+    new_obj_instance.get()->setAnchorView(this->shared_from_this());
+      cout<<"dbgg\n";
         new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView);
 //      new_obj_instance.get()->addObjectInstanceToLabel();
 
@@ -98,7 +100,7 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
 
       Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, single_obj_ITMView);
 
-      obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(obj_map.size()+1, object_view_tuple));
+//      obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(obj_map.size()+1, object_view_tuple));
 
       obj_vec.push_back(object_view_tuple);
     }
@@ -130,11 +132,11 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
   new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView_bg);
 
   Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, single_obj_ITMView_bg);
-  obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(0, object_view_tuple));
+//  obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(0, object_view_tuple));
   obj_vec.push_back(object_view_tuple);
 
 //  SaveImageToFile(single_obj_ITMView_bg.get()->depth,"test.ppm");
-  cout<<"size"<<this->obj_map.size()<<endl;
+//  cout<<"size"<<this->obj_map.size()<<endl;
 
   //  std::cout << "FINISHED" << std::endl;
 //  return label_ptr_vector;
@@ -150,10 +152,10 @@ void ObjectView_New<TVoxel,TIndex>::setListOfViews() {
 
 }
 
-template<typename TVoxel, typename TIndex>
-std::map<int, Object_View_Tup<TVoxel,TIndex>> ObjectView_New<TVoxel,TIndex>::getObjMap(){
-  return obj_map;
-}
+//template<typename TVoxel, typename TIndex>
+//std::map<int, Object_View_Tup<TVoxel,TIndex>> ObjectView_New<TVoxel,TIndex>::getObjMap(){
+//  return obj_map;
+//}
 
 template<typename TVoxel, typename TIndex>
 std::vector<Object_View_Tup<TVoxel,TIndex>>  ObjectView_New<TVoxel,TIndex>::getObjVec(){

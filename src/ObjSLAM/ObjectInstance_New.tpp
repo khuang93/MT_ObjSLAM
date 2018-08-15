@@ -18,6 +18,11 @@ void ObjectInstance_New<TVoxel, TIndex>::setAnchorView(std::shared_ptr<ObjectVie
 }
 
 template<typename TVoxel, typename TIndex>
+void ObjectInstance_New<TVoxel, TIndex>::setAnchorView(ObjectView_New<TVoxel,TIndex>* _anchor_view){
+  anchor_view =std::shared_ptr<ObjectView_New<TVoxel, TIndex>>(_anchor_view);
+}
+
+template<typename TVoxel, typename TIndex>
 void ObjectInstance_New<TVoxel, TIndex>::setAnchorView_ITM(std::shared_ptr<ITMLib::ITMView> _anchor_view){
   anchor_view_itm=_anchor_view;
 }

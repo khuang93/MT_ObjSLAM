@@ -33,6 +33,7 @@ class ObjectInstance_New : public enable_shared_from_this<ObjectInstance_New<TVo
   void setScene(std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> _scene);
 
   void setAnchorView(std::shared_ptr<ObjectView_New<TVoxel,TIndex>> _anchor_view);
+  void setAnchorView(ObjectView_New<TVoxel,TIndex>* _anchor_view);
 
   void setAnchorView_ITM(std::shared_ptr<ITMLib::ITMView> _anchor_view);
 

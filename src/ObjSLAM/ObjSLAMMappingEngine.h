@@ -35,6 +35,7 @@ class ObjSLAMMappingEngine {
   int imgNumber;
   ObjectView *view;
   shared_ptr<ObjectView_New<TVoxel, TIndex>> view_new;
+  vector<shared_ptr<ObjectView_New<TVoxel, TIndex>>> view_new_vec;
   ITMLib::ITMTrackingState *t_state;
   ITMLib::ITMTrackingState *t_state_orig;
   ITMLib::ITMRenderState *r_state;

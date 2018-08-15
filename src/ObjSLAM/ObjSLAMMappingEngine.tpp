@@ -146,10 +146,15 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjCameraPose pose,
 //  if(this->view!=NULL) delete this->view;
   if (settings->deviceType != ITMLib::ITMLibSettings::DEVICE_CUDA) {
 //    this->view = new ObjectView(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
+
+
     this->view_new = std::make_shared<ObjectView_New<TVoxel, TIndex>>(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
+    this->view_new_vec.push_back(view_new);
+    cout<<"test\n";
   } else {
 //    this->view = new ObjectView(*calib, imgSize, imgSize, true, pose, _depth, _rgb, _label_img_vector);
     this->view_new = std::make_shared<ObjectView_New<TVoxel, TIndex>>(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
+    this->view_new_vec.push_back(view_new);
   }
 };
 
@@ -567,6 +572,7 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkImageOverlap(ObjSLAM::ObjFloatIm
 
 template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(const ORUtils::SE3Pose *_pose) {
+  cout<<"UpdateTrackingState...\n";
   if (t_state == NULL) {
     t_state = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
   }
@@ -579,6 +585,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(const ORUtils::SE
 
 template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState_Orig(const ORUtils::SE3Pose *_pose) {
+  cout<<"UpdateTrackingState_Orig...\n";
   if (t_state_orig == NULL) {
     t_state_orig = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
   }

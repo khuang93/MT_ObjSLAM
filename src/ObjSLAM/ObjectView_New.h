@@ -53,10 +53,10 @@ class ObjectView_New :public enable_shared_from_this<ObjectView_New<TVoxel,TInde
 
 
   std::vector<Object_View_Tup<TVoxel,TIndex>> obj_vec;
-  std::vector<ITMLib::ITMView*> ITMViewVector_each_Object;
+//  std::vector<ITMLib::ITMView*> ITMViewVector_each_Object;
 
 
-  std::map<int, Object_View_Tup<TVoxel,TIndex>> obj_map; //int is the raw value in seg mask and tuple contains a obj instance and corresbonding ITMView
+//  std::map<int, Object_View_Tup<TVoxel,TIndex>> obj_map; //int is the raw value in seg mask and tuple contains a obj instance and corresbonding ITMView
 
 
 
