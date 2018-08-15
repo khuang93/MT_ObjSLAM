@@ -15,7 +15,7 @@
 #include "ObjSLAMCamera.h"
 #include "ObjectInstance_New.h"
 #include <math.h>
-
+//#include <omp.h>
 namespace ObjSLAM {
 
 //Constructor with LPD Dataset
@@ -178,6 +178,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
   }
   cout<<endl;
 
+
   if (view_new->getObjVec().size() > 0) {
     bool newObject = true;
     for (int t = 0; t < view_new->getObjVec().size(); t++) {
@@ -194,7 +195,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       //TODO skid 76 to reduce memory
           int labelIndex = label_ptr.get()->getLabelIndex();
 
-      if(/*labelIndex!=76&&*/labelIndex!=58) continue;
+      if(labelIndex!=42&&labelIndex!=58/*&&labelIndex!=46&&labelIndex!=74*/) continue;
 
 
       std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
@@ -218,16 +219,13 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
           std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> existing_obj_ptr = obj_ptr_vec->at(i);
 
           if(obj_inst_ptr.get()->getClassLabel().get()->getLabelIndex()==0){
-
             newObject=false;
           }else{
-            cout<<"isNew? "<<endl;
             newObject=!this->checkIsSameObject(existing_obj_ptr, obj_inst_ptr);
           }
 
           if(!newObject){
-            //this is an existing object
-            //TODO take existing scene and do further recon
+            //this is an existing object, no need to compare with further objs
             obj_inst_scene_ptr = existing_obj_ptr.get()->getScene();
             break;
           }
@@ -237,9 +235,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       cout<<"isNew? "<<newObject<<endl;
       if(newObject/*1*/){
 
-        //TODO create scene and start recon
-
-          obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(&(settings->sceneParams),
+        obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(&(settings->sceneParams),
                                                                                    useSwapping,
                                                                                    MEMORYDEVICE_CPU);
         obj_inst_ptr.get()->setScene(obj_inst_scene_ptr);
@@ -250,52 +246,6 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
       }
       cout<<"obj_ptr_vec size aft "<<obj_ptr_vec->size()<<endl;
-
-
-
-
-
-
-
-        //projection tests
-
-//      }
-
-
-
-//      obj_inst_ptr_vector.push_back(obj_inst_ptr);
-
-
-
-//      if (object_instance_scene_vector.size() == 0) {
-//
-//        /*auto* */obj_inst_scene = new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(/*label,
-//                                                                                    t,*/
-//                                                                                    &(settings->sceneParams),
-//                                                                                    useSwapping,
-//                                                                                    MEMORYDEVICE_CPU,
-//                                                                                    view);
-//        obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(&(settings->sceneParams),
-//                                                                                   useSwapping,
-//                                                                                   MEMORYDEVICE_CPU,
-//                                                                                   view);
-//
-//        obj_inst_ptr.get()->setScene(obj_inst_scene_ptr);
-//        this->object_instance_scene_vector.push_back(obj_inst_scene);
-//        denseMapper->ResetScene(obj_inst_scene);
-//
-//
-//
-//      } else {
-//        obj_inst_scene =new ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>(/*label,
-//                                                                                    t,*/
-//            &(settings->sceneParams),
-//            useSwapping,
-//            MEMORYDEVICE_CPU,
-//            view);
-//        denseMapper->ResetScene(obj_inst_scene);
-////        obj_inst_scene= object_instance_scene_vector.at(0);
-//      }
 
       //ProcessOneObject
       tracker = ITMLib::ITMTrackerFactory::Instance().Make(imgSize,
@@ -462,7 +412,8 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsSameObject(obj_inst_ptr<TVoxel
   auto* pcl1 = new ORUtils::Image<Vector4f>(imgSize,MEMORYDEVICE_CPU);//in world coordinate
   auto* pcl2 = new ORUtils::Image<Vector4f>(imgSize,MEMORYDEVICE_CPU);//in world coordinate
   //TODO change pose to the pose from obj anchor view. add pose to itm view or let the obj inst save the pose itself.
-  ORUtils::Vector6<float> cube1 = cam->projectImg2PointCloud(first,pcl1, *t_state_orig->pose_d);
+//  ORUtils::Vector6<float> cube1 = cam->projectImg2PointCloud(first,pcl1, *t_state_orig->pose_d);
+  ORUtils::Vector6<float> cube1 = cam->projectImg2PointCloud(first,pcl1, obj_ptr_1.get()->getAnchorView().get()->getCameraPose().getSE3Pose());
   ORUtils::Vector6<float> cube2 = cam->projectImg2PointCloud(second,pcl2, *t_state->pose_d);
 
 
@@ -502,8 +453,8 @@ ORUtils::Vector4<int> ObjSLAMMappingEngine<TVoxel, TIndex>::getBoundingBox(ObjFl
 template<typename TVoxel, typename TIndex>
 bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkBoundingCubeOverlap(ORUtils::Vector6<float> first,ORUtils::Vector6<float> second){
 
-  double threshold_volumeChange = 0.35;
-  double threshold_overlap = 0.55;
+  double threshold_volumeChange = 0.4;
+  double threshold_overlap = 0.6;
 
   //case where there is 0 overlap
   if(second[0]>first[3]||second[1]>first[4]||second[2]>first[5]||first[0]>second[3]||first[1]>second[4]||first[2]>second[5])

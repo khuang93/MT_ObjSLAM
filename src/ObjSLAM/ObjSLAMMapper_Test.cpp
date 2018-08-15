@@ -37,10 +37,10 @@ int main(int argc, char **argv) {
   mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
 
 
-  cout << reader.getPose()->getSE3Pose().GetM();
-
-  mappingEngine2->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
+//  cout << reader.getPose()->getSE3Pose().GetM();
   mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+  mappingEngine2->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
+
 
   //Pose test
 /*  auto *pose_test = new ORUtils::SE3Pose(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
   mappingEngine2->outputAllObjImages();
 
 
-  int totFrames = 3;
+  int totFrames = 13;
 for(int i = 1;i<totFrames;++i){
   imgNum = reader.readNext();
   mappingEngine2->UpdateImgNumber(imgNum);
