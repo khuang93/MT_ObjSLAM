@@ -54,7 +54,7 @@ INCLUDE(External/InfiniTAM/InfiniTAM/cmake/UseCUDA.cmake)
 
 
 set(ObjSLAM_Sources
-        src/ObjSLAM/ObjSLAMMapper_Test.cpp
+        src/ObjSLAM/ObjSLAM_TrackerMapper_Test.cpp
         src/ObjSLAM/ObjSLAMEngine.h
         src/ObjSLAM/ObjSLAMEngine.tpp
         src/ObjSLAM/InfiniTAMEngine.cpp src/ObjSLAM/InfiniTAMEngine.h
@@ -74,7 +74,7 @@ set(ObjSLAM_Sources
         src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h
         )
 set(Mapper_Sources
-        src/ObjSLAM/ObjSLAMMapper_Test.cpp
+        src/ObjSLAM/ObjSLAM_TrackerMapper_Test.cpp
 
         src/ObjSLAM/InfiniTAMEngine.cpp src/ObjSLAM/InfiniTAMEngine.h
         src/ObjSLAM/ObjectSLAMTracker.cpp src/ObjSLAM/ObjectSLAMTracker.h
@@ -95,7 +95,7 @@ set(Mapper_Sources
         src/ObjSLAM/ObjectInstanceScene_old.cpp src/ObjSLAM/ObjectInstanceScene_old.h
         src/ObjSLAM/ObjSLAMCamera.cpp src/ObjSLAM/ObjSLAMCamera.h
         src/ObjSLAM/ObjectInstance_New.tpp src/ObjSLAM/ObjectInstance_New.h
-        src/ObjSLAM/ObjectClassLabel_Group.tpp src/ObjSLAM/ObjectClassLabel_Group.h src/ObjSLAM/ObjectView_New.tpp src/ObjSLAM/ObjectView_New.h)
+        src/ObjSLAM/ObjectClassLabel_Group.tpp src/ObjSLAM/ObjectClassLabel_Group.h src/ObjSLAM/ObjectView_New.tpp src/ObjSLAM/ObjectView_New.h src/ObjSLAM/ObjSLAMTrackingEngine.cpp src/ObjSLAM/ObjSLAMTrackingEngine.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)

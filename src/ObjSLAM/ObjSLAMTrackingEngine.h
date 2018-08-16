@@ -1,0 +1,12 @@
+//
+// Created by khuang on 8/16/18.
+//
+
+#ifndef MT_OBJSLAM_OBJSLAMTRACKINGENGINE_H
+#define MT_OBJSLAM_OBJSLAMTRACKINGENGINE_H
+
+class ObjSLAMTrackingEngine {
+
+};
+
+#endif //MT_OBJSLAM_OBJSLAMTRACKINGENGINE_H

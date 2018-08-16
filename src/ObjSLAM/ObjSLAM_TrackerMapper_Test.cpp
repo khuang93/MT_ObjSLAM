@@ -6,14 +6,10 @@
 
 #include "DatasetReader_LPD_Dataset.h"
 #include "ObjectInstanceScene.h"
-//#include "ObjectInstanceScene.tpp"
 #include "ObjectView_old.h"
-
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
-
 #include "ObjSLAMMappingEngine.h"
-//#include "ObjectClassLabel_Group.h"
-#include "ObjectInstance_New.h"
+
 
 
 using namespace std;
@@ -55,18 +51,17 @@ int main(int argc, char **argv) {
 //  mappingEngine2->outputAllLabelStats();
   mappingEngine2->outputAllObjImages();
 
-
   int totFrames = 13;
-for(int i = 1;i<totFrames;++i){
-  imgNum = reader.readNext();
-  mappingEngine2->UpdateImgNumber(imgNum);
+  for (int i = 1; i < totFrames; ++i) {
+    imgNum = reader.readNext();
+    mappingEngine2->UpdateImgNumber(imgNum);
 //  cout << reader.getPose()->getSE3Pose().GetM();
-  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+    mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+    mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
 
-  mappingEngine2->ProcessFrame();
-  mappingEngine2->outputAllObjImages();
-}
+    mappingEngine2->ProcessFrame();
+    mappingEngine2->outputAllObjImages();
+  }
 
 //  mappingEngine2->outputAllLabelStats();
 

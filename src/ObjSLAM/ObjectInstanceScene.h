@@ -15,13 +15,13 @@
 
 namespace ObjSLAM {
 
-using ObjectVector = std::vector <ObjSLAM::ObjectInstance*>;
+using ObjectVector = std::vector<ObjSLAM::ObjectInstance *>;
 //access view using pointer because copy constructor supressed
-using ViewVector = std::vector <ObjSLAM::ObjectView*>;
+using ViewVector = std::vector<ObjSLAM::ObjectView *>;
 
 //Scene for each single object
 template<typename TVoxel, typename TIndex>
-class ObjectInstanceScene : public ITMLib::ITMScene<TVoxel, TIndex>{
+class ObjectInstanceScene : public ITMLib::ITMScene<TVoxel, TIndex> {
  private:
 //  ObjectVector ListOfAllObjects;
   ViewVector ListofAllViews;
@@ -37,7 +37,8 @@ class ObjectInstanceScene : public ITMLib::ITMScene<TVoxel, TIndex>{
 
   //Constructor
   ObjectInstanceScene(/*ObjectClassLabel _label, int _objectIndex,*/ const ITMLib::ITMSceneParams *_sceneParams,
-                      bool _useSwapping, MemoryDeviceType _memoryType/*,  ObjectView* _firstView*/);
+                                                                     bool _useSwapping,
+                                                                     MemoryDeviceType _memoryType/*,  ObjectView* _firstView*/);
 
   /*:
                       label(_label),objectIndex(_objectIndex),
@@ -55,9 +56,8 @@ class ObjectInstanceScene : public ITMLib::ITMScene<TVoxel, TIndex>{
 
   void deleteAll();
 
-
   //Destructor
-  ~ObjectInstanceScene(){
+  ~ObjectInstanceScene() {
 
   }
 

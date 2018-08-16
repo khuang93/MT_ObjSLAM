@@ -46,10 +46,8 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjCameraPose pose,
                                                       ObjFloatImage *_depth,
                                                       ObjUChar4Image *_rgb,
                                                       LabelImgVector _label_img_vector) {
-//  if(this->view!=NULL) delete this->view;
-  if (settings->deviceType != ITMLib::ITMLibSettings::DEVICE_CUDA) {
-//    this->view = new ObjectView(*calib, imgSize, imgSize, false, pose, _depth, _rgb, _label_img_vector);
 
+  if (settings->deviceType != ITMLib::ITMLibSettings::DEVICE_CUDA) {
 
     this->view_new = std::make_shared<ObjectView_New<TVoxel, TIndex>>(*calib,
                                                                       imgSize,
@@ -153,6 +151,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       cout << "obj_ptr_vec size aft " << obj_ptr_vec->size() << endl;
 
       //ProcessOneObject
+      //TODO Separate the tracker part
       tracker = ITMLib::ITMTrackerFactory::Instance().Make(imgSize,
                                                            imgSize,
                                                            settings,
@@ -392,6 +391,12 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(const ORUtils::SE
 
 //  t_state->Reset();
 }
+
+
+template<typename TVoxel, typename TIndex>
+void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(ITMLib::ITMTrackingState *_t_state) {
+  t_state=_t_state;
+};
 
 template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState_Orig(const ORUtils::SE3Pose *_pose) {
