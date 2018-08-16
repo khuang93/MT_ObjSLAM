@@ -15,9 +15,7 @@
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/CPU/ITMSceneReconstructionEngine_CPU.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMMath.h>
 
-#include "ObjectView.h"
 #include "DatasetReader_LPD_Dataset.h"
-#include "ObjectInstanceScene_old.h"
 #include "ObjectInstanceScene.h"
 #include "ObjectView_New.h"
 
@@ -33,7 +31,7 @@ class ObjSLAMMappingEngine {
 
  private:
   int imgNumber;
-  ObjectView *view;
+//  ObjectView *view;
   shared_ptr<ObjectView_New<TVoxel, TIndex>> view_new;
   vector<shared_ptr<ObjectView_New<TVoxel, TIndex>>> view_new_vec;
   ITMLib::ITMTrackingState *t_state = NULL;

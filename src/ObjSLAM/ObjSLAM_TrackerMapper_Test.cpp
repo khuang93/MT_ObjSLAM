@@ -6,7 +6,6 @@
 
 #include "DatasetReader_LPD_Dataset.h"
 #include "ObjectInstanceScene.h"
-#include "ObjectView_old.h"
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
 #include "ObjSLAMMappingEngine.h"
 
