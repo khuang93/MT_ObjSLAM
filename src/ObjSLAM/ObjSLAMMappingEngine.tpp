@@ -108,6 +108,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       string
           name = "Input_Frame" + to_string(imgNumber) + ".Label." + to_string(labelIndex) + "." + to_string(t) + ".ppm";
 
+
 //      SaveImageToFile(itmview.get()->depth, name.c_str());
 
 
