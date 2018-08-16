@@ -241,6 +241,7 @@ class DatasetReader_LPD_Dataset {
     return res;
   }
 
+  //Read Normal
 /*  ObjSLAM::ObjFloat4Image* ReadNormal(std::string Path) {
 
     ifstream in;
