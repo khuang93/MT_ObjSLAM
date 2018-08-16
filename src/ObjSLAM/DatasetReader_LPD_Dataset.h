@@ -236,7 +236,7 @@ class DatasetReader_LPD_Dataset {
 
     ReadImageFromFile(res, Path.c_str());
 
-    SaveImageToFile(res, "testRGB");
+//    SaveImageToFile(res, "testRGB");
 
     return res;
   }

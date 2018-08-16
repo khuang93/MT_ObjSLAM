@@ -66,9 +66,9 @@ class ObjSLAMMappingEngine {
 
   void ProcessFrame();
 
-  void ProcessOneObject(Object_View_Tup<TVoxel,TIndex>& view_tuple, ObjectInstanceScene<TVoxel, TIndex>* scene, int obj_idx);
+  void ProcessOneObject(Object_View_Tup<TVoxel,TIndex>& view_tuple, ObjectInstanceScene<TVoxel, TIndex>* scene);
 
-  void ProcessOneObject(Object_View_Tuple& view_tuple, ObjectInstanceScene<TVoxel, TIndex>* scene, int obj_idx);
+//  void ProcessOneObject(Object_View_Tuple& view_tuple, ObjectInstanceScene<TVoxel, TIndex>* scene, int obj_idx);
 
   bool checkIsNewObject(obj_inst_ptr<TVoxel,TIndex> obj_ptr);
 
