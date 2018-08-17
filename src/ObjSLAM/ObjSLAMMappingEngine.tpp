@@ -42,7 +42,7 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(const ITMLib::ITMLibS
 }
 
 template<typename TVoxel, typename TIndex>
-void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjCameraPose pose,
+shared_ptr<ObjectView_New<TVoxel, TIndex>> ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjCameraPose pose,
                                                       ObjFloatImage *_depth,
                                                       ObjUChar4Image *_rgb,
                                                       LabelImgVector _label_img_vector) {
@@ -70,14 +70,17 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjCameraPose pose,
                                                                       _label_img_vector);
     this->view_new_vec.push_back(view_new);
   }
+  //init all objects in view
+  view_new->setListOfObjects(label_ptr_vector);
+  return view_new;
 };
 
 template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
   bool useSwapping = (settings->swappingMode == ITMLib::ITMLibSettings::SWAPPINGMODE_DISABLED);
-  //init all objects in view
-  view_new->setListOfObjects(label_ptr_vector);
+
+
   cout << "ProcessFrame...\n";
 
 

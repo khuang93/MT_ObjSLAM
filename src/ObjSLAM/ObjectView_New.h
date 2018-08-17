@@ -50,6 +50,7 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
   Vector2i imgSize_d;
 
   std::vector<Object_View_Tup<TVoxel, TIndex>> obj_vec;
+  std::shared_ptr<ITMLib::ITMView> bg_itmview;
 //  std::vector<ITMLib::ITMView*> ITMViewVector_each_Object;
 
 
@@ -100,17 +101,21 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
 
   void setListOfObjects(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
 
-  std::map<int, Object_View_Tup<TVoxel, TIndex>> getObjMap();
-  std::vector<Object_View_Tup<TVoxel, TIndex>> getObjVec();
 
-  static std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> addLabelToVector(std::vector<shared_ptr<
-      ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector,
-                                                                                  std::shared_ptr<ObjectClassLabel_Group<
-                                                                                      TVoxel,
-                                                                                      TIndex>> new_label);
+
+  static std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> addLabelToVector(
+      std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector,
+      std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> new_label);
+
+
 
   ObjCameraPose getCameraPose();
   void setCameraPose(ObjCameraPose _pose);
+
+  std::map<int, Object_View_Tup<TVoxel, TIndex>> getObjMap();
+  std::vector<Object_View_Tup<TVoxel, TIndex>> getObjVec();
+
+  std::shared_ptr<ITMLib::ITMView> getBackgroundView();
 
   ObjectView_New(const ObjectView_New &);
   ObjectView_New &operator=(const ObjectView_New &);

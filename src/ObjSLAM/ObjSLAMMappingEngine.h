@@ -62,7 +62,7 @@ class ObjSLAMMappingEngine {
                        const ITMLib::ITMRGBDCalib *_calib,
                        const Vector2i _imgSize);
 
-  void CreateView(ObjCameraPose pose, ObjFloatImage *_depth, ObjUChar4Image *_rgb, LabelImgVector _label_img_vector);
+  shared_ptr<ObjectView_New<TVoxel, TIndex>> CreateView(ObjCameraPose pose, ObjFloatImage *_depth, ObjUChar4Image *_rgb, LabelImgVector _label_img_vector);
 
   void ProcessFrame();
 

@@ -107,7 +107,8 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
 
   //background
 
-  shared_ptr<ITMLib::ITMView> single_obj_ITMView_bg = make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
+   bg_itmview = make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
+
   auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr_bg);
 
   cout<<"label"<<new_obj_instance.get()->getClassLabel()->getLabelIndex()<<endl;
@@ -122,15 +123,15 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
       }
     }
     if(is_background) {
-      single_obj_ITMView_bg->depth->GetData(MEMORYDEVICE_CPU)[i] = this->depth_Image->GetData(MEMORYDEVICE_CPU)[i];
-      single_obj_ITMView_bg->rgb->GetData(MEMORYDEVICE_CPU)[i] = this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
+      bg_itmview->depth->GetData(MEMORYDEVICE_CPU)[i] = this->depth_Image->GetData(MEMORYDEVICE_CPU)[i];
+      bg_itmview->rgb->GetData(MEMORYDEVICE_CPU)[i] = this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
     }
   }
 //TODO
 //  new_obj_instance.get()->setAnchorView(this->shared_from_this());
-  new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView_bg);
+  new_obj_instance.get()->setAnchorView_ITM(bg_itmview);
 
-  Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, single_obj_ITMView_bg);
+  Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, bg_itmview);
 //  obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(0, object_view_tuple));
   obj_vec.push_back(object_view_tuple);
 
@@ -159,6 +160,14 @@ void ObjectView_New<TVoxel,TIndex>::setListOfViews() {
 template<typename TVoxel, typename TIndex>
 std::vector<Object_View_Tup<TVoxel,TIndex>>  ObjectView_New<TVoxel,TIndex>::getObjVec(){
   return obj_vec;
+}
+
+template<typename TVoxel, typename TIndex>
+std::shared_ptr<ITMLib::ITMView> ObjectView_New<TVoxel,TIndex>::getBackgroundView() {
+  if(bg_itmview.get()!=NULL){
+    return this->bg_itmview;
+  }
+
 }
 
 

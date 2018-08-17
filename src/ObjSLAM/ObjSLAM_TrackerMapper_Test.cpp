@@ -8,8 +8,9 @@
 #include "ObjectInstanceScene.h"
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
 #include "ObjSLAMMappingEngine.h"
-
-
+#include "ObjSLAMTrackingEngine.h"
+#include "ObjectView_New.h"
+#include <memory>
 
 using namespace std;
 
@@ -26,15 +27,25 @@ int main(int argc, char **argv) {
   DatasetReader_LPD_Dataset reader(path, imgSize);
   int imgNum = reader.readNext();
 
-  auto *mappingEngine2 =
+  //create tracking engine
+  auto * trackingEngine = new ObjSLAM::ObjSLAMTrackingEngine(internalSettings, reader.getCalib(), imgSize);
+
+  //create mapping engine
+  auto *mappingEngine =
       new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
-  mappingEngine2->UpdateImgNumber(imgNum);
-  mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  
+
+  
+  
+  
+  mappingEngine->UpdateImgNumber(imgNum);
+  auto objview = mappingEngine->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  trackingEngine->TrackFrame(objview.get()->getBackgroundView().get());
 
 
 //  cout << reader.getPose()->getSE3Pose().GetM();
-  mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-  mappingEngine2->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
+  mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+  mappingEngine->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
 
 
   //Pose test
@@ -45,76 +56,27 @@ int main(int argc, char **argv) {
   mappingEngine2->UpdateTrackingState(pose_test);
 //  mappingEngine2->UpdateTrackingState_Orig(pose_test2);*/
 
-  mappingEngine2->ProcessFrame();
+  mappingEngine->ProcessFrame();
 
 //  mappingEngine2->outputAllLabelStats();
-  mappingEngine2->outputAllObjImages();
+  mappingEngine->outputAllObjImages();
 
-  int totFrames = 13;
+  int totFrames = 3;
   for (int i = 1; i < totFrames; ++i) {
     imgNum = reader.readNext();
-    mappingEngine2->UpdateImgNumber(imgNum);
+    mappingEngine->UpdateImgNumber(imgNum);
 //  cout << reader.getPose()->getSE3Pose().GetM();
-    mappingEngine2->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-    mappingEngine2->UpdateTrackingState(&reader.getPose()->getSE3Pose());
 
-    mappingEngine2->ProcessFrame();
-    mappingEngine2->outputAllObjImages();
+    objview = mappingEngine->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
+    trackingEngine->TrackFrame(objview.get()->getBackgroundView().get());
+
+    mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+
+    mappingEngine->ProcessFrame();
+    mappingEngine->outputAllObjImages();
   }
 
-//  mappingEngine2->outputAllLabelStats();
 
-  //old stuffs
-/*//  ObjSLAM::Object_View_Tuple view_tuple = view0->getObjMap().find(58)->second;
-
-//  engine_cpu->AllocateSceneFromDepth((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex> *) object,
-//                                     std::get<1>(view_tuple),
-//                                     trackingState,
-//                                     renderState);
-//  engine_cpu->IntegrateIntoScene(object, std::get<1>(view_tuple), trackingState, renderState);
-
-//  cout << std::get<0>(view_tuple)->getClassLabel().getLabelIndex() << endl;  std::cout << "DEBUG" << std::endl;
-//  cout << std::get<1>(view_tuple)->depth->GetElement(154610, MEMORYDEVICE_CPU) << endl;
-//  cout << (int) (std::get<1>(view_tuple)->rgb->GetElement(154610, MEMORYDEVICE_CPU).w) << endl;
-
-//  cout << "Scene Integration finish\n";
-//  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
-
-//visualize
-  ObjSLAM::ObjUChar4Image *img = new ObjSLAM::ObjUChar4Image(imgSize,MEMORYDEVICE_CPU);
-//  auto *vis_eng_cpu = new ITMLib::ITMVisualisationEngine_CPU<ITMVoxel, ITMVoxelIndex>;
-
-//
-//  vis_eng_cpu->FindVisibleBlocks(scene, pose, intrinsics, renderState_freeview);
-//  vis_eng_cpu->CreateExpectedDepths(scene, pose, intrinsics, renderState_freeview);
-//  vis_eng_cpu->RenderImage(scene, pose, intrinsics, renderState_freeview, renderState_freeview->raycastImage, type);
-
-//  cout << "Debug\n";
-
-//  vis_eng_cpu->FindVisibleBlocks((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.getPose()->getSE3Pose(), &(calib->intrinsics_d), renderState);
-//  vis_eng_cpu->CreateExpectedDepths((ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.getPose()->getSE3Pose(), &(calib->intrinsics_d), renderState);
-//  vis_eng_cpu->RenderImage((ITMLi/*b::ITMScene<ITMVoxel, ITMVoxelIndex>*)object, reader.getPose()->getSE3Pose(), &(calib->intrinsics_d),renderState,img,
-//                           ITMLib::ITMVisualisationEngine<ITMVoxel,ITMVoxelIndex>::RENDER_COLOUR_FROM_VOLUME,
-//                           ITMLib::ITMVisualisationEngine<ITMVoxel,ITMVoxelIndex>::RENDER_FROM_NEW_RAYCAST);
-
-//  cout<<(int)img->GetElement(1,MEMORYDEVICE_CPU).x<<endl;
-//  SaveImageToFile(img,"recon.ppm");
-
-//  cout << "Debug\n";
-//  ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
-//  internalSettings->deviceType=internalSettings->DEVICE_CPU;
-//
-//  auto *denseMapper = new ITMLib::ITMDenseMapper<ITMVoxel,ITMVoxelIndex>(internalSettings);
-//  denseMapper->ProcessFrame(std::get<1>(view_tuple),trackingState,(ITMLib::ITMScene<ITMVoxel, ITMVoxelIndex>*)object,renderState);
-//
-//  cout << "Debug\n";
-//  cout<<"noEntries"<<object->index.noTotalEntries<<endl;
-//  string save_path = "./aft_2/";
-//  object->SaveToDirectory(save_path);
-
-
-  //delete mappingEngine2;
-//  delete pose_test;*/
 
   return 0;
 }
