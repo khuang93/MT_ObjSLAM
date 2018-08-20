@@ -43,11 +43,10 @@ int main(int argc, char **argv) {
   mappingEngine->UpdateImgNumber(imgNum);
   auto objview = mappingEngine->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
   auto t_state = trackingEngine->TrackFrame(objview.get()->getBackgroundView().get());
-
-
-//  cout << reader.getPose()->getSE3Pose().GetM();
-//  mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
   mappingEngine->UpdateTrackingState(t_state);
+
+//  mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+
 //  mappingEngine->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
 //  mappingEngine->UpdateTrackingState_Orig(t_state->pose_d);
 
@@ -55,7 +54,6 @@ int main(int argc, char **argv) {
 
   mappingEngine->outputAllObjImages();
 
-  cout<<"tstate = "<<trackingEngine->getTrackingState()->pose_d->GetM()<<endl;
 
   int totFrames = 13;
   for (int i = 1; i < totFrames; ++i) {

@@ -109,6 +109,7 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
 //    delete camera_Pose;
     delete rgb_Image;
     delete depth_Image;
+    delete camera_Pose;
 //    delete segmentation_Mask;
     if (depth_normal != NULL) {
       delete depth_normal;
