@@ -40,26 +40,19 @@ int main(int argc, char **argv) {
   
   mappingEngine->UpdateImgNumber(imgNum);
   auto objview = mappingEngine->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  trackingEngine->TrackFrame(objview.get()->getBackgroundView().get());
+  auto t_state = trackingEngine->TrackFrame(objview.get()->getBackgroundView().get());
 
 
 //  cout << reader.getPose()->getSE3Pose().GetM();
-  mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+//  mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+  mappingEngine->UpdateTrackingState(t_state->pose_d);
   mappingEngine->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
-
-
-  //Pose test
-/*  auto *pose_test = new ORUtils::SE3Pose(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-//  auto *pose_test2 = new ORUtils::SE3Pose(5.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.1f);
-
-  cout << pose_test->GetM();
-  mappingEngine2->UpdateTrackingState(pose_test);
-//  mappingEngine2->UpdateTrackingState_Orig(pose_test2);*/
 
   mappingEngine->ProcessFrame();
 
-//  mappingEngine2->outputAllLabelStats();
   mappingEngine->outputAllObjImages();
+
+  cout<<"tstate = "<<trackingEngine->getTrackingState()->pose_d->GetM()<<endl;
 
   int totFrames = 3;
   for (int i = 1; i < totFrames; ++i) {
@@ -68,9 +61,10 @@ int main(int argc, char **argv) {
 //  cout << reader.getPose()->getSE3Pose().GetM();
 
     objview = mappingEngine->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-    trackingEngine->TrackFrame(objview.get()->getBackgroundView().get());
+    t_state = trackingEngine->TrackFrame(objview.get()->getBackgroundView().get());
 
-    mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+//    mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+    mappingEngine->UpdateTrackingState(t_state->pose_d);
 
     mappingEngine->ProcessFrame();
     mappingEngine->outputAllObjImages();

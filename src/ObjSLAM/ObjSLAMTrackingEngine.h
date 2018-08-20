@@ -14,7 +14,7 @@ namespace ObjSLAM {
 using namespace ITMLib;
 class ObjSLAMTrackingEngine {
  private:
-  ITMTrackingState *t_state;
+  std::shared_ptr<ITMTrackingState> t_state;
   ITMRenderState *r_state;
   ITMSceneParams *params = new ITMSceneParams(0.5, 4, 0.01, 0.1, 4.0, false);
 //  ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
@@ -32,6 +32,8 @@ class ObjSLAMTrackingEngine {
                         const Vector2i _imgSize);
 
   ITMLib::ITMTrackingState*  TrackFrame(ITMLib::ITMView * view);
+
+  ITMLib::ITMTrackingState* getTrackingState();
 
 };
 
