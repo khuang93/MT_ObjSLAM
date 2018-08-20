@@ -69,7 +69,7 @@ set(ObjSLAM_Sources
         #[[        src/ObjSLAM/ObjSLAMBasicEngine.cpp src/ObjSLAM/ObjSLAMBasicEngine.h]]
         src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h
         )
-set(Mapper_Sources
+set(TrackerMapper_Sources
         src/ObjSLAM/ObjSLAM_TrackerMapper_Test.cpp
 
         src/ObjSLAM/InfiniTAMEngine.cpp src/ObjSLAM/InfiniTAMEngine.h
@@ -86,15 +86,17 @@ set(Mapper_Sources
         src/DatasetIO/IOUtils.cpp src/DatasetIO/IOUtils.h
         src/ObjSLAM/ObjSLAMCamera.cpp src/ObjSLAM/ObjSLAMCamera.h
         src/ObjSLAM/ObjectInstance_New.tpp src/ObjSLAM/ObjectInstance_New.h
-        src/ObjSLAM/ObjectClassLabel_Group.tpp src/ObjSLAM/ObjectClassLabel_Group.h src/ObjSLAM/ObjectView_New.tpp src/ObjSLAM/ObjectView_New.h src/ObjSLAM/ObjSLAMTrackingEngine.cpp src/ObjSLAM/ObjSLAMTrackingEngine.h)
+        src/ObjSLAM/ObjectClassLabel_Group.tpp src/ObjSLAM/ObjectClassLabel_Group.h
+        src/ObjSLAM/ObjectView_New.tpp src/ObjSLAM/ObjectView_New.h
+        src/ObjSLAM/ObjSLAMTrackingEngine.cpp src/ObjSLAM/ObjSLAMTrackingEngine.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)
 
 
 
-add_executable(Mapper ${Mapper_Sources}  /usr/include)
+add_executable(TrackerMapper ${TrackerMapper_Sources}  /usr/include)
 
-TARGET_LINK_LIBRARIES(Mapper  boost_system  boost_filesystem  InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png)
+TARGET_LINK_LIBRARIES(TrackerMapper  boost_system  boost_filesystem  InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png)
 #TARGET_LINK_LIBRARIES(Mapper  boost_system  boost_filesystem  cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png)
 #looks like it needs link cudart

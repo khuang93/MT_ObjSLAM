@@ -10,15 +10,20 @@ namespace ObjSLAM{
 
 template<typename TVoxel, typename TIndex>
 ObjCameraPose ObjectView_New<TVoxel,TIndex>::getCameraPose(){
-  return camera_Pose;
+  return *camera_Pose;
 }
 
 template<typename TVoxel, typename TIndex>
 void ObjectView_New<TVoxel,TIndex>::setCameraPose(ObjCameraPose _pose)
 {
-  camera_Pose = _pose;
+  camera_Pose = new ObjCameraPose(_pose.getSE3Pose());
 }
 
+template<typename TVoxel, typename TIndex>
+void ObjectView_New<TVoxel,TIndex>::setCameraPose(const ORUtils::SE3Pose * _se3pose)
+{
+  this->camera_Pose = new ObjCameraPose(*_se3pose);
+}
 
 //returns the new label if it is new. if the same class already exists, return the old label instance and discard the new one.
 template<typename TVoxel, typename TIndex>

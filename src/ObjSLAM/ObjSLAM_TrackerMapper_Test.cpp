@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
 
   cout<<"tstate = "<<trackingEngine->getTrackingState()->pose_d->GetM()<<endl;
 
-  int totFrames = 6;
+  int totFrames = 13;
   for (int i = 1; i < totFrames; ++i) {
     imgNum = reader.readNext();
     mappingEngine->UpdateImgNumber(imgNum);
