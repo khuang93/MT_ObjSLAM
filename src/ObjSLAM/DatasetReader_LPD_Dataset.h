@@ -127,7 +127,7 @@ class DatasetReader_LPD_Dataset {
     ORUtils::SE3Pose T_wc_SE3(T_cw_SE3.GetInvM());
 
     //world to cam
-    pose_wc = new ObjSLAM::ObjCameraPose(T_wc_SE3);
+//    pose_wc = new ObjSLAM::ObjCameraPose(T_wc_SE3);
 
     delete raw_pose;
     delete T_bw;

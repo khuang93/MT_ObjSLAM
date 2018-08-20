@@ -32,8 +32,6 @@ ObjSLAMTrackingEngine::ObjSLAMTrackingEngine(const ITMLib::ITMLibSettings *_sett
 ITMLib::ITMTrackingState* ObjSLAMTrackingEngine::TrackFrame(ITMLib::ITMView *view) {
 
 
-  std::cout<<"dbgTF\n";
-  std::cout<<*t_state.get()->pose_d;
   this->t_controller.get()->Track(t_state.get(),view);
   std::cout<<t_state->pose_d->GetM();
   return t_state.get();

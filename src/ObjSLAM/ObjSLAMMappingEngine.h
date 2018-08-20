@@ -61,13 +61,13 @@ class ObjSLAMMappingEngine {
                        const ITMLib::ITMRGBDCalib *_calib,
                        const Vector2i _imgSize);
 
-  shared_ptr<ObjectView_New<TVoxel, TIndex>> CreateView(ObjCameraPose pose, ObjFloatImage *_depth, ObjUChar4Image *_rgb, LabelImgVector _label_img_vector);
+  shared_ptr<ObjectView_New<TVoxel, TIndex>> CreateView(ObjFloatImage *_depth,
+                                                        ObjUChar4Image *_rgb,
+                                                        LabelImgVector _label_img_vector);
 
   void ProcessFrame();
 
   void ProcessOneObject(Object_View_Tup<TVoxel, TIndex> &view_tuple, ObjectInstanceScene<TVoxel, TIndex> *scene);
-
-//  void ProcessOneObject(Object_View_Tuple& view_tuple, ObjectInstanceScene<TVoxel, TIndex>* scene, int obj_idx);
 
   bool checkIsNewObject(obj_inst_ptr<TVoxel, TIndex> obj_ptr);
 
@@ -89,7 +89,7 @@ class ObjSLAMMappingEngine {
 
   void UpdateViewPose();
 
-  void SetTrackingController(ITMLib::ITMTrackingController * _t_controller);
+  void SetTrackingController(ITMLib::ITMTrackingController *_t_controller);
 
   void UpdateImgNumber(int _imgNum) { imgNumber = _imgNum; };
 

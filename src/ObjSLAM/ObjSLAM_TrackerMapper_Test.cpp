@@ -27,6 +27,11 @@ int main(int argc, char **argv) {
   DatasetReader_LPD_Dataset reader(path, imgSize);
   int imgNum = reader.readNext();
 
+
+  ITMLib::ITMView * wholeView = new ITMLib::ITMView(*reader.getCalib(),imgSize,imgSize,false);
+  wholeView->depth = reader.depth_img;
+  wholeView->rgb = reader.rgb_img;
+
   //create tracking engine
   auto * trackingEngine = new ObjSLAM::ObjSLAMTrackingEngine(internalSettings, reader.getCalib(), imgSize);
 
@@ -41,8 +46,10 @@ int main(int argc, char **argv) {
   
   
   mappingEngine->UpdateImgNumber(imgNum);
-  auto objview = mappingEngine->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-  auto t_state = trackingEngine->TrackFrame(objview.get()->getBackgroundView().get());
+  auto objview = mappingEngine->CreateView(reader.depth_img, reader.rgb_img, reader.label_img_vector);
+
+//  auto t_state = trackingEngine->TrackFrame(objview.get()->getBackgroundView().get());
+  auto t_state = trackingEngine->TrackFrame(wholeView);
   mappingEngine->UpdateTrackingState(t_state);
 
 //  mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
@@ -54,21 +61,32 @@ int main(int argc, char **argv) {
 
   mappingEngine->outputAllObjImages();
 
+  delete wholeView;
+
 
   int totFrames = 13;
   for (int i = 1; i < totFrames; ++i) {
     imgNum = reader.readNext();
+
+    wholeView = new ITMLib::ITMView(*reader.getCalib(),imgSize,imgSize,false);
+    wholeView->depth = reader.depth_img;
+    wholeView->rgb = reader.rgb_img;
+
+
     mappingEngine->UpdateImgNumber(imgNum);
 //  cout << reader.getPose()->getSE3Pose().GetM();
 
-    objview = mappingEngine->CreateView(*reader.getPose(), reader.depth_img, reader.rgb_img, reader.label_img_vector);
-    t_state = trackingEngine->TrackFrame(objview.get()->getBackgroundView().get());
+    objview = mappingEngine->CreateView(reader.depth_img, reader.rgb_img, reader.label_img_vector);
+
+
+    auto t_state = trackingEngine->TrackFrame(wholeView);
 
 //    mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
     mappingEngine->UpdateTrackingState(t_state);
 
     mappingEngine->ProcessFrame();
     mappingEngine->outputAllObjImages();
+    delete wholeView;
   }
 
 
