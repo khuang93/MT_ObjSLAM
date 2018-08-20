@@ -27,9 +27,9 @@ ObjSLAMMappingEngine<TVoxel, TIndex>::ObjSLAMMappingEngine(const ITMLib::ITMLibS
 
   denseMapper = new ITMLib::ITMDenseMapper<TVoxel, TIndex>(settings);
 
-  t_state = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
+//  t_state = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
 
-  t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
+//  t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
 
   r_state =
       ITMLib::ITMRenderStateFactory<TIndex>::CreateRenderState(imgSize, &(settings->sceneParams), MEMORYDEVICE_CPU);
@@ -103,7 +103,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
       int labelIndex = label_ptr.get()->getLabelIndex();
       //TODO skid 76 to reduce memory
-      if (labelIndex != 42 && labelIndex != 58 && labelIndex != 0/*&&labelIndex!=74*/) continue;
+      if (/*labelIndex != 42 && labelIndex != 58 && */labelIndex != 0/*&&labelIndex!=74*/) continue;
 
       std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
       string
@@ -155,14 +155,14 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
       //ProcessOneObject
       //TODO Separate the tracker part
-      tracker = ITMLib::ITMTrackerFactory::Instance().Make(imgSize,
+/*      tracker = ITMLib::ITMTrackerFactory::Instance().Make(imgSize,
                                                            imgSize,
                                                            settings,
                                                            lowEngine,
                                                            new ITMLib::ITMIMUCalibrator_iPad(),
                                                            obj_inst_scene_ptr.get()->sceneParams);
 
-      t_controller = new ITMLib::ITMTrackingController(tracker, settings);
+      t_controller = new ITMLib::ITMTrackingController(tracker, settings);*/
 
       ProcessOneObject(view_tuple, obj_inst_scene_ptr.get());
       //re-init the bool of newObject
@@ -180,6 +180,9 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tup<TVox
 
   denseMapper->ProcessFrame(itmView.get(), t_state, scene, r_state, true);
   denseMapper->UpdateVisibleList(itmView.get(), t_state, scene, r_state, true);
+
+  t_controller->Prepare(t_state, scene, itmView.get(), visualisationEngine, r_state);
+
 //  cout << "dbg" << endl;
   ObjUChar4Image *img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
 
@@ -420,6 +423,11 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateViewPose() {
 };
 
 template<typename TVoxel, typename TIndex>
+void ObjSLAMMappingEngine<TVoxel, TIndex>::SetTrackingController(ITMLib::ITMTrackingController* _t_controller) {
+  t_controller = _t_controller;
+};
+
+template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllLabelStats() {
   for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
     std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr = label_ptr_vector.at(i);
@@ -442,14 +450,16 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
       auto scene = obj_inst_ptr.get()->getScene();
 
       ObjUChar4Image *img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
+/*
       t_controller->Prepare(t_state_orig,
                             scene.get(),
                             obj_inst_ptr.get()->getAnchorView_ITM().get(),
                             visualisationEngine,
                             r_state);
+*/
 
       visualisationEngine->RenderImage(scene.get(),
-                                       t_state_orig->pose_d,
+                                       t_state->pose_d,
                                        &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
                                        r_state,
                                        r_state->raycastImage,
@@ -477,7 +487,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::deleteAll() {
   delete this->denseMapper;
   delete this->calib;
   delete this->settings;
-  delete this->view;
+//  delete this->view;
   delete this->t_state;
   delete this->r_state;
 }

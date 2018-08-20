@@ -43,7 +43,6 @@ class ObjSLAMMappingEngine {
   ITMLib::ITMTrackingController *t_controller;
   ITMLib::ITMTracker *tracker;
   ITMLib::ITMLowLevelEngine *lowEngine;
-  DatasetReader_LPD_Dataset reader;
   Vector2i imgSize;
   std::vector<ObjectInstanceScene<TVoxel, TIndex> *> object_instance_scene_vector;
   std::vector<obj_inst_ptr<TVoxel, TIndex>> obj_inst_ptr_vector;
@@ -89,6 +88,8 @@ class ObjSLAMMappingEngine {
   void UpdateTrackingState_Orig(const ORUtils::SE3Pose *_pose);
 
   void UpdateViewPose();
+
+  void SetTrackingController(ITMLib::ITMTrackingController * _t_controller);
 
   void UpdateImgNumber(int _imgNum) { imgNumber = _imgNum; };
 

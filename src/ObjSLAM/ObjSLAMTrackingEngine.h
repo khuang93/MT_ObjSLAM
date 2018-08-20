@@ -18,7 +18,7 @@ class ObjSLAMTrackingEngine {
   ITMRenderState *r_state;
   ITMSceneParams *params = new ITMSceneParams(0.5, 4, 0.01, 0.1, 4.0, false);
 //  ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
-  ITMTrackingController *t_controller;
+  std::shared_ptr<ITMTrackingController> t_controller;
   ITMTracker *tracker;
   ITMLowLevelEngine *lowEngine;
 
@@ -35,6 +35,7 @@ class ObjSLAMTrackingEngine {
 
   ITMLib::ITMTrackingState* getTrackingState();
 
+  ITMLib::ITMTrackingController* getTrackingController();
 };
 
 }

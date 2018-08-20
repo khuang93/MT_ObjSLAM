@@ -30,11 +30,13 @@ int main(int argc, char **argv) {
   //create tracking engine
   auto * trackingEngine = new ObjSLAM::ObjSLAMTrackingEngine(internalSettings, reader.getCalib(), imgSize);
 
+  auto t_controller =trackingEngine->getTrackingController();
+
   //create mapping engine
   auto *mappingEngine =
       new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
   
-
+  mappingEngine->SetTrackingController(t_controller);
   
   
   
@@ -45,8 +47,9 @@ int main(int argc, char **argv) {
 
 //  cout << reader.getPose()->getSE3Pose().GetM();
 //  mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-  mappingEngine->UpdateTrackingState(t_state->pose_d);
-  mappingEngine->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
+  mappingEngine->UpdateTrackingState(t_state);
+//  mappingEngine->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
+//  mappingEngine->UpdateTrackingState_Orig(t_state->pose_d);
 
   mappingEngine->ProcessFrame();
 
@@ -64,7 +67,7 @@ int main(int argc, char **argv) {
     t_state = trackingEngine->TrackFrame(objview.get()->getBackgroundView().get());
 
 //    mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-    mappingEngine->UpdateTrackingState(t_state->pose_d);
+    mappingEngine->UpdateTrackingState(t_state);
 
     mappingEngine->ProcessFrame();
     mappingEngine->outputAllObjImages();

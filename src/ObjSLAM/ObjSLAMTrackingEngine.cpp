@@ -22,7 +22,7 @@ ObjSLAMTrackingEngine::ObjSLAMTrackingEngine(const ITMLib::ITMLibSettings *_sett
                                                        new ITMLib::ITMIMUCalibrator_iPad(),
                                                        this->params);
 
-  t_controller = std::make_shared<ITMTrackingController>(tracker, settings).get();
+  t_controller = std::make_shared<ITMTrackingController>(tracker, settings);
 
   t_state = std::make_shared<ITMLib::ITMTrackingState>(imgSize, MEMORYDEVICE_CPU);
   t_state->Reset();
@@ -31,16 +31,20 @@ ObjSLAMTrackingEngine::ObjSLAMTrackingEngine(const ITMLib::ITMLibSettings *_sett
 
 ITMLib::ITMTrackingState* ObjSLAMTrackingEngine::TrackFrame(ITMLib::ITMView *view) {
 
-  SaveImageToFile(view->depth, "testD");
+
   std::cout<<"dbgTF\n";
   std::cout<<*t_state.get()->pose_d;
-  this->t_controller->Track(t_state.get(),view);
+  this->t_controller.get()->Track(t_state.get(),view);
   std::cout<<t_state->pose_d->GetM();
   return t_state.get();
 }
 
 ITMLib::ITMTrackingState* ObjSLAMTrackingEngine::getTrackingState(){
   return t_state.get();
+}
+
+ITMLib::ITMTrackingController* ObjSLAMTrackingEngine::getTrackingController(){
+  return t_controller.get();
 }
 
 
