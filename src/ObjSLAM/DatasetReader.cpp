@@ -1,7 +1,6 @@
 //
 // Created by khuang on 8/22/18.
 //
-
 #include "DatasetReader.h"
 
 std::vector<std::string> DatasetReader::getFileNames(std::string directoryPath) {
@@ -21,6 +20,7 @@ std::vector<std::string> DatasetReader::getFileNames(std::string directoryPath) 
   return names;
 }
 
+
 ObjSLAM::ObjFloatImage *DatasetReader::ReadOneDepth(std::string Path) {
   ifstream in;
 
@@ -33,7 +33,8 @@ ObjSLAM::ObjFloatImage *DatasetReader::ReadOneDepth(std::string Path) {
     in >> tmp;
     vector_in.push_back(tmp);
   }
-//TODO debug output
+
+  //TODO debug output
 //    cout << "**Input size is " << vector_in.size() << endl;
 
 //    ORUtils::Vector2<int> imgSize(width, height);
@@ -54,6 +55,25 @@ ObjSLAM::ObjFloatImage *DatasetReader::ReadOneDepth(std::string Path) {
   }
 
 //    SaveImageToFile(res, "testD");
+  return res;
+}
+
+ObjSLAM::ObjShortImage *DatasetReader::ReadOneDisparity(std::string Path) {
+  ifstream in;
+
+  in.open(Path);
+  //read rgb from png file
+
+
+
+  auto *res = new ObjSLAM::ObjShortImage(imgSize, MEMORYDEVICE_CPU);
+
+  res->ChangeDims(imgSize);
+
+  ReadImageFromFile(res, Path.c_str());
+
+//    SaveImageToFile(res, "testRGB");
+
   return res;
 }
 

@@ -101,7 +101,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
       int labelIndex = label_ptr.get()->getLabelIndex();
       //TODO skid 76 to reduce memory
-      if (/*labelIndex != 42 &&*/ labelIndex != 58 && labelIndex != 0/*&&labelIndex!=74*/) continue;
+      if (labelIndex != 1 && labelIndex != 63 && labelIndex != 0&&labelIndex!=78&& labelIndex!=67&&labelIndex!=65) continue;
 
       std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
       string

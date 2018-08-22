@@ -5,7 +5,7 @@
 #ifndef MT_OBJSLAM_DATASETREADER_H
 #define MT_OBJSLAM_DATASETREADER_H
 
-#endif //MT_OBJSLAM_DATASETREADER_H
+
 
 #include <fstream>
 #include <iostream>
@@ -22,6 +22,7 @@
 #include <eigen3/Eigen/Dense>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/ViewBuilding/Interface/ITMViewBuilder.h>
 
 using namespace std;
 
@@ -34,8 +35,10 @@ class DatasetReader {
  protected:
   int width, height;
   Vector2i imgSize;
-  ITMLib::ITMRGBDCalib *calib;
+  ITMLib::ITMRGBDCalib *calib = nullptr;
   string path;
+  int img_number = 1;
+  ITMLib::ITMViewBuilder *viewBuilder = nullptr;
  public:
   ObjSLAM::ObjUChar4Image *rgb_img;
   ObjSLAM::ObjFloatImage *depth_img;
@@ -49,15 +52,17 @@ class DatasetReader {
 
   /** Virtual function, reads the next frame and returns the frame number as int.
 		*/
-  virtual int readNext() =0;
+  virtual int readNext()=0;
 
-  virtual ObjSLAM::ObjShortImage *ConvertToRealDepth(ObjSLAM::ObjFloatImage *depth) =0;
+  virtual ObjSLAM::ObjShortImage *ConvertToRealDepth(ObjSLAM::ObjFloatImage *depth)=0;
 
-  virtual void readCalib()=0;
+  virtual bool readCalib()=0;
 
   std::vector<std::string> getFileNames(std::string directoryPath);
 
-  ObjSLAM::ObjFloatImage *ReadOneDepth(std::string Path);
+  virtual ObjSLAM::ObjFloatImage *ReadOneDepth(std::string Path);
+
+  virtual ObjSLAM::ObjShortImage *ReadOneDisparity(std::string Path);
 
   ObjSLAM::ObjUChar4Image *ReadOneRGB(std::string Path);
 
@@ -73,3 +78,4 @@ class DatasetReader {
 
   ~DatasetReader(){};
 };
+#endif //MT_OBJSLAM_DATASETREADER_H

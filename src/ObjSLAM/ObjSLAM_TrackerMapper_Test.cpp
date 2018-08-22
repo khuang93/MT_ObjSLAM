@@ -39,9 +39,9 @@ int main(int argc, char **argv) {
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
   internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
 
-  TeddyReader teddyreader(path, imgSize);
+  TeddyReader reader(path, imgSize);
 
-  DatasetReader_LPD_Dataset reader(path, imgSize);
+//  DatasetReader_LPD_Dataset reader(path, imgSize);
 
 
 
@@ -84,8 +84,8 @@ int main(int argc, char **argv) {
   delete wholeView;
 
 
-  int totFrames = 13;
-  for (int i = 1; i < totFrames; ++i) {
+  int totFrames = 10;
+  while (imgNum<=totFrames) {
     imgNum = reader.readNext();
 
     wholeView = new ITMLib::ITMView(*reader.getCalib(),imgSize,imgSize,false);

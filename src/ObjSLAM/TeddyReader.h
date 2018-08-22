@@ -5,6 +5,8 @@
 #ifndef MT_OBJSLAM_TEDDYREADER_H
 #define MT_OBJSLAM_TEDDYREADER_H
 
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/ViewBuilding/ITMViewBuilderFactory.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/ViewBuilding/CPU/ITMViewBuilder_CPU.h>
 #include "DatasetReader.h"
 #include "/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMCalibIO.h"
 
@@ -14,17 +16,18 @@ class TeddyReader : public DatasetReader{
 
  public:
   TeddyReader(string _path, Vector2i _imgSize):DatasetReader(_path, _imgSize){
-    cout<<"CreatedTeddyReader"<<endl;
-    calib_path = path+"/calib.txt";
+    img_number=0;
+    calib_path = path+"calib.txt";
     readCalib();
+    viewBuilder = new ITMLib::ITMViewBuilder_CPU(*calib);
+    cout<<"Created TeddyReader Path "<<path<<endl;
   }
 
   int readNext();
 
   ObjSLAM::ObjShortImage *ConvertToRealDepth(ObjSLAM::ObjFloatImage *depth);
 
-  void readCalib();
-
+  bool readCalib();
 };
 
 #endif //MT_OBJSLAM_TEDDYREADER_H
