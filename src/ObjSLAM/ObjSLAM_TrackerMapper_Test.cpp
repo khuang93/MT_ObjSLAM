@@ -10,6 +10,7 @@
 #include "ObjSLAMMappingEngine.h"
 #include "ObjSLAMTrackingEngine.h"
 #include "ObjectView_New.h"
+#include "TeddyReader.h"
 #include <memory>
 
 #include <g2o/core/base_vertex.h>
@@ -29,8 +30,6 @@ int main(int argc, char **argv) {
   //TODO Debug output
   cout << "**Hello SLAM World!" << endl;
 
-  auto * ver = new g2o::VertexSE3();
-  ver->setId(0);
 
 
   //Path of the depth image file
@@ -39,7 +38,13 @@ int main(int argc, char **argv) {
 
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
   internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
+
+  TeddyReader teddyreader(path, imgSize);
+
   DatasetReader_LPD_Dataset reader(path, imgSize);
+
+
+
   int imgNum = reader.readNext();
 
 
