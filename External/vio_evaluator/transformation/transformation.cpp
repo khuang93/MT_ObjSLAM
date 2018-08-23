@@ -47,6 +47,10 @@ namespace VGUGV
                                                   cr * cp * sy - sr * sp * cy));
         }
 
+        static Eigen::Vector3d rad2deg(Eigen::Vector3d& in_rpy){
+            return in_rpy*180.0/M_PI;
+        }
+
         Eigen::Vector3d Transformation::operator*(const Eigen::Vector3d &point) const
         {
             return Sophus::SE3d::operator*(point);

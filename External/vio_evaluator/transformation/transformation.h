@@ -4,12 +4,14 @@
 #include <Eigen/Dense>
 #include <memory>
 #include <sophus/se3.hpp>
-#include "core/nonMemberFunctions/nonMemberFunctions.h"
+#include <math.h>
+//#include "core/nonMemberFunctions/nonMemberFunctions.h"
 
 namespace VGUGV
 {
     namespace Common
     {
+        Eigen::Vector3d rad2deg(Eigen::Vector3d in_rpy);
         class Transformation : public Sophus::SE3d
         {
           public:
@@ -29,10 +31,13 @@ namespace VGUGV
             Transformation operator*(const Eigen::Matrix4d &aT) const;
             Transformation operator*(const Eigen::Matrix<double, 6, 1> &tangent) const;
 
+
+
             friend std::ostream &operator<<(std::ostream &stream, Transformation obj)
             {
                 Eigen::Vector3d rpy = obj.getRollPitchYaw();
-                stream << "rpy: |" << rad2deg<Eigen::Vector3d>(rpy).transpose() << "| ";
+//                stream << "rpy: |" << rad2deg<Eigen::Vector3d>(rpy).transpose() << "| ";
+                stream << "rpy: |" << rad2deg(rpy).transpose() << "| ";
                 stream << "xyz: |" << obj.translation().transpose() << "|";
                 return stream;
             }
