@@ -57,6 +57,9 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
   auto label_ptr_bg_new = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(0, std::to_string(0));
   shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> label_ptr_bg = addLabelToVector(label_ptr_vector,label_ptr_bg_new);
 
+#ifdef WITH_OPENMP
+#pragma omp parallel for
+#endif
   for(LabelImgVec::iterator it = label_img_vector.begin(); it!=label_img_vector.end();++it){
 
     int labelIndex = 0;
@@ -117,6 +120,10 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
   auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr_bg);
 
   cout<<"label"<<new_obj_instance.get()->getClassLabel()->getLabelIndex()<<endl;
+
+#ifdef WITH_OPENMP
+#pragma omp parallel for
+#endif
   //it over pixels
   for (int i = 0; i < this->depth_Image->dataSize; i++) {
     bool is_background = true;

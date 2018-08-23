@@ -99,6 +99,8 @@ class ObjSLAMMappingEngine {
 
   void deleteAll();
 
+  void SaveSceneToMesh(const char *objFileName, std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> scene_ptr);
+
   ~ObjSLAMMappingEngine() {
     deleteAll();
   }

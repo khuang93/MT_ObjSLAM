@@ -24,7 +24,13 @@
 #include <g2o/types/slam3d/types_slam3d.h>
 #include <g2o/types/slam3d_addons/types_slam3d_addons.h>
 
+#include <ctime>
+
 using namespace std;
+
+void ProcessOneFrame(){
+
+}
 
 int main(int argc, char **argv) {
   //TODO Debug output
@@ -72,11 +78,6 @@ int main(int argc, char **argv) {
   auto t_state = trackingEngine->TrackFrame(wholeView);
   mappingEngine->UpdateTrackingState(t_state);
 
-//  mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
-
-//  mappingEngine->UpdateTrackingState_Orig(&reader.getPose()->getSE3Pose());
-//  mappingEngine->UpdateTrackingState_Orig(t_state->pose_d);
-
   mappingEngine->ProcessFrame();
 
   mappingEngine->outputAllObjImages();
@@ -84,8 +85,11 @@ int main(int argc, char **argv) {
   delete wholeView;
 
 
-  int totFrames = 10;
+  int totFrames = 12;
   while (imgNum<=totFrames) {
+    std::clock_t start;
+    double time;
+    start = std::clock();
     imgNum = reader.readNext();
 
     wholeView = new ITMLib::ITMView(*reader.getCalib(),imgSize,imgSize,false);
@@ -107,6 +111,9 @@ int main(int argc, char **argv) {
     mappingEngine->ProcessFrame();
     mappingEngine->outputAllObjImages();
     delete wholeView;
+    time = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+
+    cout<<"Img "<<imgNum<< " Time "<<time<<endl;
   }
 
 

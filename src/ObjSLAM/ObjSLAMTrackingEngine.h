@@ -9,6 +9,7 @@
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMSceneParams.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMTrackingController.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/LowLevel/Interface/ITMLowLevelEngine.h>
+#include "ObjCameraPose.h"
 
 namespace ObjSLAM {
 using namespace ITMLib;
@@ -25,6 +26,7 @@ class ObjSLAMTrackingEngine {
   Vector2i imgSize;
   const ITMLib::ITMLibSettings *settings;
   const ITMLib::ITMRGBDCalib *calib;
+  int imgNumber = 1;
 
  public:
   ObjSLAMTrackingEngine(const ITMLib::ITMLibSettings *_settings,
@@ -36,6 +38,10 @@ class ObjSLAMTrackingEngine {
   ITMLib::ITMTrackingState* getTrackingState();
 
   ITMLib::ITMTrackingController* getTrackingController();
+
+  void outputTrackingResults(std::string path);
+
+  void outputTrackingResults(std::ofstream& of);
 };
 
 }

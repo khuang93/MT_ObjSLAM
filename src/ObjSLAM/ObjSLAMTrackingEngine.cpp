@@ -5,7 +5,6 @@
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/LowLevel/ITMLowLevelEngineFactory.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Trackers/ITMTrackerFactory.h>
 #include <memory>
-#include <External/InfiniTAM/InfiniTAM/ORUtils/FileUtils.h>
 #include "ObjSLAMTrackingEngine.h"
 
 namespace ObjSLAM {
@@ -29,22 +28,41 @@ ObjSLAMTrackingEngine::ObjSLAMTrackingEngine(const ITMLib::ITMLibSettings *_sett
 
 }
 
-ITMLib::ITMTrackingState* ObjSLAMTrackingEngine::TrackFrame(ITMLib::ITMView *view) {
+ITMLib::ITMTrackingState *ObjSLAMTrackingEngine::TrackFrame(ITMLib::ITMView *view) {
 
-
-  this->t_controller.get()->Track(t_state.get(),view);
-  std::cout<<t_state->pose_d->GetM();
+  this->t_controller.get()->Track(t_state.get(), view);
+  std::cout << t_state->pose_d->GetM();
+  outputTrackingResults("trackingResults.txt");
+  imgNumber++;
   return t_state.get();
 }
 
-ITMLib::ITMTrackingState* ObjSLAMTrackingEngine::getTrackingState(){
+ITMLib::ITMTrackingState *ObjSLAMTrackingEngine::getTrackingState() {
   return t_state.get();
 }
 
-ITMLib::ITMTrackingController* ObjSLAMTrackingEngine::getTrackingController(){
+ITMLib::ITMTrackingController *ObjSLAMTrackingEngine::getTrackingController() {
   return t_controller.get();
 }
 
+void ObjSLAMTrackingEngine::outputTrackingResults(std::string path) {
 
+  std::ofstream of;
+  if (imgNumber == 1) {
+    of.open(path);
+  } else {
+    of.open(path, ios::app);
+  }
+  outputTrackingResults(of);
+}
+
+void ObjSLAMTrackingEngine::outputTrackingResults(std::ofstream &of) {
+  ObjCameraPose obj_cam_pose(*(t_state.get()->pose_d));
+  ORUtils::Vector3<float> pos = t_state.get()->pose_d->GetT();
+  Eigen::Quaterniond eigen_quat = obj_cam_pose.getQuaternion();
+  double time = imgNumber * 0.1;
+  of << time << ", " << 1 << ", " << eigen_quat.w() << ", " << eigen_quat.x() << ", " << eigen_quat.y() << ", "
+     << eigen_quat.z() << ", " << pos.x << ", " << pos.y << ", " << pos.z << endl;
+}
 
 }
