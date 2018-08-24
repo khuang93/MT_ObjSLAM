@@ -216,12 +216,12 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
                                          r_state->raycastImage,
                                          ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                          ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
-/*        if(imgNumber>10){
+        if(imgNumber>19){
           string stlname =
                   "Label" + label_ptr.get()->getLabelClassName() + ".Object" + to_string(j) + ".Frame" + to_string(imgNumber)
                   + ".stl";
           SaveSceneToMesh(stlname.c_str(),scene);
-        }*/
+        }
 
       } else {
         //needed for tracking
