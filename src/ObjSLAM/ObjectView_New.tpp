@@ -35,7 +35,7 @@ std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> ObjectView_New<TVoxel,TIn
   }else{
     bool isNew=true;
     for(size_t t=0; t<label_ptr_vector.size();++t){
-      if(label_ptr_vector.at(t).get()->getLabelIndex()==new_label.get()->getLabelIndex()){
+      if(label_ptr_vector.at(t)->getLabelIndex()==new_label->getLabelIndex()){
         isNew=false;
         return label_ptr_vector.at(t);
 //        break;
@@ -44,7 +44,7 @@ std::shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> ObjectView_New<TVoxel,TIn
     if(isNew){
       label_ptr_vector.push_back(new_label);
       return new_label;
-//      cout<<new_label.get()->getLabelIndex()<<endl;
+//      cout<<new_label->getLabelIndex()<<endl;
     }
   }
 }
@@ -99,9 +99,9 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
       auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr);
 //TODO
 
-    new_obj_instance.get()->setAnchorView(this->shared_from_this());
-    new_obj_instance.get()->setAnchorView_ITM(single_obj_ITMView);
-//      new_obj_instance.get()->addObjectInstanceToLabel();
+    new_obj_instance->setAnchorView(this->shared_from_this());
+    new_obj_instance->setAnchorView_ITM(single_obj_ITMView);
+//      new_obj_instance->addObjectInstanceToLabel();
 
 
 
@@ -119,7 +119,7 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
 
   auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr_bg);
 
-  cout<<"label"<<new_obj_instance.get()->getClassLabel()->getLabelIndex()<<endl;
+  cout<<"label"<<new_obj_instance->getClassLabel()->getLabelIndex()<<endl;
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for
@@ -140,14 +140,14 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
     }
   }
 //TODO
-//  new_obj_instance.get()->setAnchorView(this->shared_from_this());
-  new_obj_instance.get()->setAnchorView_ITM(bg_itmview);
+//  new_obj_instance->setAnchorView(this->shared_from_this());
+  new_obj_instance->setAnchorView_ITM(bg_itmview);
 
   Object_View_Tup<TVoxel,TIndex> object_view_tuple(new_obj_instance, bg_itmview);
 //  obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(0, object_view_tuple));
   obj_vec.push_back(object_view_tuple);
 
-//  SaveImageToFile(single_obj_ITMView_bg.get()->depth,"test.ppm");
+//  SaveImageToFile(single_obj_ITMView_bg->depth,"test.ppm");
 //  cout<<"size"<<this->obj_map.size()<<endl;
 
   //  std::cout << "FINISHED" << std::endl;

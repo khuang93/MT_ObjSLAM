@@ -8,7 +8,7 @@
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/ViewBuilding/ITMViewBuilderFactory.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/ViewBuilding/CPU/ITMViewBuilder_CPU.h>
 #include "DatasetReader.h"
-#include "/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMCalibIO.h"
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMCalibIO.h"
 
 class TeddyReader : public DatasetReader{
  private:

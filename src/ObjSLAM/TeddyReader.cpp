@@ -3,7 +3,7 @@
 //
 
 #include "TeddyReader.h"
-#include "/local/MT/MT_ObjSLAM/External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMCalibIO.h"
+//#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMCalibIO.h"
 #include <iomanip>
 
 int TeddyReader::readNext(){

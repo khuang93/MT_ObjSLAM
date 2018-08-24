@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
   mappingEngine->UpdateImgNumber(imgNum);
   auto objview = mappingEngine->CreateView(reader.depth_img, reader.rgb_img, reader.label_img_vector);
 
-//  auto t_state = trackingEngine->TrackFrame(objview.get()->getBackgroundView().get());
+//  auto t_state = trackingEngine->TrackFrame(objview. ->getBackgroundView().get());
   auto t_state = trackingEngine->TrackFrame(wholeView);
   mappingEngine->UpdateTrackingState(t_state);
 
@@ -85,7 +85,8 @@ int main(int argc, char **argv) {
   delete wholeView;
 
 
-  int totFrames = 12;
+
+  int totFrames =atoi( argv[2]);
   while (imgNum<=totFrames) {
     std::clock_t start;
     double time;
