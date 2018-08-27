@@ -26,7 +26,7 @@ using namespace std;
 
 using LabelImgVector = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
 
-class DatasetReader_LPD_Dataset : public DatasetReader {
+class LPD_Dataset_Reader : public DatasetReader {
  private:
 //  int width, height;
 //  Vector2i imgSize;
@@ -50,14 +50,14 @@ class DatasetReader_LPD_Dataset : public DatasetReader {
   int img_number = 1;
 
  public:
-//  DatasetReader_LPD_Dataset() {};
+//  LPD_Dataset_Reader() {};
 
-//  DatasetReader_LPD_Dataset(string _path, int w, int h) : path(_path), width(w), height(h) {
+//  LPD_Dataset_Reader(string _path, int w, int h) : path(_path), width(w), height(h) {
 //    imgSize = Vector2i(w, h);
 //    setCalib_LPD();
 //  };
 
-  DatasetReader_LPD_Dataset(string _path, Vector2i _imgSize) : DatasetReader(_path,
+  LPD_Dataset_Reader(string _path, Vector2i _imgSize) : DatasetReader(_path,
                                                                              _imgSize)/* path(_path), imgSize(_imgSize)*/ {
 //    width = imgSize.x;
 //    height = imgSize.y;
@@ -65,7 +65,7 @@ class DatasetReader_LPD_Dataset : public DatasetReader {
   };
 
   //destructor
-  ~DatasetReader_LPD_Dataset() {
+  ~LPD_Dataset_Reader() {
     deleteVariables();
   }
 

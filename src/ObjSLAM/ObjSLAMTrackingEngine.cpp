@@ -19,7 +19,7 @@ ObjSLAMTrackingEngine::ObjSLAMTrackingEngine(const ITMLib::ITMLibSettings *_sett
                                                        settings,
                                                        lowEngine,
                                                        new ITMLib::ITMIMUCalibrator_iPad(),
-                                                       this->params);
+                                                       this->params.get());
 
   t_controller = std::make_shared<ITMTrackingController>(tracker, settings);
 
@@ -28,21 +28,28 @@ ObjSLAMTrackingEngine::ObjSLAMTrackingEngine(const ITMLib::ITMLibSettings *_sett
 
 }
 
-ITMLib::ITMTrackingState *ObjSLAMTrackingEngine::TrackFrame(ITMLib::ITMView *view) {
+ObjSLAMTrackingEngine::~ObjSLAMTrackingEngine(){
+  delete this->calib;
+  delete this->settings;
+  delete this->lowEngine;
+  delete tracker;
+}
+
+shared_ptr<ITMLib::ITMTrackingState> ObjSLAMTrackingEngine::TrackFrame(ITMLib::ITMView *view) {
 
   this->t_controller.get()->Track(t_state.get(), view);
   std::cout << t_state->pose_d->GetM();
   outputTrackingResults("trackingResults.txt");
   imgNumber++;
-  return t_state.get();
+  return t_state;
 }
 
-ITMLib::ITMTrackingState *ObjSLAMTrackingEngine::getTrackingState() {
-  return t_state.get();
+shared_ptr<ITMLib::ITMTrackingState>  ObjSLAMTrackingEngine::getTrackingState() {
+  return t_state;
 }
 
-ITMLib::ITMTrackingController *ObjSLAMTrackingEngine::getTrackingController() {
-  return t_controller.get();
+shared_ptr<ITMLib::ITMTrackingController> ObjSLAMTrackingEngine::getTrackingController() {
+  return t_controller;
 }
 
 void ObjSLAMTrackingEngine::outputTrackingResults(std::string path) {

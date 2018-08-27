@@ -57,12 +57,11 @@ set(ObjSLAM_Sources
         src/ObjSLAM/ObjSLAM_TrackerMapper_Test.cpp
         src/ObjSLAM/ObjSLAMEngine.h
         src/ObjSLAM/ObjSLAMEngine.tpp
-        src/ObjSLAM/InfiniTAMEngine.cpp src/ObjSLAM/InfiniTAMEngine.h
         src/ObjSLAM/ObjectSLAMTracker.cpp src/ObjSLAM/ObjectSLAMTracker.h
         src/ObjSLAM/ObjectInstanceScene.tpp src/ObjSLAM/ObjectInstanceScene.h
         src/ObjSLAM/ObjSLAMDataTypes.h
 
-        src/ObjSLAM/DatasetReader_LPD_Dataset.h
+        src/ObjSLAM/LPD_Dataset_Reader.h
         src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
         src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h
         src/ObjSLAM/ObjSceneReconstructionEngine_CPU.cpp src/ObjSLAM/ObjSceneReconstructionEngine_CPU.h
@@ -72,12 +71,11 @@ set(ObjSLAM_Sources
 set(TrackerMapper_Sources
         src/ObjSLAM/ObjSLAM_TrackerMapper_Test.cpp
 
-        src/ObjSLAM/InfiniTAMEngine.cpp src/ObjSLAM/InfiniTAMEngine.h
         src/ObjSLAM/ObjectSLAMTracker.cpp src/ObjSLAM/ObjectSLAMTracker.h
         src/ObjSLAM/ObjectInstanceScene.tpp src/ObjSLAM/ObjectInstanceScene.h
         src/ObjSLAM/ObjSLAMDataTypes.h
 
-        src/ObjSLAM/DatasetReader_LPD_Dataset.h
+        src/ObjSLAM/LPD_Dataset_Reader.h
         src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
         src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h
         src/ObjSLAM/ObjSceneReconstructionEngine_CPU.cpp src/ObjSLAM/ObjSceneReconstructionEngine_CPU.h

@@ -17,7 +17,7 @@ class ObjSLAMTrackingEngine {
  private:
   std::shared_ptr<ITMTrackingState> t_state;
   ITMRenderState *r_state;
-  ITMSceneParams *params = new ITMSceneParams(0.5, 4, 0.1, 0.1, 4.0, false);
+  std::unique_ptr<ITMSceneParams> params = make_unique<ITMSceneParams>(0.5, 4, 0.1, 0.1, 4.0, false);
 //  ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
   std::shared_ptr<ITMTrackingController> t_controller;
   ITMTracker *tracker;
@@ -32,12 +32,12 @@ class ObjSLAMTrackingEngine {
   ObjSLAMTrackingEngine(const ITMLib::ITMLibSettings *_settings,
                         const ITMLib::ITMRGBDCalib *_calib,
                         const Vector2i _imgSize);
+  ~ObjSLAMTrackingEngine();
+  shared_ptr<ITMLib::ITMTrackingState>  TrackFrame(ITMLib::ITMView * view);
 
-  ITMLib::ITMTrackingState*  TrackFrame(ITMLib::ITMView * view);
+  shared_ptr<ITMLib::ITMTrackingState>  getTrackingState();
 
-  ITMLib::ITMTrackingState* getTrackingState();
-
-  ITMLib::ITMTrackingController* getTrackingController();
+  shared_ptr<ITMLib::ITMTrackingController> getTrackingController();
 
   void outputTrackingResults(std::string path);
 

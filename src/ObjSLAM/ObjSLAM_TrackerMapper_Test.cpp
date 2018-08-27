@@ -4,7 +4,7 @@
 #include <iostream>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderStateFactory.h>
 
-#include "DatasetReader_LPD_Dataset.h"
+#include "LPD_Dataset_Reader.h"
 #include "ObjectInstanceScene.h"
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
 #include "ObjSLAMMappingEngine.h"
@@ -51,14 +51,14 @@ int main(int argc, char **argv) {
 
 //  TeddyReader reader(path, imgSize);
 
-//  DatasetReader_LPD_Dataset reader(path, imgSize);
+//  LPD_Dataset_Reader reader(path, imgSize);
   DatasetReader* reader= nullptr;
   if(path.find("Teddy")!=std::string::npos){
     cout<<"Teddy\n";
     reader = new TeddyReader(path,imgSize);
   }else if(path.find("RealisticRenderingDataset")!=std::string::npos){
     cout<<"RealisticRenderingDataset\n";
-    reader = new DatasetReader_LPD_Dataset(path,imgSize);
+    reader = new LPD_Dataset_Reader(path,imgSize);
   }else{
     cout<<"Dataset not supported, programm will be terminated!\n";
     return 1;
@@ -68,9 +68,9 @@ int main(int argc, char **argv) {
   int imgNum = reader->readNext();
 
 
-  ITMLib::ITMView * wholeView = new ITMLib::ITMView(*reader->getCalib(),imgSize,imgSize,false);
-  wholeView->depth = reader->depth_img;
-  wholeView->rgb = reader->rgb_img;
+  shared_ptr<ITMLib::ITMView> wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
+  wholeView->depth->SetFrom(reader->depth_img,ORUtils::Image<float>::CPU_TO_CPU);
+  wholeView->rgb ->SetFrom(reader->rgb_img,ORUtils::Image<Vector4u>::CPU_TO_CPU);
 
   //create tracking engine
   auto * trackingEngine = new ObjSLAM::ObjSLAMTrackingEngine(internalSettings, reader->getCalib(), imgSize);
@@ -89,14 +89,14 @@ int main(int argc, char **argv) {
   auto objview = mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
 //  auto t_state = trackingEngine->TrackFrame(objview. ->getBackgroundView().get());
-  auto t_state = trackingEngine->TrackFrame(wholeView);
+  auto t_state = trackingEngine->TrackFrame(wholeView.get());
   mappingEngine->UpdateTrackingState(t_state);
 
   mappingEngine->ProcessFrame();
 
   mappingEngine->outputAllObjImages();
 
-  delete wholeView;
+
 
 
 
@@ -107,9 +107,9 @@ int main(int argc, char **argv) {
     start = std::clock();
     imgNum = reader->readNext();
 
-    wholeView = new ITMLib::ITMView(*reader->getCalib(),imgSize,imgSize,false);
-    wholeView->depth = reader->depth_img;
-    wholeView->rgb = reader->rgb_img;
+    wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
+    wholeView->depth->SetFrom(reader->depth_img,ORUtils::Image<float>::CPU_TO_CPU);
+    wholeView->rgb ->SetFrom(reader->rgb_img,ORUtils::Image<Vector4u>::CPU_TO_CPU);
 
 
     mappingEngine->UpdateImgNumber(imgNum);
@@ -118,14 +118,14 @@ int main(int argc, char **argv) {
     objview = mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
 
-    auto t_state = trackingEngine->TrackFrame(wholeView);
+    auto t_state = trackingEngine->TrackFrame(wholeView.get());
 
 //    mappingEngine->UpdateTrackingState(&reader->getPose()->getSE3Pose());
     mappingEngine->UpdateTrackingState(t_state);
 
     mappingEngine->ProcessFrame();
     mappingEngine->outputAllObjImages();
-    delete wholeView;
+
     time = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
     cout<<"Img "<<imgNum<< " Time "<<time<<endl;

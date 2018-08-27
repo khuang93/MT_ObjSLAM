@@ -15,7 +15,7 @@
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/CPU/ITMSceneReconstructionEngine_CPU.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMMath.h>
 
-#include "DatasetReader_LPD_Dataset.h"
+#include "LPD_Dataset_Reader.h"
 #include "ObjectInstanceScene.h"
 #include "ObjectView_New.h"
 
@@ -34,13 +34,13 @@ class ObjSLAMMappingEngine {
 //  ObjectView *view;
   shared_ptr<ObjectView_New<TVoxel, TIndex>> view_new;
   vector<shared_ptr<ObjectView_New<TVoxel, TIndex>>> view_new_vec;
-  ITMLib::ITMTrackingState *t_state = NULL;
+  shared_ptr< ITMLib::ITMTrackingState> t_state = NULL;
   ITMLib::ITMTrackingState *t_state_orig = NULL;
   ITMLib::ITMRenderState *r_state;
   ITMLib::ITMBasicEngine<TVoxel, TIndex> *itmBasicEngine;
   ITMLib::ITMSceneParams *params = new ITMLib::ITMSceneParams(0.5, 4, 0.1, 0.1, 4.0, false);
   ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
-  ITMLib::ITMTrackingController *t_controller;
+  shared_ptr<ITMLib::ITMTrackingController> t_controller;
   ITMLib::ITMTracker *tracker;
   ITMLib::ITMLowLevelEngine *lowEngine;
   Vector2i imgSize;
@@ -83,13 +83,13 @@ class ObjSLAMMappingEngine {
 
   void UpdateTrackingState(const ORUtils::SE3Pose *_pose);
 
-  void UpdateTrackingState(ITMLib::ITMTrackingState *_t_state);
+  void UpdateTrackingState(shared_ptr< ITMLib::ITMTrackingState>_t_state);
 
   void UpdateTrackingState_Orig(const ORUtils::SE3Pose *_pose);
 
   void UpdateViewPose();
 
-  void SetTrackingController(ITMLib::ITMTrackingController *_t_controller);
+  void SetTrackingController(shared_ptr<ITMLib::ITMTrackingController>  _t_controller);
 
   void UpdateImgNumber(int _imgNum) { imgNumber = _imgNum; };
 

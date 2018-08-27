@@ -174,9 +174,9 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tup<TVox
   std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
   auto obj_inst_ptr = std::get<0>(view_tuple);
 
-  denseMapper->ProcessFrame(itmView.get(), t_state, scene, r_state, true);
+  denseMapper->ProcessFrame(itmView.get(), t_state.get(), scene, r_state, true);
   cout<<"ProcessFrame\n";
-  denseMapper->UpdateVisibleList(itmView.get(), t_state, scene, r_state, true);
+  denseMapper->UpdateVisibleList(itmView.get(), t_state.get(), scene, r_state, true);
   cout<<"UpdateVisibleList\n";
 
 //  cout<<"test"<<scene->index.GetEntries()[100].pos<<endl;
@@ -232,7 +232,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
 
       } else {
         //needed for tracking
-        t_controller->Prepare(t_state,
+        t_controller->Prepare(t_state.get(),
                               scene.get(),
                               obj_inst_ptr.get()->getAnchorView_ITM().get(),
                               visualisationEngine,
@@ -439,7 +439,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(const ORUtils::SE
 }
 
 template<typename TVoxel, typename TIndex>
-void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(ITMLib::ITMTrackingState *_t_state) {
+void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(shared_ptr< ITMLib::ITMTrackingState> _t_state) {
   t_state = _t_state;
   this->UpdateViewPose();
 };
@@ -463,7 +463,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateViewPose() {
 };
 
 template<typename TVoxel, typename TIndex>
-void ObjSLAMMappingEngine<TVoxel, TIndex>::SetTrackingController(ITMLib::ITMTrackingController *_t_controller) {
+void ObjSLAMMappingEngine<TVoxel, TIndex>::SetTrackingController(shared_ptr<ITMLib::ITMTrackingController> _t_controller) {
   t_controller = _t_controller;
 };
 
