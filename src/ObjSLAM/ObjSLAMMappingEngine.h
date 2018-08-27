@@ -31,13 +31,13 @@ class ObjSLAMMappingEngine {
 
  private:
   int imgNumber;
-//  ObjectView *view;
+
   shared_ptr<ObjectView_New<TVoxel, TIndex>> view_new;
   vector<shared_ptr<ObjectView_New<TVoxel, TIndex>>> view_new_vec;
   shared_ptr< ITMLib::ITMTrackingState> t_state = NULL;
   ITMLib::ITMTrackingState *t_state_orig = NULL;
   ITMLib::ITMRenderState *r_state;
-  ITMLib::ITMBasicEngine<TVoxel, TIndex> *itmBasicEngine;
+
   ITMLib::ITMSceneParams *params = new ITMLib::ITMSceneParams(0.5, 4, 0.1, 0.1, 4.0, false);
   ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
   shared_ptr<ITMLib::ITMTrackingController> t_controller;

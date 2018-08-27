@@ -479,7 +479,6 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllLabelStats() {
 
 template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::deleteAll() {
-  delete this->itmBasicEngine;
   delete this->visualisationEngine;
   delete this->denseMapper;
   delete this->calib;
