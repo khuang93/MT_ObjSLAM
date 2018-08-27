@@ -54,7 +54,7 @@ class DatasetReader {
 		*/
   virtual int readNext()=0;
 
-  virtual ObjSLAM::ObjShortImage *ConvertToRealDepth(ObjSLAM::ObjFloatImage *depth)=0;
+//  virtual ObjSLAM::ObjShortImage *ConvertToRealDepth(ObjSLAM::ObjFloatImage *depth)=0;
 
   virtual bool readCalib()=0;
 
@@ -76,6 +76,6 @@ class DatasetReader {
   int getHeight();
   Vector2i getSize();
 
-  ~DatasetReader(){};
+  virtual ~DatasetReader(){};
 };
 #endif //MT_OBJSLAM_DATASETREADER_H

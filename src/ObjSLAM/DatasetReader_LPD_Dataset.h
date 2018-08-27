@@ -5,7 +5,6 @@
 #ifndef DATASETREADER_LPD_DATASET_H
 #define DATASETREADER_LPD_DATASET_H
 
-
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -17,6 +16,7 @@
 
 #include "../../External/InfiniTAM/InfiniTAM/ORUtils/FileUtils.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMRGBDCalib.h"
+#include "DatasetReader.h"
 #include <eigen3/Eigen/Geometry>
 #include <eigen3/Eigen/Dense>
 #include <boost/filesystem.hpp>
@@ -26,19 +26,19 @@ using namespace std;
 
 using LabelImgVector = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
 
-class DatasetReader_LPD_Dataset {
+class DatasetReader_LPD_Dataset : public DatasetReader {
  private:
-  int width, height;
-  Vector2i imgSize;
-  ITMLib::ITMRGBDCalib *calib;
+//  int width, height;
+//  Vector2i imgSize;
+//  ITMLib::ITMRGBDCalib *calib;
   ifstream pose_in;
   ObjSLAM::ObjCameraPose *pose_wc;
-  string path;
+//  string path;
  public:
-  ObjSLAM::ObjUChar4Image *rgb_img;
-  ObjSLAM::ObjFloatImage *depth_img;
-  std::shared_ptr<ObjSLAM::ObjUIntImage> label_img;
-  LabelImgVector label_img_vector;
+//  ObjSLAM::ObjUChar4Image *rgb_img;
+//  ObjSLAM::ObjFloatImage *depth_img;
+//  std::shared_ptr<ObjSLAM::ObjUIntImage> label_img;
+//  LabelImgVector label_img_vector;
 
 //  ObjSLAM::ObjUChar4Image *rgb_img_prev;
 //  ObjSLAM::ObjFloatImage *depth_img_prev;
@@ -50,25 +50,31 @@ class DatasetReader_LPD_Dataset {
   int img_number = 1;
 
  public:
-  DatasetReader_LPD_Dataset() {};
+//  DatasetReader_LPD_Dataset() {};
 
-  DatasetReader_LPD_Dataset(string _path, int w, int h) : path(_path), width(w), height(h) {
-    imgSize = Vector2i(w, h);
-    setCalib_LPD();
+//  DatasetReader_LPD_Dataset(string _path, int w, int h) : path(_path), width(w), height(h) {
+//    imgSize = Vector2i(w, h);
+//    setCalib_LPD();
+//  };
+
+  DatasetReader_LPD_Dataset(string _path, Vector2i _imgSize) : DatasetReader(_path,
+                                                                             _imgSize)/* path(_path), imgSize(_imgSize)*/ {
+//    width = imgSize.x;
+//    height = imgSize.y;
+    readCalib();
   };
 
-  DatasetReader_LPD_Dataset(string _path, Vector2i _imgSize) : path(_path), imgSize(_imgSize) {
-    width = imgSize.x;
-    height = imgSize.y;
-    setCalib_LPD();
-  };
+  //destructor
+  ~DatasetReader_LPD_Dataset() {
+    deleteVariables();
+  }
 
   int readNext() {
     cout << "img_number = " << img_number << endl;
 //    if (img_number > 1) {
 //      deleteVariables();
 //    }
-    if(label_img_vector.size()!=0){
+    if (label_img_vector.size() != 0) {
       label_img_vector.clear();
     }
 
@@ -95,7 +101,6 @@ class DatasetReader_LPD_Dataset {
       label_img_vector.push_back(ReadLabel_OneFile(path + "/pixel_label/cam0/" + filteredNames.at(i)));
     }
 
-
     if (!pose_in.is_open()) {
       pose_in.open(pose_path);
 //      cout << "ifstream open: " << pose_path << endl;
@@ -105,11 +110,11 @@ class DatasetReader_LPD_Dataset {
     ObjSLAM::ObjFloatImage *ray_depth_img = ReadOneDepth(depth_path);
 
     depth_img = convertRayDepthToZDepth(ray_depth_img);
+
     delete ray_depth_img;
 //    string name = to_string(img_number)+".ppm";
 //    SaveImageToFile(depth_img,name.c_str());
     rgb_img = ReadOneRGB(rgb_path);
-
 
     double time = img_number * 0.1;
 
@@ -136,61 +141,6 @@ class DatasetReader_LPD_Dataset {
 
 
     return img_number++;
-  }
-
-  std::vector<std::string> getFileNames(std::string directoryPath) {
-    namespace fs = boost::filesystem;
-    std::vector<std::string> names;
-
-    if (fs::exists(directoryPath)) {
-      fs::directory_iterator it(directoryPath);
-      fs::directory_iterator end;
-
-      while (it != end) {
-        names.push_back(it->path().filename().string());
-        ++it;
-      }
-    }
-
-    return names;
-  }
-
-  ObjSLAM::ObjFloatImage *ReadOneDepth(std::string Path) {
-    ifstream in;
-
-    in.open(Path);
-
-    vector<float> vector_in;
-
-    while (in.peek() != EOF) {
-      float tmp;
-      in >> tmp;
-      vector_in.push_back(tmp);
-    }
-
-    //TODO debug output
-//    cout << "**Input size is " << vector_in.size() << endl;
-
-//    ORUtils::Vector2<int> imgSize(width, height);
-    auto *res = new ObjSLAM::ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
-
-    res->ChangeDims(imgSize);
-
-
-//
-    for (int i = 0; i < height; i++) {
-//      cout<<"i"<<i<<endl;
-      for (int j = 0; j < width; j++) {
-//        res[height * i + j] = vector_in.at(height * i + j);
-
-        res->GetData(MEMORYDEVICE_CPU)[width * i + j] = vector_in.at(width * i + j); //in meters
-      }
-
-    }
-
-//    SaveImageToFile(res, "testD");
-    return res;
-
   }
 
   ObjSLAM::ObjFloatImage *convertRayDepthToZDepth(ObjSLAM::ObjFloatImage *in) {
@@ -221,25 +171,6 @@ class DatasetReader_LPD_Dataset {
     return res;
   }
 
-  ObjSLAM::ObjUChar4Image *ReadOneRGB(std::string Path) {
-
-    ifstream in;
-
-    in.open(Path);
-    //read rgb from png file
-
-
-
-    auto *res = new ObjSLAM::ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
-
-    res->ChangeDims(imgSize);
-
-    ReadImageFromFile(res, Path.c_str());
-
-//    SaveImageToFile(res, "testRGB");
-
-    return res;
-  }
 
   //Read Normal
 /*  ObjSLAM::ObjFloat4Image* ReadNormal(std::string Path) {
@@ -262,44 +193,7 @@ class DatasetReader_LPD_Dataset {
     return res;
   }*/
 
-  std::shared_ptr<ObjSLAM::ObjUIntImage> ReadLabel_OneFile(std::string Path) {
-    ifstream in;
 
-    in.open(Path);
-
-    vector<unsigned int> vector_in;
-
-    while (in.peek() != EOF) {
-      float tmp;
-      in >> tmp;
-      vector_in.push_back(tmp);
-    }
-
-    //TODO debug output
-//    cout << "**Input size of label is " << vector_in.size() << endl;
-
-    //set dimension
-//    ORUtils::Vector2<int> imgSize(width, height);
-
-    //create UintImage object
-//    auto *res = new ObjSLAM::ObjUIntImage(imgSize, MEMORYDEVICE_CPU);
-    std::shared_ptr<ObjSLAM::ObjUIntImage> res = std::make_shared<ObjSLAM::ObjUIntImage>(imgSize,MEMORYDEVICE_CPU);
-
-    res->ChangeDims(imgSize);
-
-
-//
-    for (int i = 0; i < width; i++) {
-//      cout<<"i"<<i<<endl;
-      for (int j = 0; j < height; j++) {
-//        res[height * i + j] = vector_in.at(height * i + j);
-
-        res->GetData(MEMORYDEVICE_CPU)[height * i + j] = vector_in.at(height * i + j);
-      }
-
-    }
-    return res;
-  }
 
   ObjSLAM::LPD_RAW_Pose *ReadLPDRawPose(ifstream &in, double t) {
 
@@ -386,6 +280,11 @@ class DatasetReader_LPD_Dataset {
     return disparity;
   }
 
+  bool readCalib() {
+    setCalib_LPD();
+    return true;
+  }
+
   void setCalib_LPD() {
     calib = new ITMLib::ITMRGBDCalib();
 
@@ -399,8 +298,8 @@ class DatasetReader_LPD_Dataset {
 
     //disparity calib a b physical meanings?
     calib->disparityCalib.SetFrom(/*1135.09*//*0.0002*/1.0,
-                                             0.0,
-                                             ITMLib::ITMDisparityCalib::TRAFO_AFFINE); //TODO get the values
+                                                       0.0,
+                                                       ITMLib::ITMDisparityCalib::TRAFO_AFFINE); //TODO get the values
 
 
   }

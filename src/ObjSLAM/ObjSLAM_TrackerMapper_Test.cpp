@@ -35,44 +35,58 @@ void ProcessOneFrame(){
 int main(int argc, char **argv) {
   //TODO Debug output
   cout << "**Hello SLAM World!" << endl;
-
+  cout<<ITMLib::ITMVoxelBlockHash::noTotalEntries<<endl;
 
 
   //Path of the depth image file
   string path = argv[1];
   Vector2i imgSize(640, 480);
 
+
+
+
+
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
   internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
 
-  TeddyReader reader(path, imgSize);
+//  TeddyReader reader(path, imgSize);
 
 //  DatasetReader_LPD_Dataset reader(path, imgSize);
+  DatasetReader* reader= nullptr;
+  if(path.find("Teddy")!=std::string::npos){
+    cout<<"Teddy\n";
+    reader = new TeddyReader(path,imgSize);
+  }else if(path.find("RealisticRenderingDataset")!=std::string::npos){
+    cout<<"RealisticRenderingDataset\n";
+    reader = new DatasetReader_LPD_Dataset(path,imgSize);
+  }else{
+    cout<<"Dataset not supported, programm will be terminated!\n";
+    return 1;
+  }
 
 
+  int imgNum = reader->readNext();
 
-  int imgNum = reader.readNext();
 
-
-  ITMLib::ITMView * wholeView = new ITMLib::ITMView(*reader.getCalib(),imgSize,imgSize,false);
-  wholeView->depth = reader.depth_img;
-  wholeView->rgb = reader.rgb_img;
+  ITMLib::ITMView * wholeView = new ITMLib::ITMView(*reader->getCalib(),imgSize,imgSize,false);
+  wholeView->depth = reader->depth_img;
+  wholeView->rgb = reader->rgb_img;
 
   //create tracking engine
-  auto * trackingEngine = new ObjSLAM::ObjSLAMTrackingEngine(internalSettings, reader.getCalib(), imgSize);
+  auto * trackingEngine = new ObjSLAM::ObjSLAMTrackingEngine(internalSettings, reader->getCalib(), imgSize);
 
   auto t_controller =trackingEngine->getTrackingController();
 
   //create mapping engine
   auto *mappingEngine =
-      new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader.getCalib(), imgSize);
-  
+      new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader->getCalib(), imgSize);
+
   mappingEngine->SetTrackingController(t_controller);
   
   
   
   mappingEngine->UpdateImgNumber(imgNum);
-  auto objview = mappingEngine->CreateView(reader.depth_img, reader.rgb_img, reader.label_img_vector);
+  auto objview = mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
 //  auto t_state = trackingEngine->TrackFrame(objview. ->getBackgroundView().get());
   auto t_state = trackingEngine->TrackFrame(wholeView);
@@ -91,22 +105,22 @@ int main(int argc, char **argv) {
     std::clock_t start;
     double time;
     start = std::clock();
-    imgNum = reader.readNext();
+    imgNum = reader->readNext();
 
-    wholeView = new ITMLib::ITMView(*reader.getCalib(),imgSize,imgSize,false);
-    wholeView->depth = reader.depth_img;
-    wholeView->rgb = reader.rgb_img;
+    wholeView = new ITMLib::ITMView(*reader->getCalib(),imgSize,imgSize,false);
+    wholeView->depth = reader->depth_img;
+    wholeView->rgb = reader->rgb_img;
 
 
     mappingEngine->UpdateImgNumber(imgNum);
-//  cout << reader.getPose()->getSE3Pose().GetM();
+//  cout << reader->getPose()->getSE3Pose().GetM();
 
-    objview = mappingEngine->CreateView(reader.depth_img, reader.rgb_img, reader.label_img_vector);
+    objview = mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
 
     auto t_state = trackingEngine->TrackFrame(wholeView);
 
-//    mappingEngine->UpdateTrackingState(&reader.getPose()->getSE3Pose());
+//    mappingEngine->UpdateTrackingState(&reader->getPose()->getSE3Pose());
     mappingEngine->UpdateTrackingState(t_state);
 
     mappingEngine->ProcessFrame();
@@ -118,6 +132,6 @@ int main(int argc, char **argv) {
   }
 
 
-
+  delete reader;
   return 0;
 }

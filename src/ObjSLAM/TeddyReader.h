@@ -23,6 +23,10 @@ class TeddyReader : public DatasetReader{
     cout<<"Created TeddyReader Path "<<path<<endl;
   }
 
+  ~TeddyReader(){
+      delete viewBuilder;
+  }
+
   int readNext();
 
   ObjSLAM::ObjShortImage *ConvertToRealDepth(ObjSLAM::ObjFloatImage *depth);

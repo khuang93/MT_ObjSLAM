@@ -106,7 +106,8 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
       int labelIndex = label_ptr->getLabelIndex();
       //TODO skid 76 to reduce memory
-      if (/*labelIndex != 1 && labelIndex != 63 && */labelIndex != 0&&labelIndex!=78/*&& labelIndex!=67*/&&labelIndex!=58) continue;
+//          if(labelIndex!=0) continue;
+//      if (/*labelIndex != 1 && labelIndex != 63 && */labelIndex != 0&&labelIndex!=78/*&& labelIndex!=67*/&&labelIndex!=58) continue;
 
       std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
       string
@@ -174,7 +175,11 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tup<TVox
   auto obj_inst_ptr = std::get<0>(view_tuple);
 
   denseMapper->ProcessFrame(itmView.get(), t_state, scene, r_state, true);
+  cout<<"ProcessFrame\n";
   denseMapper->UpdateVisibleList(itmView.get(), t_state, scene, r_state, true);
+  cout<<"UpdateVisibleList\n";
+
+//  cout<<"test"<<scene->index.GetEntries()[100].pos<<endl;
 
 }
 
@@ -196,14 +201,16 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
 
       auto scene = obj_inst_ptr.get()->getScene();
 
-      ObjUChar4Image *img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
+//      ObjUChar4Image *img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
+      auto img = std::make_shared<ObjUChar4Image>(imgSize,MEMORYDEVICE_CPU);
 
-      ITMLib::ITMTrackingState *tmp_t_state = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
+      //ITMLib::ITMTrackingState *tmp_t_state = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
+      auto tmp_t_state = std::make_shared<ITMLib::ITMTrackingState>(imgSize, MEMORYDEVICE_CPU);
       tmp_t_state->pose_d->SetFrom(t_state->pose_d);
 
       if (obj_inst_ptr.get()->getClassLabel().get()->getLabelIndex() != 0) {
 
-        t_controller->Prepare(tmp_t_state,
+        t_controller->Prepare(tmp_t_state.get(),
                               scene.get(),
                               obj_inst_ptr.get()->getAnchorView_ITM().get(),
                               visualisationEngine,
@@ -249,10 +256,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
       img->ChangeDims(r_state->raycastImage->noDims);
       img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
-      SaveImageToFile(img, name.c_str());
-
-
-
+      SaveImageToFile(img.get(), name.c_str());
     }
   }
 
@@ -312,6 +316,10 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsSameObject(obj_inst_ptr<TVoxel
   ORUtils::Vector6<float> cube1 =
       cam->projectImg2PointCloud(first, pcl1, obj_ptr_1.get()->getAnchorView().get()->getCameraPose().getSE3Pose());
   ORUtils::Vector6<float> cube2 = cam->projectImg2PointCloud(second, pcl2, *t_state->pose_d);
+
+  delete cam;
+  delete pcl1;
+  delete pcl2;
 
   return checkBoundingCubeOverlap(cube1, cube2);
 }

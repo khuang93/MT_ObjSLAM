@@ -25,7 +25,7 @@ ObjSLAM::ObjFloatImage *DatasetReader::ReadOneDepth(std::string Path) {
   ifstream in;
 
   in.open(Path);
-
+//  cout << this->path+Path << endl;
   vector<float> vector_in;
 
   while (in.peek() != EOF) {

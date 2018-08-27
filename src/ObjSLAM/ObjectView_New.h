@@ -41,8 +41,8 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
 
   std::shared_ptr<ObjUIntImage> segmentation_Mask;
   LabelImgVec label_img_vector;
-  const ObjUChar4Image *rgb_Image;
-  const ObjFloatImage *depth_Image;
+  /*const*/ ObjUChar4Image *rgb_Image;
+  /*const*/ ObjFloatImage *depth_Image;
   ObjFloat4Image *depth_normal;
 
   const ITMLib::ITMRGBDCalib &calibration;
@@ -81,10 +81,12 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
                  ObjUChar4Image *_rgb,
                  LabelImgVec _label_img_vector) :
       calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d), /*camera_Pose(pose),*/
-      depth_Image(_depth), rgb_Image(_rgb), label_img_vector(_label_img_vector) {
+      /*depth_Image(_depth), rgb_Image(_rgb),*/ label_img_vector(_label_img_vector) {
 
       camera_Pose = new ObjCameraPose(pose.getSE3Pose());
-    //TODO debug info
+      rgb_Image->SetFrom(_rgb,ORUtils::Image<Vector4u>::CPU_TO_CPU);
+      depth_Image->SetFrom(_depth,ORUtils::Image<float>::CPU_TO_CPU);
+      //TODO debug info
 //    std::cout<<"ObjectView complete created!\n";
 
   }
@@ -106,7 +108,6 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
   }
   //Destructor
   ~ObjectView_New() {
-//    delete camera_Pose;
     delete rgb_Image;
     delete depth_Image;
     delete camera_Pose;
