@@ -175,9 +175,9 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(Object_View_Tup<TVox
   auto obj_inst_ptr = std::get<0>(view_tuple);
 
   denseMapper->ProcessFrame(itmView.get(), t_state.get(), scene, r_state, true);
-  cout<<"ProcessFrame\n";
+//  cout<<"ProcessFrame\n";
   denseMapper->UpdateVisibleList(itmView.get(), t_state.get(), scene, r_state, true);
-  cout<<"UpdateVisibleList\n";
+//  cout<<"UpdateVisibleList\n";
 
 //  cout<<"test"<<scene->index.GetEntries()[100].pos<<endl;
 
@@ -223,12 +223,12 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
                                          r_state->raycastImage,
                                          ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                          ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
-        if(imgNumber>19){
+/*        if(imgNumber>19){
           string stlname =
                   "Label" + label_ptr.get()->getLabelClassName() + ".Object" + to_string(j) + ".Frame" + to_string(imgNumber)
                   + ".stl";
           SaveSceneToMesh(stlname.c_str(),scene);
-        }
+        }*/
 
       } else {
         //needed for tracking
@@ -256,7 +256,14 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
       img->ChangeDims(r_state->raycastImage->noDims);
       img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
+      cout<<name<<" SIZE hashEntries "<< (scene.get()->localVBA.GetAllocationList()[10])<<endl;
+//      cout<<name<<" SIZE excessAllocationList"<< sizeof(*scene.get()->index.GetExcessAllocationList())<<endl;
       SaveImageToFile(img.get(), name.c_str());
+
+/*      if(imgNumber>4){
+        denseMapper->ResetScene(scene.get());
+        cout<<"Reset "<<name<<endl;
+      }*/
     }
   }
 
