@@ -256,7 +256,17 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
       img->ChangeDims(r_state->raycastImage->noDims);
       img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
-      cout<<name<<" SIZE hashEntries "<< (scene.get()->localVBA.GetAllocationList()[10])<<endl;
+      if(obj_inst_ptr->getClassLabel()->getLabelIndex()==58){
+        cout<<58<<endl;
+        for (int i =0; i<SDF_LOCAL_BLOCK_NUM;i++){
+          short num = scene.get()->localVBA.GetVoxelBlocks()[i].sdf;
+//          if(num!=32767)
+            cout<<name<<" index "<<i<<" value "<< num<<endl;
+        }
+
+      }
+
+//         cout<<name<<" SIZE hashEntries "<< (scene.get()->localVBA.GetAllocationList()[i])<<endl;
 //      cout<<name<<" SIZE excessAllocationList"<< sizeof(*scene.get()->index.GetExcessAllocationList())<<endl;
       SaveImageToFile(img.get(), name.c_str());
 

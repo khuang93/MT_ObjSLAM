@@ -497,8 +497,8 @@ int32_t main (int32_t argc,char *argv[]) {
 
   // run evaluation
   bool success = eval(result_sha,mail);
-  if (argc==4) mail->finalize(success,"odometry",result_sha,argv[2]);
-  else         mail->finalize(success,"odometry",result_sha);
+//  if (argc==4) mail->finalize(success,"odometry",result_sha,argv[2]);
+//  else         mail->finalize(success,"odometry",result_sha);
 
   // send mail and exit
   delete mail;
