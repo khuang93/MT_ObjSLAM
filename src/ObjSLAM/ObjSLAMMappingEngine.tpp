@@ -106,7 +106,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
       int labelIndex = label_ptr->getLabelIndex();
       //TODO skid 76 to reduce memory
-//          if(labelIndex!=0) continue;
+//          if(labelIndex!=0 /*&& labelIndex!=58*/) continue;
 //      if (/*labelIndex != 1 && labelIndex != 63 && */labelIndex != 0&&labelIndex!=78/*&& labelIndex!=67*/&&labelIndex!=58) continue;
 
       std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
@@ -115,7 +115,8 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 //      SaveImageToFile(itmview.get()->depth, name.c_str());
 
 
-      auto obj_ptr_vec = label_ptr->getObjPtrVector();
+      auto obj_ptr_vec_val = label_ptr->getObjPtrVector();
+      auto obj_ptr_vec =&obj_ptr_vec_val;
 
 //      cout << *label_ptr.get() << endl << "obj_ptr_vec size before " << obj_ptr_vec->size() << endl;
 
@@ -191,11 +192,11 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
   for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
     std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr = label_ptr_vector.at(i);
     std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>>
-        obj_inst_vec = *(label_ptr.get()->getObjPtrVector());
+        obj_inst_vec = (label_ptr.get()->getObjPtrVector());
     cout << *label_ptr.get() << " : " << obj_inst_vec.size() << endl;
-#ifdef WITH_OPENMP
-#pragma omp parallel for
-#endif
+//#ifdef WITH_OPENMP
+//#pragma omp parallel for
+//#endif
     for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
       std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr = obj_inst_vec.at(j);
 
@@ -223,12 +224,12 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
                                          r_state->raycastImage,
                                          ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                          ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
-/*        if(imgNumber>19){
-          string stlname =
-                  "Label" + label_ptr.get()->getLabelClassName() + ".Object" + to_string(j) + ".Frame" + to_string(imgNumber)
-                  + ".stl";
-          SaveSceneToMesh(stlname.c_str(),scene);
-        }*/
+//        if(imgNumber>19){
+//          string stlname =
+//                  "Label" + label_ptr.get()->getLabelClassName() + ".Object" + to_string(j) + ".Frame" + to_string(imgNumber)
+//                  + ".stl";
+//          SaveSceneToMesh(stlname.c_str(),scene);
+//        }
 
       } else {
         //needed for tracking
@@ -256,15 +257,18 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
       img->ChangeDims(r_state->raycastImage->noDims);
       img->SetFrom(r_state->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
-      if(obj_inst_ptr->getClassLabel()->getLabelIndex()==58){
+   /*   if(obj_inst_ptr->getClassLabel()->getLabelIndex()==58){
         cout<<58<<endl;
         for (int i =0; i<SDF_LOCAL_BLOCK_NUM;i++){
           short num = scene.get()->localVBA.GetVoxelBlocks()[i].sdf;
-//          if(num!=32767)
+          int val =  (scene.get()->localVBA.GetAllocationList()[i]);
+          if(num!=32767||val!=i){
             cout<<name<<" index "<<i<<" value "<< num<<endl;
+            cout<<name<<"GetAllocationList i "<<i<<" val "<<val<<endl;
+          }
         }
 
-      }
+      }*/
 
 //         cout<<name<<" SIZE hashEntries "<< (scene.get()->localVBA.GetAllocationList()[i])<<endl;
 //      cout<<name<<" SIZE excessAllocationList"<< sizeof(*scene.get()->index.GetExcessAllocationList())<<endl;
@@ -276,6 +280,23 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
       }*/
     }
   }
+
+/*if(imgNumber%5==0){
+  for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
+    std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>>
+        obj_inst_vec = (label_ptr_vector.at(i)->getObjPtrVector());
+    for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
+      std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr = obj_inst_vec.at(j);
+
+      auto scene = obj_inst_ptr.get()->getScene();
+      string stlname = to_string(i)+ "." +to_string(j)+ ".stl";
+      SaveSceneToMesh(stlname.c_str(), scene);
+    }
+  }
+
+}*/
+
+
 
 };
 
@@ -489,7 +510,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllLabelStats() {
   for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
     std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr = label_ptr_vector.at(i);
     std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>>
-        obj_inst_vec = *(label_ptr.get()->getObjPtrVector());
+        obj_inst_vec = (label_ptr.get()->getObjPtrVector());
     cout << "Label " << *label_ptr.get()/*->getLabelClassName()*/<< " : " << obj_inst_vec.size() << endl;
   }
 };

@@ -22,8 +22,8 @@ void ObjectClassLabel_Group<TVoxel,TIndex>::addObjectInstance(std::shared_ptr<Ob
 }
 
 template<typename TVoxel, typename TIndex>
-std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>>* ObjectClassLabel_Group<TVoxel,TIndex>::getObjPtrVector(){
-  return &object_ptr_vector;
+std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>> ObjectClassLabel_Group<TVoxel,TIndex>::getObjPtrVector(){
+  return object_ptr_vector;
 }
 
 /*template<typename TVoxel, typename TIndex>

@@ -80,7 +80,7 @@ class LPD_Dataset_Reader : public DatasetReader {
 
     //TODO make the path using os path join instead of slash
     string depth_path = path + "/depth/cam0/" + to_string(img_number) + ".exr";
-    string rgb_path = path + "/rgb/cam0/" + to_string(img_number) + ".png";
+    string rgb_path = path + "/rgb/cam0/" + to_string(img_number) + ".ppm";
     string normal_path = path + "/normal/cam0/" + to_string(img_number) + ".png";
     string label_path = path + "/pixel_label/cam0/" + to_string(img_number) + ".txt";
     string pose_path = path + "/groundTruthPoseVel_imu.txt";

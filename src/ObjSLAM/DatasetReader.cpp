@@ -91,7 +91,7 @@ ObjSLAM::ObjUChar4Image *DatasetReader::ReadOneRGB(std::string Path){
 
   ReadImageFromFile(res, Path.c_str());
 
-//    SaveImageToFile(res, "testRGB");
+    SaveImageToFile(res, "testRGB");
 
   return res;
 }
