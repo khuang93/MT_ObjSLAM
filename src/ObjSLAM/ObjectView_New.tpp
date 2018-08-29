@@ -58,7 +58,8 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
   auto label_ptr_bg_new = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(0, std::to_string(0));
   shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> label_ptr_bg = addLabelToVector(label_ptr_vector,label_ptr_bg_new);
 
-  auto *cam = new ObjSLAMCamera(&calibration, imgSize_d);
+  auto *cam= new ObjSLAMCamera(&calibration, imgSize_d);
+
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for
@@ -73,24 +74,35 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
     for (int i = 0; i < (*it)->dataSize; ++i) {
       int y = i / imgSize_d.x;
       int x = i % imgSize_d.x;
-      Vector3f pix_rgb (x,y,1.0f);
+      //TODO build a look up list between rgb and d instead of calculate it each time
+      Vector4f pix_rgb ((float)x,(float)y,1.0f,1.0f);
+      Matrix4f K_rgb_inv;
+      cam->getK_rgb().inv(K_rgb_inv);
+      Vector4f pix_d = cam->getK_d()*calibration.trafo_rgb_to_depth.calib*K_rgb_inv*pix_rgb;
+//      cout<<"pix_d"<<pix_d<<endl;
+      int x_d = round(pix_d.x);
+      int y_d = round(pix_d.y);
+      int idx_d=0;
+      if(x_d>=0 && y_d>=0){
+        idx_d = y*imgSize_d.x+x;
+        //if the label is not empty
+        if((*it)->GetElement(i, MEMORYDEVICE_CPU)!=0){
+          //if label index == 0 it means it is the first labeled pixel, only one possible number beside the 0s in one label img
+          if(labelIndex==0) {labelIndex = (*it)->GetElement(i, MEMORYDEVICE_CPU);}
 
 
 
-      //if the label is not empty
-      if((*it)->GetElement(i, MEMORYDEVICE_CPU)!=0){
-        //if label index == 0 it means it is the first labeled pixel, only one possible number beside the 0s in one label img
-        if(labelIndex==0) {labelIndex = (*it)->GetElement(i, MEMORYDEVICE_CPU);}
+          //Set value of the each pixel in the segmented itm view
+          //TODO transform to depth pixel location using intrisics of rgb and d
 
-
-
-        //Set value of the each pixel in the segmented itm view
-        //TODO transform to depth pixel location using intrisics of rgb and d
-
-        single_obj_ITMView->depth->GetData(MEMORYDEVICE_CPU)[i]=this->depth_Image->GetData(MEMORYDEVICE_CPU)[i];
-        single_obj_ITMView->rgb->GetData(MEMORYDEVICE_CPU)[i]=this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
+          single_obj_ITMView->depth->GetData(MEMORYDEVICE_CPU)[idx_d]=this->depth_Image->GetData(MEMORYDEVICE_CPU)[i];
+          single_obj_ITMView->rgb->GetData(MEMORYDEVICE_CPU)[i]=this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
 //      cout<<(*it)->GetElement(i, MEMORYDEVICE_CPU)<<endl;
+        }
       }
+
+
+
     }
 
     //set all object instance map
