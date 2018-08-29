@@ -539,4 +539,14 @@ void ObjSLAMMappingEngine<TVoxel,TIndex>::SaveSceneToMesh(const char *objFileNam
   delete mesh;
 }
 
+template <typename TVoxel, typename TIndex>
+std::vector<obj_inst_ptr<TVoxel, TIndex>> ObjSLAMMappingEngine<TVoxel,TIndex>::getObjInstPtrVec(){
+  return this->obj_inst_ptr_vector;
+}
+
+template <typename TVoxel, typename TIndex>
+std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>>  ObjSLAMMappingEngine<TVoxel,TIndex>::getLabelPtrVec(){
+  return this->label_ptr_vector;
+}
+
 }

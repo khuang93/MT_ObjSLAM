@@ -1333,6 +1333,9 @@
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMTrackingEngine.h">
 			<Option target="TrackerMapper"/>
 		</Unit>
+		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAMVoxelBlockHash.h">
+			<Option target="TrackerMapper"/>
+		</Unit>
 		<Unit filename="/local/MT/MT_ObjSLAM/src/ObjSLAM/ObjSLAM_TrackerMapper_Test.cpp">
 			<Option target="TrackerMapper"/>
 		</Unit>

@@ -5,6 +5,7 @@
 #include "ObjectView_New.h"
 
 #include "ObjectInstance_New.h"
+#include "ObjSLAMCamera.h"
 
 namespace ObjSLAM{
 
@@ -57,6 +58,8 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
   auto label_ptr_bg_new = std::make_shared<ObjectClassLabel_Group<TVoxel,TIndex>>(0, std::to_string(0));
   shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>> label_ptr_bg = addLabelToVector(label_ptr_vector,label_ptr_bg_new);
 
+  auto *cam = new ObjSLAMCamera(&calibration, imgSize_d);
+
 #ifdef WITH_OPENMP
 #pragma omp parallel for
 #endif
@@ -68,10 +71,18 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
 
     //it over pixels
     for (int i = 0; i < (*it)->dataSize; ++i) {
+      int y = i / imgSize_d.x;
+      int x = i % imgSize_d.x;
+      Vector3f pix_rgb (x,y,1.0f);
+
+
+
       //if the label is not empty
       if((*it)->GetElement(i, MEMORYDEVICE_CPU)!=0){
         //if label index == 0 it means it is the first labeled pixel, only one possible number beside the 0s in one label img
         if(labelIndex==0) {labelIndex = (*it)->GetElement(i, MEMORYDEVICE_CPU);}
+
+
 
         //Set value of the each pixel in the segmented itm view
         //TODO transform to depth pixel location using intrisics of rgb and d
@@ -154,6 +165,7 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
 
   //  std::cout << "FINISHED" << std::endl;
 //  return label_ptr_vector;
+  delete cam;
 }
 
 

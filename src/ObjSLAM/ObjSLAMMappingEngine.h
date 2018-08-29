@@ -98,6 +98,9 @@ class ObjSLAMMappingEngine {
 
   void deleteAll();
 
+  std::vector<obj_inst_ptr<TVoxel, TIndex>> getObjInstPtrVec();
+  std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> getLabelPtrVec();
+
   void SaveSceneToMesh(const char *objFileName, std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> scene_ptr);
 
   ~ObjSLAMMappingEngine() {

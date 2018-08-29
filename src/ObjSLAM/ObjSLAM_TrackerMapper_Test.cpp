@@ -74,6 +74,8 @@ int main(int argc, char **argv) {
   }
 
 
+
+
   int imgNum = reader->readNext();
 
 
@@ -138,6 +140,10 @@ int main(int argc, char **argv) {
     time = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
     cout<<"Img "<<imgNum<< " Time "<<time<<endl;
+
+    if(imgNum%50==0){
+      mappingEngine->SaveSceneToMesh(("scene"+to_string(imgNum)+".stl").c_str(), mappingEngine->getLabelPtrVec().at(0)->getObjPtrVector().at(0)->getScene());
+    }
   }
 
 
