@@ -57,15 +57,12 @@ ObjSLAM::ObjShortImage *TeddyReader::ConvertToRealDepth(ObjSLAM::ObjFloatImage *
   return nullptr;
 }
 
+/*
 bool TeddyReader::readCalib(){
 
-  ifstream src;
-  src.open(calib_path);
-  cout<<"readCalib"<<endl;
-  calib = new ITMLib::ITMRGBDCalib();
-  ITMLib::readRGBDCalib(calib_path.c_str(), *calib);
 
-
+  readCalib(this->calib_path);
 
   return true;
 }
+*/

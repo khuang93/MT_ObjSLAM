@@ -11,6 +11,7 @@
 #include "ObjSLAMTrackingEngine.h"
 #include "ObjectView_New.h"
 #include "TeddyReader.h"
+#include "TUM_Reader.h"
 #include <memory>
 
 #include <g2o/core/base_vertex.h>
@@ -49,6 +50,9 @@ int main(int argc, char **argv) {
 
 
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
+  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.05f, 10, 0.01f, 0.2, 5.0, false);
+  //(0.1, 10, 0.025, 0.1, 4.0, false); //(0.02f, 100, 0.002f, 0.2f, 3.0f, false);  //(0.2, 4, 0.05, 0.1, 4.0, false);
+
   internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
 
 //  TeddyReader reader(path, imgSize);
@@ -61,6 +65,9 @@ int main(int argc, char **argv) {
   }else if(path.find("RealisticRenderingDataset")!=std::string::npos){
     cout<<"RealisticRenderingDataset\n";
     reader = new LPD_Dataset_Reader(path,imgSize);
+  }else if(path.find("rgbd")!=std::string::npos){
+    cout<<"TUM RGBD\n";
+    reader = new TUM_Reader(path,imgSize);
   }else{
     cout<<"Dataset not supported, programm will be terminated!\n";
     return 1;

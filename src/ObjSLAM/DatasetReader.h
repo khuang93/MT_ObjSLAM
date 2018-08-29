@@ -56,7 +56,7 @@ class DatasetReader {
 
 //  virtual ObjSLAM::ObjShortImage *ConvertToRealDepth(ObjSLAM::ObjFloatImage *depth)=0;
 
-  virtual bool readCalib()=0;
+//  virtual bool readCalib()=0;
 
   std::vector<std::string> getFileNames(std::string directoryPath);
 
@@ -76,6 +76,10 @@ class DatasetReader {
   int getHeight();
   Vector2i getSize();
 
-  virtual ~DatasetReader(){};
+  virtual bool readCalib(string calib_path);
+
+  virtual ~DatasetReader(){
+    delete viewBuilder;
+  }
 };
 #endif //MT_OBJSLAM_DATASETREADER_H

@@ -74,6 +74,8 @@ void ObjectView_New<TVoxel,TIndex>::setListOfObjects(std::vector<shared_ptr<Obje
         if(labelIndex==0) {labelIndex = (*it)->GetElement(i, MEMORYDEVICE_CPU);}
 
         //Set value of the each pixel in the segmented itm view
+        //TODO transform to depth pixel location using intrisics of rgb and d
+
         single_obj_ITMView->depth->GetData(MEMORYDEVICE_CPU)[i]=this->depth_Image->GetData(MEMORYDEVICE_CPU)[i];
         single_obj_ITMView->rgb->GetData(MEMORYDEVICE_CPU)[i]=this->rgb_Image->GetData(MEMORYDEVICE_CPU)[i];
 //      cout<<(*it)->GetElement(i, MEMORYDEVICE_CPU)<<endl;

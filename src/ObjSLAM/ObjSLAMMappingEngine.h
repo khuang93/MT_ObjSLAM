@@ -38,7 +38,6 @@ class ObjSLAMMappingEngine {
   ITMLib::ITMTrackingState *t_state_orig = NULL;
   ITMLib::ITMRenderState *r_state;
 
-  ITMLib::ITMSceneParams *params = new ITMLib::ITMSceneParams(0.2, 4, 0.05, 0.1, 4.0, false);
   ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
   shared_ptr<ITMLib::ITMTrackingController> t_controller;
   ITMLib::ITMTracker *tracker;

@@ -91,7 +91,7 @@ ObjSLAM::ObjUChar4Image *DatasetReader::ReadOneRGB(std::string Path){
 
   ReadImageFromFile(res, Path.c_str());
 
-    SaveImageToFile(res, "testRGB");
+//    SaveImageToFile(res, "testRGB");
 
   return res;
 }
@@ -154,4 +154,14 @@ int DatasetReader::getHeight() {
 }
 Vector2i DatasetReader::getSize() {
   return imgSize;
+}
+
+bool DatasetReader::readCalib(string calib_path) {
+  ifstream src;
+  src.open(calib_path);
+  cout<<"readCalib"<<endl;
+  calib = new ITMLib::ITMRGBDCalib();
+  ITMLib::readRGBDCalib(calib_path.c_str(), *calib);
+
+  return true;
 }
