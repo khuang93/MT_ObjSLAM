@@ -53,6 +53,8 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
   std::shared_ptr<ITMLib::ITMView> bg_itmview;
 
   std::vector<int> rgb_d_pixel_idx_vec; //index is index in rgb img and value is index in depth img
+  shared_ptr<ORUtils::Image<Vector2i>> d_to_rgb_correspondence; //stored the pixel location in rgb img at corresponding depth pixel location
+
 //  std::vector<ITMLib::ITMView*> ITMViewVector_each_Object;
 
 
@@ -95,7 +97,6 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
 
   }
 
-  //currently using this
   ObjectView_New(const ITMLib::ITMRGBDCalib &_calibration,
                  Vector2i _imgSize_rgb,
                  Vector2i _imgSize_d,
@@ -106,6 +107,23 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
                  vector<int> _rgb_d_pixel_idx_vec) :
       calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d),
       depth_Image(_depth), rgb_Image(_rgb), label_img_vector(_label_img_vector),rgb_d_pixel_idx_vec(_rgb_d_pixel_idx_vec) {
+
+
+    //TODO debug info
+//    std::cout<<"ObjectView complete created!\n";
+
+  }
+
+  //currently using this
+  ObjectView_New(const ITMLib::ITMRGBDCalib &_calibration,
+                 Vector2i _imgSize_rgb,
+                 Vector2i _imgSize_d,
+                 bool useGPU,
+                 ObjFloatImage *_depth,
+                 ObjUChar4Image *_rgb,
+                 LabelImgVec _label_img_vector) :
+      calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d),
+      depth_Image(_depth), rgb_Image(_rgb), label_img_vector(_label_img_vector) {
 
 
     //TODO debug info

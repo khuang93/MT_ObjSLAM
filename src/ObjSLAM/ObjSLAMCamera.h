@@ -66,6 +66,8 @@ class ObjSLAMCamera {
 
   ORUtils::Vector6<float> projectImg2PointCloud(ObjFloatImage* in, ORUtils::Image<Vector4f> * PCL,  ObjCameraPose pose);
 
+  shared_ptr<ORUtils::Image<Vector2i>> projectDepthPixelToRGB(ObjSLAM::ObjFloatImage *in);
+
   //getters
   const  ITMLib::ITMRGBDCalib * GetCalib(){ return calib;}
   Vector2i GetImgSize(){return imgSize;}

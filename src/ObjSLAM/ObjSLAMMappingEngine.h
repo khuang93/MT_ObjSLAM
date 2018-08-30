@@ -34,7 +34,7 @@ class ObjSLAMMappingEngine {
 
   shared_ptr<ObjectView_New<TVoxel, TIndex>> view_new;
   vector<shared_ptr<ObjectView_New<TVoxel, TIndex>>> view_new_vec;
-  shared_ptr< ITMLib::ITMTrackingState> t_state = NULL;
+  shared_ptr<ITMLib::ITMTrackingState> t_state = NULL;
   ITMLib::ITMTrackingState *t_state_orig = NULL;
   ITMLib::ITMRenderState *r_state;
 
@@ -88,13 +88,13 @@ class ObjSLAMMappingEngine {
 
   void UpdateTrackingState(const ORUtils::SE3Pose *_pose);
 
-  void UpdateTrackingState(shared_ptr< ITMLib::ITMTrackingState>_t_state);
+  void UpdateTrackingState(shared_ptr<ITMLib::ITMTrackingState> _t_state);
 
   void UpdateTrackingState_Orig(const ORUtils::SE3Pose *_pose);
 
   void UpdateViewPose();
 
-  void SetTrackingController(shared_ptr<ITMLib::ITMTrackingController>  _t_controller);
+  void SetTrackingController(shared_ptr<ITMLib::ITMTrackingController> _t_controller);
 
   void UpdateImgNumber(int _imgNum) { imgNumber = _imgNum; };
 
@@ -116,13 +116,6 @@ class ObjSLAMMappingEngine {
 //
 //  void CreateObjectScenes();
 //
-//  void ProcessFrame();
-
-
-
-//  void
-
-
 
 };
 }

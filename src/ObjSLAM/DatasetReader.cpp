@@ -25,7 +25,6 @@ ObjSLAM::ObjFloatImage *DatasetReader::ReadOneDepth(std::string Path) {
   ifstream in;
 
   in.open(Path);
-//  cout << this->path+Path << endl;
   vector<float> vector_in;
 
   while (in.peek() != EOF) {
@@ -81,6 +80,7 @@ ObjSLAM::ObjUChar4Image *DatasetReader::ReadOneRGB(std::string Path){
   ifstream in;
 
   in.open(Path);
+//  cout << Path << endl;
   //read rgb from png file
 
 
