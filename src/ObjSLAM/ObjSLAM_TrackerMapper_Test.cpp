@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 
 
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
-  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.05f, 10, 0.01f, 0.2, 5.0, false);
+  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.04f, 10, 0.002f, 0.2, 5.0, false);
   //(0.1, 10, 0.025, 0.1, 4.0, false); //(0.02f, 100, 0.002f, 0.2f, 3.0f, false);  //(0.2, 4, 0.05, 0.1, 4.0, false);
 
   internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
       new ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>(internalSettings, reader->getCalib(), imgSize);
 
   mappingEngine->SetTrackingController(t_controller);
-  
+
   
   
   mappingEngine->UpdateImgNumber(imgNum);
@@ -101,6 +101,7 @@ int main(int argc, char **argv) {
 
 //  auto t_state = trackingEngine->TrackFrame(objview. ->getBackgroundView().get());
   auto t_state = trackingEngine->TrackFrame(wholeView.get());
+
   mappingEngine->UpdateTrackingState(t_state);
 
   mappingEngine->ProcessFrame();
@@ -141,9 +142,9 @@ int main(int argc, char **argv) {
 
     cout<<"Img "<<imgNum<< " Time "<<time<<endl;
 
-    if(imgNum%50==0){
-      mappingEngine->SaveSceneToMesh(("scene"+to_string(imgNum)+".stl").c_str(), mappingEngine->getLabelPtrVec().at(0)->getObjPtrVector().at(0)->getScene());
-    }
+//    if(imgNum%5==0){
+//      mappingEngine->SaveSceneToMesh(("scene"+to_string(imgNum)+".stl").c_str(), mappingEngine->getLabelPtrVec().at(0)->getObjPtrVector().at(0)->getScene());
+//    }
   }
 
 

@@ -52,6 +52,8 @@ class ObjSLAMMappingEngine {
   ITMLib::ITMDenseMapper<TVoxel, TIndex> *denseMapper;
   std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> label_ptr_vector;
 
+  std::vector<int> rgb_d_pixel_idx_vec; //index is index in rgb img and value is index in depth img
+
  public:
   //Constructor with LPD Dataset
   ObjSLAMMappingEngine(ITMLib::ITMLibSettings *_settings, string path, Vector2i _imgSize);
@@ -65,6 +67,10 @@ class ObjSLAMMappingEngine {
                                                         LabelImgVector _label_img_vector);
 
   void ProcessFrame();
+
+  void init_rgb_d_pair_idx();
+
+  std::vector<int> get_rgb_d_pair_idx();
 
   void ProcessOneObject(Object_View_Tup<TVoxel, TIndex> &view_tuple, ObjectInstanceScene<TVoxel, TIndex> *scene);
 

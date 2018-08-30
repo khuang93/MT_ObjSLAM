@@ -36,7 +36,6 @@ ObjSLAMTrackingEngine::~ObjSLAMTrackingEngine(){
 }
 
 shared_ptr<ITMLib::ITMTrackingState> ObjSLAMTrackingEngine::TrackFrame(ITMLib::ITMView *view) {
-
   this->t_controller.get()->Track(t_state.get(), view);
   std::cout << t_state->pose_d->GetM();
   outputTrackingResults("trackingResults.txt");
