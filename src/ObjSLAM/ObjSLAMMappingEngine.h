@@ -78,6 +78,8 @@ class ObjSLAMMappingEngine {
 
   bool checkIsSameObject(obj_inst_ptr<TVoxel, TIndex> obj_ptr_1, obj_inst_ptr<TVoxel, TIndex> obj_ptr_2);
 
+  bool checkIsSameObject2D(obj_inst_ptr<TVoxel, TIndex> obj_ptr_1, obj_inst_ptr<TVoxel, TIndex> obj_ptr_2);
+
   bool checkBoundingCubeOverlap(ORUtils::Vector6<float> first, ORUtils::Vector6<float> second);
 
   double calculateCubeVolume(ORUtils::Vector6<float> corners);
