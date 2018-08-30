@@ -268,19 +268,19 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
     }
   }
 
-//  if (imgNumber % 5 == 0) {
-//    for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
-//      std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>>
-//          obj_inst_vec = (label_ptr_vector.at(i)->getObjPtrVector());
-//      for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
-//        std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr = obj_inst_vec.at(j);
-//
-//        auto scene = obj_inst_ptr.get()->getScene();
-//        string stlname = to_string(label_ptr_vector.at(i)->getLabelIndex()) + "." + to_string(j) + ".stl";
-//        SaveSceneToMesh(stlname.c_str(), scene);
-//      }
-//    }
-//  }
+  if (imgNumber % 10 == 0) {
+    for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
+      std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>>
+          obj_inst_vec = (label_ptr_vector.at(i)->getObjPtrVector());
+      for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
+        std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr = obj_inst_vec.at(j);
+
+        auto scene = obj_inst_ptr.get()->getScene();
+        string stlname = to_string(label_ptr_vector.at(i)->getLabelIndex()) + "." + to_string(j) + ".stl";
+        SaveSceneToMesh(stlname.c_str(), scene);
+      }
+    }
+  }
 
 };
 
