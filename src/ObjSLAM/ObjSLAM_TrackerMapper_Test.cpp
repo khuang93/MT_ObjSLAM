@@ -27,8 +27,9 @@
 
 #include <ctime>
 
-using namespace std;
+#include <src/ObjSLAM/ObjSLAMVoxelSceneParams.h>
 
+using namespace std;
 
 
 void ProcessOneFrame(){
@@ -50,7 +51,7 @@ int main(int argc, char **argv) {
 
 
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
-  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.04f, 10, 0.01f, 0.2, 5.0, false);
+  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.04f, 10, 0.004f, 0.2, 5.0, false);
   //(0.1, 10, 0.025, 0.1, 4.0, false); //(0.02f, 100, 0.002f, 0.2f, 3.0f, false);  //(0.2, 4, 0.05, 0.1, 4.0, false);
 
   internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
@@ -118,11 +119,12 @@ int main(int argc, char **argv) {
     double time;
     start = std::clock();
     imgNum = reader->readNext();
-
+    cout<<sceneIsBackground<<endl;
     wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
     wholeView->depth->SetFrom(reader->depth_img,ORUtils::Image<float>::CPU_TO_CPU);
     wholeView->rgb ->SetFrom(reader->rgb_img,ORUtils::Image<Vector4u>::CPU_TO_CPU);
 
+    cout<<sceneIsBackground<<endl;
 
     mappingEngine->UpdateImgNumber(imgNum);
 //  cout << reader->getPose()->getSE3Pose().GetM();

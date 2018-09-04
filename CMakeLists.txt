@@ -47,7 +47,8 @@ include_directories($(HEADER_DIR)
 
 
 
-add_subdirectory(External/InfiniTAM/InfiniTAM)
+add_subdirectory(External/InfiniTAM/InfiniTAM EXCLUDE_FROM_ALL TRUE)
+#include_directories(External/InfiniTAM/InfiniTAM)
 INCLUDE(External/InfiniTAM/InfiniTAM/cmake/UseCUDA.cmake)
 
 #add_subdirectory(External/g2o/g2o)
@@ -87,7 +88,10 @@ set(TrackerMapper_Sources
         src/ObjSLAM/ObjectInstance_New.tpp src/ObjSLAM/ObjectInstance_New.h
         src/ObjSLAM/ObjectClassLabel_Group.tpp src/ObjSLAM/ObjectClassLabel_Group.h
         src/ObjSLAM/ObjectView_New.tpp src/ObjSLAM/ObjectView_New.h
-        src/ObjSLAM/ObjSLAMTrackingEngine.cpp src/ObjSLAM/ObjSLAMTrackingEngine.h src/ObjSLAM/DatasetReader.h src/ObjSLAM/DatasetReader.cpp src/ObjSLAM/TeddyReader.cpp src/ObjSLAM/TeddyReader.h src/ObjSLAM/TUM_Reader.cpp src/ObjSLAM/TUM_Reader.h src/ObjSLAM/ObjSLAMVoxelBlockHash.h)
+        src/ObjSLAM/ObjSLAMTrackingEngine.cpp src/ObjSLAM/ObjSLAMTrackingEngine.h
+        src/ObjSLAM/DatasetReader.h src/ObjSLAM/DatasetReader.cpp src/ObjSLAM/TeddyReader.cpp
+        src/ObjSLAM/TeddyReader.h src/ObjSLAM/TUM_Reader.cpp src/ObjSLAM/TUM_Reader.h
+        src/ObjSLAM/ObjSLAMVoxelBlockHash.h src/ObjSLAM/ObjSLAMVoxelSceneParams.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)

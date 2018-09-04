@@ -37,6 +37,7 @@ class ObjSLAMMappingEngine {
   shared_ptr<ITMLib::ITMTrackingState> t_state = NULL;
   ITMLib::ITMTrackingState *t_state_orig = NULL;
   ITMLib::ITMRenderState *r_state;
+  ITMLib::ITMRenderState *r_state_BG;
 
   ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
   shared_ptr<ITMLib::ITMTrackingController> t_controller;
@@ -72,7 +73,7 @@ class ObjSLAMMappingEngine {
 
   std::vector<int> get_rgb_d_pair_idx();
 
-  void ProcessOneObject(Object_View_Tup<TVoxel, TIndex> &view_tuple, ObjectInstanceScene<TVoxel, TIndex> *scene);
+  void ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview, ObjectInstanceScene<TVoxel, TIndex> *scene, std::shared_ptr<ObjectInstance_New<TVoxel,TIndex>> obj_inst_ptr);
 
   bool checkIsNewObject(obj_inst_ptr<TVoxel, TIndex> obj_ptr);
 
