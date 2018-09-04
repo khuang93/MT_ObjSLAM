@@ -24,7 +24,7 @@ namespace ObjSLAM {
 //using ObjectInstancePair = std::pair<ObjectInstance, ObjectInstanceScene_old>;
 //using ObjectInstanceVector = vector<ObjectInstancePair>;
 template<typename TVoxel, typename TIndex>
-using obj_inst_ptr = std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>;
+using ObjectInstance_New_ptr = std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>;
 
 template<typename TVoxel, typename TIndex>
 class ObjSLAMMappingEngine {
@@ -45,7 +45,7 @@ class ObjSLAMMappingEngine {
   ITMLib::ITMLowLevelEngine *lowEngine;
   Vector2i imgSize;
   std::vector<ObjectInstanceScene<TVoxel, TIndex> *> object_instance_scene_vector;
-  std::vector<obj_inst_ptr<TVoxel, TIndex>> obj_inst_ptr_vector;
+  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> obj_inst_ptr_vector;
   const ITMLib::ITMLibSettings *settings;
   const ITMLib::ITMRGBDCalib *calib;
 //  std::vector<ObjectInstanceScene_old> listOfObjectScenes;
@@ -75,11 +75,11 @@ class ObjSLAMMappingEngine {
 
   void ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview, ObjectInstanceScene<TVoxel, TIndex> *scene, std::shared_ptr<ObjectInstance_New<TVoxel,TIndex>> obj_inst_ptr);
 
-  bool checkIsNewObject(obj_inst_ptr<TVoxel, TIndex> obj_ptr);
+  bool checkIsNewObject(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr);
 
-  bool checkIsSameObject(obj_inst_ptr<TVoxel, TIndex> obj_ptr_1, obj_inst_ptr<TVoxel, TIndex> obj_ptr_2);
+  bool checkIsSameObject(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_1, ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2);
 
-  bool checkIsSameObject2D(obj_inst_ptr<TVoxel, TIndex> obj_ptr_1, obj_inst_ptr<TVoxel, TIndex> obj_ptr_2);
+  bool checkIsSameObject2D(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_1, ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2);
 
   bool checkBoundingCubeOverlap(ORUtils::Vector6<float> first, ORUtils::Vector6<float> second);
 
@@ -107,7 +107,7 @@ class ObjSLAMMappingEngine {
 
   void deleteAll();
 
-  std::vector<obj_inst_ptr<TVoxel, TIndex>> getObjInstPtrVec();
+  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> getObjInstPtrVec();
   std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> getLabelPtrVec();
 
   void SaveSceneToMesh(const char *objFileName, std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> scene_ptr);

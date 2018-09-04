@@ -147,7 +147,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 #endif
 
         for (size_t i = 0; i < obj_ptr_vec->size(); ++i) {
-          std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> existing_obj_ptr = obj_ptr_vec->at(i);
+          ObjectInstance_New_ptr<TVoxel, TIndex> existing_obj_ptr = obj_ptr_vec->at(i);
 
           if (obj_inst_ptr->getClassLabel()->getLabelIndex() == 0) {
             newObject = false;
@@ -195,25 +195,20 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 //new method
 template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview,
-                                                            ObjectInstanceScene<TVoxel, TIndex> *scene, std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr) {
+                                                            ObjectInstanceScene<TVoxel, TIndex> *scene, ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr) {
 
 //  std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 //  auto obj_inst_ptr = std::get<0>(view_tuple);
 
-if(obj_inst_ptr.get()->getClassLabel().get()->getLabelIndex() != 0){
-denseMapper->ProcessFrame(itmview.get(), t_state.get(), scene, r_state, true);
-//  cout<<"ProcessFrame\n";
-denseMapper->UpdateVisibleList(itmview.get(), t_state.get(), scene, r_state, true);
-}else{
-denseMapper->ProcessFrame(itmview.get(), t_state.get(), scene, r_state_BG, true);
-//  cout<<"ProcessFrame\n";
-denseMapper->UpdateVisibleList(itmview.get(), t_state.get(), scene, r_state_BG, true);
-}
+  if(obj_inst_ptr.get()->getClassLabel().get()->getLabelIndex() != 0){
+    denseMapper->ProcessFrame(itmview.get(), t_state.get(), scene, r_state, true);
 
+    denseMapper->UpdateVisibleList(itmview.get(), t_state.get(), scene, r_state, true);
+  }else{
+    denseMapper->ProcessFrame(itmview.get(), t_state.get(), scene, r_state_BG, true);
 
-//  cout<<"UpdateVisibleList\n";
-
-//  cout<<"test"<<scene->index.GetEntries()[100].pos<<endl;
+    denseMapper->UpdateVisibleList(itmview.get(), t_state.get(), scene, r_state_BG, true);
+  }
 
 }
 
@@ -224,14 +219,14 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
 #endif
   for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
     std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr = label_ptr_vector.at(i);
-    std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>>
+    std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>>
         obj_inst_vec = (label_ptr.get()->getObjPtrVector());
     cout << *label_ptr.get() << " : " << obj_inst_vec.size() << endl;
 //#ifdef WITH_OPENMP
 //#pragma omp parallel for
 //#endif
     for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
-      std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr = obj_inst_vec.at(j);
+      ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_vec.at(j);
 
       auto scene = obj_inst_ptr->getScene();
 
@@ -296,10 +291,10 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
 
   if (imgNumber % 10 == 0) {
     for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
-      std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>>
+      std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>>
           obj_inst_vec = (label_ptr_vector.at(i)->getObjPtrVector());
       for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
-        std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr = obj_inst_vec.at(j);
+        ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_vec.at(j);
 
         auto scene = obj_inst_ptr.get()->getScene();
         string stlname = to_string(label_ptr_vector.at(i)->getLabelIndex()) + "." + to_string(j) + ".stl";
@@ -317,7 +312,7 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsNewObject(std::shared_ptr<Obje
   auto new_obj_anchor = obj_ptr.get()->getAnchorView();
 
   auto *cam = new ObjSLAMCamera(this->calib, this->imgSize);
-  std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> existing_obj_ptr;
+  ObjectInstance_New_ptr<TVoxel, TIndex> existing_obj_ptr;
   for (auto it = obj_inst_ptr_vector.begin(); it != obj_inst_ptr_vector.end(); ++it) {
     existing_obj_ptr = *it;
 
@@ -326,7 +321,7 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsNewObject(std::shared_ptr<Obje
 
 //check if same obj by 2d overlap
 template<typename TVoxel, typename TIndex>
-bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsSameObject2D(obj_inst_ptr<TVoxel,TIndex> obj_ptr_1, obj_inst_ptr<TVoxel,TIndex> obj_ptr_2){
+bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsSameObject2D(ObjectInstance_New_ptr<TVoxel,TIndex> obj_ptr_1, ObjectInstance_New_ptr<TVoxel,TIndex> obj_ptr_2){
 //  cout<<"checkIsSameObject2D\n";
   bool isSame = false;
   ObjSLAM::ObjFloatImage* first = obj_ptr_1.get()->getAnchorView_ITM().get()->depth;
@@ -409,8 +404,8 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkImageOverlap(ObjSLAM::ObjFloatIm
 
 //check if same obj by 3d overlap
 template<typename TVoxel, typename TIndex>
-bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsSameObject(obj_inst_ptr<TVoxel, TIndex> obj_ptr_1,
-                                                             obj_inst_ptr<TVoxel, TIndex> obj_ptr_2) {
+bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsSameObject(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_1,
+                                                             ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2) {
 
   ObjSLAM::ObjFloatImage *first = obj_ptr_1.get()->getAnchorView_ITM().get()->depth;
   ObjSLAM::ObjFloatImage *second = obj_ptr_2.get()->getAnchorView_ITM().get()->depth;
@@ -537,7 +532,7 @@ template<typename TVoxel, typename TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllLabelStats() {
   for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
     std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr = label_ptr_vector.at(i);
-    std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>>
+    std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>>
         obj_inst_vec = (label_ptr.get()->getObjPtrVector());
     cout << "Label " << *label_ptr.get()/*->getLabelClassName()*/<< " : " << obj_inst_vec.size() << endl;
   }
@@ -570,7 +565,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::SaveSceneToMesh(const char *objFileNa
 };
 
 template<typename TVoxel, typename TIndex>
-std::vector<obj_inst_ptr<TVoxel, TIndex>> ObjSLAMMappingEngine<TVoxel, TIndex>::getObjInstPtrVec() {
+std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> ObjSLAMMappingEngine<TVoxel, TIndex>::getObjInstPtrVec() {
   return this->obj_inst_ptr_vector;
 };
 
