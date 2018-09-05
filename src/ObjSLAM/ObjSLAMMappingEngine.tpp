@@ -247,7 +247,8 @@ namespace ObjSLAM {
             obj_inst_vec = (label_ptr_vector.at(i)->getObjPtrVector());
         for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
           ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_vec.at(j);
-
+          if(obj_inst_ptr->getClassLabel()->getLabelIndex()==0) sceneIsBackground=true;
+          else sceneIsBackground=false;
           auto scene = obj_inst_ptr.get()->getScene();
           string stlname = to_string(label_ptr_vector.at(i)->getLabelIndex()) + "." + to_string(j) + ".stl";
           SaveSceneToMesh(stlname.c_str(), scene);
@@ -287,7 +288,7 @@ namespace ObjSLAM {
                                                                ObjSLAM::ObjFloatImage *second) {
 //  cout<<"checkImageOverlap\n";
     //parameter to set which % of the pixels must match
-    double threshold_areaChange = 0.5;
+    double threshold_areaChange = 0.05;
     double threshold_overlap = 0.7;
 
     int x1_min = imgSize.x - 1;
