@@ -53,9 +53,10 @@ class ObjSLAMMappingEngine {
   ITMLib::ITMRenderState *r_state_BG;
 
   ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
+  ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine_BG;
   shared_ptr<ITMLib::ITMTrackingController> t_controller;
   ITMLib::ITMTracker *tracker;
-  ITMLib::ITMLowLevelEngine *lowEngine;
+//  ITMLib::ITMLowLevelEngine *lowEngine;
   Vector2i imgSize;
   std::vector<ObjectInstanceScene<TVoxel, TIndex> *> object_instance_scene_vector;
   std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> obj_inst_ptr_vector;
@@ -80,15 +81,19 @@ class ObjSLAMMappingEngine {
     r_state =
         ITMLib::ITMRenderStateFactory<TIndex>::CreateRenderState(imgSize, &(settings->sceneParams),
                                                                  MEMORYDEVICE_CPU);
+
+    visualisationEngine =
+        ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(settings->deviceType);
+
     sceneIsBackground = true;
     r_state_BG =
         ITMLib::ITMRenderStateFactory<TIndex>::CreateRenderState(imgSize, &(settings->sceneParams),
                                                                  MEMORYDEVICE_CPU);
 
-    visualisationEngine =
+    visualisationEngine_BG =
         ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(settings->deviceType);
     //TODO Temp
-    lowEngine = ITMLib::ITMLowLevelEngineFactory::MakeLowLevelEngine(settings->deviceType);
+//    lowEngine = ITMLib::ITMLowLevelEngineFactory::MakeLowLevelEngine(settings->deviceType);
   }
 
   void CreateView(ObjFloatImage *_depth,

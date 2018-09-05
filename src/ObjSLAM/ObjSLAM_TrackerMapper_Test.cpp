@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
   shared_ptr<ITMLib::ITMView> wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
   wholeView->depth->SetFrom(reader->depth_img,ORUtils::Image<float>::CPU_TO_CPU);
   wholeView->rgb ->SetFrom(reader->rgb_img,ORUtils::Image<Vector4u>::CPU_TO_CPU);
-
+  SaveImageToFile(wholeView->depth,"TEST");
   //create tracking engine
   auto * trackingEngine = new ObjSLAM::ObjSLAMTrackingEngine(internalSettings, reader->getCalib(), imgSize);
 
@@ -124,6 +124,8 @@ int main(int argc, char **argv) {
     wholeView->depth->SetFrom(reader->depth_img,ORUtils::Image<float>::CPU_TO_CPU);
     wholeView->rgb ->SetFrom(reader->rgb_img,ORUtils::Image<Vector4u>::CPU_TO_CPU);
 
+
+
     cout<<sceneIsBackground<<endl;
 
     mappingEngine->UpdateImgNumber(imgNum);
@@ -144,9 +146,6 @@ int main(int argc, char **argv) {
 
     cout<<"Img "<<imgNum<< " Time "<<time<<endl;
 
-//    if(imgNum%5==0){
-//      mappingEngine->SaveSceneToMesh(("scene"+to_string(imgNum)+".stl").c_str(), mappingEngine->getLabelPtrVec().at(0)->getObjPtrVector().at(0)->getScene());
-//    }
   }
 
 

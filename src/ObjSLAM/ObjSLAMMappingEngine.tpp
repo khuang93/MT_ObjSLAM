@@ -56,7 +56,10 @@ namespace ObjSLAM {
 
         int labelIndex = label_ptr->getLabelIndex();
 
+        //set the flag of background or not
         sceneIsBackground = labelIndex == 0 ? true : false;
+
+
         //TODO skid 76 to reduce memory
 //          if(labelIndex!=0 && labelIndex!=58) continue;
 //      if (/*labelIndex != 1 && labelIndex != 63 && */labelIndex != 0&&labelIndex!=78/*&& labelIndex!=67*/&&labelIndex!=58) continue;
@@ -86,10 +89,10 @@ namespace ObjSLAM {
 
             if (obj_inst_ptr->getClassLabel()->getLabelIndex() == 0) {
               newObject = false;
-//            sceneIsBackground=true;
+
 
             } else {
-//            sceneIsBackground=false;
+
               newObject = !this->checkIsSameObject2D(existing_obj_ptr, obj_inst_ptr);
             }
             if (!newObject) {
@@ -135,15 +138,31 @@ namespace ObjSLAM {
 
 //  std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 //  auto obj_inst_ptr = std::get<0>(view_tuple);
+    auto tmp_t_state = std::make_shared<ITMLib::ITMTrackingState>(imgSize, MEMORYDEVICE_CPU);
+    tmp_t_state->pose_d->SetFrom(t_state->pose_d);
 
     if (obj_inst_ptr.get()->getClassLabel().get()->getLabelIndex() != 0) {
-      denseMapper->ProcessFrame(itmview.get(), t_state.get(), scene, r_state, true);
+      sceneIsBackground =false;
+      denseMapper->ProcessFrame(itmview.get(), tmp_t_state.get(), scene, r_state, true);
 
-      denseMapper->UpdateVisibleList(itmview.get(), t_state.get(), scene, r_state, true);
+      denseMapper->UpdateVisibleList(itmview.get(), tmp_t_state.get(), scene, r_state, true);
+
+      t_controller->Prepare(tmp_t_state.get(),
+                            scene,
+                            obj_inst_ptr.get()->getAnchorView_ITM(),
+                            visualisationEngine,
+                            r_state);
     } else {
+      sceneIsBackground =true;
       denseMapper->ProcessFrame(itmview.get(), t_state.get(), scene, r_state_BG, true);
 
       denseMapper->UpdateVisibleList(itmview.get(), t_state.get(), scene, r_state_BG, true);
+
+      t_controller->Prepare(t_state.get(),
+                            scene,
+                            obj_inst_ptr.get()->getAnchorView_ITM(),
+                            visualisationEngine_BG,
+                            r_state_BG);
     }
 
   }
@@ -169,17 +188,17 @@ namespace ObjSLAM {
 //      ObjUChar4Image *img = new ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
         auto img = std::make_shared<ObjUChar4Image>(imgSize, MEMORYDEVICE_CPU);
 
-        //ITMLib::ITMTrackingState *tmp_t_state = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
-        auto tmp_t_state = std::make_shared<ITMLib::ITMTrackingState>(imgSize, MEMORYDEVICE_CPU);
-        tmp_t_state->pose_d->SetFrom(t_state->pose_d);
+
+//        auto tmp_t_state = std::make_shared<ITMLib::ITMTrackingState>(imgSize, MEMORYDEVICE_CPU);
+//        tmp_t_state->pose_d->SetFrom(t_state->pose_d);
 
         if (obj_inst_ptr.get()->getClassLabel().get()->getLabelIndex() != 0) {
           sceneIsBackground = false;
-          t_controller->Prepare(tmp_t_state.get(),
-                                scene.get(),
-                                obj_inst_ptr.get()->getAnchorView_ITM().get(),
-                                visualisationEngine,
-                                r_state);
+//          t_controller->Prepare(tmp_t_state.get(),
+//                                scene.get(),
+//                                obj_inst_ptr.get()->getAnchorView_ITM().get(),
+//                                visualisationEngine,
+//                                r_state);
 
           visualisationEngine->RenderImage(scene.get(),
                                            t_state->pose_d,
@@ -194,13 +213,13 @@ namespace ObjSLAM {
         } else {
           sceneIsBackground = true;
           //needed for tracking
-          t_controller->Prepare(t_state.get(),
-                                scene.get(),
-                                obj_inst_ptr.get()->getAnchorView_ITM().get(),
-                                visualisationEngine,
-                                r_state_BG);
+//          t_controller->Prepare(t_state.get(),
+//                                scene.get(),
+//                                obj_inst_ptr.get()->getAnchorView_ITM().get(),
+//                                visualisationEngine_BG,
+//                                r_state_BG);
 
-          visualisationEngine->RenderImage(scene.get(),
+          visualisationEngine_BG->RenderImage(scene.get(),
                                            t_state->pose_d,
                                            &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
                                            r_state_BG,
@@ -245,8 +264,8 @@ namespace ObjSLAM {
                                                                  ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2) {
 //  cout<<"checkIsSameObject2D\n";
     bool isSame = false;
-    ObjSLAM::ObjFloatImage *first = obj_ptr_1.get()->getAnchorView_ITM().get()->depth;
-    ObjSLAM::ObjFloatImage *second = obj_ptr_2.get()->getAnchorView_ITM().get()->depth;
+    ObjSLAM::ObjFloatImage *first = obj_ptr_1.get()->getAnchorView_ITM()->depth;
+    ObjSLAM::ObjFloatImage *second = obj_ptr_2.get()->getAnchorView_ITM()->depth;
 
     auto *cam = new ObjSLAMCamera(this->calib, this->imgSize);
 
@@ -326,8 +345,8 @@ namespace ObjSLAM {
   bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsSameObject(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_1,
                                                                ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2) {
 
-    ObjSLAM::ObjFloatImage *first = obj_ptr_1.get()->getAnchorView_ITM().get()->depth;
-    ObjSLAM::ObjFloatImage *second = obj_ptr_2.get()->getAnchorView_ITM().get()->depth;
+    ObjSLAM::ObjFloatImage *first = obj_ptr_1.get()->getAnchorView_ITM()->depth;
+    ObjSLAM::ObjFloatImage *second = obj_ptr_2.get()->getAnchorView_ITM()->depth;
 
     auto *cam = new ObjSLAMCamera(this->calib, this->imgSize);
 

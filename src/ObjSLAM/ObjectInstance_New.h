@@ -37,7 +37,7 @@ template<class TVoxel, class TIndex>
   void setAnchorView_ITM(std::shared_ptr<ITMLib::ITMView> _anchor_view){anchor_view_itm = _anchor_view;}
 
   std::shared_ptr<ObjectView_New<TVoxel, TIndex>> getAnchorView(){return anchor_view;}
-  std::shared_ptr<ITMLib::ITMView> getAnchorView_ITM(){return anchor_view_itm;}
+  ITMLib::ITMView* getAnchorView_ITM(){return anchor_view_itm.get();}
 
   std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> getScene(){ return this->scene;}
 
