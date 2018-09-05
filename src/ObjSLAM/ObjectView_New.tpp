@@ -65,7 +65,7 @@ void ObjectView_New<TVoxel, TIndex>::setListOfObjects(
 #ifdef WITH_OPENMP
 #pragma omp parallel for
 #endif
-  for (LabelImgVec::iterator it = label_img_vector.begin(); it != label_img_vector.end(); ++it) {
+  for (LabelImgVector::iterator it = label_img_vector.begin(); it != label_img_vector.end(); ++it) {
 
     int labelIndex = 0;
 
@@ -140,7 +140,7 @@ void ObjectView_New<TVoxel, TIndex>::setListOfObjects(
 
 //      obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(obj_map.size()+1, object_view_tuple));
 
-      obj_vec.push_back(object_view_tuple);
+      this->obj_view_tup_vec.push_back(object_view_tuple);
     }
   }
 
@@ -170,7 +170,7 @@ void ObjectView_New<TVoxel, TIndex>::setListOfObjects(
     if (idx_rgb != -1) {
 
       bool is_background = true;
-      for (LabelImgVec::iterator it = label_img_vector.begin(); it != label_img_vector.end(); it++) {
+      for (LabelImgVector::iterator it = label_img_vector.begin(); it != label_img_vector.end(); it++) {
 
         if ((*it)->GetElement(idx_rgb, MEMORYDEVICE_CPU) != 0) {
           is_background = false;
@@ -191,7 +191,7 @@ void ObjectView_New<TVoxel, TIndex>::setListOfObjects(
 
   Object_View_Tup<TVoxel, TIndex> object_view_tuple(new_obj_instance, bg_itmview);
 //  obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(0, object_view_tuple));
-  obj_vec.push_back(object_view_tuple);
+  this->obj_view_tup_vec.push_back(object_view_tuple);
 
 //  SaveImageToFile(single_obj_ITMView_bg->depth,"test.ppm");
 //  cout<<"size"<<this->obj_map.size()<<endl;
@@ -217,7 +217,7 @@ void ObjectView_New<TVoxel, TIndex>::setListOfViews() {
 
 template<typename TVoxel, typename TIndex>
 std::vector<Object_View_Tup<TVoxel, TIndex>> ObjectView_New<TVoxel, TIndex>::getObjVec() {
-  return obj_vec;
+  return this->obj_view_tup_vec;
 }
 
 template<typename TVoxel, typename TIndex>

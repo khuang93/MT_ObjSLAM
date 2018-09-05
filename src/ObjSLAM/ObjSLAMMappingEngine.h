@@ -9,24 +9,37 @@
 #include <vector>
 
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/Tracking/ITMTrackingState.h>
+
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderState.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMBasicEngine.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Reconstruction/CPU/ITMSceneReconstructionEngine_CPU.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMMath.h>
+#include <External/InfiniTAM/InfiniTAM/ORUtils/FileUtils.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Visualisation/ITMVisualisationEngineFactory.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/LowLevel/ITMLowLevelEngineFactory.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Trackers/ITMTrackerFactory.h>
+#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderStateFactory.h"
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMLibSettings.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Trackers/ITMTrackerFactory.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMTrackingController.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/Meshing/ITMMesh.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Meshing/ITMMeshingEngineFactory.h>
 
-#include "LPD_Dataset_Reader.h"
+
+#include "DatasetReader.h"
 #include "ObjectInstanceScene.h"
 #include "ObjectView_New.h"
+#include "ObjSLAMCamera.h"
+#include "ObjSLAMDataTypes.h"
+
+
+
 
 namespace ObjSLAM {
-//using ObjectInstanceSceneVector = std::vector<ObjectInstanceScene*>;
-//using ObjectInstancePair = std::pair<ObjectInstance, ObjectInstanceScene_old>;
-//using ObjectInstanceVector = vector<ObjectInstancePair>;
-template<typename TVoxel, typename TIndex>
-using ObjectInstance_New_ptr = std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>;
 
-template<typename TVoxel, typename TIndex>
+
+template<class TVoxel, class TIndex>
 class ObjSLAMMappingEngine {
 
  private:
@@ -48,38 +61,53 @@ class ObjSLAMMappingEngine {
   std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> obj_inst_ptr_vector;
   const ITMLib::ITMLibSettings *settings;
   const ITMLib::ITMRGBDCalib *calib;
-//  std::vector<ObjectInstanceScene_old> listOfObjectScenes;
+
 
   ITMLib::ITMDenseMapper<TVoxel, TIndex> *denseMapper;
   std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> label_ptr_vector;
 
-  std::vector<int> rgb_d_pixel_idx_vec; //index is index in rgb img and value is index in depth img
+  void deleteAll();
 
  public:
   //Constructor with LPD Dataset
-  ObjSLAMMappingEngine(ITMLib::ITMLibSettings *_settings, string path, Vector2i _imgSize);
-
   ObjSLAMMappingEngine(const ITMLib::ITMLibSettings *_settings,
                        const ITMLib::ITMRGBDCalib *_calib,
-                       const Vector2i _imgSize);
+                       const Vector2i _imgSize) : settings(_settings), calib(_calib), imgSize(_imgSize) {
 
-  shared_ptr<ObjectView_New<TVoxel, TIndex>> CreateView(ObjFloatImage *_depth,
+    denseMapper = new ITMLib::ITMDenseMapper<TVoxel, TIndex>(settings);
+
+    sceneIsBackground = false;
+    r_state =
+        ITMLib::ITMRenderStateFactory<TIndex>::CreateRenderState(imgSize, &(settings->sceneParams),
+                                                                 MEMORYDEVICE_CPU);
+    sceneIsBackground = true;
+    r_state_BG =
+        ITMLib::ITMRenderStateFactory<TIndex>::CreateRenderState(imgSize, &(settings->sceneParams),
+                                                                 MEMORYDEVICE_CPU);
+
+    visualisationEngine =
+        ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(settings->deviceType);
+    //TODO Temp
+    lowEngine = ITMLib::ITMLowLevelEngineFactory::MakeLowLevelEngine(settings->deviceType);
+  }
+
+  void CreateView(ObjFloatImage *_depth,
                                                         ObjUChar4Image *_rgb,
                                                         LabelImgVector _label_img_vector);
 
   void ProcessFrame();
 
-  void init_rgb_d_pair_idx();
-
-  std::vector<int> get_rgb_d_pair_idx();
-
-  void ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview, ObjectInstanceScene<TVoxel, TIndex> *scene, std::shared_ptr<ObjectInstance_New<TVoxel,TIndex>> obj_inst_ptr);
+  void ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview,
+                        ObjectInstanceScene<TVoxel, TIndex> *scene,
+                        std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr);
 
   bool checkIsNewObject(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr);
 
-  bool checkIsSameObject(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_1, ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2);
+  bool checkIsSameObject(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_1,
+                         ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2);
 
-  bool checkIsSameObject2D(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_1, ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2);
+  bool checkIsSameObject2D(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_1,
+                           ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2);
 
   bool checkBoundingCubeOverlap(ORUtils::Vector6<float> first, ORUtils::Vector6<float> second);
 
@@ -105,20 +133,15 @@ class ObjSLAMMappingEngine {
 
   void outputAllObjImages();
 
-  void deleteAll();
 
-  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> getObjInstPtrVec();
-  std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> getLabelPtrVec();
 
-  void SaveSceneToMesh(const char *objFileName, std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> scene_ptr);
+  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> getObjInstPtrVec(){return this->obj_inst_ptr_vector;}
+  std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> getLabelPtrVec(){   return this->label_ptr_vector;}
 
-  ~ObjSLAMMappingEngine() {
-    deleteAll();
-  }
-//  void GetNextFrame();
-//
-//  void CreateObjectScenes();
-//
+  void SaveSceneToMesh(const char *objFileName, std::shared_ptr<ITMLib::ITMScene<TVoxel, TIndex>> scene_ptr);
+
+  ~ObjSLAMMappingEngine() {    deleteAll();  }
+
 
 };
 }

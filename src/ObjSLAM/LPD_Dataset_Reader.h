@@ -22,9 +22,10 @@
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
+
 using namespace std;
 
-using LabelImgVector = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
+//using LabelImgVector = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
 
 class LPD_Dataset_Reader : public DatasetReader {
  private:

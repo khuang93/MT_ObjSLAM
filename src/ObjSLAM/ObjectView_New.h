@@ -1,7 +1,7 @@
 //
 // Created by khuang on 8/1/18.
 //
-
+#pragma once
 #ifndef MT_OBJSLAM_OBJECTVIEW_NEW_H
 #define MT_OBJSLAM_OBJECTVIEW_NEW_H
 
@@ -32,7 +32,6 @@ template<typename TVoxel, typename TIndex>
 using Object_View_Tup = std::tuple<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>,
                                    std::shared_ptr<ITMLib::ITMView>>;
 
-using LabelImgVec = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
 
 template<typename TVoxel, typename TIndex>
 class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIndex>> {
@@ -40,7 +39,7 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
   ObjCameraPose* camera_Pose;
 
   std::shared_ptr<ObjUIntImage> segmentation_Mask;
-  LabelImgVec label_img_vector;
+  LabelImgVector label_img_vector;
   /*const*/ ObjUChar4Image *rgb_Image;
   /*const*/ ObjFloatImage *depth_Image;
   ObjFloat4Image *depth_normal;
@@ -49,7 +48,7 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
   Vector2i imgSize_rgb;
   Vector2i imgSize_d;
 
-  std::vector<Object_View_Tup<TVoxel, TIndex>> obj_vec;
+  std::vector<Object_View_Tup<TVoxel, TIndex>> obj_view_tup_vec;
   std::shared_ptr<ITMLib::ITMView> bg_itmview;
 
   std::vector<int> rgb_d_pixel_idx_vec; //index is index in rgb img and value is index in depth img
@@ -84,7 +83,7 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
                  ObjCameraPose pose,
                  ObjFloatImage *_depth,
                  ObjUChar4Image *_rgb,
-                 LabelImgVec _label_img_vector,
+                 LabelImgVector _label_img_vector,
                  vector<int> _rgb_d_pixel_idx_vec) :
       calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d), /*camera_Pose(pose),*/
       /*depth_Image(_depth), rgb_Image(_rgb),*/ label_img_vector(_label_img_vector),rgb_d_pixel_idx_vec(_rgb_d_pixel_idx_vec) {
@@ -103,7 +102,7 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
                  bool useGPU,
                  ObjFloatImage *_depth,
                  ObjUChar4Image *_rgb,
-                 LabelImgVec _label_img_vector,
+                 LabelImgVector _label_img_vector,
                  vector<int> _rgb_d_pixel_idx_vec) :
       calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d),
       depth_Image(_depth), rgb_Image(_rgb), label_img_vector(_label_img_vector),rgb_d_pixel_idx_vec(_rgb_d_pixel_idx_vec) {
@@ -121,7 +120,7 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
                  bool useGPU,
                  ObjFloatImage *_depth,
                  ObjUChar4Image *_rgb,
-                 LabelImgVec _label_img_vector) :
+                 LabelImgVector _label_img_vector) :
       calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d),
       depth_Image(_depth), rgb_Image(_rgb), label_img_vector(_label_img_vector) {
 

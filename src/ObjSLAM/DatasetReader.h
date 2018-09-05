@@ -23,10 +23,9 @@
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/ViewBuilding/Interface/ITMViewBuilder.h>
+#include <src/ObjSLAM/ObjSLAMDataTypes.h>
 
 using namespace std;
-
-using LabelImgVector = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
 
 /** \brief
 	    Basic interface to read any kind of data sets.

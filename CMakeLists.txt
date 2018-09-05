@@ -12,23 +12,6 @@ set (SOURCE_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 
 
-
-
-#set (INFINITAM_DIR "External/InfiniTAM/InfiniTAM")
-
-
-#from Apps/InfiniTAM/CMakeLists.txt
-#INCLUDE(${INFINITAM_DIR}/cmake/UseCUDA.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseFFmpeg.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseGLUT.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseLibRoyale.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseOpenGL.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseOpenMP.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseOpenNI.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UsePNG.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense2.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseUVC.cmake)
 find_package( Boost REQUIRED)
 find_package( OpenMP REQUIRED)
 if(OPENMP_FOUND)
@@ -48,7 +31,6 @@ include_directories($(HEADER_DIR)
 
 
 add_subdirectory(External/InfiniTAM/InfiniTAM EXCLUDE_FROM_ALL TRUE)
-#include_directories(External/InfiniTAM/InfiniTAM)
 INCLUDE(External/InfiniTAM/InfiniTAM/cmake/UseCUDA.cmake)
 
 #add_subdirectory(External/g2o/g2o)

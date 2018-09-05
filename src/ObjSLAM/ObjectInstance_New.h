@@ -1,7 +1,7 @@
 //
 // Created by khuang on 8/1/18.
 //
-
+#pragma once
 #ifndef MT_OBJSLAM_OBJECTINSTANCE_NEW_H
 #define MT_OBJSLAM_OBJECTINSTANCE_NEW_H
 #include <memory>
@@ -10,11 +10,11 @@
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Views/ITMView.h"
 
 namespace ObjSLAM {
-template<typename TVoxel, typename TIndex>
+template<class TVoxel, class TIndex>
 class ObjectView_New;
 
-template<typename TVoxel, typename TIndex>
-class ObjectInstance_New : public enable_shared_from_this<ObjectInstance_New<TVoxel, TIndex>> {
+template<class TVoxel, class TIndex>
+ class ObjectInstance_New : public std::enable_shared_from_this<ObjectInstance_New<TVoxel, TIndex>> {
 
  private:
   std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label;
@@ -29,19 +29,19 @@ class ObjectInstance_New : public enable_shared_from_this<ObjectInstance_New<TVo
 
   void addObjectInstanceToLabel();
 
-  void setScene(std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> _scene);
+  void setScene(std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> _scene){scene = _scene;}
 
-  void setAnchorView(std::shared_ptr<ObjectView_New<TVoxel, TIndex>> _anchor_view);
-  void setAnchorView(ObjectView_New<TVoxel, TIndex> *_anchor_view);
+  void setAnchorView(std::shared_ptr<ObjectView_New<TVoxel, TIndex>> _anchor_view){anchor_view = _anchor_view;}
+  void setAnchorView(ObjectView_New<TVoxel, TIndex> *_anchor_view){anchor_view = std::shared_ptr<ObjectView_New < TVoxel, TIndex>>(_anchor_view);}
 
-  void setAnchorView_ITM(std::shared_ptr<ITMLib::ITMView> _anchor_view);
+  void setAnchorView_ITM(std::shared_ptr<ITMLib::ITMView> _anchor_view){anchor_view_itm = _anchor_view;}
 
-  std::shared_ptr<ObjectView_New<TVoxel, TIndex>> getAnchorView();
-  std::shared_ptr<ITMLib::ITMView> getAnchorView_ITM();
+  std::shared_ptr<ObjectView_New<TVoxel, TIndex>> getAnchorView(){return anchor_view;}
+  std::shared_ptr<ITMLib::ITMView> getAnchorView_ITM(){return anchor_view_itm;}
 
-  std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> getScene();
+  std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> getScene(){ return this->scene;}
 
-  std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> getClassLabel();
+  std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> getClassLabel(){  return label;}
 
 };
 

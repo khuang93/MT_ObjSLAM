@@ -12,8 +12,6 @@ namespace ObjSLAM{
 template<typename TVoxel, typename TIndex>
 class ObjectInstance_New;
 
-//template<typename TVoxel, typename TIndex>
-//using shared_ptr_ObjectInstance_New = std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>;
 
 template<typename TVoxel, typename TIndex>
 class ObjectClassLabel_Group {
@@ -23,17 +21,15 @@ class ObjectClassLabel_Group {
   std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>> object_ptr_vector;
 
   public:
-  ObjectClassLabel_Group(int _index, std::string _labelClassName):LabelIndex(_index), LabelClassName(_labelClassName){
-//    std::cout << "ObjectClassLabel "<< LabelClassName << " created! \n";
-  }
+  ObjectClassLabel_Group(int _index, std::string _labelClassName):LabelIndex(_index), LabelClassName(_labelClassName){}
 
-  int getLabelIndex();
+  int getLabelIndex(){  return LabelIndex;}
 
-  std::string getLabelClassName();
+  std::string getLabelClassName(){  return LabelClassName;}
 
-  void addObjectInstance(std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> object_ptr);
+  void addObjectInstance(std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> object_ptr){this->object_ptr_vector.push_back(object_ptr);}
 
-  std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>> getObjPtrVector();
+  std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>> getObjPtrVector(){return object_ptr_vector;}
 
 
   friend std::ostream& operator<< (std::ostream& stream, ObjectClassLabel_Group<TVoxel, TIndex>& label){

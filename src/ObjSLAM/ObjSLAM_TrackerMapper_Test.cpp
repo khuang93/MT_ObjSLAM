@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
   
   
   mappingEngine->UpdateImgNumber(imgNum);
-  auto objview = mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
+  mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
 //  auto t_state = trackingEngine->TrackFrame(objview. ->getBackgroundView().get());
   auto t_state = trackingEngine->TrackFrame(wholeView.get());
@@ -129,7 +129,7 @@ int main(int argc, char **argv) {
     mappingEngine->UpdateImgNumber(imgNum);
 //  cout << reader->getPose()->getSE3Pose().GetM();
 
-    objview = mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
+    mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
 
     auto t_state = trackingEngine->TrackFrame(wholeView.get());
