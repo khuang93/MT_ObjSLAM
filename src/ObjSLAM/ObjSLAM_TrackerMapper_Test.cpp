@@ -129,7 +129,7 @@ int main(int argc, char **argv) {
     cout<<sceneIsBackground<<endl;
 
     mappingEngine->UpdateImgNumber(imgNum);
-//  cout << reader->getPose()->getSE3Pose().GetM();
+
 
     mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 

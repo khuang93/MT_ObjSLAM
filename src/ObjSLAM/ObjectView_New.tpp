@@ -54,7 +54,7 @@ template<typename TVoxel, typename TIndex>
 void ObjectView_New<TVoxel, TIndex>::setListOfObjects(
     std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector) {
 
-  cout << "Setting Obj List...\n";
+  cout << "Setting Obj List...";
 //  std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>> label_ptr_vector;
   auto label_ptr_bg_new = std::make_shared<ObjectClassLabel_Group<TVoxel, TIndex>>(0, std::to_string(0));
   shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr_bg = addLabelToVector(label_ptr_vector,
@@ -199,6 +199,8 @@ void ObjectView_New<TVoxel, TIndex>::setListOfObjects(
   //  std::cout << "FINISHED" << std::endl;
 //  return label_ptr_vector;
 //  delete cam;
+
+  cout << "Finished! \n";
 }
 
 template<typename TVoxel, typename TIndex>
