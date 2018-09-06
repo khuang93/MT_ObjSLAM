@@ -20,7 +20,8 @@ $ cmake .. -DWITH_FFMPEG=false -DWITH_CUDA=false -DWITH_OPENMP=false -DWITH_PNG=
 $ make
 ```
 
-Download the dataset which are already prepared with the segmentation: https://polybox.ethz.ch/index.php/s/lElQPbrMxiuBT4s
+Download the dataset which are already prepared with the segmentation: https://polybox.ethz.ch/index.php/s/lElQPbrMxiuBT4s .
+
 Run the project:
 ```
 $ ./TrackerMapper [Path_To_Dataset]  [Frame_Number]
