@@ -39,7 +39,7 @@ void ProcessOneFrame(){
 int main(int argc, char **argv) {
   //TODO Debug output
   cout << "**Hello SLAM World!" << endl;
-  cout<<ITMLib::ITMVoxelBlockHash::noTotalEntries<<endl;
+//  cout<<ITMLib::ITMVoxelBlockHash::noTotalEntries<<endl;
 
 
   //Path of the depth image file
@@ -85,6 +85,7 @@ int main(int argc, char **argv) {
   wholeView->rgb ->SetFrom(reader->rgb_img,ORUtils::Image<Vector4u>::CPU_TO_CPU);
   SaveImageToFile(wholeView->depth,"TEST");
   //create tracking engine
+  sceneIsBackground = true;
   auto * trackingEngine = new ObjSLAM::ObjSLAMTrackingEngine(internalSettings, reader->getCalib(), imgSize);
 
   auto t_controller =trackingEngine->getTrackingController();
@@ -101,6 +102,7 @@ int main(int argc, char **argv) {
   mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
 //  auto t_state = trackingEngine->TrackFrame(objview. ->getBackgroundView().get());
+  cout<<sceneIsBackground<<endl;
   auto t_state = trackingEngine->TrackFrame(wholeView.get());
 
   mappingEngine->UpdateTrackingState(t_state);
@@ -119,20 +121,21 @@ int main(int argc, char **argv) {
     double time;
     start = std::clock();
     imgNum = reader->readNext();
-    cout<<sceneIsBackground<<endl;
+
+    sceneIsBackground = true;
     wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
+
     wholeView->depth->SetFrom(reader->depth_img,ORUtils::Image<float>::CPU_TO_CPU);
     wholeView->rgb ->SetFrom(reader->rgb_img,ORUtils::Image<Vector4u>::CPU_TO_CPU);
 
-
-
-    cout<<sceneIsBackground<<endl;
 
     mappingEngine->UpdateImgNumber(imgNum);
 
 
     mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
+
+    cout<<sceneIsBackground<<endl;
 
     auto t_state = trackingEngine->TrackFrame(wholeView.get());
 

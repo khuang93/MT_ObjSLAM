@@ -73,18 +73,18 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
 
       //TODO skid 76 to reduce memory
-//          if(labelIndex!=0 && labelIndex!=58) continue;
+//          if(labelIndex!=0 && labelIndex!=78) continue;
 //      if (/*labelIndex != 1 && labelIndex != 63 && */labelIndex != 0&&labelIndex!=78/*&& labelIndex!=67*/&&labelIndex!=58) continue;
 
       std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
-      string
-          name =
-          "Input_Frame" + to_string(imgNumber) + ".Label." + to_string(labelIndex) + "." + to_string(t) +
-              ".ppm";
+//      string
+//          name =
+//          "Input_Frame" + to_string(imgNumber) + ".Label." + to_string(labelIndex) + "." + to_string(t) +
+//              ".ppm";
 //      SaveImageToFile(itmview.get()->depth, name.c_str());
 
 
-      auto obj_ptr_vec_val = label_ptr->getObjPtrVector();
+      auto& obj_ptr_vec_val = label_ptr->getObjPtrVector();
       auto obj_ptr_vec = &obj_ptr_vec_val;
 
       shared_ptr<ObjSLAM::ObjectInstanceScene<TVoxel, TIndex>> obj_inst_scene_ptr;
@@ -104,8 +104,8 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
             newObject = false;
 
           } else {
-
-            newObject = !this->checkIsSameObject2D(existing_obj_ptr, obj_inst_ptr);
+            //TODO hard coded each label 1 obj
+            newObject =  false; //!this->checkIsSameObject2D(existing_obj_ptr, obj_inst_ptr);
           }
           if (!newObject) {
             //this is an existing object, no need to compare with further objs
@@ -137,6 +137,8 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
                                                                                                MEMORYDEVICE_CPU));
         obj_inst_ptr->setRenderState(renderState_ptr);
 
+        auto t_state_ptr = std::make_shared<ITMLib::ITMTrackingState>(imgSize, MEMORYDEVICE_CPU);
+        obj_inst_ptr->setTrackingState(t_state_ptr);
 
         denseMapper->ResetScene(obj_inst_scene_ptr.get());
 
@@ -159,11 +161,14 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(std::shared_ptr<ITML
 
 //  std::shared_ptr<ITMLib::ITMView> itmView = std::get<1>(view_tuple);
 //  auto obj_inst_ptr = std::get<0>(view_tuple);
-  auto tmp_t_state = std::make_shared<ITMLib::ITMTrackingState>(imgSize, MEMORYDEVICE_CPU);
-  tmp_t_state->pose_d->SetFrom(t_state->pose_d);
+
+//  tmp_t_state->pose_d->SetFrom(t_state->pose_d);
 
   if (!obj_inst_ptr.get()->isBackground) {
     sceneIsBackground = false;
+    auto tmp_t_state = obj_inst_ptr->getTrackingState();
+    tmp_t_state->pose_d->SetFrom(t_state->pose_d);
+
     denseMapper->ProcessFrame(itmview.get(), tmp_t_state.get(), scene, obj_inst_ptr->getRenderState().get(), true);
 
     denseMapper->UpdateVisibleList(itmview.get(), tmp_t_state.get(), scene, obj_inst_ptr->getRenderState().get(), true);
@@ -195,7 +200,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
 #endif
   for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
     std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr = label_ptr_vector.at(i);
-    std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>>
+    std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>>&
         obj_inst_vec = (label_ptr.get()->getObjPtrVector());
     cout << *label_ptr.get() << " : " << obj_inst_vec.size() << endl;
 //#ifdef WITH_OPENMP
@@ -220,14 +225,14 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
 //                                obj_inst_ptr.get()->getAnchorView_ITM().get(),
 //                                visualisationEngine,
 //                                r_state);
-
+        //only the pose used to render
         visualisationEngine->RenderImage(scene.get(),
                                          t_state->pose_d,
                                          &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
                                          obj_inst_ptr->getRenderState().get(),
                                          obj_inst_ptr->getRenderState()->raycastImage,
                                          ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
-                                         ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
+                                         ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
         img->ChangeDims(obj_inst_ptr->getRenderState().get()->raycastImage->noDims);
         img->SetFrom(obj_inst_ptr->getRenderState().get()->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
@@ -246,7 +251,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
                                             obj_inst_ptr->getRenderState().get(),
                                             obj_inst_ptr->getRenderState()->raycastImage,
                                             ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
-                                            ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
+                                            ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
         img->ChangeDims(obj_inst_ptr->getRenderState().get()->raycastImage->noDims);
         img->SetFrom(obj_inst_ptr->getRenderState().get()->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
@@ -261,7 +266,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
 
     }
   }
-
+/* //save stl
   if (imgNumber % 10 == 0) {
     for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
       std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>>
@@ -275,7 +280,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
         SaveSceneToMesh(stlname.c_str(), scene);
       }
     }
-  }
+  }*/
 
 }
 
@@ -309,7 +314,7 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkImageOverlap(ObjSLAM::ObjFloatIm
 //  cout<<"checkImageOverlap\n";
   //parameter to set which % of the pixels must match
   double threshold_areaChange = 0.05;
-  double threshold_overlap = 0.7;
+  double threshold_overlap = 0.4;
 
   int x1_min = imgSize.x - 1;
   int x2_min = imgSize.x - 1;
@@ -457,17 +462,17 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(shared_ptr<ITMLib
   this->UpdateViewPose();
 }
 
-template<class TVoxel, class TIndex>
-void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState_Orig(const ORUtils::SE3Pose *_pose) {
-//  cout << "UpdateTrackingState_Orig...\n";
-  if (t_state_orig == NULL) {
-    t_state_orig = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
-  }
-  t_state_orig->pose_d->SetFrom(_pose);
-  t_state_orig->pose_d->Coerce();
-
-//  t_state->Reset();
-}
+//template<class TVoxel, class TIndex>
+//void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState_Orig(const ORUtils::SE3Pose *_pose) {
+////  cout << "UpdateTrackingState_Orig...\n";
+//  if (t_state_orig == NULL) {
+//    t_state_orig = new ITMLib::ITMTrackingState(imgSize, MEMORYDEVICE_CPU);
+//  }
+//  t_state_orig->pose_d->SetFrom(_pose);
+//  t_state_orig->pose_d->Coerce();
+//
+////  t_state->Reset();
+//}
 
 template<class TVoxel, class TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateViewPose() {
@@ -485,7 +490,7 @@ template<class TVoxel, class TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllLabelStats() {
   for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
     std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr = label_ptr_vector.at(i);
-    std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>>
+    std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>>&
         obj_inst_vec = (label_ptr.get()->getObjPtrVector());
     cout << "Label " << *label_ptr.get()/*->getLabelClassName()*/<< " : " << obj_inst_vec.size() << endl;
   }
@@ -497,10 +502,9 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::deleteAll() {
   delete this->denseMapper;
   delete this->calib;
   delete this->settings;
-//  delete this->view;
   delete this->t_state;
-  delete this->r_state;
-  delete this->r_state_BG;
+//  delete this->r_state;
+//  delete this->r_state_BG;
 }
 
 template<class TVoxel, class TIndex>

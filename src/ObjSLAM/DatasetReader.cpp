@@ -105,7 +105,7 @@ std::shared_ptr<ObjSLAM::ObjUIntImage> DatasetReader::ReadLabel_OneFile(std::str
   vector<unsigned int> vector_in;
 
   while (in.peek() != EOF) {
-    float tmp;
+    unsigned int tmp;
     in >> tmp;
     vector_in.push_back(tmp);
   }

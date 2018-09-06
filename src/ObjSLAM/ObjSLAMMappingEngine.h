@@ -49,8 +49,8 @@ class ObjSLAMMappingEngine {
   vector<shared_ptr<ObjectView_New<TVoxel, TIndex>>> view_new_vec;
   shared_ptr<ITMLib::ITMTrackingState> t_state = NULL;
   ITMLib::ITMTrackingState *t_state_orig = NULL;
-  ITMLib::ITMRenderState *r_state;
-  ITMLib::ITMRenderState *r_state_BG;
+//  ITMLib::ITMRenderState *r_state;
+//  ITMLib::ITMRenderState *r_state_BG;
 
   ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
   ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine_BG;
@@ -58,8 +58,8 @@ class ObjSLAMMappingEngine {
   ITMLib::ITMTracker *tracker;
 //  ITMLib::ITMLowLevelEngine *lowEngine;
   Vector2i imgSize;
-  std::vector<ObjectInstanceScene<TVoxel, TIndex> *> object_instance_scene_vector;
-  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> obj_inst_ptr_vector;
+//  std::vector<ObjectInstanceScene<TVoxel, TIndex> *> object_instance_scene_vector;
+//  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> obj_inst_ptr_vector;
   const ITMLib::ITMLibSettings *settings;
   const ITMLib::ITMRGBDCalib *calib;
 
@@ -78,17 +78,17 @@ class ObjSLAMMappingEngine {
     denseMapper = new ITMLib::ITMDenseMapper<TVoxel, TIndex>(settings);
 
     sceneIsBackground = false;
-    r_state =
-        ITMLib::ITMRenderStateFactory<TIndex>::CreateRenderState(imgSize, &(settings->sceneParams),
-                                                                 MEMORYDEVICE_CPU);
+//    r_state =
+//        ITMLib::ITMRenderStateFactory<TIndex>::CreateRenderState(imgSize, &(settings->sceneParams),
+//                                                                 MEMORYDEVICE_CPU);
 
     visualisationEngine =
         ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(settings->deviceType);
 
     sceneIsBackground = true;
-    r_state_BG =
-        ITMLib::ITMRenderStateFactory<TIndex>::CreateRenderState(imgSize, &(settings->sceneParams),
-                                                                 MEMORYDEVICE_CPU);
+//    r_state_BG =
+//        ITMLib::ITMRenderStateFactory<TIndex>::CreateRenderState(imgSize, &(settings->sceneParams),
+//                                                                 MEMORYDEVICE_CPU);
 
     visualisationEngine_BG =
         ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(settings->deviceType);
@@ -140,7 +140,7 @@ class ObjSLAMMappingEngine {
 
 
 
-  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> getObjInstPtrVec(){return this->obj_inst_ptr_vector;}
+//  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> getObjInstPtrVec(){return this->obj_inst_ptr_vector;}
   std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> getLabelPtrVec(){   return this->label_ptr_vector;}
 
   void SaveSceneToMesh(const char *objFileName, std::shared_ptr<ITMLib::ITMScene<TVoxel, TIndex>> scene_ptr);
