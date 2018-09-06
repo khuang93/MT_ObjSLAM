@@ -29,3 +29,5 @@ $ ./TrackerMapper [Path_To_Dataset]  [Frame_Number]
 Path_To_Dataset is the path to a dataset, for example home/living_room_traj1_frei_png/. Do not change the folder names of the dataset as the name serves as an identification of which kind of data format it has.
 
 Frame_Number is a positiv integer number, which specifies how many frames will it run.
+
+Currently the most up-to-date code is on the branch reduceMemory use. with submodule InfiniTAM on branch reduceMemory.
