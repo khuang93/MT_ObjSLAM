@@ -29,7 +29,7 @@
 
 #include "DatasetReader.h"
 #include "ObjectInstanceScene.h"
-#include "ObjectView_New.h"
+#include "ObjectView.h"
 #include "ObjSLAMCamera.h"
 #include "ObjSLAMDataTypes.h"
 
@@ -45,8 +45,8 @@ class ObjSLAMMappingEngine {
  private:
   int imgNumber;
 
-  shared_ptr<ObjectView_New<TVoxel, TIndex>> view_new;
-  vector<shared_ptr<ObjectView_New<TVoxel, TIndex>>> view_new_vec;
+  shared_ptr<ObjectView<TVoxel, TIndex>> view;
+  vector<shared_ptr<ObjectView<TVoxel, TIndex>>> view_vec;
   shared_ptr<ITMLib::ITMTrackingState> t_state = NULL;
   ITMLib::ITMTrackingState *t_state_orig = NULL;
 //  ITMLib::ITMRenderState *r_state;

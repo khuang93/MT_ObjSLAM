@@ -5,7 +5,8 @@
 #pragma once
 
 extern bool sceneIsBackground;
-
+extern bool saveSTL;
+extern int STL_Frequency;
 //class ObjSLAMVoxelSceneParams{
 //
 // public:

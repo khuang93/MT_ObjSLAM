@@ -34,7 +34,7 @@ using Object_View_Tup = std::tuple<std::shared_ptr<ObjectInstance_New<TVoxel, TI
 
 
 template<typename TVoxel, typename TIndex>
-class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIndex>> {
+class ObjectView : public enable_shared_from_this<ObjectView<TVoxel, TIndex>> {
  private:
   ObjCameraPose* camera_Pose;
 
@@ -68,7 +68,7 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
   //Constructor
   //using ITMLib::ITMView::ITMView;
 
-  ObjectView_New(const ITMLib::ITMRGBDCalib &_calibration, Vector2i _imgSize, bool useGPU, ObjCameraPose pose, vector<int> _rgb_d_pixel_idx_vec) :
+  ObjectView(const ITMLib::ITMRGBDCalib &_calibration, Vector2i _imgSize, bool useGPU, ObjCameraPose pose, vector<int> _rgb_d_pixel_idx_vec) :
       calibration(_calibration), imgSize_rgb(_imgSize), rgb_d_pixel_idx_vec(_rgb_d_pixel_idx_vec) {
     camera_Pose = new ObjCameraPose(pose.getSE3Pose());
     //TODO debug info
@@ -76,7 +76,7 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
   }
 
   //with pose
-  ObjectView_New(const ITMLib::ITMRGBDCalib &_calibration,
+  ObjectView(const ITMLib::ITMRGBDCalib &_calibration,
                  Vector2i _imgSize_rgb,
                  Vector2i _imgSize_d,
                  bool useGPU,
@@ -96,7 +96,7 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
 
   }
 
-  ObjectView_New(const ITMLib::ITMRGBDCalib &_calibration,
+  ObjectView(const ITMLib::ITMRGBDCalib &_calibration,
                  Vector2i _imgSize_rgb,
                  Vector2i _imgSize_d,
                  bool useGPU,
@@ -114,7 +114,7 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
   }
 
   //currently using this
-  ObjectView_New(const ITMLib::ITMRGBDCalib &_calibration,
+  ObjectView(const ITMLib::ITMRGBDCalib &_calibration,
                  Vector2i _imgSize_rgb,
                  Vector2i _imgSize_d,
                  bool useGPU,
@@ -130,7 +130,7 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
 
   }
   //Destructor
-  ~ObjectView_New() {
+  ~ObjectView() {
     delete rgb_Image;
     delete depth_Image;
     delete camera_Pose;
@@ -161,8 +161,8 @@ class ObjectView_New : public enable_shared_from_this<ObjectView_New<TVoxel, TIn
 
   std::shared_ptr<ITMLib::ITMView> getBackgroundView();
 
-  ObjectView_New(const ObjectView_New &);
-  ObjectView_New &operator=(const ObjectView_New &);
+  ObjectView(const ObjectView &);
+  ObjectView &operator=(const ObjectView &);
 };
 
 }

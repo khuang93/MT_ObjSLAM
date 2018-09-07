@@ -7,6 +7,11 @@
 #include <iomanip>
 
 int TeddyReader::readNext(){
+  if (label_img_vector.size() != 0) {
+    label_img_vector.clear();
+  }
+
+
   cout<< "img_number = "<< img_number<<endl;
   std::stringstream img_num_mod;
   img_num_mod<<setfill('0')<<setw(4)<<img_number;

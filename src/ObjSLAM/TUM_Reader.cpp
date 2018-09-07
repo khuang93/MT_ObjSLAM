@@ -30,6 +30,10 @@ RGB_D_NamePair TUM_Reader::get_RGB_D_filenames(std::istream & associate_src){
 
 
 int TUM_Reader::readNext(){
+  if (label_img_vector.size() != 0) {
+    label_img_vector.clear();
+  }
+
   cout<< "img_number = "<< img_number<<endl;
 
 

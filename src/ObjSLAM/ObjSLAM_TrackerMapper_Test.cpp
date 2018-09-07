@@ -9,7 +9,7 @@
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
 #include "ObjSLAMMappingEngine.h"
 #include "ObjSLAMTrackingEngine.h"
-#include "ObjectView_New.h"
+#include "ObjectView.h"
 #include "TeddyReader.h"
 #include "TUM_Reader.h"
 #include <memory>
@@ -36,6 +36,10 @@ void ProcessOneFrame(){
 
 }
 
+bool saveSTL;
+int STL_Frequency;
+
+
 int main(int argc, char **argv) {
   //TODO Debug output
   cout << "**Hello SLAM World!" << endl;
@@ -46,6 +50,9 @@ int main(int argc, char **argv) {
   string path = argv[1];
   Vector2i imgSize(640, 480);
 
+
+  saveSTL = (atoi(argv[3])!=0);
+  STL_Frequency = atoi(argv[4]);
 
 
 

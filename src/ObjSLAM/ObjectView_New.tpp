@@ -2,7 +2,7 @@
 // Created by khuang on 8/1/18.
 //
 
-#include "ObjectView_New.h"
+#include "ObjectView.h"
 
 #include "ObjectInstance_New.h"
 #include "ObjSLAMCamera.h"
@@ -10,23 +10,23 @@
 namespace ObjSLAM {
 
 template<typename TVoxel, typename TIndex>
-ObjCameraPose ObjectView_New<TVoxel, TIndex>::getCameraPose() {
+ObjCameraPose ObjectView<TVoxel, TIndex>::getCameraPose() {
   return *camera_Pose;
 }
 
 template<typename TVoxel, typename TIndex>
-void ObjectView_New<TVoxel, TIndex>::setCameraPose(ObjCameraPose _pose) {
+void ObjectView<TVoxel, TIndex>::setCameraPose(ObjCameraPose _pose) {
   camera_Pose = new ObjCameraPose(_pose.getSE3Pose());
 }
 
 template<typename TVoxel, typename TIndex>
-void ObjectView_New<TVoxel, TIndex>::setCameraPose(const ORUtils::SE3Pose *_se3pose) {
+void ObjectView<TVoxel, TIndex>::setCameraPose(const ORUtils::SE3Pose *_se3pose) {
   this->camera_Pose = new ObjCameraPose(*_se3pose);
 }
 
 //returns the new label if it is new. if the same class already exists, return the old label instance and discard the new one.
 template<typename TVoxel, typename TIndex>
-std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> ObjectView_New<TVoxel, TIndex>::addLabelToVector(
+std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> ObjectView<TVoxel, TIndex>::addLabelToVector(
     std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector,
     std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> new_label) {
   if (label_ptr_vector.size() == 0) {
@@ -51,7 +51,7 @@ std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> ObjectView_New<TVoxel, T
 }
 
 template<typename TVoxel, typename TIndex>
-void ObjectView_New<TVoxel, TIndex>::setListOfObjects(
+void ObjectView<TVoxel, TIndex>::setListOfObjects(
     std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector) {
 
   cout << "Setting Obj List...";
@@ -204,7 +204,7 @@ void ObjectView_New<TVoxel, TIndex>::setListOfObjects(
 }
 
 template<typename TVoxel, typename TIndex>
-void ObjectView_New<TVoxel, TIndex>::setListOfViews() {
+void ObjectView<TVoxel, TIndex>::setListOfViews() {
 
   for (int i = 0; i < segmentation_Mask->dataSize; i++) {
 //    if(segmentation_Mask->GetElement(i, MEMORYDEVICE_CPU))
@@ -213,17 +213,17 @@ void ObjectView_New<TVoxel, TIndex>::setListOfViews() {
 }
 
 //template<typename TVoxel, typename TIndex>
-//std::map<int, Object_View_Tup<TVoxel,TIndex>> ObjectView_New<TVoxel,TIndex>::getObjMap(){
+//std::map<int, Object_View_Tup<TVoxel,TIndex>> ObjectView<TVoxel,TIndex>::getObjMap(){
 //  return obj_map;
 //}
 
 template<typename TVoxel, typename TIndex>
-std::vector<Object_View_Tup<TVoxel, TIndex>> ObjectView_New<TVoxel, TIndex>::getObjVec() {
+std::vector<Object_View_Tup<TVoxel, TIndex>> ObjectView<TVoxel, TIndex>::getObjVec() {
   return this->obj_view_tup_vec;
 }
 
 template<typename TVoxel, typename TIndex>
-std::shared_ptr<ITMLib::ITMView> ObjectView_New<TVoxel, TIndex>::getBackgroundView() {
+std::shared_ptr<ITMLib::ITMView> ObjectView<TVoxel, TIndex>::getBackgroundView() {
   if (bg_itmview.get() != NULL) {
     return this->bg_itmview;
   }

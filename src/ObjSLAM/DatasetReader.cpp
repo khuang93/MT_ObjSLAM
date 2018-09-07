@@ -26,6 +26,8 @@ ObjSLAM::ObjFloatImage *DatasetReader::ReadOneDepth(std::string Path) {
 
   in.open(Path);
   vector<float> vector_in;
+  size_t vector_size = width*height;
+  vector_in.reserve(vector_size);
 
   while (in.peek() != EOF) {
     float tmp;
@@ -41,16 +43,15 @@ ObjSLAM::ObjFloatImage *DatasetReader::ReadOneDepth(std::string Path) {
 
   res->ChangeDims(imgSize);
 
+  for(size_t i = 0; i < width*height;++i){
+    res->GetData(MEMORYDEVICE_CPU)[i] = vector_in.at(i);
+  }
 
-//
+
   for (int i = 0; i < height; i++) {
-//      cout<<"i"<<i<<endl;
     for (int j = 0; j < width; j++) {
-//        res[height * i + j] = vector_in.at(height * i + j);
-
       res->GetData(MEMORYDEVICE_CPU)[width * i + j] = vector_in.at(width * i + j); //in meters
     }
-
   }
 
 //    SaveImageToFile(res, "testD");
@@ -103,6 +104,8 @@ std::shared_ptr<ObjSLAM::ObjUIntImage> DatasetReader::ReadLabel_OneFile(std::str
   in.open(Path);
 
   vector<unsigned int> vector_in;
+  size_t vector_size = width*height;
+  vector_in.reserve(vector_size);
 
   while (in.peek() != EOF) {
     unsigned int tmp;
@@ -122,17 +125,19 @@ std::shared_ptr<ObjSLAM::ObjUIntImage> DatasetReader::ReadLabel_OneFile(std::str
 
   res->ChangeDims(imgSize);
 
+  for(size_t i = 0; i < width*height;++i){
+    res->GetData(MEMORYDEVICE_CPU)[i] = vector_in.at(i);
+  }
 
-//
-  for (int i = 0; i < width; i++) {
-//      cout<<"i"<<i<<endl;
+
+
+/*  for (int i = 0; i < width; i++) {
+
     for (int j = 0; j < height; j++) {
-//        res[height * i + j] = vector_in.at(height * i + j);
-
       res->GetData(MEMORYDEVICE_CPU)[height * i + j] = vector_in.at(height * i + j);
     }
+  }*/
 
-  }
   return res;
 }
 
