@@ -114,11 +114,15 @@ class ObjSLAMMappingEngine {
   bool checkIsSameObject2D(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_1,
                            ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2);
 
+  ORUtils::Image<Vector4u> * projectObjectToImg(ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr);
+
   bool checkBoundingCubeOverlap(ORUtils::Vector6<float> first, ORUtils::Vector6<float> second);
 
   double calculateCubeVolume(ORUtils::Vector6<float> corners);
 
   bool checkImageOverlap(ObjSLAM::ObjFloatImage *first, ObjSLAM::ObjFloatImage *second);
+
+  bool checkImageOverlap(ORUtils::Image<Vector4u>  *first, ObjSLAM::ObjFloatImage *second);
 
   ORUtils::Vector4<int> getBoundingBox(ObjFloatImage *input);
 
@@ -138,6 +142,10 @@ class ObjSLAMMappingEngine {
 
   void outputAllObjImages();
 
+  //TODO
+//  void visualizeObjectFromMultiPerspective(std::shared_ptr<ObjectInstance_New> obj_inst_ptr);
+
+  //TODO
 
 
 //  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> getObjInstPtrVec(){return this->obj_inst_ptr_vector;}

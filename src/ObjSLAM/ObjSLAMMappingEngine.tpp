@@ -105,7 +105,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
 
           } else {
             //TODO hard coded each label 1 obj
-            newObject =  false; //!this->checkIsSameObject2D(existing_obj_ptr, obj_inst_ptr);
+            newObject =  /*false; */!this->checkIsSameObject2D(existing_obj_ptr, obj_inst_ptr);
           }
           if (!newObject) {
             //this is an existing object, no need to compare with further objs
@@ -166,14 +166,14 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(std::shared_ptr<ITML
 
   if (!obj_inst_ptr.get()->isBackground) {
     sceneIsBackground = false;
-    auto tmp_t_state = obj_inst_ptr->getTrackingState();
-    tmp_t_state->pose_d->SetFrom(t_state->pose_d);
+    std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = obj_inst_ptr->getTrackingState();
+//    tmp_t_state->pose_d->SetFrom(t_state->pose_d);
+    obj_inst_ptr->getTrackingState()->pose_d->SetFrom(t_state->pose_d);
+    denseMapper->ProcessFrame(itmview.get(), obj_inst_ptr->getTrackingState().get(), scene, obj_inst_ptr->getRenderState().get(), true);
 
-    denseMapper->ProcessFrame(itmview.get(), tmp_t_state.get(), scene, obj_inst_ptr->getRenderState().get(), true);
+    denseMapper->UpdateVisibleList(itmview.get(), obj_inst_ptr->getTrackingState().get(), scene, obj_inst_ptr->getRenderState().get(), true);
 
-    denseMapper->UpdateVisibleList(itmview.get(), tmp_t_state.get(), scene, obj_inst_ptr->getRenderState().get(), true);
-
-    t_controller->Prepare(tmp_t_state.get(),
+    t_controller->Prepare(obj_inst_ptr->getTrackingState().get(),
                           scene,
                           obj_inst_ptr.get()->getAnchorView_ITM(),
                           visualisationEngine,
@@ -283,23 +283,101 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsSameObject2D(ObjectInstance_Ne
   ObjSLAM::ObjFloatImage *first = obj_ptr_1.get()->getAnchorView_ITM()->depth;
   ObjSLAM::ObjFloatImage *second = obj_ptr_2.get()->getAnchorView_ITM()->depth;
 
-  auto *cam = new ObjSLAMCamera(this->calib, this->imgSize);
+  auto * firstUchar4 = projectObjectToImg(obj_ptr_1);
 
-  auto *pcl = new ORUtils::Image<Vector4f>(imgSize, MEMORYDEVICE_CPU);//in world coordinate
-  //TODO change pose to the pose from obj anchor view. add pose to itm view or let the obj inst save the pose itself.
-  cam->projectImg2PointCloud(second, pcl, obj_ptr_2->getAnchorView()->getCameraPose().getSE3Pose());
-//  cout<<*t_state->pose_d;
 
-  ObjFloatImage *out = new ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
-  cam->projectPointCloud2Img(pcl, out, obj_ptr_1->getAnchorView()->getCameraPose().getSE3Pose());
+//  auto *cam = new ObjSLAMCamera(this->calib, this->imgSize);
+//
+//  auto *pcl = new ORUtils::Image<Vector4f>(imgSize, MEMORYDEVICE_CPU);//in world coordinate
+//  //TODO change pose to the pose from obj anchor view. add pose to itm view or let the obj inst save the pose itself.
+//  cam->projectImg2PointCloud(second, pcl, obj_ptr_2->getAnchorView()->getCameraPose().getSE3Pose());
+////  cout<<*t_state->pose_d;
+//
+//  ObjFloatImage *out = new ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
+//  cam->projectPointCloud2Img(pcl, out, obj_ptr_1->getAnchorView()->getCameraPose().getSE3Pose());
 //  cout<<*t_state_orig->pose_d;
 
+  return checkImageOverlap(firstUchar4, second);
+//  return checkImageOverlap(first, out);
+}
 
-  return checkImageOverlap(first, out);
+template<class TVoxel, class TIndex>
+ORUtils::Image<Vector4u> * ObjSLAMMappingEngine<TVoxel, TIndex>::projectObjectToImg(ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr){
+
+  sceneIsBackground = obj_inst_ptr->isBackground;
+
+  auto scene = obj_inst_ptr->getScene();
+
+  visualisationEngine->RenderImage(scene.get(),
+                                   t_state->pose_d,
+                                   &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
+                                   obj_inst_ptr->getRenderState().get(),
+                                   obj_inst_ptr->getRenderState()->raycastImage,
+                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
+                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+  return obj_inst_ptr->getRenderState()->raycastImage;
 }
 
 template<class TVoxel, class TIndex>
 bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkImageOverlap(ObjSLAM::ObjFloatImage *first,
+                                                             ObjSLAM::ObjFloatImage *second) {
+//  cout<<"checkImageOverlap\n";
+  //parameter to set which % of the pixels must match
+  double threshold_areaChange = 0.05;
+  double threshold_overlap = 0.4;
+
+  int x1_min = imgSize.x - 1;
+  int x2_min = imgSize.x - 1;
+  int x1_max = 0;
+  int x2_max = 0;
+
+  int y1_min = imgSize.y - 1;
+  int y2_min = imgSize.y - 1;
+  int y1_max = 0;
+  int y2_max = 0;
+
+  for (size_t j = 0; j < imgSize.y; ++j) {
+    for (size_t i = 0; i < imgSize.x; ++i) {
+      int idx = j * imgSize.x + i;
+      if (first->GetElement(idx, MEMORYDEVICE_CPU) > 0) {
+        if (i < x1_min) x1_min = i;
+        if (i > x1_max) x1_max = i;
+        if (j < y1_min) y1_min = j;
+        if (j > y1_max) y1_max = j;
+      }
+      if (second->GetElement(idx, MEMORYDEVICE_CPU) > 0) {
+        if (i < x2_min) x2_min = i;
+        if (i > x2_max) x2_max = i;
+        if (j < y2_min) y2_min = j;
+        if (j > y2_max) y2_max = j;
+      }
+    }
+  }
+//  cout<<x1_min<<" "<<x2_min<<" "<<x1_max<<" "<<x2_max<<"\n";
+//  cout<<y1_min<<" "<<y2_min<<" "<<y1_max<<" "<<y2_max<<"\n";
+  if (x1_min > x2_max || x2_min > x1_max || y1_min > y2_max || y2_min > y1_max) return false;
+
+  float area_1 = (x1_max - x1_min) * (y1_max - y1_min);
+  float area_2 = (x2_max - x2_min) * (y2_max - y2_min);
+
+  int x_min_overlap = max(x1_min, x2_min);
+  int y_min_overlap = max(y1_min, y2_min);
+  int x_max_overlap = min(x1_max, x2_max);
+  int y_max_overlap = min(y1_max, y2_max);
+
+  float area_overlap = (x_max_overlap - x_min_overlap) * (y_max_overlap - y_min_overlap);
+
+//  cout << "check" << min(area_1, area_2) / max(area_1, area_2) << " " << area_overlap / min(area_1, area_2) << endl;
+
+  if (area_1 <= area_2) {
+    return area_1 / area_2 > threshold_areaChange && area_overlap / area_1 > threshold_overlap;
+  } else {
+    return area_2 / area_1 > threshold_areaChange && area_overlap / area_2 > threshold_overlap;
+  }
+}
+
+template<class TVoxel, class TIndex>
+bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkImageOverlap(ORUtils::Image<Vector4u>  *first,
                                                              ObjSLAM::ObjFloatImage *second) {
 //  cout<<"checkImageOverlap\n";
   //parameter to set which % of the pixels must match

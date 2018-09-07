@@ -36,8 +36,8 @@ void ProcessOneFrame(){
 
 }
 
-bool saveSTL;
-int STL_Frequency;
+bool saveSTL = false;
+int STL_Frequency = 1;
 
 
 int main(int argc, char **argv) {
@@ -50,20 +50,24 @@ int main(int argc, char **argv) {
   string path = argv[1];
   Vector2i imgSize(640, 480);
 
+  if(argc>3){
+    saveSTL = (atoi(argv[3])!=0);
+    if(saveSTL){
+      STL_Frequency = atoi(argv[4]);
+    }
+  }
 
-  saveSTL = (atoi(argv[3])!=0);
-  STL_Frequency = atoi(argv[4]);
+
 
 
 
 
   ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
-  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.04f, 10, 0.004f, 0.2, 5.0, false);
+  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.05f, 10, 0.004f, 0.2, 8.0, false);
   //(0.1, 10, 0.025, 0.1, 4.0, false); //(0.02f, 100, 0.002f, 0.2f, 3.0f, false);  //(0.2, 4, 0.05, 0.1, 4.0, false);
 
   internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
 
-//  TeddyReader reader(path, imgSize);
 
 //  LPD_Dataset_Reader reader(path, imgSize);
   DatasetReader* reader= nullptr;
