@@ -570,7 +570,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::deleteAll() {
   delete this->denseMapper;
   delete this->calib;
   delete this->settings;
-  delete this->t_state;
+//  delete this->t_state;
 //  delete this->r_state;
 //  delete this->r_state_BG;
 }

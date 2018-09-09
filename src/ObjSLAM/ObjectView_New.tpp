@@ -198,7 +198,7 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
 
   //  std::cout << "FINISHED" << std::endl;
 //  return label_ptr_vector;
-//  delete cam;
+  delete cam;
 
   cout << "Finished! \n";
 }

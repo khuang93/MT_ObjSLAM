@@ -164,5 +164,7 @@ int main(int argc, char **argv) {
 
 
   delete reader;
+  delete trackingEngine;
+  delete mappingEngine;
   return 0;
 }
