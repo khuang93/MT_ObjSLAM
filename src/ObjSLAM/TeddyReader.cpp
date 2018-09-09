@@ -24,7 +24,7 @@ int TeddyReader::readNext(){
 
   ObjSLAM::ObjShortImage* disparity_raw =  ReadOneDisparity(depth_path);
 
-  std::cout<<depth_path<<"value"<<disparity_raw->GetData(MEMORYDEVICE_CPU)[0]<<endl;
+//  std::cout<<depth_path<<"value"<<disparity_raw->GetData(MEMORYDEVICE_CPU)[0]<<endl;
 
   depth_img = new ObjSLAM::ObjFloatImage(imgSize,MEMORYDEVICE_CPU);
   viewBuilder->ConvertDisparityToDepth(depth_img,disparity_raw,&(calib->intrinsics_d),calib->disparityCalib.GetParams());

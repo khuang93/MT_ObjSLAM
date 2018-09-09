@@ -286,18 +286,20 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkIsSameObject2D(ObjectInstance_Ne
   auto * firstUchar4 = projectObjectToImg(obj_ptr_1);
 
 
-//  auto *cam = new ObjSLAMCamera(this->calib, this->imgSize);
-//
-//  auto *pcl = new ORUtils::Image<Vector4f>(imgSize, MEMORYDEVICE_CPU);//in world coordinate
-//  //TODO change pose to the pose from obj anchor view. add pose to itm view or let the obj inst save the pose itself.
-//  cam->projectImg2PointCloud(second, pcl, obj_ptr_2->getAnchorView()->getCameraPose().getSE3Pose());
-////  cout<<*t_state->pose_d;
-//
-//  ObjFloatImage *out = new ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
-//  cam->projectPointCloud2Img(pcl, out, obj_ptr_1->getAnchorView()->getCameraPose().getSE3Pose());
-//  cout<<*t_state_orig->pose_d;
+  auto *cam = new ObjSLAMCamera(this->calib, this->imgSize);
 
-  return checkImageOverlap(firstUchar4, second);
+  auto *pcl = new ORUtils::Image<Vector4f>(imgSize, MEMORYDEVICE_CPU);//in world coordinate
+  //TODO change pose to the pose from obj anchor view. add pose to itm view or let the obj inst save the pose itself.
+  cam->projectImg2PointCloud(second, pcl, obj_ptr_2->getAnchorView()->getCameraPose().getSE3Pose());
+  //  cout<<*t_state->pose_d;
+
+  ObjFloatImage *out = new ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
+  cam->projectPointCloud2Img(pcl, out, obj_ptr_1->getAnchorView()->getCameraPose().getSE3Pose());
+
+
+    delete cam;
+    delete pcl;
+  return checkImageOverlap(firstUchar4, second)||checkImageOverlap(first, out);
 //  return checkImageOverlap(first, out);
 }
 
