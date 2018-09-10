@@ -109,16 +109,18 @@ int main(int argc, char **argv) {
 
   mappingEngine->SetTrackingController(t_controller);
 
-  
+
   
   mappingEngine->UpdateImgNumber(imgNum);
-  mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
+
 
 //  auto t_state = trackingEngine->TrackFrame(objview. ->getBackgroundView().get());
   cout<<sceneIsBackground<<endl;
-  auto t_state = trackingEngine->TrackFrame(wholeView.get());
+  shared_ptr<ITMLib::ITMTrackingState>  t_state = trackingEngine->TrackFrame(wholeView.get());
 
   mappingEngine->UpdateTrackingState(t_state);
+
+  mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
   mappingEngine->ProcessFrame();
 
@@ -144,16 +146,13 @@ int main(int argc, char **argv) {
 
     mappingEngine->UpdateImgNumber(imgNum);
 
-
-    mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
-
-
     cout<<sceneIsBackground<<endl;
 
-    auto t_state = trackingEngine->TrackFrame(wholeView.get());
-
-//    mappingEngine->UpdateTrackingState(&reader->getPose()->getSE3Pose());
+    shared_ptr<ITMLib::ITMTrackingState>  t_state = trackingEngine->TrackFrame(wholeView.get());
+    //    mappingEngine->UpdateTrackingState(&reader->getPose()->getSE3Pose());
     mappingEngine->UpdateTrackingState(t_state);
+
+    mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
     mappingEngine->ProcessFrame();
     mappingEngine->outputAllObjImages();

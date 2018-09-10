@@ -12,3 +12,4 @@ cmake-build-default
 build
 output
 test
+build_OMP

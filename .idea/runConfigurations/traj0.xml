@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="traj0" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="../../Datasets/traj0_frei_png/ 120 1 30" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="TrackerMapper" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="TrackerMapper">
+    <method />
+  </configuration>
+</component>

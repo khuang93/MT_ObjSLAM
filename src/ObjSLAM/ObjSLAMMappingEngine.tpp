@@ -44,6 +44,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjFloatImage *_depth,
   }
   //init all objects in view
   view->setListOfObjects(label_ptr_vector);
+  this->UpdateViewPose();
 //    return view;
 }
 
@@ -168,6 +169,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(std::shared_ptr<ITML
     sceneIsBackground = false;
     std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = obj_inst_ptr->getTrackingState();
 //    tmp_t_state->pose_d->SetFrom(t_state->pose_d);
+    obj_inst_ptr->getTrackingState()->Reset();
     obj_inst_ptr->getTrackingState()->pose_d->SetFrom(t_state->pose_d);
     denseMapper->ProcessFrame(itmview.get(), obj_inst_ptr->getTrackingState().get(), scene, obj_inst_ptr->getRenderState().get(), true);
 
@@ -529,7 +531,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(const ORUtils::SE
 template<class TVoxel, class TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(shared_ptr<ITMLib::ITMTrackingState> _t_state) {
   t_state = _t_state;
-  this->UpdateViewPose();
+//  this->UpdateViewPose();
 }
 
 //template<class TVoxel, class TIndex>
@@ -546,7 +548,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateTrackingState(shared_ptr<ITMLib
 
 template<class TVoxel, class TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateViewPose() {
-  ObjCameraPose _pose(*this->t_state->pose_d);
+  ObjCameraPose _pose(*(this->t_state->pose_d));
   this->view->setCameraPose(_pose);
 }
 

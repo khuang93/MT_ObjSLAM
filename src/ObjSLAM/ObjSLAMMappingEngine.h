@@ -47,7 +47,7 @@ class ObjSLAMMappingEngine {
 
   shared_ptr<ObjectView<TVoxel, TIndex>> view;
   vector<shared_ptr<ObjectView<TVoxel, TIndex>>> view_vec;
-  shared_ptr<ITMLib::ITMTrackingState> t_state = NULL;
+  shared_ptr<ITMLib::ITMTrackingState> t_state /*= NULL*/;
 //  ITMLib::ITMTrackingState *t_state_orig = NULL;
 //  ITMLib::ITMRenderState *r_state;
 //  ITMLib::ITMRenderState *r_state_BG;
@@ -55,7 +55,7 @@ class ObjSLAMMappingEngine {
   ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
   ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine_BG;
   shared_ptr<ITMLib::ITMTrackingController> t_controller;
-  ITMLib::ITMTracker *tracker;
+//  ITMLib::ITMTracker *tracker;
 //  ITMLib::ITMLowLevelEngine *lowEngine;
   Vector2i imgSize;
 //  std::vector<ObjectInstanceScene<TVoxel, TIndex> *> object_instance_scene_vector;
