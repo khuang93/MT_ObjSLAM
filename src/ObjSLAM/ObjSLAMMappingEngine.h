@@ -48,7 +48,7 @@ class ObjSLAMMappingEngine {
   shared_ptr<ObjectView<TVoxel, TIndex>> view;
   vector<shared_ptr<ObjectView<TVoxel, TIndex>>> view_vec;
   shared_ptr<ITMLib::ITMTrackingState> t_state = NULL;
-  ITMLib::ITMTrackingState *t_state_orig = NULL;
+//  ITMLib::ITMTrackingState *t_state_orig = NULL;
 //  ITMLib::ITMRenderState *r_state;
 //  ITMLib::ITMRenderState *r_state_BG;
 
@@ -60,8 +60,8 @@ class ObjSLAMMappingEngine {
   Vector2i imgSize;
 //  std::vector<ObjectInstanceScene<TVoxel, TIndex> *> object_instance_scene_vector;
 //  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> obj_inst_ptr_vector;
-  const ITMLib::ITMLibSettings *settings;
-  const ITMLib::ITMRGBDCalib *calib;
+  const std::shared_ptr<ITMLib::ITMLibSettings> settings;
+  const std::shared_ptr<ITMLib::ITMRGBDCalib>calib;
 
 
   ITMLib::ITMDenseMapper<TVoxel, TIndex> *denseMapper;
@@ -71,11 +71,11 @@ class ObjSLAMMappingEngine {
 
  public:
   //Constructor with LPD Dataset
-  ObjSLAMMappingEngine(const ITMLib::ITMLibSettings *_settings,
-                       const ITMLib::ITMRGBDCalib *_calib,
+  ObjSLAMMappingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,
+                       const std::shared_ptr<ITMLib::ITMRGBDCalib> _calib,
                        const Vector2i _imgSize) : settings(_settings), calib(_calib), imgSize(_imgSize) {
 
-    denseMapper = new ITMLib::ITMDenseMapper<TVoxel, TIndex>(settings);
+    denseMapper = new ITMLib::ITMDenseMapper<TVoxel, TIndex>(settings.get());
 
     sceneIsBackground = false;
 //    r_state =

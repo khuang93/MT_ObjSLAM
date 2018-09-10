@@ -141,7 +141,7 @@ std::shared_ptr<ObjSLAM::ObjUIntImage> DatasetReader::ReadLabel_OneFile(std::str
   return res;
 }
 
-ITMLib::ITMRGBDCalib *DatasetReader::getCalib() {
+std::shared_ptr<ITMLib::ITMRGBDCalib> DatasetReader::getCalib() {
   return calib;
 }
 
@@ -165,7 +165,8 @@ bool DatasetReader::readCalib(string calib_path) {
   ifstream src;
   src.open(calib_path);
   cout<<"readCalib"<<endl;
-  calib = new ITMLib::ITMRGBDCalib();
+//  calib = new ITMLib::ITMRGBDCalib();
+  calib = std::make_shared<ITMLib::ITMRGBDCalib>();
   ITMLib::readRGBDCalib(calib_path.c_str(), *calib);
 
   return true;

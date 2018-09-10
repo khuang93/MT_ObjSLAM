@@ -14,7 +14,7 @@
 namespace ObjSLAM{
 class ObjSLAMCamera {
  private:
-  const ITMLib::ITMRGBDCalib *calib;
+  const std::shared_ptr<ITMLib::ITMRGBDCalib> calib;
   int width, height;
   Vector2i imgSize;
   ORUtils::Matrix4<float> K_rgb;
@@ -22,7 +22,7 @@ class ObjSLAMCamera {
 
  public:
   //constructors
-  ObjSLAMCamera(const ITMLib::ITMRGBDCalib* _calib, Vector2i _imgSize):calib(_calib),imgSize(_imgSize){
+  ObjSLAMCamera(const  std::shared_ptr<ITMLib::ITMRGBDCalib> _calib, Vector2i _imgSize):calib(_calib),imgSize(_imgSize){
     width=imgSize.width;
     height=imgSize.height;
     K_d = ORUtils::Matrix4<float>(this->calib->intrinsics_d.projectionParamsSimple.fx,
@@ -59,7 +59,7 @@ class ObjSLAMCamera {
                                     1.0f);
   }
 
-  ObjSLAMCamera(ITMLib::ITMRGBDCalib* _calib, int w, int h):calib(_calib),imgSize(w, h), width(w), height(h){}
+  ObjSLAMCamera(std::shared_ptr<ITMLib::ITMRGBDCalib> _calib, int w, int h):calib(_calib),imgSize(w, h), width(w), height(h){}
 
  public:
   bool projectPointCloud2Img(ORUtils::Image<Vector4f> * PCL, ObjFloatImage* out, ObjCameraPose pose);
@@ -69,7 +69,7 @@ class ObjSLAMCamera {
   shared_ptr<ORUtils::Image<Vector2i>> projectDepthPixelToRGB(ObjSLAM::ObjFloatImage *in);
 
   //getters
-  const  ITMLib::ITMRGBDCalib * GetCalib(){ return calib;}
+  const  std::shared_ptr<ITMLib::ITMRGBDCalib> GetCalib(){ return calib;}
   Vector2i GetImgSize(){return imgSize;}
   int GetWidth(){return width;}
   int GetHeight(){ return height;}

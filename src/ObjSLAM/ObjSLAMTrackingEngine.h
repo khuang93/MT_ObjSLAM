@@ -24,13 +24,13 @@ class ObjSLAMTrackingEngine {
   ITMLowLevelEngine *lowEngine;
 
   Vector2i imgSize;
-  const ITMLib::ITMLibSettings *settings;
-  const ITMLib::ITMRGBDCalib *calib;
+  const std::shared_ptr<ITMLib::ITMLibSettings> settings;
+  const std::shared_ptr<ITMLib::ITMRGBDCalib> calib;
   int imgNumber = 1;
 
  public:
-  ObjSLAMTrackingEngine(const ITMLib::ITMLibSettings *_settings,
-                        const ITMLib::ITMRGBDCalib *_calib,
+  ObjSLAMTrackingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,
+                        const std::shared_ptr<ITMLib::ITMRGBDCalib> _calib,
                         const Vector2i _imgSize);
   ~ObjSLAMTrackingEngine();
   shared_ptr<ITMLib::ITMTrackingState>  TrackFrame(ITMLib::ITMView * view);

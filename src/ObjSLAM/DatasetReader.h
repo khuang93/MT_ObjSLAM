@@ -34,7 +34,8 @@ class DatasetReader {
  protected:
   int width, height;
   Vector2i imgSize;
-  ITMLib::ITMRGBDCalib *calib = nullptr;
+//  ITMLib::ITMRGBDCalib *calib = nullptr;
+  std::shared_ptr<ITMLib::ITMRGBDCalib> calib;
   string path;
   int img_number = 1;
   ITMLib::ITMViewBuilder *viewBuilder = nullptr;
@@ -67,7 +68,8 @@ class DatasetReader {
 
   std::shared_ptr<ObjSLAM::ObjUIntImage> ReadLabel_OneFile(std::string Path);
 
-  ITMLib::ITMRGBDCalib *getCalib();
+//  ITMLib::ITMRGBDCalib *getCalib();
+  std::shared_ptr<ITMLib::ITMRGBDCalib> getCalib();
 
   void setWidth(int w);
   void setHeight(int h);

@@ -38,6 +38,7 @@ void ProcessOneFrame(){
 
 bool saveSTL = false;
 int STL_Frequency = 1;
+int reader_SkipFrames = 0;
 
 
 int main(int argc, char **argv) {
@@ -62,7 +63,8 @@ int main(int argc, char **argv) {
 
 
 
-  ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
+//  ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
+  std::shared_ptr<ITMLib::ITMLibSettings> internalSettings = std::make_shared<ITMLib::ITMLibSettings>();
   internalSettings->sceneParams = ITMLib::ITMSceneParams(0.05f, 10, 0.004f, 0.2, 8.0, false);
   //(0.1, 10, 0.025, 0.1, 4.0, false); //(0.02f, 100, 0.002f, 0.2f, 3.0f, false);  //(0.2, 4, 0.05, 0.1, 4.0, false);
 
@@ -77,7 +79,7 @@ int main(int argc, char **argv) {
   }else if(path.find("RealisticRenderingDataset")!=std::string::npos){
     cout<<"RealisticRenderingDataset\n";
     reader = new LPD_Dataset_Reader(path,imgSize);
-  }else if(path.find("rgbd")!=std::string::npos || path.find("living")!=std::string::npos){
+  }else if(path.find("rgbd")!=std::string::npos || path.find("traj")!=std::string::npos){
     cout<<"TUM RGBD\n";
     reader = new TUM_Reader(path,imgSize);
   }else{

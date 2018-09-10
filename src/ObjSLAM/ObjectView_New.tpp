@@ -59,8 +59,9 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
   auto label_ptr_bg_new = std::make_shared<ObjectClassLabel_Group<TVoxel, TIndex>>(0, std::to_string(0));
   shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr_bg = addLabelToVector(label_ptr_vector,
                                                                                      label_ptr_bg_new);
-
-  auto *cam= new ObjSLAMCamera(&calibration, imgSize_d);
+  std::shared_ptr<ITMLib::ITMRGBDCalib> new_calib_ptr = std::make_shared<ITMLib::ITMRGBDCalib>();
+  *new_calib_ptr=calibration;
+  auto *cam= new ObjSLAMCamera(new_calib_ptr, imgSize_d);
   d_to_rgb_correspondence = cam->projectDepthPixelToRGB(this->depth_Image);
 #ifdef WITH_OPENMP
 #pragma omp parallel for

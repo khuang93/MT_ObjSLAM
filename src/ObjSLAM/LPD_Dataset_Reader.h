@@ -287,8 +287,8 @@ class LPD_Dataset_Reader : public DatasetReader {
   }
 
   void setCalib_LPD() {
-    calib = new ITMLib::ITMRGBDCalib();
-
+//    calib = new ITMLib::ITMRGBDCalib();
+    calib = std::make_shared<ITMLib::ITMRGBDCalib>();
     calib->intrinsics_rgb.SetFrom(640, 480, 320, 320, 320, 240);
     calib->intrinsics_d.SetFrom(640, 480, 320, 320, 320, 240);
 
@@ -320,9 +320,9 @@ class LPD_Dataset_Reader : public DatasetReader {
 
 
 
-  ITMLib::ITMRGBDCalib *getCalib() {
-    return calib;
-  }
+//  ITMLib::ITMRGBDCalib *getCalib() {
+//    return calib;
+//  }
 
   void deleteVariables() {
 
