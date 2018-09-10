@@ -10,3 +10,4 @@ CTestTestfile.cmake
 cmake-build-debug
 cmake-build-default
 build
+output
