@@ -7,7 +7,7 @@
 
 namespace ObjSLAM {
 
-ObjCameraPose::ObjCameraPose(ORUtils::SE3Pose _se3pose) : se3Pose(_se3pose) {
+ObjCameraPose::ObjCameraPose(const ORUtils::SE3Pose _se3pose) : se3Pose(_se3pose) {
 
   Eigen::Matrix3d eigen_mat;
   eigen_mat(0, 0) = se3Pose.GetR().m00;

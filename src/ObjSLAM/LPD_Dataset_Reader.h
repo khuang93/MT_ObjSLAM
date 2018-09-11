@@ -22,9 +22,10 @@
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
+
 using namespace std;
 
-using LabelImgVector = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
+//using LabelImgVector = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
 
 class LPD_Dataset_Reader : public DatasetReader {
  private:
@@ -80,7 +81,7 @@ class LPD_Dataset_Reader : public DatasetReader {
 
     //TODO make the path using os path join instead of slash
     string depth_path = path + "/depth/cam0/" + to_string(img_number) + ".exr";
-    string rgb_path = path + "/rgb/cam0/" + to_string(img_number) + ".png";
+    string rgb_path = path + "/rgb/cam0/" + to_string(img_number) + ".ppm";
     string normal_path = path + "/normal/cam0/" + to_string(img_number) + ".png";
     string label_path = path + "/pixel_label/cam0/" + to_string(img_number) + ".txt";
     string pose_path = path + "/groundTruthPoseVel_imu.txt";
@@ -286,8 +287,8 @@ class LPD_Dataset_Reader : public DatasetReader {
   }
 
   void setCalib_LPD() {
-    calib = new ITMLib::ITMRGBDCalib();
-
+//    calib = new ITMLib::ITMRGBDCalib();
+    calib = std::make_shared<ITMLib::ITMRGBDCalib>();
     calib->intrinsics_rgb.SetFrom(640, 480, 320, 320, 320, 240);
     calib->intrinsics_d.SetFrom(640, 480, 320, 320, 320, 240);
 
@@ -319,9 +320,9 @@ class LPD_Dataset_Reader : public DatasetReader {
 
 
 
-  ITMLib::ITMRGBDCalib *getCalib() {
-    return calib;
-  }
+//  ITMLib::ITMRGBDCalib *getCalib() {
+//    return calib;
+//  }
 
   void deleteVariables() {
 

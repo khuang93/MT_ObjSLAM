@@ -3,6 +3,7 @@
 //
 
 
+#include <memory>
 #include "ObjSLAMCamera.h"
 
 namespace ObjSLAM {
@@ -41,8 +42,9 @@ bool ObjSLAMCamera::projectPointCloud2Img(ORUtils::Image<Vector4f> *PCL, ObjFloa
     Vector4f point_camera_frame = pose_mat * point;
 
     Vector3f pix = K * (point_camera_frame.toVector3());
-    Vector2i pix_int(round(pix.x / pix.z), round(pix.y / pix.z));
+//    Vector2i pix_int(round(pix.x / pix.z), round(pix.y / pix.z));
 
+    Vector2i pix_int(ROUND(pix.x / pix.z), ROUND(pix.y / pix.z));
     if (pix_int.y >= 0 && pix_int.x >= 0 && pix_int.y < height && pix_int.x < width) {
       int locId = pix_int.y * width + pix_int.x;
       out->GetData(MEMORYDEVICE_CPU)[locId] = pix.z;
@@ -111,5 +113,32 @@ ORUtils::Vector6<float> ObjSLAMCamera::projectImg2PointCloud(ObjSLAM::ObjFloatIm
 //  cout<<"max xyz="<<max_x<<" "<<max_y<<" "<<max_z<<endl;
   return boundingCube;
 }
+
+shared_ptr<ORUtils::Image<Vector2i>> ObjSLAMCamera::projectDepthPixelToRGB(ObjSLAM::ObjFloatImage *in) {
+  Matrix4f tranfo_inv = calib->trafo_rgb_to_depth.calib_inv;
+  Matrix4f K_d_inv;
+  K_d.inv(K_d_inv);
+
+  shared_ptr<ORUtils::Image<Vector2i>> corresponding_RGB_Pixel = std::make_shared<ORUtils::Image<Vector2i>>(imgSize, true, false);
+
+  for (int v = 0; v < imgSize.height; v++) {
+    for (int u = 0; u < imgSize.width; u++) {
+      int locId = v * imgSize.width + u;
+      float depth_value = in->GetElement(locId, MEMORYDEVICE_CPU);
+      Vector4f depth_in(u * depth_value, v * depth_value, depth_value, 1.0f);
+      Vector4f rgb_pix = K_rgb * tranfo_inv * K_d_inv * depth_in;
+
+      Vector2i res((int) (rgb_pix / rgb_pix.z).x, (int) (rgb_pix / rgb_pix.z).y);
+      if(res.x>=0 && res.x<imgSize.width && res.y>=0 && res.y<imgSize.height){
+        corresponding_RGB_Pixel->GetData(MEMORYDEVICE_CPU)[locId] = res;
+      }else{
+        corresponding_RGB_Pixel->GetData(MEMORYDEVICE_CPU)[locId] = Vector2i(-1,-1);
+      }
+
+    }
+  }
+  return corresponding_RGB_Pixel;
+}
+
 
 }

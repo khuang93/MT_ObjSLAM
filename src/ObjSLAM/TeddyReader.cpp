@@ -7,6 +7,11 @@
 #include <iomanip>
 
 int TeddyReader::readNext(){
+  if (label_img_vector.size() != 0) {
+    label_img_vector.clear();
+  }
+
+
   cout<< "img_number = "<< img_number<<endl;
   std::stringstream img_num_mod;
   img_num_mod<<setfill('0')<<setw(4)<<img_number;
@@ -19,25 +24,27 @@ int TeddyReader::readNext(){
 
   ObjSLAM::ObjShortImage* disparity_raw =  ReadOneDisparity(depth_path);
 
-//  std::cout<<path<<"value"<<disparity_raw->GetData(MEMORYDEVICE_CPU)[0]<<endl;
+//  std::cout<<depth_path<<"value"<<disparity_raw->GetData(MEMORYDEVICE_CPU)[0]<<endl;
 
   depth_img = new ObjSLAM::ObjFloatImage(imgSize,MEMORYDEVICE_CPU);
   viewBuilder->ConvertDisparityToDepth(depth_img,disparity_raw,&(calib->intrinsics_d),calib->disparityCalib.GetParams());
   delete disparity_raw;
+
+
 //  std::cout<<"depth"<<depth_img->GetData(MEMORYDEVICE_CPU)[0]<<endl;
-//  SaveImageToFile(depth_img, "testDepth.ppm");
+  SaveImageToFile(depth_img, "testDepth.ppm");
 
   rgb_img = ReadOneRGB(rgb_path);
 
 
   //read labels
-  std::vector<string> fileNames = getFileNames(label_path);
+//  std::vector<string> fileNames = getFileNames(label_path);
   std::vector<string> filteredNames;
 
-  for (int i = 0; i < fileNames.size(); i++) {
+  for (int i = 0; i < LabelFileNames.size(); i++) {
     string prefix = img_num_mod_str + ".";
-    if (boost::starts_with(fileNames.at(i), prefix) && fileNames.at(i) != prefix) {
-      filteredNames.push_back(fileNames.at(i));
+    if (boost::starts_with(LabelFileNames.at(i), prefix) && LabelFileNames.at(i) != prefix) {
+      filteredNames.push_back(LabelFileNames.at(i));
     }
   }
 
@@ -57,15 +64,12 @@ ObjSLAM::ObjShortImage *TeddyReader::ConvertToRealDepth(ObjSLAM::ObjFloatImage *
   return nullptr;
 }
 
+/*
 bool TeddyReader::readCalib(){
 
-  ifstream src;
-  src.open(calib_path);
-  cout<<"readCalib"<<endl;
-  calib = new ITMLib::ITMRGBDCalib();
-  ITMLib::readRGBDCalib(calib_path.c_str(), *calib);
 
-
+  readCalib(this->calib_path);
 
   return true;
 }
+*/

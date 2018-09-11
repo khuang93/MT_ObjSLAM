@@ -23,10 +23,9 @@
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/ViewBuilding/Interface/ITMViewBuilder.h>
+#include <src/ObjSLAM/ObjSLAMDataTypes.h>
 
 using namespace std;
-
-using LabelImgVector = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
 
 /** \brief
 	    Basic interface to read any kind of data sets.
@@ -35,10 +34,13 @@ class DatasetReader {
  protected:
   int width, height;
   Vector2i imgSize;
-  ITMLib::ITMRGBDCalib *calib = nullptr;
+//  ITMLib::ITMRGBDCalib *calib = nullptr;
+  std::shared_ptr<ITMLib::ITMRGBDCalib> calib;
   string path;
   int img_number = 1;
   ITMLib::ITMViewBuilder *viewBuilder = nullptr;
+  std::vector<std::string> LabelFileNames;
+
  public:
   ObjSLAM::ObjUChar4Image *rgb_img;
   ObjSLAM::ObjFloatImage *depth_img;
@@ -48,6 +50,8 @@ class DatasetReader {
   DatasetReader(string _path, Vector2i _imgSize):path(_path),imgSize(_imgSize){
     width = imgSize.x;
     height = imgSize.y;
+    string label_path = path + "/pixel_label/";
+    getFileNames(label_path);
   }
 
   /** Virtual function, reads the next frame and returns the frame number as int.
@@ -56,7 +60,7 @@ class DatasetReader {
 
 //  virtual ObjSLAM::ObjShortImage *ConvertToRealDepth(ObjSLAM::ObjFloatImage *depth)=0;
 
-  virtual bool readCalib()=0;
+//  virtual bool readCalib()=0;
 
   std::vector<std::string> getFileNames(std::string directoryPath);
 
@@ -68,7 +72,8 @@ class DatasetReader {
 
   std::shared_ptr<ObjSLAM::ObjUIntImage> ReadLabel_OneFile(std::string Path);
 
-  ITMLib::ITMRGBDCalib *getCalib();
+//  ITMLib::ITMRGBDCalib *getCalib();
+  std::shared_ptr<ITMLib::ITMRGBDCalib> getCalib();
 
   void setWidth(int w);
   void setHeight(int h);
@@ -76,6 +81,10 @@ class DatasetReader {
   int getHeight();
   Vector2i getSize();
 
-  virtual ~DatasetReader(){};
+  virtual bool readCalib(string calib_path);
+
+  virtual ~DatasetReader(){
+    delete viewBuilder;
+  }
 };
 #endif //MT_OBJSLAM_DATASETREADER_H

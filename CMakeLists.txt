@@ -12,23 +12,6 @@ set (SOURCE_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 
 
-
-
-#set (INFINITAM_DIR "External/InfiniTAM/InfiniTAM")
-
-
-#from Apps/InfiniTAM/CMakeLists.txt
-#INCLUDE(${INFINITAM_DIR}/cmake/UseCUDA.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseFFmpeg.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseGLUT.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseLibRoyale.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseOpenGL.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseOpenMP.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseOpenNI.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UsePNG.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseRealSense2.cmake)
-#INCLUDE(${INFINITAM_DIR}/cmake/UseUVC.cmake)
 find_package( Boost REQUIRED)
 find_package( OpenMP REQUIRED)
 if(OPENMP_FOUND)
@@ -36,6 +19,7 @@ if(OPENMP_FOUND)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
+
 
 include_directories($(HEADER_DIR)
         /usr/local/cuda/include
@@ -46,7 +30,7 @@ include_directories($(HEADER_DIR)
 
 
 
-add_subdirectory(External/InfiniTAM/InfiniTAM)
+add_subdirectory(External/InfiniTAM/InfiniTAM EXCLUDE_FROM_ALL TRUE)
 INCLUDE(External/InfiniTAM/InfiniTAM/cmake/UseCUDA.cmake)
 
 #add_subdirectory(External/g2o/g2o)
@@ -85,8 +69,11 @@ set(TrackerMapper_Sources
         src/ObjSLAM/ObjSLAMCamera.cpp src/ObjSLAM/ObjSLAMCamera.h
         src/ObjSLAM/ObjectInstance_New.tpp src/ObjSLAM/ObjectInstance_New.h
         src/ObjSLAM/ObjectClassLabel_Group.tpp src/ObjSLAM/ObjectClassLabel_Group.h
-        src/ObjSLAM/ObjectView_New.tpp src/ObjSLAM/ObjectView_New.h
-        src/ObjSLAM/ObjSLAMTrackingEngine.cpp src/ObjSLAM/ObjSLAMTrackingEngine.h src/ObjSLAM/DatasetReader.h src/ObjSLAM/DatasetReader.cpp src/ObjSLAM/TeddyReader.cpp src/ObjSLAM/TeddyReader.h)
+        src/ObjSLAM/ObjectView_New.tpp src/ObjSLAM/ObjectView.h
+        src/ObjSLAM/ObjSLAMTrackingEngine.cpp src/ObjSLAM/ObjSLAMTrackingEngine.h
+        src/ObjSLAM/DatasetReader.h src/ObjSLAM/DatasetReader.cpp src/ObjSLAM/TeddyReader.cpp
+        src/ObjSLAM/TeddyReader.h src/ObjSLAM/TUM_Reader.cpp src/ObjSLAM/TUM_Reader.h
+        src/ObjSLAM/ObjSLAMVoxelBlockHash.h src/ObjSLAM/ObjSLAMVoxelSceneParams.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)

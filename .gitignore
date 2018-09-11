@@ -10,3 +10,6 @@ CTestTestfile.cmake
 cmake-build-debug
 cmake-build-default
 build
+output
+test
+build_OMP
