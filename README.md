@@ -24,11 +24,13 @@ Download the dataset which are already prepared with the segmentation: https://p
 
 Run the project:
 ``` 
-$ ./TrackerMapper [Path_To_Dataset]  [Frame_Number] [saveSTL?] [STL_Frequency]
+$ ./TrackerMapper [Path_To_Dataset]  [Frame_Number] [skipNumberOfFrames][saveSTL?] [STL_Frequency]
 ```
 Path_To_Dataset is the path to a dataset, for example home/living_room_traj1_frei_png/. Do not change the folder names of the dataset as the name serves as an identification of which kind of data format it has.
 
 Frame_Number is a positiv integer number, which specifies how many frames will it run.
+
+skipNumberOfFrames: skip N frames after a frame is processed, only works in TUM Reader.
 
 saveSTL = 0 is not save STL, other wise it will save STL model for each object.
 
