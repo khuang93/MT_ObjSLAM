@@ -13,6 +13,8 @@ template<typename TVoxel, typename TIndex>
 class ObjectInstance_New;
 
 
+
+
 template<typename TVoxel, typename TIndex>
 class ObjectClassLabel_Group {
  private:
@@ -20,8 +22,14 @@ class ObjectClassLabel_Group {
   std::string LabelClassName;
   std::vector<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>> object_ptr_vector;
 
+
   public:
+
+  static const std::vector<std::string> label_list;
+
   ObjectClassLabel_Group(int _index, std::string _labelClassName):LabelIndex(_index), LabelClassName(_labelClassName){}
+
+  ObjectClassLabel_Group(int _index):LabelIndex(_index){ LabelClassName = ObjectClassLabel_Group::label_list.at(LabelIndex);}
 
   int getLabelIndex(){  return LabelIndex;}
 

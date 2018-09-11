@@ -66,14 +66,14 @@ int TUM_Reader::readNext(){
   rgb_img = ReadOneRGB(rgb_img_path);
 
   //read labels
-  std::vector<string> label_fileNames = getFileNames(label_path);
+//  std::vector<string> label_fileNames = getFileNames(label_path);
   std::vector<string> filteredNames;
 
-  for (int i = 0; i < label_fileNames.size(); i++) {
-//    std::cout<<label_fileNames.at(i)<<endl;
+  for (int i = 0; i < LabelFileNames.size(); i++) {
+//    std::cout<<LabelFileNames.at(i)<<endl;
     string prefix = rgbd_name_pair.rgb_name + ".png.";
-    if (boost::starts_with(label_fileNames.at(i), prefix) && label_fileNames.at(i) != prefix) {
-      filteredNames.push_back(label_fileNames.at(i));
+    if (boost::starts_with(LabelFileNames.at(i), prefix) && LabelFileNames.at(i) != prefix) {
+      filteredNames.push_back(LabelFileNames.at(i));
     }
   }
 

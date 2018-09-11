@@ -39,6 +39,8 @@ class DatasetReader {
   string path;
   int img_number = 1;
   ITMLib::ITMViewBuilder *viewBuilder = nullptr;
+  std::vector<std::string> LabelFileNames;
+
  public:
   ObjSLAM::ObjUChar4Image *rgb_img;
   ObjSLAM::ObjFloatImage *depth_img;
@@ -48,6 +50,8 @@ class DatasetReader {
   DatasetReader(string _path, Vector2i _imgSize):path(_path),imgSize(_imgSize){
     width = imgSize.x;
     height = imgSize.y;
+    string label_path = path + "/pixel_label/";
+    getFileNames(label_path);
   }
 
   /** Virtual function, reads the next frame and returns the frame number as int.

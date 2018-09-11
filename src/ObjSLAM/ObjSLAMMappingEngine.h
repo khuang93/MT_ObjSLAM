@@ -32,6 +32,7 @@
 #include "ObjectView.h"
 #include "ObjSLAMCamera.h"
 #include "ObjSLAMDataTypes.h"
+#include "ObjectInstance_New.h"
 
 
 
@@ -62,6 +63,11 @@ class ObjSLAMMappingEngine {
 //  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> obj_inst_ptr_vector;
   const std::shared_ptr<ITMLib::ITMLibSettings> settings;
   const std::shared_ptr<ITMLib::ITMRGBDCalib>calib;
+
+  int number_activeObjects=0;
+  int number_totalObjects=0;
+
+  std::shared_ptr<ObjectInstance_New<TVoxel,TIndex>> BG_Object_ptr;
 
 
   ITMLib::ITMDenseMapper<TVoxel, TIndex> *denseMapper;
@@ -141,6 +147,8 @@ class ObjSLAMMappingEngine {
   void outputAllLabelStats();
 
   void outputAllObjImages();
+
+  void prepareTrackingWithAllObj();
 
   //TODO
 //  void visualizeObjectFromMultiPerspective(std::shared_ptr<ObjectInstance_New> obj_inst_ptr);

@@ -12,12 +12,12 @@ std::vector<std::string> DatasetReader::getFileNames(std::string directoryPath) 
     fs::directory_iterator end;
 
     while (it != end) {
-      names.push_back(it->path().filename().string());
+      LabelFileNames.push_back(it->path().filename().string());
       ++it;
     }
   }
 
-  return names;
+  return LabelFileNames;
 }
 
 

@@ -36,6 +36,7 @@ void ProcessOneFrame(){
 
 }
 
+//static global variables
 bool saveSTL = false;
 int STL_Frequency = 1;
 int reader_SkipFrames = 0;
@@ -51,10 +52,14 @@ int main(int argc, char **argv) {
   string path = argv[1];
   Vector2i imgSize(640, 480);
 
-  if(argc>3){
-    saveSTL = (atoi(argv[3])!=0);
+  if(argc>3 && atoi(argv[3])>0){
+    reader_SkipFrames = atoi(argv[3]);
+  }
+
+  if(argc>4){
+    saveSTL = (atoi(argv[4])!=0);
     if(saveSTL){
-      STL_Frequency = atoi(argv[4]);
+      STL_Frequency = atoi(argv[5]);
     }
   }
 
@@ -65,7 +70,7 @@ int main(int argc, char **argv) {
 
 //  ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
   std::shared_ptr<ITMLib::ITMLibSettings> internalSettings = std::make_shared<ITMLib::ITMLibSettings>();
-  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.05f, 10, 0.004f, 0.2, 8.0, false);
+  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.1f, 5, 0.01f, 0.1, 6.0, false);
   //(0.1, 10, 0.025, 0.1, 4.0, false); //(0.02f, 100, 0.002f, 0.2f, 3.0f, false);  //(0.2, 4, 0.05, 0.1, 4.0, false);
 
   internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
@@ -132,6 +137,7 @@ int main(int argc, char **argv) {
 
   int totFrames =atoi( argv[2]);
   while (imgNum<=totFrames) {
+
     std::clock_t start;
     double time;
     start = std::clock();
@@ -148,8 +154,15 @@ int main(int argc, char **argv) {
 
     cout<<sceneIsBackground<<endl;
 
-    shared_ptr<ITMLib::ITMTrackingState>  t_state = trackingEngine->TrackFrame(wholeView.get());
+  /*  shared_ptr<ITMLib::ITMTrackingState> */ t_state = trackingEngine->TrackFrame(wholeView.get());
     //    mappingEngine->UpdateTrackingState(&reader->getPose()->getSE3Pose());
+
+
+  cout<<"Tracker Res: "<<t_state.get()->trackerResult<<endl;
+  if(t_state.get()->trackerResult!=ITMLib::ITMTrackingState::TRACKING_GOOD) {
+    t_state->trackerResult=ITMLib::ITMTrackingState::TRACKING_GOOD;
+//    continue;
+  }
     mappingEngine->UpdateTrackingState(t_state);
 
     mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);

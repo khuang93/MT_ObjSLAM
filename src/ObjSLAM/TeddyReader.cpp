@@ -38,13 +38,13 @@ int TeddyReader::readNext(){
 
 
   //read labels
-  std::vector<string> fileNames = getFileNames(label_path);
+//  std::vector<string> fileNames = getFileNames(label_path);
   std::vector<string> filteredNames;
 
-  for (int i = 0; i < fileNames.size(); i++) {
+  for (int i = 0; i < LabelFileNames.size(); i++) {
     string prefix = img_num_mod_str + ".";
-    if (boost::starts_with(fileNames.at(i), prefix) && fileNames.at(i) != prefix) {
-      filteredNames.push_back(fileNames.at(i));
+    if (boost::starts_with(LabelFileNames.at(i), prefix) && LabelFileNames.at(i) != prefix) {
+      filteredNames.push_back(LabelFileNames.at(i));
     }
   }
 

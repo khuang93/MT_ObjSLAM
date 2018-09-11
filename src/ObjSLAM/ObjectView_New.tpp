@@ -29,6 +29,7 @@ template<typename TVoxel, typename TIndex>
 std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> ObjectView<TVoxel, TIndex>::addLabelToVector(
     std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector,
     std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> new_label) {
+
   if (label_ptr_vector.size() == 0) {
     label_ptr_vector.push_back(new_label);
 //    cout<<new_label.get()->getLabelIndex();
@@ -56,7 +57,7 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
 
   cout << "Setting Obj List...";
 //  std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel,TIndex>>> label_ptr_vector;
-  auto label_ptr_bg_new = std::make_shared<ObjectClassLabel_Group<TVoxel, TIndex>>(0, std::to_string(0));
+  auto label_ptr_bg_new = std::make_shared<ObjectClassLabel_Group<TVoxel, TIndex>>(0/*, std::to_string(0)*/);
   shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr_bg = addLabelToVector(label_ptr_vector,
                                                                                      label_ptr_bg_new);
   std::shared_ptr<ITMLib::ITMRGBDCalib> new_calib_ptr = std::make_shared<ITMLib::ITMRGBDCalib>();
@@ -122,12 +123,14 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
     if (labelIndex != 0) {
       //label
       //create a new label
-      auto label_ptr_new = std::make_shared<ObjectClassLabel_Group<TVoxel, TIndex>>(labelIndex,
-                                                                                    std::to_string(
-                                                                                        labelIndex));
+//      auto label_ptr_new = std::make_shared<ObjectClassLabel_Group<TVoxel, TIndex>>(labelIndex,
+//                                                                                    std::to_string(
+//                                                                                        labelIndex));
 
+      auto label_ptr_new = std::make_shared<ObjectClassLabel_Group<TVoxel, TIndex>>(labelIndex);
       //returns the new label if it is new. if the same class already exists, return the old label instance and discard the new one.
       auto label_ptr = addLabelToVector(label_ptr_vector, label_ptr_new);
+
       
       //create a object instance
       auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr);
@@ -152,11 +155,12 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
   auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>(label_ptr_bg);
 
 //        cout << "label" << new_obj_instance->getClassLabel()->getLabelIndex() << endl;
-
+//TODO use whole view for tracking
+/*    bg_itmview->rgb->SetFrom(this->rgb_Image,ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
+    bg_itmview->depth->SetFrom(this->depth_Image,ORUtils::MemoryBlock<float>::CPU_TO_CPU);*/
 #ifdef WITH_OPENMP
 #pragma omp parallel for
 #endif
-
   //it over pixels
   for (int i = 0; i < this->depth_Image->dataSize; i++) {
 //    int idx_d = this->rgb_d_pixel_idx_vec.at(i);
@@ -185,6 +189,7 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
       }
     }
   }
+
 
 //TODO
 //  new_obj_instance->setAnchorView(this->shared_from_this());
