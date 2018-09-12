@@ -73,6 +73,9 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
 
     auto single_obj_ITMView = std::make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
 
+#ifdef WITH_OPENMP
+#pragma omp parallel for
+#endif
     //it over pixels
     for (int i = 0; i < (*it)->dataSize; ++i) {
       /* int y = i / imgSize_d.x;
@@ -122,11 +125,6 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
     //set all object instance map
     if (labelIndex != 0) {
       //label
-      //create a new label
-//      auto label_ptr_new = std::make_shared<ObjectClassLabel_Group<TVoxel, TIndex>>(labelIndex,
-//                                                                                    std::to_string(
-//                                                                                        labelIndex));
-
       auto label_ptr_new = std::make_shared<ObjectClassLabel_Group<TVoxel, TIndex>>(labelIndex);
       //returns the new label if it is new. if the same class already exists, return the old label instance and discard the new one.
       auto label_ptr = addLabelToVector(label_ptr_vector, label_ptr_new);
@@ -158,19 +156,17 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
 //TODO use whole view for tracking
 /*    bg_itmview->rgb->SetFrom(this->rgb_Image,ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
     bg_itmview->depth->SetFrom(this->depth_Image,ORUtils::MemoryBlock<float>::CPU_TO_CPU);*/
+
 #ifdef WITH_OPENMP
 #pragma omp parallel for
 #endif
-  //it over pixels
   for (int i = 0; i < this->depth_Image->dataSize; i++) {
-//    int idx_d = this->rgb_d_pixel_idx_vec.at(i);
     Vector2i rgb_pixel_loc = d_to_rgb_correspondence->GetElement(i,MEMORYDEVICE_CPU);
     int idx_rgb = rgb_pixel_loc.y*imgSize_d.x+rgb_pixel_loc.x;
 
     if(rgb_pixel_loc.x==-1 || rgb_pixel_loc.y==-1){
       idx_rgb=-1;
     }
-
 //    int idx_d = i;
     if (idx_rgb != -1) {
 
@@ -192,7 +188,6 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
 
 
 //TODO
-//  new_obj_instance->setAnchorView(this->shared_from_this());
   new_obj_instance->setAnchorView_ITM(bg_itmview);
 
   Object_View_Tup<TVoxel, TIndex> object_view_tuple(new_obj_instance, bg_itmview);
@@ -200,9 +195,6 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
   this->obj_view_tup_vec.push_back(object_view_tuple);
 
 //  SaveImageToFile(single_obj_ITMView_bg->depth,"test.ppm");
-//  cout<<"size"<<this->obj_map.size()<<endl;
-
-  //  std::cout << "FINISHED" << std::endl;
 //  return label_ptr_vector;
   delete cam;
 
@@ -217,11 +209,6 @@ void ObjectView<TVoxel, TIndex>::setListOfViews() {
   }
 
 }
-
-//template<typename TVoxel, typename TIndex>
-//std::map<int, Object_View_Tup<TVoxel,TIndex>> ObjectView<TVoxel,TIndex>::getObjMap(){
-//  return obj_map;
-//}
 
 template<typename TVoxel, typename TIndex>
 std::vector<Object_View_Tup<TVoxel, TIndex>> ObjectView<TVoxel, TIndex>::getObjVec() {

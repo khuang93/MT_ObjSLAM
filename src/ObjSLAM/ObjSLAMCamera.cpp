@@ -92,8 +92,10 @@ ORUtils::Vector6<float> ObjSLAMCamera::projectImg2PointCloud(ObjSLAM::ObjFloatIm
   double max_x=0.0;
   double max_y=max_x;
   double max_z=max_x;
-  for (int v = 0; v < imgSize.height; v++) {
-    for (int u = 0; u < imgSize.width; u++) {
+#ifdef WITH_OPENMP
+#pragma omp parallel for num_threads(numthreads)
+#endif
+  for (int v = 0; v < imgSize.height; v++) for (int u = 0; u < imgSize.width; u++) {
       int locId = v * imgSize.width + u;
 
       float zc = in->GetData(MEMORYDEVICE_CPU)[locId];
@@ -106,7 +108,6 @@ ORUtils::Vector6<float> ObjSLAMCamera::projectImg2PointCloud(ObjSLAM::ObjFloatIm
       if(res.z>max_z) max_z=res.z;
       if(res.z<min_z) min_z=res.z;
       PCL->GetData(MEMORYDEVICE_CPU)[locId] = res;
-    }
   }
   ORUtils::Vector6<float> boundingCube(min_x,min_y,min_z,max_x,max_y,max_z);
 //  cout<<"min xyz="<<min_x<<" "<<min_y<<" "<<min_z<<endl;
@@ -121,8 +122,10 @@ shared_ptr<ORUtils::Image<Vector2i>> ObjSLAMCamera::projectDepthPixelToRGB(ObjSL
 
   shared_ptr<ORUtils::Image<Vector2i>> corresponding_RGB_Pixel = std::make_shared<ORUtils::Image<Vector2i>>(imgSize, true, false);
 
-  for (int v = 0; v < imgSize.height; v++) {
-    for (int u = 0; u < imgSize.width; u++) {
+#ifdef WITH_OPENMP
+#pragma omp parallel for num_threads(numthreads)
+#endif
+  for (int v = 0; v < imgSize.height; v++) for (int u = 0; u < imgSize.width; u++) {
       int locId = v * imgSize.width + u;
       float depth_value = in->GetElement(locId, MEMORYDEVICE_CPU);
       Vector4f depth_in(u * depth_value, v * depth_value, depth_value, 1.0f);
@@ -134,8 +137,6 @@ shared_ptr<ORUtils::Image<Vector2i>> ObjSLAMCamera::projectDepthPixelToRGB(ObjSL
       }else{
         corresponding_RGB_Pixel->GetData(MEMORYDEVICE_CPU)[locId] = Vector2i(-1,-1);
       }
-
-    }
   }
   return corresponding_RGB_Pixel;
 }

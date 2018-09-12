@@ -40,6 +40,7 @@ void ProcessOneFrame(){
 bool saveSTL = false;
 int STL_Frequency = 1;
 int reader_SkipFrames = 0;
+int numthreads = 4;
 
 
 int main(int argc, char **argv) {
@@ -139,9 +140,14 @@ int main(int argc, char **argv) {
   while (imgNum<=totFrames) {
 
     std::clock_t start;
+    std::clock_t start_subtask;
     double time;
     start = std::clock();
+    start_subtask=std::clock();
     imgNum = reader->readNext();
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    cout<<"readNext "<<time<<endl;
+    start_subtask=std::clock();
 
     sceneIsBackground = true;
     wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
@@ -154,21 +160,36 @@ int main(int argc, char **argv) {
 
     cout<<sceneIsBackground<<endl;
 
-  /*  shared_ptr<ITMLib::ITMTrackingState> */ t_state = trackingEngine->TrackFrame(wholeView.get());
-    //    mappingEngine->UpdateTrackingState(&reader->getPose()->getSE3Pose());
+    t_state = trackingEngine->TrackFrame(wholeView.get());
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    cout<<"TrackFrame "<<time<<endl;
+    start_subtask=std::clock();
 
 
-  cout<<"Tracker Res: "<<t_state.get()->trackerResult<<endl;
-  if(t_state.get()->trackerResult!=ITMLib::ITMTrackingState::TRACKING_GOOD) {
-    t_state->trackerResult=ITMLib::ITMTrackingState::TRACKING_GOOD;
-//    continue;
-  }
+    cout<<"Tracker Res: "<<t_state.get()->trackerResult<<endl;
+    if(t_state.get()->trackerResult!=ITMLib::ITMTrackingState::TRACKING_GOOD) {
+      t_state->trackerResult=ITMLib::ITMTrackingState::TRACKING_GOOD;
+    }
+
     mappingEngine->UpdateTrackingState(t_state);
+
 
     mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    cout<<"CreateView "<<time<<endl;
+    start_subtask=std::clock();
+
     mappingEngine->ProcessFrame();
+
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    cout<<"ProcessFrame "<<time<<endl;
+    start_subtask=std::clock();
+
     mappingEngine->outputAllObjImages();
+
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    cout<<"outputAllObjImages "<<time<<endl;
 
     time = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
