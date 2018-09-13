@@ -63,11 +63,17 @@ void ObjSLAMTrackingEngine::outputTrackingResults(std::string path) {
 
 void ObjSLAMTrackingEngine::outputTrackingResults(std::ofstream &of) {
   ObjCameraPose obj_cam_pose(*(t_state.get()->pose_d));
-  ORUtils::Vector3<float> pos = t_state.get()->pose_d->GetT();
-  Eigen::Quaterniond eigen_quat = obj_cam_pose.getQuaternion();
-  double time = imgNumber * 0.1;
-  of << time << ", " << 1 << ", " << eigen_quat.w() << ", " << eigen_quat.x() << ", " << eigen_quat.y() << ", "
-     << eigen_quat.z() << ", " << pos.x << ", " << pos.y << ", " << pos.z << endl;
+  ORUtils::SE3Pose pose_inv(t_state.get()->pose_d->GetInvM());
+  ORUtils::Vector3<float> pos = pose_inv.GetT();
+  ObjCameraPose obj_cam_pose_inv(pose_inv);
+  Eigen::Quaterniond eigen_quat = obj_cam_pose_inv.getQuaternion(); //try the inv of the pose
+  double time = imgNumber+reader_SkipFrames*(imgNumber-1);
+
+  of << time << ", "<< pos.x << ", " << pos.y << ", " << pos.z-2.25  << ", " << eigen_quat.x() << ", " << eigen_quat.y() << ", "
+     << eigen_quat.z() << ", " << eigen_quat.w()<< endl;
+
+  //  of << time << ", " << 1 << ", " << eigen_quat.w() << ", " << eigen_quat.x() << ", " << eigen_quat.y() << ", "
+//     << eigen_quat.z() << ", " << pos.x << ", " << pos.y << ", " << pos.z << endl;
 }
 
 }

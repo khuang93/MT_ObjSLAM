@@ -25,6 +25,7 @@ ObjCameraPose::ObjCameraPose(const ORUtils::SE3Pose _se3pose) : se3Pose(_se3pose
   Eigen::Affine3d rot(eigen_pose.normalized().toRotationMatrix());
   Eigen::Affine3d trans(Eigen::Translation3d(t.x,t.y,t.z));
   eigen_pose_mat = (rot*trans).matrix();
+  eigen_pose_inv = Eigen::Quaterniond(eigen_mat.inverse());
 
 //    cout<<"**DEBUG: SE3Mat\n"<<this->getSE3Pose().GetM()<<endl;
 //    //TODO Debug msg
@@ -77,6 +78,9 @@ Eigen::Quaterniond ObjCameraPose::getQuaternion() {
   return eigen_pose;
 }
 
+Eigen::Quaterniond ObjCameraPose::getQuaternionInv() {
+  return eigen_pose_inv;
+}
 
 ObjCameraPose ObjCameraPose::GetTransformation(ObjCameraPose& fromPose, ObjCameraPose& toPose){
   ORUtils::Matrix4<float> fromMatrix = fromPose.getSE3Pose().GetM();

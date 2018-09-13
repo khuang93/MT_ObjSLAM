@@ -67,7 +67,8 @@ class ObjSLAMMappingEngine {
   int number_activeObjects=0;
   int number_totalObjects=0;
 
-  std::shared_ptr<ObjectInstance_New<TVoxel,TIndex>> BG_Object_ptr;
+
+  std::shared_ptr<ObjectInstance_New<TVoxel,TIndex>> BG_object_ptr;
 
 
   ITMLib::ITMDenseMapper<TVoxel, TIndex> *denseMapper;
@@ -108,6 +109,9 @@ class ObjSLAMMappingEngine {
 
   void ProcessFrame();
 
+  void UpdateObjBoolImg();
+  void ApplyBoolImg(ObjectInstance_New_ptr<TVoxel, TIndex> BGobj, shared_ptr<ObjBoolImage> boolImg);
+
   void ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview,
                         ObjectInstanceScene<TVoxel, TIndex> *scene,
                         std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr);
@@ -121,6 +125,7 @@ class ObjSLAMMappingEngine {
                            ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2);
 
   ORUtils::Image<Vector4u> * projectObjectToImg(ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr);
+  ORUtils::Image<Vector4f> * projectObjectToFloatImg(ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr);
 
   bool checkBoundingCubeOverlap(ORUtils::Vector6<float> first, ORUtils::Vector6<float> second);
 

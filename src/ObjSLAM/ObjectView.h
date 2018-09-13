@@ -142,8 +142,9 @@ class ObjectView : public enable_shared_from_this<ObjectView<TVoxel, TIndex>> {
 
   void setListOfObjects(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
 
+  void setListOfObjects_New(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
 
-
+  void updateObjectTrackingState(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
 
 
   static std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> addLabelToVector(
@@ -167,5 +168,5 @@ class ObjectView : public enable_shared_from_this<ObjectView<TVoxel, TIndex>> {
 
 }
 
-#include "ObjectView_New.tpp"
+#include "ObjectView.tpp"
 #endif //MT_OBJSLAM_OBJECTVIEW_NEW_H

@@ -159,7 +159,6 @@ int main(int argc, char **argv) {
     mappingEngine->UpdateImgNumber(imgNum);
 
     cout<<sceneIsBackground<<endl;
-
     t_state = trackingEngine->TrackFrame(wholeView.get());
     time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
     cout<<"TrackFrame "<<time<<endl;
