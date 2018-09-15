@@ -19,3 +19,10 @@ absolute_translational_error.median 0.051959 m
 absolute_translational_error.std 0.029650 m
 absolute_translational_error.min 0.008289 m
 absolute_translational_error.max 0.182478 m
+compared_pose_pairs 302 pairs
+absolute_translational_error.rmse 0.258085 m
+absolute_translational_error.mean 0.237469 m
+absolute_translational_error.median 0.202263 m
+absolute_translational_error.std 0.101076 m
+absolute_translational_error.min 0.114188 m
+absolute_translational_error.max 0.460786 m
