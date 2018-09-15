@@ -13,12 +13,12 @@ set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 
 
 find_package( Boost REQUIRED)
-find_package( OpenMP REQUIRED)
-if(OPENMP_FOUND)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-endif()
+#find_package( OpenMP REQUIRED)
+#if(OPENMP_FOUND)
+#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+#    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+#endif()
 
 
 #if(WITH_GPROF)
@@ -27,8 +27,12 @@ endif()
 #SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
 #endif()
 
+if(WITH_CUDA)
+    include_directories(/usr/local/cuda/include)
+endif()
+
 include_directories($(HEADER_DIR)
-        /usr/local/cuda/include
+
         /usr/include
         External/InfiniTAM/InfiniTAM/InputSource
         External/InfiniTAM/InfiniTAM/ITMLib

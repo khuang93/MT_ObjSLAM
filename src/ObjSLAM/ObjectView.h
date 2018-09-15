@@ -42,7 +42,7 @@ class ObjectView : public enable_shared_from_this<ObjectView<TVoxel, TIndex>> {
   LabelImgVector label_img_vector;
   /*const*/ ObjUChar4Image *rgb_Image;
   /*const*/ ObjFloatImage *depth_Image;
-  ObjFloat4Image *depth_normal;
+//  ObjFloat4Image *depth_normal;
 
   const ITMLib::ITMRGBDCalib &calibration;
   Vector2i imgSize_rgb;
@@ -135,9 +135,9 @@ class ObjectView : public enable_shared_from_this<ObjectView<TVoxel, TIndex>> {
     delete depth_Image;
     delete camera_Pose;
 //    delete segmentation_Mask;
-    if (depth_normal != NULL) {
-      delete depth_normal;
-    }
+//    if (depth_normal != NULL) {
+//      delete depth_normal;
+//    }
   }
 
   void setListOfObjects(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
