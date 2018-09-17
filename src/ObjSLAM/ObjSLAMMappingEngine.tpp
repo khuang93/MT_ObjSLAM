@@ -83,11 +83,11 @@ template<class TVoxel, class TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::ApplyBoolImg(ObjectInstance_New_ptr<TVoxel, TIndex> BGobj, shared_ptr<ObjBoolImage> boolImg){
   shared_ptr<ITMLib::ITMView> BG_view = BGobj->getCurrentView();
   ITMFloatImage* depthImg = BG_view->depth;
-  SaveImageToFile(depthImg,("DepthIn_Before_"+to_string(imgNumber)+".pgm").c_str());
+//  SaveImageToFile(depthImg,("DepthIn_Before_"+to_string(imgNumber)+".pgm").c_str());
   for(size_t i = 0; i< depthImg->dataSize;++i){
     depthImg->GetData(MEMORYDEVICE_CPU)[i]= (int)(!(boolImg->GetData(MEMORYDEVICE_CPU)[i]))*depthImg->GetData(MEMORYDEVICE_CPU)[i];
   }
-  SaveImageToFile(depthImg,("DepthIn_Aft_"+to_string(imgNumber)+".pgm").c_str());
+//  SaveImageToFile(depthImg,("DepthIn_Aft_"+to_string(imgNumber)+".pgm").c_str());
 }
 
 template<class TVoxel, class TIndex>
