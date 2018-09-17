@@ -79,20 +79,7 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
 #endif
     //it over pixels
     for (int i = 0; i < (*it)->dataSize; ++i) {
-      /* int y = i / imgSize_d.x;
-       int x = i % imgSize_d.x;
-       //TODO build a look up list between rgb and d instead of calculate it each time
-       Vector4f pix_rgb ((float)x,(float)y,1.0f,1.0f);
-       Matrix4f K_rgb_inv;
-       cam->getK_rgb().inv(K_rgb_inv);
-       Vector4f pix_d = cam->getK_d()*calibration.trafo_rgb_to_depth.calib*K_rgb_inv*pix_rgb;
- //      cout<<"pix_d"<<pix_d<<endl;
-       int x_d = round(pix_d.x);
-       int y_d = round(pix_d.y);
-       int idx_d=0;
-       if(x_d>=0 && y_d>=0){
-         idx_d = y*imgSize_d.x+x;*/
-//      int idx_d = this->rgb_d_pixel_idx_vec.at(i);
+
       Vector2i rgb_pixel_loc = d_to_rgb_correspondence->GetElement(i, MEMORYDEVICE_CPU);
       int idx_rgb = rgb_pixel_loc.y * imgSize_d.x + rgb_pixel_loc.x;
 
@@ -106,8 +93,6 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
           //if label index == 0 it means it is the first labeled pixel, only one possible number beside the 0s in one label img
           if (labelIndex == 0) { labelIndex = (*it)->GetElement(idx_rgb, MEMORYDEVICE_CPU); }
 
-
-
           //Set value of the each pixel in the segmented itm view
           //TODO depth img is shifted, needed to shift the itm view the tracker is using
 
@@ -117,10 +102,6 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
               MEMORYDEVICE_CPU)[idx_rgb];
         }
       }
-//      }
-
-
-
     }
 
     //set all object instance map
@@ -138,25 +119,20 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
 
       new_obj_instance->setAnchorView(this->shared_from_this());
       new_obj_instance->setAnchorView_ITM(single_obj_ITMView);
-//      new_obj_instance->addObjectInstanceToLabel();
-
 
       Object_View_Tup<TVoxel, TIndex> object_view_tuple(new_obj_instance, single_obj_ITMView);
-
-//      obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(obj_map.size()+1, object_view_tuple));
 
       this->obj_view_tup_vec.push_back(object_view_tuple);
     }
   }
 
   //background
-
   bg_itmview = make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
 
   auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>
       (label_ptr_bg);
 
-//        cout << "label" << new_obj_instance->getClassLabel()->getLabelIndex() << endl;
+
 //TODO use whole view for tracking
 /*    bg_itmview->rgb->SetFrom(this->rgb_Image,ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
     bg_itmview->depth->SetFrom(this->depth_Image,ORUtils::MemoryBlock<float>::CPU_TO_CPU);*/
@@ -171,12 +147,9 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
     if (rgb_pixel_loc.x == -1 || rgb_pixel_loc.y == -1) {
       idx_rgb = -1;
     }
-//    int idx_d = i;
     if (idx_rgb != -1) {
-
       bool is_background = true;
       for (LabelImgVector::iterator it = label_img_vector.begin(); it != label_img_vector.end(); it++) {
-
         if ((*it)->GetElement(idx_rgb, MEMORYDEVICE_CPU) != 0) {
           is_background = false;
           break;
@@ -195,13 +168,11 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
   new_obj_instance->setAnchorView_ITM(bg_itmview);
 
   Object_View_Tup<TVoxel, TIndex> object_view_tuple(new_obj_instance, bg_itmview);
-//  obj_map.insert(std::pair<int, Object_View_Tup<TVoxel,TIndex>>(0, object_view_tuple));
   this->obj_view_tup_vec.push_back(object_view_tuple);
 
 //  SaveImageToFile(single_obj_ITMView_bg->depth,"test.ppm");
 //  return label_ptr_vector;
   delete cam;
-
   cout << "Finished! \n";
 }
 
