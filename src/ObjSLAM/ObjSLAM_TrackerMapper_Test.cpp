@@ -192,7 +192,7 @@ int main(int argc, char **argv) {
 
     time = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
-    cout<<"Img "<<imgNum<< " Time "<<time<<endl;
+    cout<<"Img "<<imgNum<< " Time "<<time<<endl<<endl;
 
   }
 

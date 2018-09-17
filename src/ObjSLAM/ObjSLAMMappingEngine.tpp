@@ -238,7 +238,6 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::prepareTrackingWithAllObj() {
       scene_ptr_vec.push_back(obj_inst_ptr->getScene().get());
     }
   }
-  cout<<"New Prepare!"<<endl;
   t_controller->Prepare(t_state.get(), BG_object_ptr->getRenderState().get(), scene_ptr_vec, view_ptr_vec, visualisationEngine_BG);
 }
 
