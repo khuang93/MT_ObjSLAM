@@ -209,10 +209,11 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       //re-init the bool of newObject
       newObject = true;
     }
-    //TODO
-    //Insert function: prepare tracking with all objs
- //   prepareTrackingWithAllObj();
+
   }
+  //TODO
+  //Insert function: prepare tracking with all objs
+  prepareTrackingWithAllObj();
 }
 
 template<class TVoxel, class TIndex>
@@ -237,7 +238,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::prepareTrackingWithAllObj() {
       scene_ptr_vec.push_back(obj_inst_ptr->getScene().get());
     }
   }
-
+  cout<<"New Prepare!"<<endl;
   t_controller->Prepare(t_state.get(), BG_object_ptr->getRenderState().get(), scene_ptr_vec, view_ptr_vec, visualisationEngine_BG);
 }
 
@@ -279,7 +280,8 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(std::shared_ptr<ITML
                                    obj_inst_ptr->getRenderState().get(),
                                    true);
 
-///*
+    //TODO
+/*
     t_controller->Prepare(this->t_state.get(),
                           scene,
                           obj_inst_ptr.get()->getAnchorView_ITM(),
