@@ -221,24 +221,27 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::prepareTrackingWithAllObj() {
 
   std::vector<ITMLib::ITMView *> view_ptr_vec;
   view_ptr_vec.reserve(number_activeObjects);
+
+//  ITMLib::ITMView** view_ptr_vec_new = new ITMLib::ITMView*[number_activeObjects];
+
   std::vector<ITMLib::ITMScene<TVoxel, TIndex> *> scene_ptr_vec;
   scene_ptr_vec.reserve(number_totalObjects);
+//  ITMLib::ITMScene<TVoxel,TIndex>** scene_ptr_vec_new = new ITMLib::ITMScene<TVoxel,TIndex>*[number_activeObjects];
 
-  for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
-    std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr = label_ptr_vector.at(i);
+  int label_vec_size = label_ptr_vector.size();
+  for (size_t i = 0; i < label_vec_size; ++i) {
     std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> &
-        obj_inst_vec = (label_ptr.get()->getObjPtrVector());
-
-//#ifdef WITH_OPENMP
-//#pragma omp parallel for
-//#endif
+        obj_inst_vec = (label_ptr_vector.at(i).get()->getObjPtrVector());
     for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
       std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr = obj_inst_vec.at(j);
       view_ptr_vec.push_back(obj_inst_ptr->getCurrentView().get());
       scene_ptr_vec.push_back(obj_inst_ptr->getScene().get());
     }
   }
+//  t_controller->Prepare(t_state.get(), BG_object_ptr->getRenderState().get(), scene_ptr_vec_new, view_ptr_vec_new, number_activeObjects,visualisationEngine_BG);
   t_controller->Prepare(t_state.get(), BG_object_ptr->getRenderState().get(), scene_ptr_vec, view_ptr_vec, visualisationEngine_BG);
+//  delete view_ptr_vec_new[];
+//  delete scene_ptr_vec_new[];
 }
 
 template<class TVoxel, class TIndex>
@@ -373,7 +376,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
         if (obj_inst_ptr->getClassLabel()->getLabelIndex() == 0) sceneIsBackground = true;
         else sceneIsBackground = false;
         auto scene = obj_inst_ptr.get()->getScene();
-        string stlname = to_string(label_ptr_vector.at(i)->getLabelIndex()) + "." + to_string(j) + ".stl";
+        string stlname = label_ptr_vector.at(i)->getLabelClassName() + "." + to_string(j) + ".stl";
         SaveSceneToMesh(stlname.c_str(), scene);
       }
     }
