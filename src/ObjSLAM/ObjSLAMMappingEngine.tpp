@@ -12,6 +12,7 @@
 #include <omp.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMVoxelBlockHash.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderState_VH.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMRepresentationAccess.h>
 
 //define the global variable
 bool sceneIsBackground = false;
@@ -349,6 +350,7 @@ template<class TVoxel, class TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
 
   cout << "Number of Objects = " << number_totalObjects << endl;
+  BGVoxelCleanUp();
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
@@ -365,7 +367,6 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
       ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_vec.at(j);
 
       auto scene = obj_inst_ptr->getScene();
-
 
       auto img = std::make_shared<ObjUChar4Image>(imgSize, MEMORYDEVICE_CPU);
 
@@ -411,7 +412,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
 #pragma omp parallel for private(sceneIsBackground)
     for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
       ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
-      sceneIsBackground=obj_inst_ptr->isBackground;
+      sceneIsBackground = obj_inst_ptr->isBackground;
       auto scene = obj_inst_ptr.get()->getScene();
       string stlname = obj_inst_ptr->getClassLabel()->getLabelClassName() + "." + to_string(i) + ".stl";
       SaveSceneToMesh(stlname.c_str(), scene);
@@ -583,7 +584,8 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkImageOverlap(ORUtils::Image<Vect
   for (size_t j = 0; j < imgSize.y; ++j) {
     for (size_t i = 0; i < imgSize.x; ++i) {
       int idx = j * imgSize.x + i;
-      if (first->GetElement(idx, MEMORYDEVICE_CPU) > 0) {
+      auto uchar4ImgPixel = first->GetElement(idx, MEMORYDEVICE_CPU);
+      if (uchar4ImgPixel.x != 0 || uchar4ImgPixel.y != 0 || uchar4ImgPixel.z != 0) {
         if (i < x1_min) x1_min = i;
         if (i > x1_max) x1_max = i;
         if (j < y1_min) y1_min = j;
@@ -763,6 +765,105 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::SaveSceneToMesh(const char *objFileNa
   this_mesh->WriteSTL(objFileName);
 
   delete this_mesh;
+}
+
+template<class TVoxel, class TIndex>
+void ObjSLAMMappingEngine<TVoxel, TIndex>::BGVoxelCleanUp() {
+  std::vector<Vector3s> voxelPos_vec;
+  voxelPos_vec.reserve(100000);
+
+
+/*#ifdef WITH_OPENMP
+#pragma omp parallel
+#endif
+  std::vector<Vector3f> voxelPos_vec_private;
+#ifdef WITH_OPENMP
+#pragma omp for
+#endif */
+  for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
+    ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
+    if (!obj_inst_ptr->isBackground)
+      getVoxelPosFromScene(voxelPos_vec, obj_inst_ptr);
+  }
+
+
+  ITMLib::ITMScene<TVoxel, TIndex> *scene_BG = this->BG_object_ptr->getScene().get();
+
+  for(size_t i = 0; i < voxelPos_vec.size();++i){
+    Vector3s blockPos = voxelPos_vec.at(i);
+    int hashIdx = hashIndex(blockPos);
+
+    while (true)
+    {
+//      ITMHashEntry hashEntry = voxelIndex[hashIdx];
+      ITMHashEntry hashEntry = scene_BG->index.GetEntries()[hashIdx];
+
+      if (IS_EQUAL3(hashEntry.pos, blockPos) && hashEntry.ptr >= 0)
+      {
+//        cache.blockPos = blockPos; cache.blockPtr = hashEntry.ptr * SDF_BLOCK_SIZE3; //khuang: actually no need to use cache
+//        vmIndex = hashIdx + 1; // add 1 to support legacy true / false operations for isFound
+
+        int blockIdx = hashEntry.ptr * SDF_BLOCK_SIZE3;
+      }
+//TODO  add here the code to delete at BlockIdx - blockIdx + 512
+//      if (hashEntry.offset < 1) break;
+//      hashIdx = (sceneIsBackground? SDF_BUCKET_NUM_BG: SDF_BUCKET_NUM) + hashEntry.offset - 1;
+    }
+
+
+//    voxelData[voxelAddress]
+
+ /*   Vector3i blockPos;
+    int linearIdx = pointToVoxelBlockPos(point, blockPos);
+
+    if IS_EQUAL3(blockPos, cache.blockPos)
+    {
+      vmIndex = true;
+      return voxelData[cache.blockPtr + linearIdx];
+    }
+
+    int hashIdx = hashIndex(blockPos);
+
+    while (true)
+    {
+      ITMHashEntry hashEntry = voxelIndex[hashIdx];
+
+      if (IS_EQUAL3(hashEntry.pos, blockPos) && hashEntry.ptr >= 0)
+      {
+        cache.blockPos = blockPos; cache.blockPtr = hashEntry.ptr * SDF_BLOCK_SIZE3; //khuang: actually no need to use cache
+        vmIndex = hashIdx + 1; // add 1 to support legacy true / false operations for isFound
+
+        return voxelData[cache.blockPtr + linearIdx];
+      }
+
+      if (hashEntry.offset < 1) break;
+      hashIdx = (sceneIsBackground? SDF_BUCKET_NUM_BG: SDF_BUCKET_NUM) + hashEntry.offset - 1;
+    }*/
+
+  }
+
+
+  //do sth with the voxelPos_vec
+
+}
+
+template<class TVoxel, class TIndex>
+void ObjSLAMMappingEngine<TVoxel, TIndex>::
+getVoxelPosFromScene(std::vector<Vector3s> voxelPos_vec, ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr) {
+
+  ITMLib::ITMScene<TVoxel, TIndex> *scene = obj_ptr->getScene().get();
+//  TIndex index = scene->index;
+//  ITMLib::ITMLocalVBA<TVoxel> locVBA = scene->localVBA;
+  ITMLib::ITMRenderState_VH *renderState_vh = (ITMLib::ITMRenderState_VH *) obj_ptr->getRenderState().get();
+  int *visibleEntryIDs = renderState_vh->GetVisibleEntryIDs();
+  const typename ITMLib::ITMVoxelBlockHash::IndexData *voxelIndex = scene->index.getIndexData();
+
+  for (int blockNo = 0; blockNo < renderState_vh->noVisibleEntries; ++blockNo) {
+    ITMHashEntry &blockData(scene->index.GetEntries()[visibleEntryIDs[blockNo]]);
+    voxelPos_vec.push_back(blockData.pos);
+    cout << "BlockNo" << blockNo << " Pos" << blockData.pos << endl;
+  }
+
 }
 
 }

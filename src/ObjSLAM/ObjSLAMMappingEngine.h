@@ -81,6 +81,8 @@ class ObjSLAMMappingEngine {
     this->view_vec.reserve(memory_size);
   }
 
+  void getVoxelPosFromScene(std::vector<Vector3s> voxelPos_vec, ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr);
+
  public:
   //Constructor with LPD Dataset
   ObjSLAMMappingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,
@@ -171,6 +173,8 @@ class ObjSLAMMappingEngine {
 //  void visualizeObjectFromMultiPerspective(std::shared_ptr<ObjectInstance_New> obj_inst_ptr);
 
   //TODO
+  void BGVoxelCleanUp();
+
 
 
 //  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> getObjInstPtrVec(){return this->obj_inst_ptr_vector;}
