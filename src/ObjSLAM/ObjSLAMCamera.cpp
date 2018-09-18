@@ -33,7 +33,9 @@ bool ObjSLAMCamera::projectPointCloud2Img(ORUtils::Image<Vector4f> *PCL, ObjFloa
   Matrix4f pose_mat = pose.getSE3Pose().GetM();
 //  std::cout<<pose_mat<<std::endl<<std::endl;
 
-
+#ifdef WITH_OPENMP
+#pragma omp parallel for
+#endif
   for (size_t i = 0; i < PCL->dataSize; i++) {
 //    Vector3f point = PCL->GetElement(i,MEMORYDEVICE_CPU).toVector3();
 //    Eigen::Vector4f point_eigen(point.x, point.y, point.z, 1);
@@ -93,7 +95,7 @@ ORUtils::Vector6<float> ObjSLAMCamera::projectImg2PointCloud(ObjSLAM::ObjFloatIm
   double max_y=max_x;
   double max_z=max_x;
 #ifdef WITH_OPENMP
-#pragma omp parallel for num_threads(numthreads)
+#pragma omp parallel for /*num_threads(numthreads)*/
 #endif
   for (int v = 0; v < imgSize.height; v++) for (int u = 0; u < imgSize.width; u++) {
       int locId = v * imgSize.width + u;
@@ -123,7 +125,7 @@ shared_ptr<ORUtils::Image<Vector2i>> ObjSLAMCamera::projectDepthPixelToRGB(ObjSL
   shared_ptr<ORUtils::Image<Vector2i>> corresponding_RGB_Pixel = std::make_shared<ORUtils::Image<Vector2i>>(imgSize, true, false);
 
 #ifdef WITH_OPENMP
-#pragma omp parallel for num_threads(numthreads)
+#pragma omp parallel for /*num_threads(numthreads)*/
 #endif
   for (int v = 0; v < imgSize.height; v++) for (int u = 0; u < imgSize.width; u++) {
       int locId = v * imgSize.width + u;

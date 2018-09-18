@@ -31,6 +31,7 @@ class ObjectInstance_New : public std::enable_shared_from_this<ObjectInstance_Ne
   std::shared_ptr<ORUtils::Image<bool>> prevFrameProjectedToCurrent;
  public:
   bool isBackground = false;
+  bool isVisible = true;
 
   //Constructor
   ObjectInstance_New(std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> _label) :
@@ -75,6 +76,8 @@ class ObjectInstance_New : public std::enable_shared_from_this<ObjectInstance_Ne
   void updateBoolImage(ITMLib::ITMVisualisationEngine<TVoxel, TIndex>* vis_eng);
 
   int getLabelIndex() { return this->getClassLabel()->getLabelIndex(); }
+
+  void updateVisibility(){ isVisible = ((ITMLib::ITMRenderState_VH*)this->getRenderState().get())->noVisibleEntries > 0; }
 
 };
 
