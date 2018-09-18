@@ -769,6 +769,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::SaveSceneToMesh(const char *objFileNa
 
 template<class TVoxel, class TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::BGVoxelCleanUp() {
+
   std::vector<Vector3s> voxelPos_vec;
   voxelPos_vec.reserve(100000);
 
@@ -782,21 +783,23 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::BGVoxelCleanUp() {
 #endif */
   for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
     ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
-    if (!obj_inst_ptr->isBackground)
-      getVoxelPosFromScene(voxelPos_vec, obj_inst_ptr);
+    if (!obj_inst_ptr->isBackground)      getVoxelPosFromScene(voxelPos_vec, obj_inst_ptr);
   }
 
+  int size = voxelPos_vec.size();
 
   ITMLib::ITMScene<TVoxel, TIndex> *scene_BG = this->BG_object_ptr->getScene().get();
-
-  for(size_t i = 0; i < voxelPos_vec.size();++i){
+//  sceneIsBackground=true;
+  for(size_t i = 0; i <size; ++i){
     Vector3s blockPos = voxelPos_vec.at(i);
     int hashIdx = hashIndex(blockPos);
 
+    //loop in the hashBucket
     while (true)
     {
 //      ITMHashEntry hashEntry = voxelIndex[hashIdx];
       ITMHashEntry hashEntry = scene_BG->index.GetEntries()[hashIdx];
+      TVoxel* voxelData = scene_BG->localVBA.GetVoxelBlocks();
 
       if (IS_EQUAL3(hashEntry.pos, blockPos) && hashEntry.ptr >= 0)
       {
@@ -804,10 +807,17 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::BGVoxelCleanUp() {
 //        vmIndex = hashIdx + 1; // add 1 to support legacy true / false operations for isFound
 
         int blockIdx = hashEntry.ptr * SDF_BLOCK_SIZE3;
+        hashEntry.ptr = -1;
+        //TODO  add here the code to delete at BlockIdx - blockIdx + 512
+        for(size_t idx = 0 ; idx < SDF_BLOCK_SIZE3; ++idx){
+          auto* toDelete = &voxelData[blockIdx+idx];
+          delete toDelete;
+        }
+
       }
-//TODO  add here the code to delete at BlockIdx - blockIdx + 512
-//      if (hashEntry.offset < 1) break;
-//      hashIdx = (sceneIsBackground? SDF_BUCKET_NUM_BG: SDF_BUCKET_NUM) + hashEntry.offset - 1;
+
+      if (hashEntry.offset < 1) break;
+      hashIdx = (sceneIsBackground? SDF_BUCKET_NUM_BG: SDF_BUCKET_NUM) + hashEntry.offset - 1;
     }
 
 
@@ -849,7 +859,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::BGVoxelCleanUp() {
 
 template<class TVoxel, class TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::
-getVoxelPosFromScene(std::vector<Vector3s> voxelPos_vec, ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr) {
+getVoxelPosFromScene(std::vector<Vector3s>& voxelPos_vec, ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr) {
 
   ITMLib::ITMScene<TVoxel, TIndex> *scene = obj_ptr->getScene().get();
 //  TIndex index = scene->index;
@@ -861,7 +871,7 @@ getVoxelPosFromScene(std::vector<Vector3s> voxelPos_vec, ObjectInstance_New_ptr<
   for (int blockNo = 0; blockNo < renderState_vh->noVisibleEntries; ++blockNo) {
     ITMHashEntry &blockData(scene->index.GetEntries()[visibleEntryIDs[blockNo]]);
     voxelPos_vec.push_back(blockData.pos);
-    cout << "BlockNo" << blockNo << " Pos" << blockData.pos << endl;
+//    cout << "BlockNo" << blockNo << " Pos" << blockData.pos << endl;
   }
 
 }

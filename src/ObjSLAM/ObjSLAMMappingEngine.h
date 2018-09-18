@@ -81,7 +81,7 @@ class ObjSLAMMappingEngine {
     this->view_vec.reserve(memory_size);
   }
 
-  void getVoxelPosFromScene(std::vector<Vector3s> voxelPos_vec, ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr);
+  void getVoxelPosFromScene(std::vector<Vector3s>& voxelPos_vec, ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr);
 
  public:
   //Constructor with LPD Dataset
