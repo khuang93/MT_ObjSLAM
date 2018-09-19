@@ -484,7 +484,7 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkImageOverlap(ObjSLAM::ObjFloatIm
 //  cout<<"checkImageOverlap\n";
   //parameter to set which % of the pixels must match
   double threshold_areaChange = 0.05;
-  double threshold_overlap = 0.4;
+  double threshold_overlap = 0.25;
 
   int x1_min = imgSize.x - 1;
   int x2_min = imgSize.x - 1;
@@ -545,7 +545,7 @@ bool ObjSLAMMappingEngine<TVoxel, TIndex>::checkImageOverlap(ORUtils::Image<Vect
 //  cout<<"checkImageOverlap\n";
   //parameter to set which % of the pixels must match
   double threshold_areaChange = 0.05;
-  double threshold_overlap = 0.4;
+  double threshold_overlap = 0.25;
 
   int x1_min = imgSize.x - 1;
   int x2_min = imgSize.x - 1;
