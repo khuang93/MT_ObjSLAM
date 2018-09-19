@@ -21,8 +21,18 @@ if(OPENMP_FOUND)
 endif()
 
 
+#if(WITH_GPROF)
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
+#SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+#endif()
+
+if(WITH_CUDA)
+    include_directories(/usr/local/cuda/include)
+endif()
+
 include_directories($(HEADER_DIR)
-        /usr/local/cuda/include
+
         /usr/include
         External/InfiniTAM/InfiniTAM/InputSource
         External/InfiniTAM/InfiniTAM/ITMLib
@@ -69,7 +79,7 @@ set(TrackerMapper_Sources
         src/ObjSLAM/ObjSLAMCamera.cpp src/ObjSLAM/ObjSLAMCamera.h
         src/ObjSLAM/ObjectInstance_New.tpp src/ObjSLAM/ObjectInstance_New.h
         src/ObjSLAM/ObjectClassLabel_Group.tpp src/ObjSLAM/ObjectClassLabel_Group.h
-        src/ObjSLAM/ObjectView_New.tpp src/ObjSLAM/ObjectView.h
+        src/ObjSLAM/ObjectView.tpp src/ObjSLAM/ObjectView.h
         src/ObjSLAM/ObjSLAMTrackingEngine.cpp src/ObjSLAM/ObjSLAMTrackingEngine.h
         src/ObjSLAM/DatasetReader.h src/ObjSLAM/DatasetReader.cpp src/ObjSLAM/TeddyReader.cpp
         src/ObjSLAM/TeddyReader.h src/ObjSLAM/TUM_Reader.cpp src/ObjSLAM/TUM_Reader.h

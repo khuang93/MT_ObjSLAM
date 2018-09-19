@@ -80,7 +80,6 @@ int TUM_Reader::readNext(){
   std::sort(filteredNames.begin(), filteredNames.end());
 
   for (int i = 0; i < filteredNames.size(); i++) {
-
     label_img_vector.push_back(ReadLabel_OneFile(label_path + filteredNames.at(i)));
   }
 

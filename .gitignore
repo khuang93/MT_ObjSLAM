@@ -13,3 +13,6 @@ build
 output
 test
 build_OMP
+Profiler
+CudaBuild
+

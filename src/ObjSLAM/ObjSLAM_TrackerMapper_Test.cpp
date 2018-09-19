@@ -26,6 +26,7 @@
 #include <g2o/types/slam3d_addons/types_slam3d_addons.h>
 
 #include <ctime>
+#include <sys/time.h>
 
 #include <src/ObjSLAM/ObjSLAMVoxelSceneParams.h>
 
@@ -40,17 +41,19 @@ void ProcessOneFrame(){
 bool saveSTL = false;
 int STL_Frequency = 1;
 int reader_SkipFrames = 0;
+int numthreads = 4;
+int totFrames;
 
 
 int main(int argc, char **argv) {
   //TODO Debug output
   cout << "**Hello SLAM World!" << endl;
-//  cout<<ITMLib::ITMVoxelBlockHash::noTotalEntries<<endl;
-
 
   //Path of the depth image file
   string path = argv[1];
   Vector2i imgSize(640, 480);
+
+  totFrames =atoi( argv[2]);
 
   if(argc>3 && atoi(argv[3])>0){
     reader_SkipFrames = atoi(argv[3]);
@@ -135,13 +138,27 @@ int main(int argc, char **argv) {
 
 
 
-  int totFrames =atoi( argv[2]);
+
   while (imgNum<=totFrames) {
 
     std::clock_t start;
+    std::clock_t start_subtask;
+
+    std::chrono::duration<double> wctduration;
+
+
     double time;
     start = std::clock();
+    start_subtask=std::clock();
+    auto wcts = std::chrono::system_clock::now();
+    auto wcts_sub = std::chrono::system_clock::now();
+
+
     imgNum = reader->readNext();
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    cout<<"readNext "<<time<<endl;
+    start_subtask=std::clock();
+    wcts_sub=std::chrono::system_clock::now();
 
     sceneIsBackground = true;
     wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
@@ -153,26 +170,48 @@ int main(int argc, char **argv) {
     mappingEngine->UpdateImgNumber(imgNum);
 
     cout<<sceneIsBackground<<endl;
+    t_state = trackingEngine->TrackFrame(wholeView.get());
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    wctduration = (std::chrono::system_clock::now() - wcts_sub);
+    cout<<"TrackFrame "<<wctduration.count()<<endl;
+    start_subtask=std::clock();
+    wcts_sub=std::chrono::system_clock::now();
 
-  /*  shared_ptr<ITMLib::ITMTrackingState> */ t_state = trackingEngine->TrackFrame(wholeView.get());
-    //    mappingEngine->UpdateTrackingState(&reader->getPose()->getSE3Pose());
 
+    cout<<"Tracker Res: "<<t_state.get()->trackerResult<<endl;
+    if(t_state.get()->trackerResult!=ITMLib::ITMTrackingState::TRACKING_GOOD) {
+      t_state->trackerResult=ITMLib::ITMTrackingState::TRACKING_GOOD;
+    }
 
-  cout<<"Tracker Res: "<<t_state.get()->trackerResult<<endl;
-  if(t_state.get()->trackerResult!=ITMLib::ITMTrackingState::TRACKING_GOOD) {
-    t_state->trackerResult=ITMLib::ITMTrackingState::TRACKING_GOOD;
-//    continue;
-  }
     mappingEngine->UpdateTrackingState(t_state);
+
 
     mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    wctduration = (std::chrono::system_clock::now() - wcts_sub);
+    cout<<"CreateView "<<wctduration.count()<<endl;
+    start_subtask=std::clock();
+    wcts_sub=std::chrono::system_clock::now();
+
     mappingEngine->ProcessFrame();
+
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    wctduration = (std::chrono::system_clock::now() - wcts_sub);
+    cout<<"ProcessFrame "<<wctduration.count()<<endl;
+    start_subtask=std::clock();
+    wcts_sub=std::chrono::system_clock::now();
+
     mappingEngine->outputAllObjImages();
 
-    time = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    wctduration = (std::chrono::system_clock::now() - wcts_sub);
+    cout<<"outputAllObjImages "<<wctduration.count()<<endl;
 
-    cout<<"Img "<<imgNum<< " Time "<<time<<endl;
+    time = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+    wctduration = (std::chrono::system_clock::now() - wcts);
+
+    cout<<"Img "<<imgNum<< " Time "<<wctduration.count()<<endl<<endl;
 
   }
 

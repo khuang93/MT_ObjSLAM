@@ -7,9 +7,11 @@
 #include <memory>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderState.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/Tracking/ITMTrackingState.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Visualisation/Interface/ITMVisualisationEngine.h>
 #include "ObjectClassLabel_Group.h"
 #include "ObjectInstanceScene.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Views/ITMView.h"
+#include "ObjSLAMDataTypes.h"
 
 namespace ObjSLAM {
 template<class TVoxel, class TIndex>
@@ -26,8 +28,10 @@ class ObjectInstance_New : public std::enable_shared_from_this<ObjectInstance_Ne
   std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> scene;
   std::shared_ptr<ITMLib::ITMRenderState> r_state;
   std::shared_ptr<ITMLib::ITMTrackingState> t_state;
+  std::shared_ptr<ORUtils::Image<bool>> prevFrameProjectedToCurrent;
  public:
   bool isBackground = false;
+  bool isVisible = true;
 
   //Constructor
   ObjectInstance_New(std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> _label) :
@@ -62,7 +66,18 @@ class ObjectInstance_New : public std::enable_shared_from_this<ObjectInstance_Ne
   std::shared_ptr<ITMLib::ITMRenderState> getRenderState() { return this->r_state; }
   std::shared_ptr<ITMLib::ITMTrackingState> getTrackingState() { return this->t_state; }
 
+  std::shared_ptr<ORUtils::Image<bool>> getBoolImage(){return this->prevFrameProjectedToCurrent;}
+  void setBoolImage(std::shared_ptr<ORUtils::Image<bool>> _boolImg){this->prevFrameProjectedToCurrent=_boolImg;}
+
+  void initBoolImage(){
+    prevFrameProjectedToCurrent=std::make_shared<ORUtils::Image<bool>>(this->current_view->depth->noDims, true, false);
+    for(size_t i = 0; i<prevFrameProjectedToCurrent->dataSize;++i)   prevFrameProjectedToCurrent->GetData(MEMORYDEVICE_CPU)[i]=true;
+  }
+  void updateBoolImage(ITMLib::ITMVisualisationEngine<TVoxel, TIndex>* vis_eng);
+
   int getLabelIndex() { return this->getClassLabel()->getLabelIndex(); }
+
+  void updateVisibility(){ isVisible = ((ITMLib::ITMRenderState_VH*)this->getRenderState().get())->noVisibleEntries > 0; }
 
 };
 

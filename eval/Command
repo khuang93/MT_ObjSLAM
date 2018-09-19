@@ -1,0 +1,1 @@
+evaluate_ate.py rgbd_dataset_freiburg1_xyz-groundtruth.txt groundtruth.txt --max_pairs 10000 --plot figure.png --offset 0 --scale 1 --verbose

@@ -8,6 +8,8 @@ extern bool sceneIsBackground;
 extern bool saveSTL;
 extern int STL_Frequency;
 extern int reader_SkipFrames;
+extern int numthreads;
+extern int totFrames;
 //class ObjSLAMVoxelSceneParams{
 //
 // public:
