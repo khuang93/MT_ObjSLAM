@@ -789,17 +789,19 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::BGVoxelCleanUp() {
   int size = voxelPos_vec.size();
 
   ITMLib::ITMScene<TVoxel, TIndex> *scene_BG = this->BG_object_ptr->getScene().get();
-//  sceneIsBackground=true;
+  sceneIsBackground=true;
   for(size_t i = 0; i <size; ++i){
     Vector3s blockPos = voxelPos_vec.at(i);
     int hashIdx = hashIndex(blockPos);
+    TVoxel* voxelData = scene_BG->localVBA.GetVoxelBlocks();
+    int *voxelAllocationList = scene_BG->localVBA.GetAllocationList();
+    int noAllocatedVoxelEntries = scene_BG->localVBA.lastFreeBlockId;
 
     //loop in the hashBucket
     while (true)
     {
 //      ITMHashEntry hashEntry = voxelIndex[hashIdx];
       ITMHashEntry hashEntry = scene_BG->index.GetEntries()[hashIdx];
-      TVoxel* voxelData = scene_BG->localVBA.GetVoxelBlocks();
 
       if (IS_EQUAL3(hashEntry.pos, blockPos) && hashEntry.ptr >= 0)
       {
@@ -807,11 +809,27 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::BGVoxelCleanUp() {
 //        vmIndex = hashIdx + 1; // add 1 to support legacy true / false operations for isFound
 
         int blockIdx = hashEntry.ptr * SDF_BLOCK_SIZE3;
-        hashEntry.ptr = -1;
-        //TODO  add here the code to delete at BlockIdx - blockIdx + 512
-        for(size_t idx = 0 ; idx < SDF_BLOCK_SIZE3; ++idx){
-          auto* toDelete = &voxelData[blockIdx+idx];
-          delete toDelete;
+        if(hashEntry.ptr>=0){
+
+//          voxelAllocationList[vbaIdx + 1] = hashEntry.ptr;
+
+          //copied from SwappingEngine_CPU
+          int vbaIdx = noAllocatedVoxelEntries;
+          if (vbaIdx < (sceneIsBackground? SDF_BUCKET_NUM_BG: SDF_BUCKET_NUM) - 1)
+          {
+            noAllocatedVoxelEntries++;
+            voxelAllocationList[vbaIdx + 1] = hashEntry.ptr;
+            hashEntry.ptr = -1;
+
+            for (int idx = 0; idx < SDF_BLOCK_SIZE3; idx++) voxelData[blockIdx+idx] = TVoxel();
+          }
+
+
+//          hashEntry.ptr = -2;
+//          //TODO  add here the code to delete at BlockIdx - blockIdx + 512
+//          for(size_t idx = 0 ; idx < SDF_BLOCK_SIZE3; ++idx){
+//             voxelData[blockIdx+idx] = TVoxel();
+//          }
         }
 
       }
