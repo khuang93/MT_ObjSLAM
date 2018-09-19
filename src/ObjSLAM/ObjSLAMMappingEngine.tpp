@@ -46,7 +46,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjFloatImage *_depth,
   }
 
   this->UpdateViewPose();
-  this->UpdateObjBoolImg();
+//  this->UpdateObjBoolImg();
 
 
   //init all objects in view
@@ -56,28 +56,6 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::CreateView(ObjFloatImage *_depth,
 
 template<class TVoxel, class TIndex>
 void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateObjBoolImg() {
-  /*for (size_t i = 0; i < label_ptr_vector.size(); ++i) {
-    std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label_ptr = label_ptr_vector.at(i);
-
-    if(label_ptr->getLabelIndex()==0) continue; //skip the BG label and scene
-
-    std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> &obj_inst_vec = (label_ptr.get()->getObjPtrVector());
-
-    for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
-      ObjectInstance_New_ptr<TVoxel,TIndex> obj_inst_ptr = obj_inst_vec.at(j);
-
-      auto* img = this->projectObjectToImg(obj_inst_ptr);
-
-      std::shared_ptr<ObjBoolImage> boolImg = std::make_shared<ObjBoolImage>(imgSize,true, false);
-      for(size_t it = 0; it<img->dataSize; ++it){
-          if(img->GetData(MEMORYDEVICE_CPU)[it].x!=0||img->GetData(MEMORYDEVICE_CPU)[it].y!=0||img->GetData(MEMORYDEVICE_CPU)[it].z!=0){
-            boolImg->GetData(MEMORYDEVICE_CPU)[it]=true;
-          }
-      }
-      SaveImageToFile(boolImg.get(), "Projected_bool.ppm");
-      obj_inst_ptr->setBoolImage(boolImg);
-    }
-  }*/
 #ifdef WITH_OPENMP
 #pragma omp parallel for
 #endif
@@ -223,9 +201,9 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessFrame() {
       } else {
         //Update the rgb and d of the BG view
 
-        if (obj_inst_ptr->getLabelIndex() != 0 && imgNumber > 1) {
-          ApplyBoolImg(BG_object_ptr, obj_inst_ptr->getBoolImage());
-        }
+//        if (obj_inst_ptr->getLabelIndex() != 0 && imgNumber > 1) {
+//          ApplyBoolImg(BG_object_ptr, obj_inst_ptr->getBoolImage());
+//        }
       }
 
 
