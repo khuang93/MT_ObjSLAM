@@ -9,6 +9,8 @@ RGB_D_NamePair TUM_Reader::get_RGB_D_filenames(std::istream & associate_src){
   string rgb_name;
   string garbage;
 
+  if(associate_src.eof()) return RGB_D_NamePair{"",""};
+
   associate_src>>depth_name;
   associate_src>>garbage;
   associate_src>>rgb_name;
@@ -39,7 +41,10 @@ int TUM_Reader::readNext(){
 
 
   RGB_D_NamePair rgbd_name_pair = get_RGB_D_filenames(associate_f_stream);
-
+  if(rgbd_name_pair.depth_name.empty()&&rgbd_name_pair.rgb_name.empty()){
+    cout<<endl<<"No more images, Programm will exit! \n";
+    return -1;
+  }
 //  std::cout<<rgbd_name_pair.rgb_name<<endl;
 //  std::cout<<rgbd_name_pair.depth_name<<endl;
 

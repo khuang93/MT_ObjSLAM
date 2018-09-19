@@ -155,6 +155,8 @@ int main(int argc, char **argv) {
 
 
     imgNum = reader->readNext();
+    if(imgNum == -1) return 0;
+
     time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
     cout<<"readNext "<<time<<endl;
     start_subtask=std::clock();

@@ -284,6 +284,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(std::shared_ptr<ITML
 
     tmp_t_state->Reset();
 //    cout<<"!!!!!!\n";
+    //TODO dataset living0n hat segfault here. Pose d has no info at Frame 27
     tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
     tmp_t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
     denseMapper->ProcessFrame(itmview.get(), tmp_t_state.get(), scene, obj_inst_ptr->getRenderState().get(), true);
