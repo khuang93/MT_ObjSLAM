@@ -387,7 +387,7 @@ void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
   }
   //save stl
   if (saveSTL && imgNumber % STL_Frequency == 0) {
-#pragma omp parallel for private(sceneIsBackground)
+//#pragma omp parallel for private(sceneIsBackground)
     for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
       ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
       sceneIsBackground = obj_inst_ptr->isBackground;
