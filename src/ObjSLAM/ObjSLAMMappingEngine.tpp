@@ -139,15 +139,16 @@ namespace ObjSLAM {
                     }
                     newObject = true;
                 } else {
-#ifdef WITH_OPENMP
-#pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
-#endif
+//#ifdef WITH_OPENMP
+//#pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
+//#endif
                     for (size_t i = 0; i < obj_ptr_vec->size(); ++i) {
                         ObjectInstance_ptr<TVoxel, TIndex> existing_obj_ptr = obj_ptr_vec->at(i);
 
                         if (obj_inst_ptr->isBackground) {
                             newObject = false;
                         } else if (existing_obj_ptr->isVisible) {
+                            sceneIsBackground==false;
                             newObject = !this->checkIsSameObject2D(existing_obj_ptr, obj_inst_ptr);
                         }
                         if (!newObject) {
@@ -172,7 +173,10 @@ namespace ObjSLAM {
                 if (newObject) {
                     number_activeObjects++;
                     number_totalObjects++;
-                    if (obj_inst_ptr->isBackground && BG_object_ptr.get() == nullptr) BG_object_ptr = obj_inst_ptr;
+                    sceneIsBackground=obj_inst_ptr->isBackground;
+                    if (obj_inst_ptr->isBackground && BG_object_ptr.get() == nullptr) {
+                        BG_object_ptr = obj_inst_ptr;
+                    }
 
                     auto obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(
                             sceneParams_ptr.get(),
@@ -437,7 +441,7 @@ namespace ObjSLAM {
         sceneIsBackground = obj_inst_ptr->isBackground;
 
         const auto scene = obj_inst_ptr->getScene();
-
+        //TODO segfault
         visualisationEngine->RenderImage(scene.get(),
                                          this->t_state->pose_d,
                                          &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
