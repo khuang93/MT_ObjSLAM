@@ -102,6 +102,10 @@ namespace ObjSLAM {
         if (view->getObjVec().size() > 0) {
 
             bool newObject = true;
+
+            int number_free_preallocation = this->number_preallocation - number_totalObjects;
+
+            bool usePreallocation = number_free_preallocation > view->getObjVec().size();
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
 #endif
@@ -139,9 +143,9 @@ namespace ObjSLAM {
                     }
                     newObject = true;
                 } else {
-//#ifdef WITH_OPENMP
-//#pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
-//#endif
+#ifdef WITH_OPENMP
+#pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
+#endif
                     for (size_t i = 0; i < obj_ptr_vec->size(); ++i) {
                         ObjectInstance_ptr<TVoxel, TIndex> existing_obj_ptr = obj_ptr_vec->at(i);
 
@@ -178,11 +182,19 @@ namespace ObjSLAM {
                         BG_object_ptr = obj_inst_ptr;
                     }
 
-                    auto obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(
-                            sceneParams_ptr.get(),
-                            useSwapping,
-                            MEMORYDEVICE_CPU);
-                    obj_inst_ptr->setScene(obj_inst_scene_ptr);
+
+                    if(!usePreallocation){
+                        auto obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(
+                                sceneParams_ptr.get(),
+                                useSwapping,
+                                MEMORYDEVICE_CPU);
+                        obj_inst_ptr->setScene(obj_inst_scene_ptr);
+                    }else{
+                        obj_inst_ptr->setScene(preAllocation_array[number_totalObjects]);
+                    }
+
+
+
 
                     std::shared_ptr<ITMLib::ITMRenderState> renderState_ptr(
                             new ITMLib::ITMRenderState_VH((sceneIsBackground
@@ -197,8 +209,8 @@ namespace ObjSLAM {
                     auto t_state_ptr = std::make_shared<ITMLib::ITMTrackingState>(imgSize, MEMORYDEVICE_CPU);
                     obj_inst_ptr->setTrackingState(t_state_ptr);
 
-                    denseMapper->ResetScene(obj_inst_scene_ptr.get());
-
+//                    denseMapper->ResetScene(obj_inst_scene_ptr.get());
+                    denseMapper->ResetScene(obj_inst_ptr->getScene().get());
                 } else {
 
                     //Update the rgb and d of the BG view using boolImg
@@ -715,11 +727,29 @@ namespace ObjSLAM {
         delete this->visualisationEngine;
         delete this->visualisationEngine_BG;
         delete this->denseMapper;
+        delete[] preAllocation_array;
 //  delete this->calib;
 //  delete this->settings;
 //  delete this->t_state;
 //  delete this->r_state;
 //  delete this->r_state_BG;
+    }
+
+    template<class TVoxel, class TIndex>
+    void ObjSLAMMappingEngine<TVoxel, TIndex>::preAllocateObjects(int n){
+//        sceneIsBackground=true;
+//        auto bg_scene = std::make_shared<ObjectInstanceScene<TVoxel,TIndex>>(sceneParams_ptr.get(), false, MEMORYDEVICE_CPU);
+        sceneIsBackground=false;
+
+        preAllocation_array = new std::shared_ptr<ObjectInstanceScene<TVoxel,TIndex>>[n];
+
+#ifdef WITH_OPENMP
+#pragma omp parallel for
+#endif
+        for(int i=0; i<n;++i){
+            auto scene = std::make_shared<ObjectInstanceScene<TVoxel,TIndex>>(sceneParams_ptr.get(), false, MEMORYDEVICE_CPU);
+            preAllocation_array[n] = scene;
+        }
     }
 
     template<class TVoxel, class TIndex>
