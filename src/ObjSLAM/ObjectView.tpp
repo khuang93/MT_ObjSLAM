@@ -4,7 +4,7 @@
 
 #include "ObjectView.h"
 
-#include "ObjectInstance_New.h"
+#include "ObjectInstance.h"
 #include "ObjSLAMCamera.h"
 
 namespace ObjSLAM {
@@ -81,12 +81,14 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
     for (int i = 0; i < (*it)->dataSize; ++i) {
 
       Vector2i rgb_pixel_loc = d_to_rgb_correspondence->GetElement(i, MEMORYDEVICE_CPU);
-      int idx_rgb = rgb_pixel_loc.y * imgSize_d.x + rgb_pixel_loc.x;
+      int idx_rgb = (rgb_pixel_loc.x != -1 && rgb_pixel_loc.y != -1) ? (rgb_pixel_loc.y * imgSize_d.x + rgb_pixel_loc.x) : -1;
 
-      if (rgb_pixel_loc.x == -1 || rgb_pixel_loc.y == -1) {
+     /* if (rgb_pixel_loc.x != -1 && rgb_pixel_loc.y != -1) {
+        idx_rgb = rgb_pixel_loc.y * imgSize_d.x + rgb_pixel_loc.x;
+      }else{
         idx_rgb = -1;
-      }
-
+      }*/
+//TODO optimize it!!!
       if (idx_rgb != -1) {
         //if the label is not empty
         if ((*it)->GetElement(idx_rgb, MEMORYDEVICE_CPU) != 0) {
@@ -114,7 +116,7 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
 
 
       //create a object instance
-      auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>
+      auto new_obj_instance = std::make_shared<ObjectInstance<TVoxel, TIndex>>
           (label_ptr);
 
       new_obj_instance->setAnchorView(this->shared_from_this());
@@ -129,13 +131,9 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
   //background
   bg_itmview = make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
 
-  auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>
+  auto new_obj_instance = std::make_shared<ObjectInstance<TVoxel, TIndex>>
       (label_ptr_bg);
 
-
-//TODO use whole view for tracking
-/*    bg_itmview->rgb->SetFrom(this->rgb_Image,ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
-    bg_itmview->depth->SetFrom(this->depth_Image,ORUtils::MemoryBlock<float>::CPU_TO_CPU);*/
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for
@@ -164,7 +162,6 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects(
   }
 
 
-//TODO
   new_obj_instance->setAnchorView_ITM(bg_itmview);
 
   Object_View_Tup<TVoxel, TIndex> object_view_tuple(new_obj_instance, bg_itmview);
@@ -246,7 +243,7 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects_New(
 
 
       //create a object instance
-      auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>
+      auto new_obj_instance = std::make_shared<ObjectInstance<TVoxel, TIndex>>
           (label_ptr);
 
       new_obj_instance->setAnchorView(this->shared_from_this());
@@ -266,13 +263,9 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects_New(
 
   bg_itmview = make_shared<ITMLib::ITMView>(calibration, imgSize_rgb, imgSize_d, false);
 
-  auto new_obj_instance = std::make_shared<ObjectInstance_New<TVoxel, TIndex>>
+  auto new_obj_instance = std::make_shared<ObjectInstance<TVoxel, TIndex>>
       (label_ptr_bg);
 
-//        cout << "label" << new_obj_instance->getClassLabel()->getLabelIndex() << endl;
-//TODO use whole view for tracking
-/*    bg_itmview->rgb->SetFrom(this->rgb_Image,ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
-    bg_itmview->depth->SetFrom(this->depth_Image,ORUtils::MemoryBlock<float>::CPU_TO_CPU);*/
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for
@@ -303,8 +296,6 @@ void ObjectView<TVoxel, TIndex>::setListOfObjects_New(
     }
   }
 
-
-//TODO
   new_obj_instance->setAnchorView_ITM(bg_itmview);
 
   Object_View_Tup<TVoxel, TIndex> object_view_tuple(new_obj_instance, bg_itmview);

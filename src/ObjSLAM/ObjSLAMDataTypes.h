@@ -7,7 +7,7 @@
 
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMImageTypes.h"
 #include "External/InfiniTAM/InfiniTAM/ORUtils/Image.h"
-#include "ObjectInstance_New.h"
+#include "ObjectInstance.h"
 
 namespace ObjSLAM {
 
@@ -27,11 +27,12 @@ typedef ORUtils::Image<uint> ObjUIntImage;
 typedef ORUtils::Matrix4<float> ObjMatrix4f;
 
 template<class TVoxel, class TIndex>
-using ObjectInstance_New_ptr=std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>;
+using ObjectInstance_ptr=std::shared_ptr<ObjectInstance<TVoxel, TIndex>>;
+
 
 
 template<typename TVoxel, typename TIndex>
-using Object_View_Tup = std::tuple<std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>>,
+using Object_View_Tup = std::tuple<std::shared_ptr<ObjectInstance<TVoxel, TIndex>>,
                                    std::shared_ptr<ITMLib::ITMView>>;
 
 //

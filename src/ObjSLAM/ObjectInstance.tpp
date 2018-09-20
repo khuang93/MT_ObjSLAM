@@ -2,17 +2,17 @@
 // Created by khuang on 8/1/18.
 //
 
-#include "ObjectInstance_New.h"
+#include "ObjectInstance.h"
 
 namespace ObjSLAM {
 
 template<class TVoxel, class TIndex>
-void ObjectInstance_New<TVoxel, TIndex>::addObjectInstanceToLabel() {
+void ObjectInstance<TVoxel, TIndex>::addObjectInstanceToLabel() {
   label.get()->addObjectInstance(this->shared_from_this());
 }
 
 template<class TVoxel, class TIndex>
-void ObjectInstance_New<TVoxel, TIndex>::updateBoolImage(ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *vis_eng) {
+void ObjectInstance<TVoxel, TIndex>::updateBoolImage(ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *vis_eng) {
   sceneIsBackground = this->isBackground;
   ORUtils::Image<Vector4u> tmp_img(this->current_view->depth->noDims, true, false);
 

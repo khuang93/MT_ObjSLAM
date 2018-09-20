@@ -51,33 +51,28 @@ set(ObjSLAM_Sources
         src/ObjSLAM/ObjSLAM_TrackerMapper_Test.cpp
         src/ObjSLAM/ObjSLAMEngine.h
         src/ObjSLAM/ObjSLAMEngine.tpp
-        src/ObjSLAM/ObjectSLAMTracker.cpp src/ObjSLAM/ObjectSLAMTracker.h
+        src/ObjSLAM/ObjectSLAMTracker.cpp
         src/ObjSLAM/ObjectInstanceScene.tpp src/ObjSLAM/ObjectInstanceScene.h
         src/ObjSLAM/ObjSLAMDataTypes.h
 
         src/ObjSLAM/LPD_Dataset_Reader.h
         src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
         src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h
-        src/ObjSLAM/ObjSceneReconstructionEngine_CPU.cpp src/ObjSLAM/ObjSceneReconstructionEngine_CPU.h
-        #[[        src/ObjSLAM/ObjSLAMBasicEngine.cpp src/ObjSLAM/ObjSLAMBasicEngine.h]]
         src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h
         )
 set(TrackerMapper_Sources
         src/ObjSLAM/ObjSLAM_TrackerMapper_Test.cpp
 
-        src/ObjSLAM/ObjectSLAMTracker.cpp src/ObjSLAM/ObjectSLAMTracker.h
         src/ObjSLAM/ObjectInstanceScene.tpp src/ObjSLAM/ObjectInstanceScene.h
         src/ObjSLAM/ObjSLAMDataTypes.h
 
         src/ObjSLAM/LPD_Dataset_Reader.h
         src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
         src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h
-        src/ObjSLAM/ObjSceneReconstructionEngine_CPU.cpp src/ObjSLAM/ObjSceneReconstructionEngine_CPU.h
-        #[[        src/ObjSLAM/ObjSLAMBasicEngine.cpp src/ObjSLAM/ObjSLAMBasicEngine.h]]
         src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h
         src/DatasetIO/IOUtils.cpp src/DatasetIO/IOUtils.h
         src/ObjSLAM/ObjSLAMCamera.cpp src/ObjSLAM/ObjSLAMCamera.h
-        src/ObjSLAM/ObjectInstance_New.tpp src/ObjSLAM/ObjectInstance_New.h
+        src/ObjSLAM/ObjectInstance.tpp src/ObjSLAM/ObjectInstance.h
         src/ObjSLAM/ObjectClassLabel_Group.tpp src/ObjSLAM/ObjectClassLabel_Group.h
         src/ObjSLAM/ObjectView.tpp src/ObjSLAM/ObjectView.h
         src/ObjSLAM/ObjSLAMTrackingEngine.cpp src/ObjSLAM/ObjSLAMTrackingEngine.h

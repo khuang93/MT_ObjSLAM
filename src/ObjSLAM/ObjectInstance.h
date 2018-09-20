@@ -18,7 +18,7 @@ template<class TVoxel, class TIndex>
 class ObjectView;
 
 template<class TVoxel, class TIndex>
-class ObjectInstance_New : public std::enable_shared_from_this<ObjectInstance_New<TVoxel, TIndex>> {
+class ObjectInstance : public std::enable_shared_from_this<ObjectInstance<TVoxel, TIndex>> {
 
  private:
   std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> label;
@@ -34,7 +34,7 @@ class ObjectInstance_New : public std::enable_shared_from_this<ObjectInstance_Ne
   bool isVisible = true;
 
   //Constructor
-  ObjectInstance_New(std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> _label) :
+  ObjectInstance(std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> _label) :
       label(_label) {
     isBackground = (this->getLabelIndex() == 0);
   }
@@ -82,5 +82,5 @@ class ObjectInstance_New : public std::enable_shared_from_this<ObjectInstance_Ne
 };
 
 }
-#include "ObjectInstance_New.tpp"
+#include "ObjectInstance.tpp"
 #endif //MT_OBJSLAM_OBJECTINSTANCE_NEW_H

@@ -32,7 +32,7 @@
 #include "ObjectView.h"
 #include "ObjSLAMCamera.h"
 #include "ObjSLAMDataTypes.h"
-#include "ObjectInstance_New.h"
+#include "ObjectInstance.h"
 
 
 
@@ -60,7 +60,7 @@ class ObjSLAMMappingEngine {
 //  ITMLib::ITMLowLevelEngine *lowEngine;
   Vector2i imgSize;
 //  std::vector<ObjectInstanceScene<TVoxel, TIndex> *> object_instance_scene_vector;
-  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> obj_inst_ptr_vector; //managing a list of all objs for faster loop over all objs
+  std::vector<ObjectInstance_ptr<TVoxel, TIndex>> obj_inst_ptr_vector; //managing a list of all objs for faster loop over all objs
   const std::shared_ptr<ITMLib::ITMLibSettings> settings;
   const std::shared_ptr<ITMLib::ITMRGBDCalib>calib;
 
@@ -68,7 +68,7 @@ class ObjSLAMMappingEngine {
   int number_totalObjects=0;
 
 
-  std::shared_ptr<ObjectInstance_New<TVoxel,TIndex>> BG_object_ptr;
+  std::shared_ptr<ObjectInstance<TVoxel,TIndex>> BG_object_ptr;
   std::shared_ptr<ITMLib::ITMSceneParams> sceneParams_ptr;
 
   ITMLib::ITMDenseMapper<TVoxel, TIndex> *denseMapper;
@@ -81,7 +81,7 @@ class ObjSLAMMappingEngine {
     this->view_vec.reserve(memory_size);
   }
 
-  void getVoxelPosFromScene(std::vector<Vector3s>& voxelPos_vec, ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr);
+  void getVoxelPosFromScene(std::vector<Vector3s>& voxelPos_vec, ObjectInstance_ptr<TVoxel, TIndex> obj_ptr);
 
  public:
   //Constructor with LPD Dataset
@@ -106,8 +106,7 @@ class ObjSLAMMappingEngine {
 
     visualisationEngine_BG =
         ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(settings->deviceType);
-    //TODO Temp
-//    lowEngine = ITMLib::ITMLowLevelEngineFactory::MakeLowLevelEngine(settings->deviceType);
+
     sceneParams_ptr = std::shared_ptr<ITMLib::ITMSceneParams>(&(this->settings->sceneParams));
     reserveVectors(totFrames);
   }
@@ -121,22 +120,22 @@ class ObjSLAMMappingEngine {
   void ProcessFrame();
 
   void UpdateObjBoolImg();
-  void ApplyBoolImg(ObjectInstance_New_ptr<TVoxel, TIndex> BGobj, shared_ptr<ObjBoolImage> boolImg);
+  void ApplyBoolImg(ObjectInstance_ptr<TVoxel, TIndex> BGobj, shared_ptr<ObjBoolImage> boolImg);
 
   void ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview,
                         /*ObjectInstanceScene<TVoxel, TIndex> *scene,*/
-                        std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> obj_inst_ptr);
+                        std::shared_ptr<ObjectInstance<TVoxel, TIndex>> obj_inst_ptr);
 
-  bool checkIsNewObject(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr);
+  bool checkIsNewObject(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr);
 
-  bool checkIsSameObject(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_1,
-                         ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2);
+  bool checkIsSameObject(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
+                         ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_2);
 
-  bool checkIsSameObject2D(ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_1,
-                           ObjectInstance_New_ptr<TVoxel, TIndex> obj_ptr_2);
+  bool checkIsSameObject2D(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
+                           ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_2);
 
-  ORUtils::Image<Vector4u> * projectObjectToImg(ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr);
-  ORUtils::Image<Vector4f> * projectObjectToFloatImg(ObjectInstance_New_ptr<TVoxel, TIndex> obj_inst_ptr);
+  ORUtils::Image<Vector4u> * projectObjectToImg(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
+  ORUtils::Image<Vector4f> * projectObjectToFloatImg(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
 
   bool checkBoundingCubeOverlap(ORUtils::Vector6<float> first, ORUtils::Vector6<float> second);
 
@@ -170,14 +169,13 @@ class ObjSLAMMappingEngine {
 
 
   //TODO
-//  void visualizeObjectFromMultiPerspective(std::shared_ptr<ObjectInstance_New> obj_inst_ptr);
+//  void visualizeObjectFromMultiPerspective(std::shared_ptr<ObjectInstance> obj_inst_ptr);
 
-  //TODO
   void BGVoxelCleanUp();
 
 
 
-//  std::vector<ObjectInstance_New_ptr<TVoxel, TIndex>> getObjInstPtrVec(){return this->obj_inst_ptr_vector;}
+//  std::vector<ObjectInstance_ptr<TVoxel, TIndex>> getObjInstPtrVec(){return this->obj_inst_ptr_vector;}
   std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> getLabelPtrVec(){   return this->label_ptr_vector;}
 
   void SaveSceneToMesh(const char *objFileName, std::shared_ptr<ITMLib::ITMScene<TVoxel, TIndex>> scene_ptr);
