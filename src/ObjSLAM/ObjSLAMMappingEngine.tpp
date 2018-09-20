@@ -132,7 +132,7 @@ namespace ObjSLAM {
 
                 if (obj_ptr_vec->size() == 0) {
                     obj_inst_ptr->addObjectInstanceToLabel();
-                    if (obj_inst_ptr->isBackground) {
+                    if (obj_inst_ptr->checkIsBackground()) {
                         obj_inst_ptr_vector.insert(obj_inst_ptr_vector.begin(), obj_inst_ptr);
                     } else {
                         obj_inst_ptr_vector.push_back(obj_inst_ptr);
@@ -145,7 +145,7 @@ namespace ObjSLAM {
                     for (size_t i = 0; i < obj_ptr_vec->size(); ++i) {
                         ObjectInstance_ptr<TVoxel, TIndex> existing_obj_ptr = obj_ptr_vec->at(i);
 
-                        if (obj_inst_ptr->isBackground) {
+                        if (obj_inst_ptr->checkIsBackground()) {
                             newObject = false;
                         } else if (existing_obj_ptr->isVisible) {
                             sceneIsBackground==false;
@@ -171,10 +171,10 @@ namespace ObjSLAM {
 //      if(obj_inst_ptr->getLabelIndex()==0) BG_object_ptr=obj_inst_ptr;
 
                 if (newObject) {
-                    number_activeObjects++;
-                    number_totalObjects++;
-                    sceneIsBackground=obj_inst_ptr->isBackground;
-                    if (obj_inst_ptr->isBackground && BG_object_ptr.get() == nullptr) {
+//                    number_activeObjects++;
+//                    number_totalObjects++;
+                    sceneIsBackground=obj_inst_ptr->checkIsBackground();
+                    if (obj_inst_ptr->checkIsBackground() && BG_object_ptr.get() == nullptr) {
                         BG_object_ptr = obj_inst_ptr;
                     }
 
@@ -238,7 +238,7 @@ namespace ObjSLAM {
 
         for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
             std::shared_ptr<ObjectInstance<TVoxel, TIndex>> obj_inst_ptr = obj_inst_ptr_vector.at(i);
-            if (obj_inst_ptr->isBackground) {
+            if (obj_inst_ptr->checkIsBackground()) {
                 view_ptr_vec.insert(view_ptr_vec.begin(), obj_inst_ptr->getCurrentView().get());
                 scene_ptr_vec.insert(scene_ptr_vec.begin(), obj_inst_ptr->getScene().get());
             } else {
@@ -263,7 +263,7 @@ namespace ObjSLAM {
 
         auto scene = obj_inst_ptr->getScene().get();
 
-        if (!obj_inst_ptr.get()->isBackground) {
+        if (!obj_inst_ptr.get()->checkIsBackground()) {
             sceneIsBackground = false;
             std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = obj_inst_ptr->getTrackingState();
 
@@ -315,8 +315,8 @@ namespace ObjSLAM {
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
 
-        cout << "Number of Objects = " << number_totalObjects << endl;
-        BGVoxelCleanUp();
+//        cout << "Number of Objects = " << number_totalObjects << endl;
+        BG_VoxelCleanUp();
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
@@ -374,7 +374,6 @@ namespace ObjSLAM {
                         + ".ppm";
 
                 SaveImageToFile(img.get(), name.c_str());
-
             }
         }
         //save stl
@@ -382,7 +381,7 @@ namespace ObjSLAM {
 //#pragma omp parallel for private(sceneIsBackground)
             for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
-                sceneIsBackground = obj_inst_ptr->isBackground;
+                sceneIsBackground = obj_inst_ptr->checkIsBackground();
                 auto scene = obj_inst_ptr.get()->getScene();
                 string stlname = obj_inst_ptr->getClassLabel()->getLabelClassName() + "." + to_string(i) + ".stl";
                 SaveSceneToMesh(stlname.c_str(), scene);
@@ -438,7 +437,7 @@ namespace ObjSLAM {
     ORUtils::Image<Vector4u> *ObjSLAMMappingEngine<TVoxel,
             TIndex>::projectObjectToImg(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr) {
 
-        sceneIsBackground = obj_inst_ptr->isBackground;
+        sceneIsBackground = obj_inst_ptr->checkIsBackground();
 
         const auto scene = obj_inst_ptr->getScene();
         //TODO segfault
@@ -456,7 +455,7 @@ namespace ObjSLAM {
     ORUtils::Image<Vector4f> *ObjSLAMMappingEngine<TVoxel,
             TIndex>::projectObjectToFloatImg(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr) {
 
-        sceneIsBackground = obj_inst_ptr->isBackground;
+        sceneIsBackground = obj_inst_ptr->checkIsBackground();
 
         auto scene = obj_inst_ptr->getScene();
 
@@ -737,7 +736,7 @@ namespace ObjSLAM {
     }
 
     template<class TVoxel, class TIndex>
-    void ObjSLAMMappingEngine<TVoxel, TIndex>::BGVoxelCleanUp() {
+    void ObjSLAMMappingEngine<TVoxel, TIndex>::BG_VoxelCleanUp() {
 
         std::vector<Vector3s> voxelPos_vec;
         voxelPos_vec.reserve(100000);
@@ -752,7 +751,7 @@ namespace ObjSLAM {
 #endif */
         for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
             ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
-            if (!obj_inst_ptr->isBackground) getVoxelPosFromScene(voxelPos_vec, obj_inst_ptr);
+            if (!obj_inst_ptr->checkIsBackground()) getVoxelPosFromScene(voxelPos_vec, obj_inst_ptr);
         }
 
         int size = voxelPos_vec.size();

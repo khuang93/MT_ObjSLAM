@@ -171,7 +171,7 @@ class ObjSLAMMappingEngine {
   //TODO
 //  void visualizeObjectFromMultiPerspective(std::shared_ptr<ObjectInstance> obj_inst_ptr);
 
-  void BGVoxelCleanUp();
+  void BG_VoxelCleanUp();
 
 
 

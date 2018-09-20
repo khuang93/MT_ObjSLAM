@@ -29,8 +29,9 @@ class ObjectInstance : public std::enable_shared_from_this<ObjectInstance<TVoxel
   std::shared_ptr<ITMLib::ITMRenderState> r_state;
   std::shared_ptr<ITMLib::ITMTrackingState> t_state;
   std::shared_ptr<ORUtils::Image<bool>> prevFrameProjectedToCurrent;
- public:
   bool isBackground = false;
+ public:
+
   bool isVisible = true;
 
   //Constructor
@@ -40,6 +41,8 @@ class ObjectInstance : public std::enable_shared_from_this<ObjectInstance<TVoxel
   }
 
   void addObjectInstanceToLabel();
+
+  bool checkIsBackground(){return isBackground;}
 
   void setScene(std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> _scene) { scene = _scene; }
 
