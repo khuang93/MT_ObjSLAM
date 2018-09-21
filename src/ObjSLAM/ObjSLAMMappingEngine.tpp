@@ -118,6 +118,8 @@ namespace ObjSLAM {
 
                 int labelIndex = label_ptr->getLabelIndex();
 
+                if(labelIndex==74) continue; //skip books
+
                 //set the flag of background or not
                 sceneIsBackground = labelIndex == 0 ? true : false;
 
@@ -125,7 +127,6 @@ namespace ObjSLAM {
 
                 auto &obj_ptr_vec_val = label_ptr->getObjPtrVector();
                 auto obj_ptr_vec = &obj_ptr_vec_val;
-
 
 
                 if (obj_ptr_vec->size() == 0) {
@@ -167,8 +168,9 @@ namespace ObjSLAM {
                 obj_inst_ptr->setCurrentView(itmview);
 
                 if (newObject) {
+#pragma omp atomic
+                    number_totalObjects++;
 //                    number_activeObjects++;
-//                    number_totalObjects++;
                     sceneIsBackground = obj_inst_ptr->checkIsBackground();
                     if (obj_inst_ptr->checkIsBackground() && BG_object_ptr.get() == nullptr) {
                         BG_object_ptr = obj_inst_ptr;
@@ -181,6 +183,7 @@ namespace ObjSLAM {
                                 useSwapping,
                                 MEMORYDEVICE_CPU);
                         obj_inst_ptr->setScene(obj_inst_scene_ptr);
+                        denseMapper->ResetScene(obj_inst_ptr->getScene().get());
                     } else {
 //                        obj_inst_ptr->setScene(preAllocation_array[number_totalObjects]);
                     }
@@ -200,7 +203,7 @@ namespace ObjSLAM {
                     obj_inst_ptr->setTrackingState(t_state_ptr);
 
 //                    denseMapper->ResetScene(obj_inst_scene_ptr.get());
-                    denseMapper->ResetScene(obj_inst_ptr->getScene().get());
+
                 }
 
 
@@ -249,7 +252,6 @@ namespace ObjSLAM {
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview,
-            /*ObjectInstanceScene<TVoxel, TIndex> *scene,*/
                                                                 ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr) {
 
 
@@ -264,6 +266,7 @@ namespace ObjSLAM {
             //TODO dataset living0n hat segfault here. Pose d has no info at Frame 27
             tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
             tmp_t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
+
             denseMapper->ProcessFrame(itmview.get(), tmp_t_state.get(), scene, obj_inst_ptr->getRenderState().get(),
                                       true);
 
@@ -291,24 +294,18 @@ namespace ObjSLAM {
                                            obj_inst_ptr->getRenderState().get(),
                                            true);
 
-            //TODO move prepare tracking to other places -- done
-/*
-    t_controller->Prepare(this->t_state.get(),
-                          scene,
-                          obj_inst_ptr.get()->getAnchorView_ITM(),
-                          visualisationEngine_BG,
-                          obj_inst_ptr->getRenderState().get());
-                          //*/
-
         }
 
     }
 
+
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
 
-//        cout << "Number of Objects = " << number_totalObjects << endl;
+        cout << "Number of Objects = " << number_totalObjects << endl;
         BG_VoxelCleanUp();
+
+
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
@@ -343,6 +340,15 @@ namespace ObjSLAM {
                                                      obj_inst_ptr->getRenderState()->raycastImage,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+
+                    visualisationEngine->RenderImage(scene.get(),
+                                                     this->t_state->pose_d,
+                                                     &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
+                                                     obj_inst_ptr->getRenderState().get(),
+                                                     BG_object_ptr->getRenderState()->raycastImage,
+                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
+                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+
                     img->ChangeDims(obj_inst_ptr->getRenderState().get()->raycastImage->noDims);
                     img->SetFrom(obj_inst_ptr->getRenderState().get()->raycastImage,
                                  ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
@@ -417,6 +423,7 @@ namespace ObjSLAM {
         //TODO change pose to the pose from obj anchor view. add pose to itm view or let the obj inst save the pose itself.
         cam->projectImg2PointCloud(second, pcl, obj_ptr_2->getAnchorView()->getCameraPose().getSE3Pose());
         //  cout<<*this->t_state->pose_d;
+//TODO segfault
 
         ObjFloatImage *out = new ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
         cam->projectPointCloud2Img(pcl, out, obj_ptr_1->getAnchorView()->getCameraPose().getSE3Pose());
@@ -821,7 +828,8 @@ namespace ObjSLAM {
 
 
         for (int blockNo = 0; blockNo < renderState_vh->noVisibleEntries; ++blockNo) {
-            ITMHashEntry &blockData(scene->index.GetEntries()[visibleEntryIDs[blockNo]]);
+            int blockID = visibleEntryIDs[blockNo];
+            ITMHashEntry &blockData(scene->index.GetEntries()[blockID]);
             voxelPos_vec.push_back(blockData.pos);
 //    cout << "BlockNo" << blockNo << " Pos" << blockData.pos << endl;
         }

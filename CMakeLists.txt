@@ -60,6 +60,7 @@ set(ObjSLAM_Sources
         src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h
         src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h
         )
+
 set(TrackerMapper_Sources
         src/ObjSLAM/ObjSLAM_TrackerMapper_Test.cpp
 

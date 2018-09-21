@@ -123,7 +123,6 @@ class ObjSLAMMappingEngine {
   void ApplyBoolImg(ObjectInstance_ptr<TVoxel, TIndex> BGobj, shared_ptr<ObjBoolImage> boolImg);
 
   void ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview,
-                        /*ObjectInstanceScene<TVoxel, TIndex> *scene,*/
                         std::shared_ptr<ObjectInstance<TVoxel, TIndex>> obj_inst_ptr);
 
   bool checkIsNewObject(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr);

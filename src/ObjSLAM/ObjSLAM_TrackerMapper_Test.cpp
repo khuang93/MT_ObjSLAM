@@ -138,9 +138,11 @@ int main(int argc, char **argv) {
 
 
 
+  bool trackingOnly = true;
+  int KF_freq = 1;
 
 
-
+/*
   while (imgNum<=totFrames) {
 
     std::clock_t start;
@@ -189,6 +191,89 @@ int main(int argc, char **argv) {
 
     mappingEngine->UpdateTrackingState(t_state);
 
+
+    mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
+
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    wctduration = (std::chrono::system_clock::now() - wcts_sub);
+    cout<<"CreateView "<<wctduration.count()<<endl;
+    start_subtask=std::clock();
+    wcts_sub=std::chrono::system_clock::now();
+
+    mappingEngine->ProcessFrame();
+
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    wctduration = (std::chrono::system_clock::now() - wcts_sub);
+    cout<<"ProcessFrame "<<wctduration.count()<<endl;
+    start_subtask=std::clock();
+    wcts_sub=std::chrono::system_clock::now();
+
+    mappingEngine->outputAllObjImages();
+
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    wctduration = (std::chrono::system_clock::now() - wcts_sub);
+    cout<<"outputAllObjImages "<<wctduration.count()<<endl;
+
+    time = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+    wctduration = (std::chrono::system_clock::now() - wcts);
+
+    cout<<"Img "<<imgNum<< " Time "<<wctduration.count()<<endl<<endl;
+
+  }
+*/
+
+
+
+  while (imgNum<=totFrames) {
+    trackingOnly = (imgNum%KF_freq != 0);
+
+    std::clock_t start;
+    std::clock_t start_subtask;
+
+    std::chrono::duration<double> wctduration;
+
+
+    double time;
+    start = std::clock();
+    start_subtask=std::clock();
+    auto wcts = std::chrono::system_clock::now();
+    auto wcts_sub = std::chrono::system_clock::now();
+
+
+    imgNum = reader->readNext();
+    if(imgNum == -1) return 0;
+
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    cout<<"readNext "<<time<<endl;
+    start_subtask=std::clock();
+    wcts_sub=std::chrono::system_clock::now();
+
+    sceneIsBackground = true;
+    wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
+
+    wholeView->depth->SetFrom(reader->depth_img,ORUtils::Image<float>::CPU_TO_CPU);
+    wholeView->rgb ->SetFrom(reader->rgb_img,ORUtils::Image<Vector4u>::CPU_TO_CPU);
+
+
+    mappingEngine->UpdateImgNumber(imgNum);
+
+    cout<<sceneIsBackground<<endl;
+    t_state = trackingEngine->TrackFrame(wholeView.get());
+    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
+    wctduration = (std::chrono::system_clock::now() - wcts_sub);
+
+
+
+    cout<<"Tracker Res: "<<t_state.get()->trackerResult<<endl;
+    if(t_state.get()->trackerResult!=ITMLib::ITMTrackingState::TRACKING_GOOD) {
+      t_state->trackerResult=ITMLib::ITMTrackingState::TRACKING_GOOD;
+    }
+
+    mappingEngine->UpdateTrackingState(t_state);
+      cout<<"TrackFrame "<<wctduration.count()<<endl;
+      start_subtask=std::clock();
+      wcts_sub=std::chrono::system_clock::now();
+    if(trackingOnly) continue; //tracking only
 
     mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
