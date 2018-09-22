@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
 
 //  ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
   std::shared_ptr<ITMLib::ITMLibSettings> internalSettings = std::make_shared<ITMLib::ITMLibSettings>();
-  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.1f, 10, 0.01f, 0.1, 5.0, false);
+  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.1f, 10, 0.01f, 0.1, 10.0, false);
   //(0.1, 10, 0.025, 0.1, 4.0, false); //(0.02f, 100, 0.002f, 0.2f, 3.0f, false);  //(0.2, 4, 0.05, 0.1, 4.0, false);
           //0.1f, 5, 0.01f, 0.1, 6.0, false  0.04f, 100, 0.005f, 0.2f, 5.0f, false
 //  float mu, int maxW, float voxelSize, float viewFrustum_min, float viewFrustum_max, bool stopIntegratingAtMaxW
@@ -89,13 +89,13 @@ int main(int argc, char **argv) {
   }else if(path.find("RealisticRenderingDataset")!=std::string::npos){
     cout<<"RealisticRenderingDataset\n";
     reader = new LPD_Dataset_Reader(path,imgSize);
-  }else if(path.find("rgbd")!=std::string::npos || path.find("traj")!=std::string::npos){
+  }else /*if(path.find("rgbd")!=std::string::npos || path.find("traj")!=std::string::npos)*/{
     cout<<"TUM RGBD\n";
     reader = new TUM_Reader(path,imgSize);
-  }else{
+  }/*else{
     cout<<"Dataset not supported, programm will be terminated!\n";
     return 1;
-  }
+  }*/
 
 
 
