@@ -84,6 +84,8 @@ class ObjSLAMMappingEngine {
   void getVoxelPosFromScene(std::vector<Vector3s>& voxelPos_vec, ObjectInstance_ptr<TVoxel, TIndex> obj_ptr);
 
  public:
+    bool isFree = true;
+
   //Constructor with LPD Dataset
   ObjSLAMMappingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,
                        const std::shared_ptr<ITMLib::ITMRGBDCalib> _calib,

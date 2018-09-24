@@ -3,7 +3,7 @@
 //
 #include <iostream>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderStateFactory.h>
-
+#include <src/ObjSLAM/ObjSLAMVoxelSceneParams.h>
 #include "LPD_Dataset_Reader.h"
 #include "ObjectInstanceScene.h"
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
@@ -12,6 +12,7 @@
 #include "ObjectView.h"
 #include "TeddyReader.h"
 #include "TUM_Reader.h"
+#include "ObjSLAMMainEngine.h"
 #include <memory>
 
 #include <g2o/core/base_vertex.h>
@@ -28,7 +29,7 @@
 #include <ctime>
 #include <sys/time.h>
 
-#include <src/ObjSLAM/ObjSLAMVoxelSceneParams.h>
+
 
 using namespace std;
 
@@ -43,9 +44,15 @@ int STL_Frequency = 1;
 int reader_SkipFrames = 0;
 int numthreads = 4;
 int totFrames;
+bool sceneIsBackground = false;
 
 
 int main(int argc, char **argv) {
+
+
+
+
+
   //TODO Debug output
   cout << "**Hello SLAM World!" << endl;
 
@@ -99,8 +106,56 @@ int main(int argc, char **argv) {
 
 
 
+  sceneIsBackground=true;
+  ObjSLAMMainEngine* mainEngine =new ObjSLAMMainEngine(internalSettings, std::shared_ptr<DatasetReader>(reader));
 
-  int imgNum = reader->readNext();
+  int imgNum = mainEngine->readNext();
+  // if(imgNum==-1) return 0;
+  mainEngine->trackFrame();
+  mainEngine->updateMappingEngine();
+  mainEngine->mapFrame();
+
+
+
+#pragma omp parallel sections shared(mainEngine,imgNum)
+{
+  #pragma omp section
+  {
+      while (imgNum<=totFrames) {
+          if(mainEngine->framesElapsedBeforeMapping<1){
+              sceneIsBackground=true;
+              imgNum = mainEngine->readNext();
+//              cout<<"Section 1 imgNum = "<<imgNum;
+              // if(imgNum==-1) return 0;
+              mainEngine->trackFrame();
+          }
+
+      }
+  }
+
+  #pragma omp section
+  {
+      while (imgNum<=totFrames ) {
+//        cout<<"Section 2 imgNum = "<<imgNum;
+          if(mainEngine->mapperFree /*|| mainEngine->framesElapsedBeforeMapping>5*/ ){
+            cout<<"Section 2 mapperFree? "<<mainEngine->mapperFree;
+            mainEngine->updateMappingEngine();
+            mainEngine->mapFrame();
+            mainEngine->outputPics();
+          }
+      }
+  }
+
+}
+
+
+     
+
+
+
+
+
+/*  int imgNum = reader->readNext();
 
 
   shared_ptr<ITMLib::ITMView> wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
@@ -120,7 +175,7 @@ int main(int argc, char **argv) {
   mappingEngine->SetTrackingController(t_controller);
 
 
-  
+
   mappingEngine->UpdateImgNumber(imgNum);
 
 
@@ -142,85 +197,6 @@ int main(int argc, char **argv) {
   int KF_freq = 1;
 
 
-/*
-  while (imgNum<=totFrames) {
-
-    std::clock_t start;
-    std::clock_t start_subtask;
-
-    std::chrono::duration<double> wctduration;
-
-
-    double time;
-    start = std::clock();
-    start_subtask=std::clock();
-    auto wcts = std::chrono::system_clock::now();
-    auto wcts_sub = std::chrono::system_clock::now();
-
-
-    imgNum = reader->readNext();
-    if(imgNum == -1) return 0;
-
-    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
-    cout<<"readNext "<<time<<endl;
-    start_subtask=std::clock();
-    wcts_sub=std::chrono::system_clock::now();
-
-    sceneIsBackground = true;
-    wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
-
-    wholeView->depth->SetFrom(reader->depth_img,ORUtils::Image<float>::CPU_TO_CPU);
-    wholeView->rgb ->SetFrom(reader->rgb_img,ORUtils::Image<Vector4u>::CPU_TO_CPU);
-
-
-    mappingEngine->UpdateImgNumber(imgNum);
-
-    cout<<sceneIsBackground<<endl;
-    t_state = trackingEngine->TrackFrame(wholeView.get());
-    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
-    wctduration = (std::chrono::system_clock::now() - wcts_sub);
-    cout<<"TrackFrame "<<wctduration.count()<<endl;
-    start_subtask=std::clock();
-    wcts_sub=std::chrono::system_clock::now();
-
-
-    cout<<"Tracker Res: "<<t_state.get()->trackerResult<<endl;
-    if(t_state.get()->trackerResult!=ITMLib::ITMTrackingState::TRACKING_GOOD) {
-      t_state->trackerResult=ITMLib::ITMTrackingState::TRACKING_GOOD;
-    }
-
-    mappingEngine->UpdateTrackingState(t_state);
-
-
-    mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
-
-    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
-    wctduration = (std::chrono::system_clock::now() - wcts_sub);
-    cout<<"CreateView "<<wctduration.count()<<endl;
-    start_subtask=std::clock();
-    wcts_sub=std::chrono::system_clock::now();
-
-    mappingEngine->ProcessFrame();
-
-    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
-    wctduration = (std::chrono::system_clock::now() - wcts_sub);
-    cout<<"ProcessFrame "<<wctduration.count()<<endl;
-    start_subtask=std::clock();
-    wcts_sub=std::chrono::system_clock::now();
-
-    mappingEngine->outputAllObjImages();
-
-    time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
-    wctduration = (std::chrono::system_clock::now() - wcts_sub);
-    cout<<"outputAllObjImages "<<wctduration.count()<<endl;
-
-    time = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
-    wctduration = (std::chrono::system_clock::now() - wcts);
-
-    cout<<"Img "<<imgNum<< " Time "<<wctduration.count()<<endl<<endl;
-
-  }
-*/
 
 
 
@@ -302,11 +278,11 @@ int main(int argc, char **argv) {
 
     cout<<"Img "<<imgNum<< " Time "<<wctduration.count()<<endl<<endl;
 
-  }
+  }*/
 
-
+  delete mainEngine;
   delete reader;
-  delete trackingEngine;
-  delete mappingEngine;
+//  delete trackingEngine;
+//  delete mappingEngine;
   return 0;
 }

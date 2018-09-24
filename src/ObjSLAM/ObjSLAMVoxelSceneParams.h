@@ -5,6 +5,7 @@
 #pragma once
 
 extern bool sceneIsBackground;
+#pragma omp threadprivate(sceneIsBackground)
 extern bool saveSTL;
 extern int STL_Frequency;
 extern int reader_SkipFrames;

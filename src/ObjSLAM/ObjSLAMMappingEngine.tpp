@@ -15,7 +15,7 @@
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMRepresentationAccess.h>
 
 //define the global variable
-bool sceneIsBackground = false;
+
 
 namespace ObjSLAM {
 
@@ -107,7 +107,7 @@ namespace ObjSLAM {
 
             bool usePreallocation = number_free_preallocation > view->getObjVec().size();
 #ifdef WITH_OPENMP
-#pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
+#pragma omp parallel for //private(sceneIsBackground) /*num_threads(numthreads)*/
 #endif
             for (int t = 0; t < view->getObjVec().size(); t++) {
 
@@ -122,6 +122,7 @@ namespace ObjSLAM {
 
                 //set the flag of background or not
                 sceneIsBackground = labelIndex == 0 ? true : false;
+//                cout<<"sceneIsBackground "<<sceneIsBackground<<endl;
 
                 std::shared_ptr<ITMLib::ITMView> itmview = std::get<1>(view_tuple);
 
@@ -139,7 +140,7 @@ namespace ObjSLAM {
                     newObject = true;
                 } else {
 #ifdef WITH_OPENMP
-#pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
+#pragma omp parallel for //private(sceneIsBackground) /*num_threads(numthreads)*/
 #endif
                     for (size_t i = 0; i < obj_ptr_vec->size(); ++i) {
                         ObjectInstance_ptr<TVoxel, TIndex> existing_obj_ptr = obj_ptr_vec->at(i);
@@ -149,6 +150,7 @@ namespace ObjSLAM {
                         } else if (existing_obj_ptr->isVisible) {
                             sceneIsBackground == false;
                             newObject = !this->checkIsSameObject2D(existing_obj_ptr, obj_inst_ptr);
+//                            cout<<"sceneIsBackground "<<sceneIsBackground<<endl;
                         }
                         if (!newObject) {
                             //this is an existing object, no need to compare with further objs
@@ -264,6 +266,7 @@ namespace ObjSLAM {
 
         if (!obj_inst_ptr.get()->checkIsBackground()) {
             sceneIsBackground = false;
+//            cout<<"sceneIsBackground "<<sceneIsBackground<<endl;
             std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = obj_inst_ptr->getTrackingState();
 
             tmp_t_state->Reset();
@@ -286,6 +289,7 @@ namespace ObjSLAM {
 
         } else {
             sceneIsBackground = true;
+//            cout<<"sceneIsBackground "<<sceneIsBackground<<endl;
             this->t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
             denseMapper->ProcessFrame(obj_inst_ptr->getCurrentView().get(),
                                       this->t_state.get(),
@@ -312,7 +316,7 @@ namespace ObjSLAM {
 
 
 #ifdef WITH_OPENMP
-#pragma omp parallel for private(sceneIsBackground)
+#pragma omp parallel for //private(sceneIsBackground)
 #endif
         for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
             std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>
@@ -322,7 +326,7 @@ namespace ObjSLAM {
                     obj_inst_vec = (label_ptr.get()->getObjPtrVector());
             cout << *label_ptr.get() << " : " << obj_inst_vec.size() << endl;
 #ifdef WITH_OPENMP
-#pragma omp parallel for private(sceneIsBackground)
+#pragma omp parallel for //private(sceneIsBackground)
 #endif
             for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_vec.at(j);
@@ -392,7 +396,7 @@ namespace ObjSLAM {
         }
         //save stl
         if (saveSTL && imgNumber % STL_Frequency == 0) {
-//#pragma omp parallel for private(sceneIsBackground)
+//#pragma omp parallel for //private(sceneIsBackground)
             for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
                 sceneIsBackground = obj_inst_ptr->checkIsBackground();
@@ -408,7 +412,7 @@ namespace ObjSLAM {
         if (obj_inst_ptr_vector.size() == 0) return;
         sceneIsBackground = false;
 
-#pragma omp parallel for private(sceneIsBackground)
+#pragma omp parallel for //private(sceneIsBackground)
         for (size_t i = 1; i < this->obj_inst_ptr_vector.size(); ++i) { //start from1 to skip BG
             const ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
             auto const *scene = obj_inst_ptr->getScene().get();
@@ -768,7 +772,7 @@ namespace ObjSLAM {
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::Object_Cleanup(ObjectInstance_ptr <TVoxel, TIndex> object) {
-        float threshold = 0.15;
+        float threshold = 0.8;
 
         auto scene = object->getScene();
         short object_view_count = object->view_count;
