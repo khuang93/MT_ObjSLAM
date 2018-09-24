@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="TrackerMapper (2)" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="../../Datasets/rgbd_dataset_freiburg2_large_with_loop/ 1000 0 0" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="TrackerMapper" CONFIG_NAME="DebugOMP" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="TrackerMapper">
+  <configuration default="false" name="TrackerMapper (2)" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="../../Datasets/rgbd_dataset_freiburg2_large_with_loop/ 1000 0 0" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="TrackerMapper" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="TrackerMapper">
     <method />
   </configuration>
 </component>

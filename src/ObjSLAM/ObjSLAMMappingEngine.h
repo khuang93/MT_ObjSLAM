@@ -172,6 +172,8 @@ class ObjSLAMMappingEngine {
 
   void BG_VoxelCleanUp();
 
+  void Object_Cleanup(ObjectInstance_ptr<TVoxel,TIndex> object);
+
 
 
 //  std::vector<ObjectInstance_ptr<TVoxel, TIndex>> getObjInstPtrVec(){return this->obj_inst_ptr_vector;}

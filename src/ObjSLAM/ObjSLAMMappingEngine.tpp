@@ -118,7 +118,7 @@ namespace ObjSLAM {
 
                 int labelIndex = label_ptr->getLabelIndex();
 
-                if(labelIndex==74) continue; //skip books
+                if (labelIndex == 74) continue; //skip books
 
                 //set the flag of background or not
                 sceneIsBackground = labelIndex == 0 ? true : false;
@@ -155,6 +155,7 @@ namespace ObjSLAM {
 //            obj_inst_scene_ptr = existing_obj_ptr->getScene();
 
                             obj_inst_ptr = existing_obj_ptr;
+
                             break;
                         }
                     }
@@ -172,6 +173,7 @@ namespace ObjSLAM {
                     number_totalObjects++;
 //                    number_activeObjects++;
                     sceneIsBackground = obj_inst_ptr->checkIsBackground();
+                    obj_inst_ptr->view_count++;
                     if (obj_inst_ptr->checkIsBackground() && BG_object_ptr.get() == nullptr) {
                         BG_object_ptr = obj_inst_ptr;
                     }
@@ -204,6 +206,9 @@ namespace ObjSLAM {
 
 //                    denseMapper->ResetScene(obj_inst_scene_ptr.get());
 
+                } else {
+                    obj_inst_ptr->view_count++;
+                    cout << "obj_view_count = " << obj_inst_ptr->view_count << endl;
                 }
 
 
@@ -306,7 +311,6 @@ namespace ObjSLAM {
         BG_VoxelCleanUp();
 
 
-
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
 #endif
@@ -331,8 +335,18 @@ namespace ObjSLAM {
                     sceneIsBackground = false;
 
                     if (!((ITMLib::ITMRenderState_VH *) obj_inst_ptr->getRenderState().get())->noVisibleEntries >
-                        0)
+                        0){
+                        Object_Cleanup(obj_inst_ptr);
+                        auto scene = obj_inst_ptr.get()->getScene();
+                        string stlname = obj_inst_ptr->getClassLabel()->getLabelClassName() + "." + to_string(j) + "_cleaned.stl";
+                        SaveSceneToMesh(stlname.c_str(), scene);
                         continue;
+                    }
+
+
+
+
+
                     visualisationEngine->RenderImage(scene.get(),
                                                      this->t_state->pose_d,
                                                      &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
@@ -750,6 +764,50 @@ namespace ObjSLAM {
 
         delete this_mesh;
     }
+
+
+    template<class TVoxel, class TIndex>
+    void ObjSLAMMappingEngine<TVoxel, TIndex>::Object_Cleanup(ObjectInstance_ptr <TVoxel, TIndex> object) {
+        float threshold = 0.15;
+
+        auto scene = object->getScene();
+        short object_view_count = object->view_count;
+
+        //stuffs varry over from ResetScene
+        int numBlocks = scene->index.getNumAllocatedVoxelBlocks();
+        int blockSize = scene->index.getVoxelBlockSize();
+        auto *renderState_vh = (ITMLib::ITMRenderState_VH *) object->getRenderState().get();
+        int *visibleEntryIds = renderState_vh->GetVisibleEntryIDs();
+        int noVisibleEntries = renderState_vh->noVisibleEntries;
+
+        TVoxel *voxelBlocks_ptr = scene->localVBA.GetVoxelBlocks();
+        ITMHashEntry *hashTable = scene->index.GetEntries();
+        TVoxel *localVBA = scene->localVBA.GetVoxelBlocks();
+
+#ifdef WITH_OPENMP
+#pragma omp parallel for
+#endif
+//        for (int entryId = 0; entryId < noVisibleEntries; entryId++) {
+        for (int i = 0; i < (sceneIsBackground? scene->index.noTotalEntries_BG:scene->index.noTotalEntries); ++i)  {
+
+            const ITMHashEntry &currentHashEntry = hashTable[i];
+
+            if (currentHashEntry.ptr < 0) continue;
+
+
+            TVoxel *localVoxelBlock = &(localVBA[currentHashEntry.ptr * (SDF_BLOCK_SIZE3)]);
+
+            for (int locId = 0; locId < SDF_BLOCK_SIZE3; locId++) {
+
+                if ((float) (localVoxelBlock[locId].view_count) / (float) (object_view_count) < threshold) {
+                    //remove this voxel
+                    localVoxelBlock[locId] = TVoxel();
+
+                }
+            }
+        }
+    }
+
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::BG_VoxelCleanUp() {

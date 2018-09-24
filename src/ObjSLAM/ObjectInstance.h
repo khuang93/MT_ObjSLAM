@@ -33,11 +33,12 @@ class ObjectInstance : public std::enable_shared_from_this<ObjectInstance<TVoxel
  public:
 
   bool isVisible = true;
-
+  short view_count=0;
   //Constructor
   ObjectInstance(std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> _label) :
       label(_label) {
     isBackground = (this->getLabelIndex() == 0);
+//    view_count=1;
   }
 
   void addObjectInstanceToLabel();
