@@ -107,7 +107,7 @@ namespace ObjSLAM {
 
             bool usePreallocation = number_free_preallocation > view->getObjVec().size();
 #ifdef WITH_OPENMP
-#pragma omp parallel for //private(sceneIsBackground) /*num_threads(numthreads)*/
+#pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
 #endif
             for (int t = 0; t < view->getObjVec().size(); t++) {
 
@@ -139,9 +139,9 @@ namespace ObjSLAM {
                     }
                     newObject = true;
                 } else {
-#ifdef WITH_OPENMP
-#pragma omp parallel for //private(sceneIsBackground) /*num_threads(numthreads)*/
-#endif
+//#ifdef WITH_OPENMP
+//#pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
+//#endif
                     for (size_t i = 0; i < obj_ptr_vec->size(); ++i) {
                         ObjectInstance_ptr<TVoxel, TIndex> existing_obj_ptr = obj_ptr_vec->at(i);
 
@@ -175,7 +175,7 @@ namespace ObjSLAM {
                     number_totalObjects++;
 //                    number_activeObjects++;
                     sceneIsBackground = obj_inst_ptr->checkIsBackground();
-                    obj_inst_ptr->view_count++;
+                    obj_inst_ptr->view_count=1;
                     if (obj_inst_ptr->checkIsBackground() && BG_object_ptr.get() == nullptr) {
                         BG_object_ptr = obj_inst_ptr;
                     }
@@ -314,9 +314,12 @@ namespace ObjSLAM {
         cout << "Number of Objects = " << number_totalObjects << endl;
         BG_VoxelCleanUp();
 
+        Matrix3f R(1,0,0,0,0,-1,0,1,0);
+        Vector3f T(0,1.5,8);
+        auto * birdView = new ORUtils::SE3Pose(R,T);
 
 #ifdef WITH_OPENMP
-#pragma omp parallel for //private(sceneIsBackground)
+#pragma omp parallel for private(sceneIsBackground)
 #endif
         for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
             std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>
@@ -326,7 +329,7 @@ namespace ObjSLAM {
                     obj_inst_vec = (label_ptr.get()->getObjPtrVector());
             cout << *label_ptr.get() << " : " << obj_inst_vec.size() << endl;
 #ifdef WITH_OPENMP
-#pragma omp parallel for //private(sceneIsBackground)
+#pragma omp parallel for private(sceneIsBackground)
 #endif
             for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_vec.at(j);
@@ -337,6 +340,16 @@ namespace ObjSLAM {
 
                 if (obj_inst_ptr->getLabelIndex() != 0) {
                     sceneIsBackground = false;
+
+                    visualisationEngine->FindVisibleBlocks(scene.get(),birdView,
+//                                                           this->t_state->pose_d,
+                                                           &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
+                                                           obj_inst_ptr->getRenderState().get());
+
+                    visualisationEngine->CreateExpectedDepths(scene.get(), birdView,
+//                                                              this->t_state->pose_d,
+                                                              &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
+                                                              obj_inst_ptr->getRenderState().get());
 
                     if (!((ITMLib::ITMRenderState_VH *) obj_inst_ptr->getRenderState().get())->noVisibleEntries >
                         0){
@@ -351,16 +364,16 @@ namespace ObjSLAM {
 
 
 
-                    visualisationEngine->RenderImage(scene.get(),
-                                                     this->t_state->pose_d,
+                    visualisationEngine->RenderImage(scene.get(),birdView,
+//                                                     this->t_state->pose_d,
                                                      &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
                                                      obj_inst_ptr->getRenderState().get(),
                                                      obj_inst_ptr->getRenderState()->raycastImage,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
 
-                    visualisationEngine->RenderImage(scene.get(),
-                                                     this->t_state->pose_d,
+                    visualisationEngine->RenderImage(scene.get(),birdView,
+//                                                     this->t_state->pose_d,
                                                      &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
                                                      obj_inst_ptr->getRenderState().get(),
                                                      BG_object_ptr->getRenderState()->raycastImage,
@@ -374,8 +387,18 @@ namespace ObjSLAM {
                 } else {
                     sceneIsBackground = true;
 
-                    visualisationEngine_BG->RenderImage(scene.get(),
-                                                        this->t_state->pose_d,
+                    visualisationEngine_BG->FindVisibleBlocks(scene.get(),birdView,
+//                                                           this->t_state->pose_d,
+                                                           &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
+                                                           obj_inst_ptr->getRenderState().get());
+
+                    visualisationEngine_BG->CreateExpectedDepths(scene.get(),birdView,
+//                                                              this->t_state->pose_d,
+                                                              &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
+                                                              obj_inst_ptr->getRenderState().get());
+
+                    visualisationEngine_BG->RenderImage(scene.get(), birdView,
+//                                                        this->t_state->pose_d,
                                                         &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
                                                         obj_inst_ptr->getRenderState().get(),
                                                         obj_inst_ptr->getRenderState()->raycastImage,
@@ -396,7 +419,7 @@ namespace ObjSLAM {
         }
         //save stl
         if (saveSTL && imgNumber % STL_Frequency == 0) {
-//#pragma omp parallel for //private(sceneIsBackground)
+//#pragma omp parallel for private(sceneIsBackground)
             for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
                 sceneIsBackground = obj_inst_ptr->checkIsBackground();
@@ -412,11 +435,16 @@ namespace ObjSLAM {
         if (obj_inst_ptr_vector.size() == 0) return;
         sceneIsBackground = false;
 
-#pragma omp parallel for //private(sceneIsBackground)
+#pragma omp parallel for private(sceneIsBackground)
         for (size_t i = 1; i < this->obj_inst_ptr_vector.size(); ++i) { //start from1 to skip BG
             const ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
             auto const *scene = obj_inst_ptr->getScene().get();
             visualisationEngine->FindVisibleBlocks(scene,
+                                                   this->t_state->pose_d,
+                                                   &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
+                                                   obj_inst_ptr->getRenderState().get());
+
+            visualisationEngine->CreateExpectedDepths(scene,
                                                    this->t_state->pose_d,
                                                    &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
                                                    obj_inst_ptr->getRenderState().get());

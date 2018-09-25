@@ -11,6 +11,8 @@ set (PROJECT_DIR "/local/MT/MT_ObjSLAM")
 set (SOURCE_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 
+#set(BUILD_PANGOLIN_EIGEN ON CACHE BOOL "")
+find_package(Pangolin REQUIRED)
 
 find_package( Boost REQUIRED)
 find_package( OpenMP REQUIRED)
@@ -36,6 +38,7 @@ include_directories($(HEADER_DIR)
         /usr/include
         External/InfiniTAM/InfiniTAM/InputSource
         External/InfiniTAM/InfiniTAM/ITMLib
+        ${Pangolin_INCLUDE_DIRS}
         )
 
 
@@ -79,7 +82,9 @@ set(TrackerMapper_Sources
         src/ObjSLAM/ObjSLAMTrackingEngine.cpp src/ObjSLAM/ObjSLAMTrackingEngine.h
         src/ObjSLAM/DatasetReader.h src/ObjSLAM/DatasetReader.cpp src/ObjSLAM/TeddyReader.cpp
         src/ObjSLAM/TeddyReader.h src/ObjSLAM/TUM_Reader.cpp src/ObjSLAM/TUM_Reader.h
-        src/ObjSLAM/ObjSLAMVoxelBlockHash.h src/ObjSLAM/ObjSLAMVoxelSceneParams.h src/ObjSLAM/ObjSLAMUI.cpp src/ObjSLAM/ObjSLAMUI.h src/ObjSLAM/ObjSLAMMainEngine.cpp src/ObjSLAM/ObjSLAMMainEngine.h)
+        src/ObjSLAM/ObjSLAMVoxelBlockHash.h src/ObjSLAM/ObjSLAMVoxelSceneParams.h
+        src/ObjSLAM/ObjSLAMUI.cpp src/ObjSLAM/ObjSLAMUI.h
+        src/ObjSLAM/ObjSLAMMainEngine.cpp src/ObjSLAM/ObjSLAMMainEngine.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)
@@ -88,6 +93,6 @@ set(TrackerMapper_Sources
 
 add_executable(TrackerMapper ${TrackerMapper_Sources}  /usr/include)
 
-TARGET_LINK_LIBRARIES(TrackerMapper  boost_system  boost_filesystem  InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png)
+TARGET_LINK_LIBRARIES(TrackerMapper  boost_system  boost_filesystem  InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png ${Pangolin_LIBRARIES})
 #TARGET_LINK_LIBRARIES(Mapper  boost_system  boost_filesystem  cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png)
 #looks like it needs link cudart

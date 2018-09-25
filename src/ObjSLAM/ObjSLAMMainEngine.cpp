@@ -32,7 +32,6 @@ int ObjSLAMMainEngine::readNext() {
 
 void ObjSLAMMainEngine::trackFrame() {
    t_state=trackingEngine->TrackFrame(wholeView.get());
-
 }
 
 
@@ -47,7 +46,6 @@ void ObjSLAMMainEngine::outputPics(){
 }
 
 void ObjSLAMMainEngine::updateMappingEngine(){
-
 
   mapperFree=false;
   mappingEngine->UpdateImgNumber(imgNum);

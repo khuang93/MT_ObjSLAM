@@ -5,7 +5,7 @@
 #pragma once
 
 extern bool sceneIsBackground;
-#pragma omp threadprivate(sceneIsBackground)
+//#pragma omp threadprivate(sceneIsBackground) //only active when using parallel track and map
 extern bool saveSTL;
 extern int STL_Frequency;
 extern int reader_SkipFrames;

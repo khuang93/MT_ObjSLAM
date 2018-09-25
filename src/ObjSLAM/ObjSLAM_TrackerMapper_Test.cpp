@@ -13,6 +13,7 @@
 #include "TeddyReader.h"
 #include "TUM_Reader.h"
 #include "ObjSLAMMainEngine.h"
+#include "ObjSLAMUI.h"
 #include <memory>
 
 #include <g2o/core/base_vertex.h>
@@ -52,7 +53,6 @@ int main(int argc, char **argv) {
 
 
 
-
   //TODO Debug output
   cout << "**Hello SLAM World!" << endl;
 
@@ -74,7 +74,8 @@ int main(int argc, char **argv) {
   }
 
 
-
+    ObjSLAM::ObjSLAMUI* ui =new ObjSLAM::ObjSLAMUI(imgSize);
+//    ui->run();
 
 
 
@@ -114,19 +115,31 @@ int main(int argc, char **argv) {
   mainEngine->trackFrame();
   mainEngine->updateMappingEngine();
   mainEngine->mapFrame();
+  mainEngine->outputPics();
+
+  while (imgNum<=totFrames) {
+      sceneIsBackground=true;
+      imgNum = mainEngine->readNext();
+      if(imgNum==-1) return 0;
+      mainEngine->trackFrame();
+      mainEngine->updateMappingEngine();
+      mainEngine->mapFrame();
+      mainEngine->outputPics();
+  }
 
 
+/*
 
+//TODO parallel tracking and mapping
 #pragma omp parallel sections shared(mainEngine,imgNum)
 {
   #pragma omp section
   {
       while (imgNum<=totFrames) {
-          if(mainEngine->framesElapsedBeforeMapping<3){
+          if(mainEngine->framesElapsedBeforeMapping<1){
               sceneIsBackground=true;
               imgNum = mainEngine->readNext();
 //              cout<<"Section 1 imgNum = "<<imgNum;
-              // if(imgNum==-1) return 0;
               mainEngine->trackFrame();
           }
 
@@ -137,7 +150,7 @@ int main(int argc, char **argv) {
   {
       while (imgNum<=totFrames ) {
 //        cout<<"Section 2 imgNum = "<<imgNum;
-          if(mainEngine->mapperFree /*|| mainEngine->framesElapsedBeforeMapping>5*/ ){
+          if(mainEngine->mapperFree  ){
             cout<<"Section 2 mapperFree? "<<mainEngine->mapperFree;
             mainEngine->updateMappingEngine();
             mainEngine->mapFrame();
@@ -147,15 +160,15 @@ int main(int argc, char **argv) {
   }
 
 }
-
-
-     
-
+*/
 
 
 
 
-/*  int imgNum = reader->readNext();
+
+
+/*
+  int imgNum = reader->readNext();
 
 
   shared_ptr<ITMLib::ITMView> wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
@@ -278,9 +291,10 @@ int main(int argc, char **argv) {
 
     cout<<"Img "<<imgNum<< " Time "<<wctduration.count()<<endl<<endl;
 
-  }*/
+  }
+*/
 
-  delete mainEngine;
+//  delete mainEngine;
   delete reader;
 //  delete trackingEngine;
 //  delete mappingEngine;
