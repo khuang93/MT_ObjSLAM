@@ -18,6 +18,8 @@
 #include <vector>
 
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMMath.h"
+#include "ObjSLAMMainEngine.h"
+
 namespace ObjSLAM{
 
     class ObjSLAMUI {
@@ -28,6 +30,8 @@ namespace ObjSLAM{
     private:
         int w,h;
         Vector2i imgSize;
+        ObjSLAMMainEngine* mainEngine;
+        int imgNum=0;
 
     public:
         //constuctor
@@ -36,6 +40,10 @@ namespace ObjSLAM{
             h=imgSize.height*2;
             cout<<"UI Created!\n";
         }
+
+        void setMainEngine(ObjSLAMMainEngine* _mainEng){ mainEngine=_mainEng;}
+
+        void ProcessFrame();
 
         void run();
 

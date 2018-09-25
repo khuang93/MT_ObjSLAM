@@ -316,7 +316,8 @@ namespace ObjSLAM {
 
         Matrix3f R(1,0,0,0,0,-1,0,1,0);
         Vector3f T(0,1.5,8);
-        auto * birdView = new ORUtils::SE3Pose(R,T);
+//        auto * pose_visualize = new ORUtils::SE3Pose(R,T);
+        auto * pose_visualize = this->t_state->pose_d;
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
@@ -341,12 +342,12 @@ namespace ObjSLAM {
                 if (obj_inst_ptr->getLabelIndex() != 0) {
                     sceneIsBackground = false;
 
-                    visualisationEngine->FindVisibleBlocks(scene.get(),birdView,
+                    visualisationEngine->FindVisibleBlocks(scene.get(),pose_visualize,
 //                                                           this->t_state->pose_d,
                                                            &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
                                                            obj_inst_ptr->getRenderState().get());
 
-                    visualisationEngine->CreateExpectedDepths(scene.get(), birdView,
+                    visualisationEngine->CreateExpectedDepths(scene.get(), pose_visualize,
 //                                                              this->t_state->pose_d,
                                                               &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
                                                               obj_inst_ptr->getRenderState().get());
@@ -364,7 +365,7 @@ namespace ObjSLAM {
 
 
 
-                    visualisationEngine->RenderImage(scene.get(),birdView,
+                    visualisationEngine->RenderImage(scene.get(),pose_visualize,
 //                                                     this->t_state->pose_d,
                                                      &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
                                                      obj_inst_ptr->getRenderState().get(),
@@ -372,7 +373,7 @@ namespace ObjSLAM {
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
 
-                    visualisationEngine->RenderImage(scene.get(),birdView,
+                    visualisationEngine->RenderImage(scene.get(),pose_visualize,
 //                                                     this->t_state->pose_d,
                                                      &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
                                                      obj_inst_ptr->getRenderState().get(),
@@ -387,17 +388,17 @@ namespace ObjSLAM {
                 } else {
                     sceneIsBackground = true;
 
-                    visualisationEngine_BG->FindVisibleBlocks(scene.get(),birdView,
+                    visualisationEngine_BG->FindVisibleBlocks(scene.get(),pose_visualize,
 //                                                           this->t_state->pose_d,
                                                            &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
                                                            obj_inst_ptr->getRenderState().get());
 
-                    visualisationEngine_BG->CreateExpectedDepths(scene.get(),birdView,
+                    visualisationEngine_BG->CreateExpectedDepths(scene.get(),pose_visualize,
 //                                                              this->t_state->pose_d,
                                                               &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
                                                               obj_inst_ptr->getRenderState().get());
 
-                    visualisationEngine_BG->RenderImage(scene.get(), birdView,
+                    visualisationEngine_BG->RenderImage(scene.get(), pose_visualize,
 //                                                        this->t_state->pose_d,
                                                         &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
                                                         obj_inst_ptr->getRenderState().get(),
@@ -924,6 +925,26 @@ namespace ObjSLAM {
 //    cout << "BlockNo" << blockNo << " Pos" << blockData.pos << endl;
         }
 
+    }
+
+
+    template<class TVoxel, class TIndex>
+    ObjUChar4Image* ObjSLAMMappingEngine<TVoxel, TIndex>::getImage(int object_index){
+        if(object_index==0) return getImage(BG_object_ptr);
+
+        if(object_index<obj_inst_ptr_vector.size()){
+            return getImage(obj_inst_ptr_vector.at(object_index));
+        }else{
+            cout<<"Object Index larger than total number of objects, showing first object...\n";
+            return getImage(BG_object_ptr);
+        }
+
+    }
+
+
+    template<class TVoxel, class TIndex>
+    ObjUChar4Image* ObjSLAMMappingEngine<TVoxel, TIndex>::getImage(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr){
+        return obj_inst_ptr->getRenderState()->raycastImage;
     }
 
 }

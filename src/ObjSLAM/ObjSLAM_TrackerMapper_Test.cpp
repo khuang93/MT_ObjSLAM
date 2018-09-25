@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
 
 
     ObjSLAM::ObjSLAMUI* ui =new ObjSLAM::ObjSLAMUI(imgSize);
-//    ui->run();
+
 
 
 
@@ -110,7 +110,10 @@ int main(int argc, char **argv) {
   sceneIsBackground=true;
   ObjSLAMMainEngine* mainEngine =new ObjSLAMMainEngine(internalSettings, std::shared_ptr<DatasetReader>(reader));
 
-  int imgNum = mainEngine->readNext();
+  ui->setMainEngine(mainEngine);
+  ui->run();
+
+  /*int imgNum = mainEngine->readNext();
   // if(imgNum==-1) return 0;
   mainEngine->trackFrame();
   mainEngine->updateMappingEngine();
@@ -125,7 +128,8 @@ int main(int argc, char **argv) {
       mainEngine->updateMappingEngine();
       mainEngine->mapFrame();
       mainEngine->outputPics();
-  }
+
+  }*/
 
 
 /*

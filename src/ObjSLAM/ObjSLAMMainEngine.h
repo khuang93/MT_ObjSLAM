@@ -84,6 +84,8 @@ public:
 
     void outputPics();
 
+    ObjSLAM::ObjUChar4Image* getImage(int n);
+
 
 };
 

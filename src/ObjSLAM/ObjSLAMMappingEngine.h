@@ -168,6 +168,11 @@ class ObjSLAMMappingEngine {
 
   void UpdateVisibilityOfAllObj();
 
+  ObjUChar4Image* getImage(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
+
+  ObjUChar4Image* getImage(int object_index);
+
+  int getObjectNumber(){return obj_inst_ptr_vector.size();}
 
   //TODO
 //  void visualizeObjectFromMultiPerspective(std::shared_ptr<ObjectInstance> obj_inst_ptr);

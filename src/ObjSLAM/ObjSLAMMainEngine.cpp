@@ -53,3 +53,11 @@ void ObjSLAMMainEngine::updateMappingEngine(){
   mappingEngine->UpdateTrackingState(t_state);
   mappingEngine->CreateView(depth_img, rgb_img, label_img_vector);
 }
+
+ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::getImage(int n){
+    if(n<this->mappingEngine->getObjectNumber()){
+        return mappingEngine->getImage(n);
+    }else{
+        return mappingEngine->getImage(0);
+    }
+}
