@@ -14,11 +14,35 @@
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMLibSettings.h"
 #include "External/InfiniTAM/InfiniTAM/ORUtils/FileUtils.h"
 #include "External/InfiniTAM/InfiniTAM/ORUtils/NVTimer.h"
+#include "DatasetReader.h"
 
 #include <vector>
 namespace ObjSLAM{
 
     class ObjSLAMUI {
+        static ObjSLAMUI* instance;
+
+        DatasetReader* reader;
+        ITMLib::ITMLibSettings internalSettings;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     };
 
