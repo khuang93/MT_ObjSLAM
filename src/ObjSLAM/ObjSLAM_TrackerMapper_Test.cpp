@@ -122,7 +122,7 @@ int main(int argc, char **argv) {
   #pragma omp section
   {
       while (imgNum<=totFrames) {
-          if(mainEngine->framesElapsedBeforeMapping<1){
+          if(mainEngine->framesElapsedBeforeMapping<3){
               sceneIsBackground=true;
               imgNum = mainEngine->readNext();
 //              cout<<"Section 1 imgNum = "<<imgNum;
