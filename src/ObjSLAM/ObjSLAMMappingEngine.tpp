@@ -134,8 +134,10 @@ namespace ObjSLAM {
                     obj_inst_ptr->addObjectInstanceToLabel();
                     if (obj_inst_ptr->checkIsBackground()) {
                         obj_inst_ptr_vector.insert(obj_inst_ptr_vector.begin(), obj_inst_ptr);
+                        active_obj_ptr_vector.insert(active_obj_ptr_vector.begin(), obj_inst_ptr);
                     } else {
                         obj_inst_ptr_vector.push_back(obj_inst_ptr);
+                        active_obj_ptr_vector.push_back(obj_inst_ptr);
                     }
                     newObject = true;
                 } else {
@@ -171,8 +173,8 @@ namespace ObjSLAM {
                 obj_inst_ptr->setCurrentView(itmview);
 
                 if (newObject) {
-#pragma omp atomic
-                    number_totalObjects++;
+//#pragma omp atomic
+//                    number_totalObjects++;
 //                    number_activeObjects++;
                     sceneIsBackground = obj_inst_ptr->checkIsBackground();
                     obj_inst_ptr->view_count=1;
@@ -373,13 +375,13 @@ namespace ObjSLAM {
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
 
-                    visualisationEngine->RenderImage(scene.get(),pose_visualize,
-//                                                     this->t_state->pose_d,
-                                                     &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
-                                                     obj_inst_ptr->getRenderState().get(),
-                                                     BG_object_ptr->getRenderState()->raycastImage,
-                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
-                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+//                    visualisationEngine->RenderImage(scene.get(),pose_visualize,
+////                                                     this->t_state->pose_d,
+//                                                     &obj_inst_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
+//                                                     obj_inst_ptr->getRenderState().get(),
+//                                                     BG_object_ptr->getRenderState()->raycastImage,
+//                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
+//                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
 
                     img->ChangeDims(obj_inst_ptr->getRenderState().get()->raycastImage->noDims);
                     img->SetFrom(obj_inst_ptr->getRenderState().get()->raycastImage,
@@ -415,7 +417,7 @@ namespace ObjSLAM {
                         to_string(imgNumber)
                         + ".ppm";
 
-                SaveImageToFile(img.get(), name.c_str());
+//                SaveImageToFile(img.get(), name.c_str());
             }
         }
         //save stl
@@ -450,7 +452,12 @@ namespace ObjSLAM {
                                                    &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
                                                    obj_inst_ptr->getRenderState().get());
             obj_inst_ptr->updateVisibility();
+            if(!obj_inst_ptr->isVisible){
+                std::remove(active_obj_ptr_vector.begin(),active_obj_ptr_vector.end(),obj_inst_ptr);
+            }
         }
+        this->number_totalObjects=obj_inst_ptr_vector.size();
+        this->number_activeObjects=active_obj_ptr_vector.size();
     }
 
 //check if same obj by 2d overlap
@@ -932,13 +939,12 @@ namespace ObjSLAM {
     ObjUChar4Image* ObjSLAMMappingEngine<TVoxel, TIndex>::getImage(int object_index){
         if(object_index==0) return getImage(BG_object_ptr);
 
-        if(object_index<obj_inst_ptr_vector.size()){
-            return getImage(obj_inst_ptr_vector.at(object_index));
+        if(object_index<number_activeObjects){
+            return getImage(active_obj_ptr_vector.at(object_index));
         }else{
             cout<<"Object Index larger than total number of objects, showing first object...\n";
             return getImage(BG_object_ptr);
         }
-
     }
 
 

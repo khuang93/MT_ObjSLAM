@@ -32,6 +32,7 @@ namespace ObjSLAM{
         Vector2i imgSize;
         ObjSLAMMainEngine* mainEngine;
         int imgNum=0;
+        int currentObjNum=1;
 
     public:
         //constuctor
@@ -41,13 +42,19 @@ namespace ObjSLAM{
             cout<<"UI Created!\n";
         }
 
-        void setMainEngine(ObjSLAMMainEngine* _mainEng){ mainEngine=_mainEng;}
+        void setMainEngine(ObjSLAMMainEngine* _mainEng){ mainEngine=_mainEng;
+
+        }
 
         void ProcessFrame();
 
         void run();
 
+        void reg();
+
         void CreateDisplay();
+
+        void chooseNextObj();
 
         void DrawLabels();
 

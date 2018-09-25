@@ -32,6 +32,17 @@ namespace ObjSLAM {
     }
 
 
+
+
+    void ObjSLAMUI::chooseNextObj(){
+        cout<<"Object Number: \n";
+//        cout<< ++(currentObjNum)<<endl;
+    }
+
+    void ObjSLAMUI::reg(){
+        pangolin::RegisterKeyPressCallback(pangolin::PANGO_KEY_DOWN, [this](){chooseNextObj();} );
+    }
+
     void ObjSLAMUI::run() {
 
         CreateDisplay();
@@ -45,9 +56,11 @@ namespace ObjSLAM {
                 pangolin::ModelViewLookAt(-1, 1, -1, 0, 0, 0, pangolin::AxisY)
         );
 
-        // Aspect ratio allows us to constrain width and height whilst fitting within specified
-        // bounds. A positive aspect ratio makes a view 'shrink to fit' (introducing empty bars),
-        // whilst a negative ratio makes the view 'grow to fit' (cropping the view).
+
+        reg();
+
+
+
 //        pangolin::View &d_cam = pangolin::Display("cam")
 //                .SetBounds(0, 1.0f, 0, 1.0f, -640 / 480.0)
 //                .SetHandler(new pangolin::Handler3D(s_cam));
@@ -61,31 +74,79 @@ namespace ObjSLAM {
 //        pangolin::View &d_image2 = pangolin::Display("image")
 //                .SetBounds(1 / 2.0f, 1.0f, 1 / 2.0f, 1.0f, 640.0 / 480)
 //                .SetLock(pangolin::LockLeft, pangolin::LockTop);
-        pangolin::View &d_image = pangolin::Display("image")
+        pangolin::View &d_image_BG = pangolin::Display("image")
                 .SetAspect(640.0f/480.0f);
-        pangolin::View &d_image2 = pangolin::Display("image2")
+        pangolin::View &d_image_obj = pangolin::Display("image2")
                 .SetAspect(640.0f/480.0f);
-        pangolin::View &d_image3 = pangolin::Display("image3")
-                .SetAspect(640.0f/480.0f);
-        pangolin::View &d_image4 = pangolin::Display("image4")
-                .SetAspect(640.0f/480.0f);
+
 
         pangolin::Display("multi")
                 .SetBounds(0.0, 1.0, 0.0, 1.0)
                 .SetLayout(pangolin::LayoutEqual)
-                .AddDisplay(d_image)
-                .AddDisplay(d_image2)
-                .AddDisplay(d_image3)
-                .AddDisplay(d_image4);
+                .AddDisplay(d_image_BG)
+                .AddDisplay(d_image_obj);
 
 
 
         std::cout << "Resize the window to experiment with SetBounds, SetLock and SetAspect." << std::endl;
-        std::cout << "Notice that the cubes aspect is maintained even though it covers the whole screen." << std::endl;
 
+            ProcessFrame();
             while (imgNum <= totFrames && !pangolin::ShouldQuit()) {
+
+
+                auto *itmImage_BG = mainEngine->getImage(0);
+                unsigned char *image_BG = new unsigned char[itmImage_BG->noDims.x * itmImage_BG->noDims.y * 3];
+
+                ORUtils::Vector2<int> noDims = itmImage_BG->noDims;
+
+                for (int i = 0; i < noDims.x * noDims.y; ++i) {
+                    image_BG[i * 3 + 0] = itmImage_BG->GetData(MEMORYDEVICE_CPU)[i].x;
+                    image_BG[i * 3 + 1] = itmImage_BG->GetData(MEMORYDEVICE_CPU)[i].y;
+                    image_BG[i * 3 + 2] = itmImage_BG->GetData(MEMORYDEVICE_CPU)[i].z;
+                }
+                pangolin::GlTexture imageTexture_BG(itmImage_BG->noDims.x, itmImage_BG->noDims.y, GL_RGB, false, 0, GL_RGB,
+                                                 GL_UNSIGNED_BYTE);
+
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+                imageTexture_BG.Upload(image_BG, GL_RGB, GL_UNSIGNED_BYTE);
+
+
+                auto *itmImage_obj = mainEngine->getImage(currentObjNum);
+                unsigned char *image_obj = new unsigned char[itmImage_obj->noDims.x * itmImage_obj->noDims.y * 3];
+
+
+                for (int i = 0; i < noDims.x * noDims.y; ++i) {
+                    image_obj[i * 3 + 0] = itmImage_obj->GetData(MEMORYDEVICE_CPU)[i].x;
+                    image_obj[i * 3 + 1] = itmImage_obj->GetData(MEMORYDEVICE_CPU)[i].y;
+                    image_obj[i * 3 + 2] = itmImage_obj->GetData(MEMORYDEVICE_CPU)[i].z;
+                }
+                pangolin::GlTexture imageTexture_obj(itmImage_BG->noDims.x, itmImage_obj->noDims.y, GL_RGB, false, 0, GL_RGB,
+                                                    GL_UNSIGNED_BYTE);
+
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+                imageTexture_obj.Upload(image_obj, GL_RGB, GL_UNSIGNED_BYTE);
+
+                d_image_BG.Activate();
+                glColor3f(1.0, 1.0, 1.0);
+                imageTexture_BG.RenderToViewport(true);
+
+                d_image_obj.Activate();
+                glColor3f(1.0, 1.0, 1.0);
+                imageTexture_obj.RenderToViewport(true);
+
+
+
+                pangolin::FinishFrame();
+
+
                 ProcessFrame();
-                auto *itmImage = mainEngine->getImage(0);
+
+
+
+                /*auto *itmImage = mainEngine->getImage(0);
                 unsigned char *image = new unsigned char[itmImage->noDims.x * itmImage->noDims.y * 3];
 
                 ORUtils::Vector2<int> noDims = itmImage->noDims;
@@ -157,29 +218,31 @@ namespace ObjSLAM {
                 //display the image
                 d_image.Activate();
                 glColor3f(1.0, 1.0, 1.0);
-                imageTexture.RenderToViewport();
+                imageTexture.RenderToViewport(true); //flip = true
 
                 //display the image
                 d_image2.Activate();
                 glColor3f(1.0, 1.0, 1.0);
-                imageTexture2.RenderToViewport();
+                imageTexture2.RenderToViewport(true);
 
                 //display the image
                 d_image3.Activate();
                 glColor3f(1.0, 1.0, 1.0);
-                imageTexture3.RenderToViewport();
+                imageTexture3.RenderToViewport(true);
 
                 //display the image
                 d_image4.Activate();
                 glColor3f(1.0, 1.0, 1.0);
-                imageTexture4.RenderToViewport();
+                imageTexture4.RenderToViewport(true);
 
                 delete[] image;
                 delete[] image2;
                 delete[] image3;
-                delete[] image4;
+                delete[] image4;*/
 
-                pangolin::FinishFrame();
+
+
+
             }
 
 

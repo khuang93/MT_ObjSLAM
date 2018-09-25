@@ -49,23 +49,19 @@ class ObjSLAMMappingEngine {
   shared_ptr<ObjectView<TVoxel, TIndex>> view;
   vector<shared_ptr<ObjectView<TVoxel, TIndex>>> view_vec;
   shared_ptr<ITMLib::ITMTrackingState> t_state /*= NULL*/;
-//  ITMLib::ITMTrackingState *t_state_orig = NULL;
-//  ITMLib::ITMRenderState *r_state;
-//  ITMLib::ITMRenderState *r_state_BG;
 
   ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
   ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine_BG;
   shared_ptr<ITMLib::ITMTrackingController> t_controller;
-//  ITMLib::ITMTracker *tracker;
-//  ITMLib::ITMLowLevelEngine *lowEngine;
+
   Vector2i imgSize;
 //  std::vector<ObjectInstanceScene<TVoxel, TIndex> *> object_instance_scene_vector;
   std::vector<ObjectInstance_ptr<TVoxel, TIndex>> obj_inst_ptr_vector; //managing a list of all objs for faster loop over all objs
+  std::vector<ObjectInstance_ptr<TVoxel, TIndex>> active_obj_ptr_vector; //managing a list of all visible objs
   const std::shared_ptr<ITMLib::ITMLibSettings> settings;
   const std::shared_ptr<ITMLib::ITMRGBDCalib>calib;
 
-  int number_activeObjects=0;
-  int number_totalObjects=0;
+
 
 
   std::shared_ptr<ObjectInstance<TVoxel,TIndex>> BG_object_ptr;
@@ -78,12 +74,15 @@ class ObjSLAMMappingEngine {
 
   void reserveVectors(int memory_size){
     this->obj_inst_ptr_vector.reserve(memory_size);
+    this->active_obj_ptr_vector.reserve(memory_size);
     this->view_vec.reserve(memory_size);
   }
 
   void getVoxelPosFromScene(std::vector<Vector3s>& voxelPos_vec, ObjectInstance_ptr<TVoxel, TIndex> obj_ptr);
 
  public:
+    int number_activeObjects=0;
+    int number_totalObjects=0;
     bool isFree = true;
 
   //Constructor with LPD Dataset

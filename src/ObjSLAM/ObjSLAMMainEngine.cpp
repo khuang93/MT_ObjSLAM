@@ -55,7 +55,7 @@ void ObjSLAMMainEngine::updateMappingEngine(){
 }
 
 ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::getImage(int n){
-    if(n<this->mappingEngine->getObjectNumber()){
+    if(n<this->mappingEngine->number_activeObjects){
         return mappingEngine->getImage(n);
     }else{
         return mappingEngine->getImage(0);

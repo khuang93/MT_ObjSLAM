@@ -35,9 +35,6 @@
 using namespace std;
 
 
-void ProcessOneFrame(){
-
-}
 
 //static global variables
 bool saveSTL = false;
@@ -104,7 +101,6 @@ int main(int argc, char **argv) {
     cout<<"Dataset not supported, programm will be terminated!\n";
     return 1;
   }*/
-
 
 
   sceneIsBackground=true;
