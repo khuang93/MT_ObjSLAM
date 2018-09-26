@@ -26,11 +26,6 @@ namespace ObjSLAM {
     }
 
 
-    void setImageData(unsigned char *imageArray, int size) {
-        for (int i = 0; i < size; i++) {
-            imageArray[i] = (unsigned char) (rand() / (RAND_MAX / 255.0));
-        }
-    }
 
     void ObjSLAMUI::CreateDisplay() {
         // Create OpenGL window in single line
@@ -181,6 +176,10 @@ namespace ObjSLAM {
 
 
             pangolin::FinishFrame();
+
+            delete[] image_BG;
+            delete[] image_obj;
+
             ProcessContinuous();
 
 //            ProcessFrame();
