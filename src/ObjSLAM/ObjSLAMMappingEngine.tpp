@@ -548,7 +548,7 @@ namespace ObjSLAM {
 //  cout<<"checkImageOverlap\n";
         //parameter to set which % of the pixels must match
         double threshold_areaChange = 0.05;
-        double threshold_overlap = 0.25;
+        double threshold_overlap = 0.2;
 
         int x1_min = imgSize.x - 1;
         int x2_min = imgSize.x - 1;
@@ -587,10 +587,10 @@ namespace ObjSLAM {
         float area_1 = (x1_max - x1_min) * (y1_max - y1_min);
         float area_2 = (x2_max - x2_min) * (y2_max - y2_min);
 
-        int x_min_overlap = max(x1_min, x2_min);
-        int y_min_overlap = max(y1_min, y2_min);
-        int x_max_overlap = min(x1_max, x2_max);
-        int y_max_overlap = min(y1_max, y2_max);
+        int x_min_overlap = MAX(x1_min, x2_min);
+        int y_min_overlap = MAX(y1_min, y2_min);
+        int x_max_overlap = MIN(x1_max, x2_max);
+        int y_max_overlap = MIN(y1_max, y2_max);
 
         float area_overlap = (x_max_overlap - x_min_overlap) * (y_max_overlap - y_min_overlap);
 
@@ -829,6 +829,7 @@ namespace ObjSLAM {
         sceneIsBackground=object->checkIsBackground();
         float threshold = 0.8;
         short k_weight = 4;
+        float th_weight = 0.1;
         short k_minAge = 5;
 
         auto scene = object->getScene();
@@ -865,7 +866,7 @@ namespace ObjSLAM {
                     localVoxelBlock[locId] = TVoxel();
 
                 }*/
-                if ( (localVoxelBlock[locId].view_count)>k_minAge && localVoxelBlock[locId].w_depth <=k_weight) {
+                if ( (localVoxelBlock[locId].view_count)>k_minAge && localVoxelBlock[locId].w_depth <=th_weight/MIN(settings->sceneParams.maxW, object_view_count)) {
                     //remove this voxel
                     localVoxelBlock[locId] = TVoxel();
 
