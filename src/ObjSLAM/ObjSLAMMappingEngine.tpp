@@ -146,6 +146,7 @@ namespace ObjSLAM {
 //#endif
                     for (size_t i = 0; i < obj_ptr_vec->size(); ++i) {
                         ObjectInstance_ptr<TVoxel, TIndex> existing_obj_ptr = obj_ptr_vec->at(i);
+                        if(!existing_obj_ptr->isVisible) continue;
 
                         if (obj_inst_ptr->checkIsBackground()) {
                             newObject = false;
@@ -314,6 +315,7 @@ namespace ObjSLAM {
     void ObjSLAMMappingEngine<TVoxel, TIndex>::outputAllObjImages() {
 
         cout << "Number of Objects = " << number_totalObjects << endl;
+        cout << "Number of visible Objects = " << number_activeObjects << endl;
         BG_VoxelCleanUp();
 
         Matrix3f R(1,0,0,0,0,-1,0,1,0);
@@ -440,7 +442,10 @@ namespace ObjSLAM {
 
 #pragma omp parallel for private(sceneIsBackground)
         for (size_t i = 1; i < this->obj_inst_ptr_vector.size(); ++i) { //start from1 to skip BG
+
             const ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
+            bool prevVisibility = obj_inst_ptr->isVisible;
+
             auto const *scene = obj_inst_ptr->getScene().get();
             visualisationEngine->FindVisibleBlocks(scene,
                                                    this->t_state->pose_d,
@@ -452,10 +457,14 @@ namespace ObjSLAM {
                                                    &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
                                                    obj_inst_ptr->getRenderState().get());
             obj_inst_ptr->updateVisibility();
-            if(!obj_inst_ptr->isVisible){
-                std::remove(active_obj_ptr_vector.begin(),active_obj_ptr_vector.end(),obj_inst_ptr);
+            if(prevVisibility && !(obj_inst_ptr->isVisible)){
+                active_obj_ptr_vector.erase(std::remove(active_obj_ptr_vector.begin(),active_obj_ptr_vector.end(),obj_inst_ptr),active_obj_ptr_vector.end());
+            }
+            if(!prevVisibility && obj_inst_ptr->isVisible) {
+                active_obj_ptr_vector.push_back(obj_inst_ptr);
             }
         }
+//        active_obj_ptr_vector.shrink_to_fit();
         this->number_totalObjects=obj_inst_ptr_vector.size();
         this->number_activeObjects=active_obj_ptr_vector.size();
     }

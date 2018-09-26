@@ -36,11 +36,12 @@ namespace ObjSLAM {
 
     void ObjSLAMUI::chooseNextObj(){
         cout<<"Object Number: \n";
-//        cout<< ++(currentObjNum)<<endl;
+        currentObjNum=(++currentObjNum)%this->mainEngine->getActiveObjNumber();
+        cout<< currentObjNum<<endl;
     }
 
     void ObjSLAMUI::reg(){
-        pangolin::RegisterKeyPressCallback(pangolin::PANGO_KEY_DOWN, [this](){chooseNextObj();} );
+        pangolin::RegisterKeyPressCallback('n', [this](){chooseNextObj();} );
     }
 
     void ObjSLAMUI::run() {
@@ -57,9 +58,7 @@ namespace ObjSLAM {
         );
 
 
-        reg();
-
-
+        pangolin::RegisterKeyPressCallback('n', [this](){chooseNextObj();} );
 
 //        pangolin::View &d_cam = pangolin::Display("cam")
 //                .SetBounds(0, 1.0f, 0, 1.0f, -640 / 480.0)
