@@ -115,7 +115,7 @@ namespace ObjSLAM {
             reserveVectors(totFrames);
 
 
-            renderState_RenderAll = std::shared_ptr(
+            renderState_RenderAll = std::shared_ptr<ITMLib::ITMRenderState>(
                     new ITMLib::ITMRenderState_VH(ITMLib::ITMVoxelBlockHash::noTotalEntries_BG,
                                                   imgSize,
                                                   settings->sceneParams.viewFrustum_min,
@@ -125,7 +125,7 @@ namespace ObjSLAM {
 
             t_state_above=make_shared<ITMLib::ITMTrackingState>(this->imgSize, MEMORYDEVICE_CPU);
             Matrix3f R(1, 0, 0, 0, 0, -1, 0, 1, 0);
-            Vector3f T(0, 1.5, 8);
+            Vector3f T(0, 0.5, 8);
             auto * pose_visualize = new ORUtils::SE3Pose(R,T);
             t_state_above->pose_d->SetFrom(pose_visualize);
             delete pose_visualize;
