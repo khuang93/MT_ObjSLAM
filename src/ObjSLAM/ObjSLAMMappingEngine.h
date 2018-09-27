@@ -171,6 +171,8 @@ class ObjSLAMMappingEngine {
 
   ObjUChar4Image* getImage(int object_index);
 
+  ObjUChar4Image* getImageFromAbove();
+
   int getObjectNumber(){return obj_inst_ptr_vector.size();}
 
   //TODO

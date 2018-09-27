@@ -423,7 +423,7 @@ namespace ObjSLAM {
                         to_string(imgNumber)
                         + ".ppm";
 
-//                SaveImageToFile(img.get(), name.c_str());
+                SaveImageToFile(img.get(), name.c_str());
             }
         }
         //save stl
@@ -851,6 +851,7 @@ namespace ObjSLAM {
 #endif
 //        for (int entryId = 0; entryId < noVisibleEntries; entryId++) {
         for (int i = 0; i < (sceneIsBackground ? scene->index.noTotalEntries_BG : scene->index.noTotalEntries); ++i) {
+            float abs_weight_th = th_weight/MIN(settings->sceneParams.maxW, object_view_count);
 
             const ITMHashEntry &currentHashEntry = hashTable[i];
 
@@ -866,10 +867,9 @@ namespace ObjSLAM {
                     localVoxelBlock[locId] = TVoxel();
 
                 }*/
-                if ( (localVoxelBlock[locId].view_count)>k_minAge && localVoxelBlock[locId].w_depth <=th_weight/MIN(settings->sceneParams.maxW, object_view_count)) {
+                if ( (localVoxelBlock[locId].w_depth)>k_minAge && localVoxelBlock[locId].w_depth <= abs_weight_th) {
                     //remove this voxel
                     localVoxelBlock[locId] = TVoxel();
-
                 }
             }
         }
@@ -978,6 +978,12 @@ namespace ObjSLAM {
     template<class TVoxel, class TIndex>
     ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::getImage(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr) {
         return obj_inst_ptr->getRenderState()->raycastImage;
+    }
+
+
+    template<class TVoxel, class TIndex>
+    ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::getImageFromAbove() {
+
     }
 
 }

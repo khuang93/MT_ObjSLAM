@@ -127,7 +127,7 @@ namespace ObjSLAM {
         std::cout << "Resize the window to experiment with SetBounds, SetLock and SetAspect." << std::endl;
 
         ProcessFrame();
-        while (imgNum <= totFrames && !pangolin::ShouldQuit()) {
+        while (imgNum != -1 && !pangolin::ShouldQuit()) {
 
 
             auto *itmImage_BG = mainEngine->getImage(0);
@@ -184,39 +184,6 @@ namespace ObjSLAM {
 
 //            ProcessFrame();
         }
-
-
-        /*
-        const int width =  64;
-        const int height = 48;
-
-        unsigned char* imageArray = new unsigned char[3*width*height];
-        pangolin::GlTexture imageTexture(width,height,GL_RGB,false,0,GL_RGB,GL_UNSIGNED_BYTE);
-
-        // Default hooks for exiting (Esc) and fullscreen (tab).
-        while(!pangolin::ShouldQuit())
-        {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            d_cam.Activate(s_cam);
-
-            glColor3f(1.0,1.0,1.0);
-            pangolin::glDrawColouredCube();
-
-            //Set some random image data and upload to GPU
-            setImageData(imageArray,3*width*height);
-            imageTexture.Upload(imageArray,GL_RGB,GL_UNSIGNED_BYTE);
-
-            //display the image
-            d_image.Activate();
-            glColor3f(1.0,1.0,1.0);
-            imageTexture.RenderToViewport();
-
-            pangolin::FinishFrame();
-        }
-
-        delete[] imageArray;*/
-
 
     }
 
