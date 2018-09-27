@@ -84,10 +84,10 @@ int TUM_Reader::readNext(){
   //read labels
 //  std::vector<string> label_fileNames = getFileNames(label_path);
   std::vector<string> filteredNames;
-
+  string prefix = rgbd_name_pair.rgb_name.erase(0,4) /*+ ".png."*/;
   for (int i = 0; i < LabelFileNames.size(); i++) {
 //    std::cout<<LabelFileNames.at(i)<<endl;
-    string prefix = rgbd_name_pair.rgb_num + ".png."ie;
+
     if (boost::starts_with(LabelFileNames.at(i), prefix) && LabelFileNames.at(i) != prefix) {
       filteredNames.push_back(LabelFileNames.at(i));
     }

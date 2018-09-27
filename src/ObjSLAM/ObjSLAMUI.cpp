@@ -26,7 +26,6 @@ namespace ObjSLAM {
     }
 
 
-
     void ObjSLAMUI::CreateDisplay() {
         // Create OpenGL window in single line
         pangolin::CreateWindowAndBind("ObjSLAM UI", w, h);
@@ -116,11 +115,15 @@ namespace ObjSLAM {
         pangolin::View &d_image_obj = pangolin::Display("image2")
                 .SetAspect(640.0f / 480.0f);
 
+        pangolin::View &d_image_rgb = pangolin::Display("image_rgb")
+                .SetAspect(640.0f / 480.0f);
+
 
         pangolin::Display("multi")
                 .SetBounds(0.0, 1.0, 0.0, 1.0)
                 .SetLayout(pangolin::LayoutEqual)
                 .AddDisplay(d_image_BG)
+                .AddDisplay(d_image_rgb)
                 .AddDisplay(d_image_obj);
 
 
@@ -158,13 +161,32 @@ namespace ObjSLAM {
                 image_obj[i * 3 + 1] = itmImage_obj->GetData(MEMORYDEVICE_CPU)[i].y;
                 image_obj[i * 3 + 2] = itmImage_obj->GetData(MEMORYDEVICE_CPU)[i].z;
             }
-            pangolin::GlTexture imageTexture_obj(itmImage_BG->noDims.x, itmImage_obj->noDims.y, GL_RGB, false, 0,
+            pangolin::GlTexture imageTexture_obj(itmImage_obj->noDims.x, itmImage_obj->noDims.y, GL_RGB, false, 0,
                                                  GL_RGB,
                                                  GL_UNSIGNED_BYTE);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             imageTexture_obj.Upload(image_obj, GL_RGB, GL_UNSIGNED_BYTE);
+
+
+            auto *itmImage_rgb = mainEngine->getInputImage();
+
+            unsigned char *image_rgb = new unsigned char[itmImage_rgb->noDims.x * itmImage_rgb->noDims.y * 3];
+
+
+            for (int i = 0; i < noDims.x * noDims.y; ++i) {
+                image_rgb[i * 3 + 0] = itmImage_rgb->GetData(MEMORYDEVICE_CPU)[i].x;
+                image_rgb[i * 3 + 1] = itmImage_rgb->GetData(MEMORYDEVICE_CPU)[i].y;
+                image_rgb[i * 3 + 2] = itmImage_rgb->GetData(MEMORYDEVICE_CPU)[i].z;
+            }
+            pangolin::GlTexture imageTexture_rgb(itmImage_rgb->noDims.x, itmImage_rgb->noDims.y, GL_RGB, false, 0,
+                                                 GL_RGB,
+                                                 GL_UNSIGNED_BYTE);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            imageTexture_rgb.Upload(image_rgb, GL_RGB, GL_UNSIGNED_BYTE);
 
             d_image_BG.Activate();
             glColor3f(1.0, 1.0, 1.0);
@@ -175,10 +197,16 @@ namespace ObjSLAM {
             imageTexture_obj.RenderToViewport(true);
 
 
+                d_image_rgb.Activate();
+                glColor3f(1.0, 1.0, 1.0);
+                imageTexture_rgb.RenderToViewport(true);
+
+
             pangolin::FinishFrame();
 
             delete[] image_BG;
             delete[] image_obj;
+            delete[] image_rgb;
 
             ProcessContinuous();
 
@@ -186,5 +214,6 @@ namespace ObjSLAM {
         }
 
     }
+
 
 }

@@ -61,3 +61,7 @@ ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::getImage(int n){
         return mappingEngine->getImage(0);
     }
 }
+
+ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::getInputImage() {
+    return this->wholeView->rgb;
+}
