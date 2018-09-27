@@ -119,12 +119,17 @@ namespace ObjSLAM {
                 .SetAspect(640.0f / 480.0f);
 
 
+        pangolin::View &d_image_above = pangolin::Display("image_rgb")
+                .SetAspect(640.0f / 480.0f);
+
+
         pangolin::Display("multi")
                 .SetBounds(0.0, 1.0, 0.0, 1.0)
                 .SetLayout(pangolin::LayoutEqual)
                 .AddDisplay(d_image_BG)
                 .AddDisplay(d_image_rgb)
-                .AddDisplay(d_image_obj);
+                .AddDisplay(d_image_obj)
+                .AddDisplay(d_image_above);
 
 
         std::cout << "Resize the window to experiment with SetBounds, SetLock and SetAspect." << std::endl;
@@ -188,6 +193,29 @@ namespace ObjSLAM {
 
             imageTexture_rgb.Upload(image_rgb, GL_RGB, GL_UNSIGNED_BYTE);
 
+
+            //above
+            auto *itmImage_above = mainEngine->getAboveImage();
+
+            unsigned char *image_above = new unsigned char[itmImage_above->noDims.x * itmImage_above->noDims.y * 3];
+
+
+            for (int i = 0; i < noDims.x * noDims.y; ++i) {
+                image_above[i * 3 + 0] = itmImage_above->GetData(MEMORYDEVICE_CPU)[i].x;
+                image_above[i * 3 + 1] = itmImage_above->GetData(MEMORYDEVICE_CPU)[i].y;
+                image_above[i * 3 + 2] = itmImage_above->GetData(MEMORYDEVICE_CPU)[i].z;
+            }
+            pangolin::GlTexture imageTexture_above(itmImage_above->noDims.x, itmImage_above->noDims.y, GL_RGB, false, 0,
+                                                 GL_RGB,
+                                                 GL_UNSIGNED_BYTE);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            imageTexture_above.Upload(image_above, GL_RGB, GL_UNSIGNED_BYTE);
+
+
+
+
             d_image_BG.Activate();
             glColor3f(1.0, 1.0, 1.0);
             imageTexture_BG.RenderToViewport(true);
@@ -197,9 +225,13 @@ namespace ObjSLAM {
             imageTexture_obj.RenderToViewport(true);
 
 
-                d_image_rgb.Activate();
-                glColor3f(1.0, 1.0, 1.0);
-                imageTexture_rgb.RenderToViewport(true);
+            d_image_rgb.Activate();
+            glColor3f(1.0, 1.0, 1.0);
+            imageTexture_rgb.RenderToViewport(true);
+
+            d_image_above.Activate();
+            glColor3f(1.0, 1.0, 1.0);
+            imageTexture_above.RenderToViewport(true);
 
 
             pangolin::FinishFrame();
@@ -207,6 +239,8 @@ namespace ObjSLAM {
             delete[] image_BG;
             delete[] image_obj;
             delete[] image_rgb;
+            delete[] image_above;
+
 
             ProcessContinuous();
 

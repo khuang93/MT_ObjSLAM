@@ -61,6 +61,8 @@ class ObjSLAMMappingEngine {
   const std::shared_ptr<ITMLib::ITMLibSettings> settings;
   const std::shared_ptr<ITMLib::ITMRGBDCalib>calib;
 
+  std::shared_ptr<ObjUChar4Image> img_from_above;
+
 
 
 

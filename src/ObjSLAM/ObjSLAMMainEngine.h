@@ -88,6 +88,8 @@ public:
 
     ObjSLAM::ObjUChar4Image* getInputImage();
 
+    ObjSLAM::ObjUChar4Image* getAboveImage();
+
     int getActiveObjNumber(){return this->mappingEngine->number_activeObjects;}
     int getTotalObjNumber(){return this->mappingEngine->number_totalObjects;}
 

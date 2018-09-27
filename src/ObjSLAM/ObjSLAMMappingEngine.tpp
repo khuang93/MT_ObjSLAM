@@ -983,7 +983,34 @@ namespace ObjSLAM {
 
     template<class TVoxel, class TIndex>
     ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::getImageFromAbove() {
+        Matrix3f R(1, 0, 0, 0, 0, -1, 0, 1, 0);
+        Vector3f T(0, 1.5, 8);
+        auto * pose_visualize = new ORUtils::SE3Pose(R,T);
+        auto img = std::make_shared<ObjUChar4Image>(imgSize, MEMORYDEVICE_CPU);
+        img->ChangeDims(BG_object_ptr->getRenderState().get()->raycastImage->noDims);
+        auto scene = BG_object_ptr->getScene();
+        visualisationEngine_BG->FindVisibleBlocks(scene.get(), pose_visualize,
+//                                                           this->t_state->pose_d,
+                                                  &BG_object_ptr->getCurrentView()->calib.intrinsics_d,
+                                                  BG_object_ptr->getRenderState().get());
 
+        visualisationEngine_BG->CreateExpectedDepths(scene.get(), pose_visualize,
+//                                                              this->t_state->pose_d,
+                                                     &BG_object_ptr->getCurrentView()->calib.intrinsics_d,
+                                                     BG_object_ptr->getRenderState().get());
+//        Object_Cleanup(obj_inst_ptr);
+        visualisationEngine_BG->RenderImage(scene.get(), pose_visualize,
+//                                                        this->t_state->pose_d,
+                                            &BG_object_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
+                                            BG_object_ptr->getRenderState().get(),
+                                            img.get(),
+                                            ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
+                                            ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+
+        SaveImageToFile(img.get(), ("BG_Above"+to_string(imgNumber)+".ppm").c_str());
+
+        delete pose_visualize;
+        return img.get();
     }
 
 }
