@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
 
   internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
 
-mi
+
 //  LPD_Dataset_Reader reader(path, imgSize);
   DatasetReader* reader= nullptr;
   if(path.find("Teddy")!=std::string::npos){
