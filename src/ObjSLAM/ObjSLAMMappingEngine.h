@@ -47,6 +47,7 @@ namespace ObjSLAM {
         shared_ptr<ObjectView<TVoxel, TIndex>> view;
         vector<shared_ptr<ObjectView<TVoxel, TIndex>>> view_vec;
         shared_ptr<ITMLib::ITMTrackingState> t_state /*= NULL*/;
+        shared_ptr<ITMLib::ITMTrackingState> t_state_above /*= NULL*/;
 
         ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
         ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine_BG;
@@ -120,6 +121,14 @@ namespace ObjSLAM {
                                                   settings->sceneParams.viewFrustum_min,
                                                   settings->sceneParams.viewFrustum_max,
                                                   MEMORYDEVICE_CPU));
+
+
+            t_state_above=make_shared<ITMLib::ITMTrackingState>(this->imgSize, MEMORYDEVICE_CPU);
+            Matrix3f R(1, 0, 0, 0, 0, -1, 0, 1, 0);
+            Vector3f T(0, 1.5, 8);
+            auto * pose_visualize = new ORUtils::SE3Pose(R,T);
+            t_state_above->pose_d->SetFrom(pose_visualize);
+            delete pose_visualize;
         }
 
 

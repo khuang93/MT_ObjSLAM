@@ -981,10 +981,18 @@ namespace ObjSLAM {
     template<class TVoxel, class TIndex>
     ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::getImageFromAbove() {
         sceneIsBackground=true;
-        Matrix3f R(1, 0, 0, 0, 0, -1, 0, 1, 0);
-        Vector3f T(0, 1.5, 8);
-        auto * pose_visualize = new ORUtils::SE3Pose(R,T);
+
         auto img = std::make_shared<ObjUChar4Image>(imgSize, MEMORYDEVICE_CPU);
+
+        auto* pose_visualize = this->t_state_above->pose_d;
+
+        //Insert function: prepare tracking with all objs
+        t_controller->Prepare(t_state_above.get(), renderState_RenderAll.get(), this->obj_inst_ptr_vector,
+                              visualisationEngine_BG);
+
+
+
+
         img->ChangeDims(BG_object_ptr->getRenderState().get()->raycastImage->noDims);
         auto scene = BG_object_ptr->getScene();
 
@@ -1018,7 +1026,7 @@ namespace ObjSLAM {
 
         SaveImageToFile(img.get(), ("BG_Above"+to_string(imgNumber)+".ppm").c_str());
 
-        delete pose_visualize;
+//        delete pose_visualize;
         return img.get();
     }
 
