@@ -119,7 +119,7 @@ namespace ObjSLAM {
                 .SetAspect(640.0f / 480.0f);
 
 
-        pangolin::View &d_image_above = pangolin::Display("image_rgb")
+        pangolin::View &d_image_above = pangolin::Display("image_above")
                 .SetAspect(640.0f / 480.0f);
 
 

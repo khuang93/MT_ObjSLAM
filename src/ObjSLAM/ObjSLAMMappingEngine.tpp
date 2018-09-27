@@ -132,18 +132,7 @@ namespace ObjSLAM {
 
                 if (obj_ptr_vec->size() == 0) {
                     obj_inst_ptr->addObjectInstanceToLabel();
-#pragma omp critical
-                    {
-                        if (obj_inst_ptr->checkIsBackground()) {
-                            obj_inst_ptr_vector.insert(obj_inst_ptr_vector.begin(), obj_inst_ptr);
-                            active_obj_ptr_vector.insert(active_obj_ptr_vector.begin(), obj_inst_ptr);
-                        } else {
-                            obj_inst_ptr_vector.push_back(obj_inst_ptr);
-                            active_obj_ptr_vector.push_back(obj_inst_ptr);
-                        }
-                        number_activeObjects=active_obj_ptr_vector.size();
-                        number_totalObjects=obj_inst_ptr_vector.size();
-                    }
+
                     newObject = true;
                 } else {
 //#ifdef WITH_OPENMP
@@ -179,9 +168,18 @@ namespace ObjSLAM {
                 obj_inst_ptr->setCurrentView(itmview);
 
                 if (newObject) {
-//#pragma omp atomic
-//                    number_totalObjects++;
-//                    number_activeObjects++;
+#pragma omp critical
+                    {
+                        if (obj_inst_ptr->checkIsBackground()) {
+                            obj_inst_ptr_vector.insert(obj_inst_ptr_vector.begin(), obj_inst_ptr);
+                            active_obj_ptr_vector.insert(active_obj_ptr_vector.begin(), obj_inst_ptr);
+                        } else {
+                            obj_inst_ptr_vector.push_back(obj_inst_ptr);
+                            active_obj_ptr_vector.push_back(obj_inst_ptr);
+                        }
+                        number_activeObjects=active_obj_ptr_vector.size();
+                        number_totalObjects=obj_inst_ptr_vector.size();
+                    }
                     sceneIsBackground = obj_inst_ptr->checkIsBackground();
                     obj_inst_ptr->view_count = 1;
                     if (obj_inst_ptr->checkIsBackground() && BG_object_ptr.get() == nullptr) {
@@ -951,14 +949,13 @@ namespace ObjSLAM {
         int *visibleEntryIDs = renderState_vh->GetVisibleEntryIDs();
         const typename ITMLib::ITMVoxelBlockHash::IndexData *voxelIndex = scene->index.getIndexData();
 
-
+        //see how to read excess, maybe use readvoxel
         for (int blockNo = 0; blockNo < renderState_vh->noVisibleEntries; ++blockNo) {
             int blockID = visibleEntryIDs[blockNo];
             ITMHashEntry &blockData(scene->index.GetEntries()[blockID]);
             voxelPos_vec.push_back(blockData.pos);
 //    cout << "BlockNo" << blockNo << " Pos" << blockData.pos << endl;
         }
-
     }
 
 
@@ -983,26 +980,38 @@ namespace ObjSLAM {
 
     template<class TVoxel, class TIndex>
     ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::getImageFromAbove() {
+        sceneIsBackground=true;
         Matrix3f R(1, 0, 0, 0, 0, -1, 0, 1, 0);
         Vector3f T(0, 1.5, 8);
         auto * pose_visualize = new ORUtils::SE3Pose(R,T);
         auto img = std::make_shared<ObjUChar4Image>(imgSize, MEMORYDEVICE_CPU);
         img->ChangeDims(BG_object_ptr->getRenderState().get()->raycastImage->noDims);
         auto scene = BG_object_ptr->getScene();
+
+
+        std::shared_ptr<ITMLib::ITMRenderState> renderState_tmp(
+                new ITMLib::ITMRenderState_VH((sceneIsBackground
+                                               ? ITMLib::ITMVoxelBlockHash::noTotalEntries_BG
+                                               : ITMLib::ITMVoxelBlockHash::noTotalEntries),
+                                              imgSize,
+                                              settings->sceneParams.viewFrustum_min,
+                                              settings->sceneParams.viewFrustum_max,
+                                              MEMORYDEVICE_CPU));
+
         visualisationEngine_BG->FindVisibleBlocks(scene.get(), pose_visualize,
 //                                                           this->t_state->pose_d,
                                                   &BG_object_ptr->getCurrentView()->calib.intrinsics_d,
-                                                  BG_object_ptr->getRenderState().get());
+                                                  renderState_tmp.get());
 
         visualisationEngine_BG->CreateExpectedDepths(scene.get(), pose_visualize,
 //                                                              this->t_state->pose_d,
                                                      &BG_object_ptr->getCurrentView()->calib.intrinsics_d,
-                                                     BG_object_ptr->getRenderState().get());
-//        Object_Cleanup(obj_inst_ptr);
+                                                     renderState_tmp.get());
+
         visualisationEngine_BG->RenderImage(scene.get(), pose_visualize,
 //                                                        this->t_state->pose_d,
                                             &BG_object_ptr.get()->getAnchorView_ITM()->calib.intrinsics_d,
-                                            BG_object_ptr->getRenderState().get(),
+                                            renderState_tmp.get(),
                                             img.get(),
                                             ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                             ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
