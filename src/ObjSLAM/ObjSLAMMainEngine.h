@@ -86,6 +86,8 @@ public:
 
     ObjSLAM::ObjUChar4Image* getImage(int n);
 
+    ObjSLAM::ObjUChar4Image* getBGImage();
+
     ObjSLAM::ObjUChar4Image* getInputImage();
 
     ObjSLAM::ObjUChar4Image* getAboveImage();

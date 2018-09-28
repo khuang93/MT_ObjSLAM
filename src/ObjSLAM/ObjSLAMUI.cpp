@@ -138,7 +138,7 @@ namespace ObjSLAM {
         while (imgNum != -1 && !pangolin::ShouldQuit()) {
 
 
-            auto *itmImage_BG = mainEngine->getImage(0);
+            auto *itmImage_BG = mainEngine->getBGImage();
             unsigned char *image_BG = new unsigned char[itmImage_BG->noDims.x * itmImage_BG->noDims.y * 3];
 
             ORUtils::Vector2<int> noDims = itmImage_BG->noDims;

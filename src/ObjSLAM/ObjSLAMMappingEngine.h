@@ -45,6 +45,8 @@ namespace ObjSLAM {
         int imgNumber;
 
         shared_ptr<ObjectView<TVoxel, TIndex>> view;
+        shared_ptr<ObjUChar4Image> img_above;
+        shared_ptr<ObjUChar4Image> img_BG;
         vector<shared_ptr<ObjectView<TVoxel, TIndex>>> view_vec;
         shared_ptr<ITMLib::ITMTrackingState> t_state /*= NULL*/;
         shared_ptr<ITMLib::ITMTrackingState> t_state_above /*= NULL*/;
@@ -129,6 +131,7 @@ namespace ObjSLAM {
             auto * pose_visualize = new ORUtils::SE3Pose(R,T);
             t_state_above->pose_d->SetFrom(pose_visualize);
             delete pose_visualize;
+            img_BG = std::make_shared<ObjUChar4Image>(imgSize, MEMORYDEVICE_CPU);
         }
 
 
@@ -191,7 +194,11 @@ namespace ObjSLAM {
 
         ObjUChar4Image *getImage(int object_index);
 
+        ObjUChar4Image *getBGImage();
+
         ObjUChar4Image *getImageFromAbove();
+
+        void renderImageFromAbove();
 
         int getObjectNumber() { return obj_inst_ptr_vector.size(); }
 
