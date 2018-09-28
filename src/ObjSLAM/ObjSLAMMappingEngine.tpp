@@ -1051,14 +1051,7 @@ namespace ObjSLAM {
                                               settings->sceneParams.viewFrustum_min,
                                               settings->sceneParams.viewFrustum_max,
                                               MEMORYDEVICE_CPU));
-/*
-        visualisationEngine_BG->FindVisibleBlocks(scene.get(), pose_visualize,
-                                                  &BG_object_ptr->getCurrentView()->calib.intrinsics_d,
-                                                  renderState_tmp.get());
 
-        visualisationEngine_BG->CreateExpectedDepths(scene.get(), pose_visualize,
-                                                     &BG_object_ptr->getCurrentView()->calib.intrinsics_d,
-                                                     renderState_tmp.get());*/
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
