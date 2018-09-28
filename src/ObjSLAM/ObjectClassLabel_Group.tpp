@@ -3,7 +3,7 @@
 //
 
 #include "ObjectClassLabel_Group.h"
-//#include "ObjectInstance_New.tpp"
+//#include "ObjectInstance.tpp"
 
 namespace ObjSLAM{
 template<typename TVoxel, typename TIndex>
@@ -24,9 +24,9 @@ const std::vector<std::string> ObjectClassLabel_Group<TVoxel,TIndex>::label_list
 "teddy bear", "hair drier", "toothbrush"};
 
 /*template<class TVoxel, class TIndex>
-void ObjectClassLabel_Group<TVoxel,TIndex>::addObjectInstance(ObjectInstance_New<TVoxel, TIndex>* object_ptr){
+void ObjectClassLabel_Group<TVoxel,TIndex>::addObjectInstance(ObjectInstance<TVoxel, TIndex>* object_ptr){
 
-  std::shared_ptr<ObjectInstance_New<TVoxel, TIndex>> ptr(object_ptr);
+  std::shared_ptr<ObjectInstance<TVoxel, TIndex>> ptr(object_ptr);
   this->object_ptr_vector.push_back(ptr);
 }*/
 

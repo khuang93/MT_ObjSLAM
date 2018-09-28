@@ -16,7 +16,7 @@ ObjectInstanceScene<TVoxel, TIndex>::ObjectInstanceScene(/*ObjSLAM::ObjectClassL
                                                          MemoryDeviceType _memoryType/*,
                                                          ObjSLAM::ObjectView *_firstView*/):
 /*label(_label),objectIndex(_objectIndex),*/ITMLib::ITMScene<TVoxel,TIndex>(_sceneParams, _useSwapping, _memoryType){
-//  ListofAllViews.push_back(_firstView);
+
   //TODO debug msg
 //  std::cout << "** Created ObjectInstanceScene! \n";
 }

@@ -3,7 +3,7 @@
 //
 #include <iostream>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderStateFactory.h>
-
+#include <src/ObjSLAM/ObjSLAMVoxelSceneParams.h>
 #include "LPD_Dataset_Reader.h"
 #include "ObjectInstanceScene.h"
 #include "../../External/InfiniTAM/InfiniTAM/ITMLib/ITMLibDefines.h"
@@ -12,6 +12,8 @@
 #include "ObjectView.h"
 #include "TeddyReader.h"
 #include "TUM_Reader.h"
+#include "ObjSLAMMainEngine.h"
+#include "ObjSLAMUI.h"
 #include <memory>
 
 #include <g2o/core/base_vertex.h>
@@ -28,14 +30,11 @@
 #include <ctime>
 #include <sys/time.h>
 
-#include <src/ObjSLAM/ObjSLAMVoxelSceneParams.h>
+
 
 using namespace std;
 
 
-void ProcessOneFrame(){
-
-}
 
 //static global variables
 bool saveSTL = false;
@@ -43,9 +42,14 @@ int STL_Frequency = 1;
 int reader_SkipFrames = 0;
 int numthreads = 4;
 int totFrames;
+bool sceneIsBackground = false;
 
 
 int main(int argc, char **argv) {
+
+
+
+
   //TODO Debug output
   cout << "**Hello SLAM World!" << endl;
 
@@ -67,14 +71,17 @@ int main(int argc, char **argv) {
   }
 
 
+    ObjSLAM::ObjSLAMUI* ui =new ObjSLAM::ObjSLAMUI(imgSize);
 
 
 
 
 //  ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
   std::shared_ptr<ITMLib::ITMLibSettings> internalSettings = std::make_shared<ITMLib::ITMLibSettings>();
-  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.1f, 5, 0.01f, 0.1, 6.0, false);
+  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.1f, 100, 0.01f, 0.1, 10.0, true);
   //(0.1, 10, 0.025, 0.1, 4.0, false); //(0.02f, 100, 0.002f, 0.2f, 3.0f, false);  //(0.2, 4, 0.05, 0.1, 4.0, false);
+          //0.1f, 5, 0.01f, 0.1, 6.0, false  0.04f, 100, 0.005f, 0.2f, 5.0f, false
+//  float mu, int maxW, float voxelSize, float viewFrustum_min, float viewFrustum_max, bool stopIntegratingAtMaxW
 
   internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
 
@@ -87,17 +94,80 @@ int main(int argc, char **argv) {
   }else if(path.find("RealisticRenderingDataset")!=std::string::npos){
     cout<<"RealisticRenderingDataset\n";
     reader = new LPD_Dataset_Reader(path,imgSize);
-  }else if(path.find("rgbd")!=std::string::npos || path.find("traj")!=std::string::npos){
+  }else /*if(path.find("rgbd")!=std::string::npos || path.find("traj")!=std::string::npos)*/{
     cout<<"TUM RGBD\n";
     reader = new TUM_Reader(path,imgSize);
-  }else{
+  }/*else{
     cout<<"Dataset not supported, programm will be terminated!\n";
     return 1;
+  }*/
+
+
+  sceneIsBackground=true;
+  ObjSLAMMainEngine* mainEngine =new ObjSLAMMainEngine(internalSettings, std::shared_ptr<DatasetReader>(reader));
+
+  ui->setMainEngine(mainEngine);
+  ui->run();
+
+  /*int imgNum = mainEngine->readNext();
+  // if(imgNum==-1) return 0;
+  mainEngine->trackFrame();
+  mainEngine->updateMappingEngine();
+  mainEngine->mapFrame();
+  mainEngine->outputPics();
+
+  while (imgNum<=totFrames) {
+      sceneIsBackground=true;
+      imgNum = mainEngine->readNext();
+      if(imgNum==-1) return 0;
+      mainEngine->trackFrame();
+      mainEngine->updateMappingEngine();
+      mainEngine->mapFrame();
+      mainEngine->outputPics();
+
+  }*/
+
+
+/*
+
+//TODO parallel tracking and mapping
+#pragma omp parallel sections shared(mainEngine,imgNum)
+{
+  #pragma omp section
+  {
+      while (imgNum<=totFrames) {
+          if(mainEngine->framesElapsedBeforeMapping<1){
+              sceneIsBackground=true;
+              imgNum = mainEngine->readNext();
+//              cout<<"Section 1 imgNum = "<<imgNum;
+              mainEngine->trackFrame();
+          }
+
+      }
   }
 
+  #pragma omp section
+  {
+      while (imgNum<=totFrames ) {
+//        cout<<"Section 2 imgNum = "<<imgNum;
+          if(mainEngine->mapperFree  ){
+            cout<<"Section 2 mapperFree? "<<mainEngine->mapperFree;
+            mainEngine->updateMappingEngine();
+            mainEngine->mapFrame();
+            mainEngine->outputPics();
+          }
+      }
+  }
+
+}
+*/
 
 
 
+
+
+
+/*
   int imgNum = reader->readNext();
 
 
@@ -118,7 +188,7 @@ int main(int argc, char **argv) {
   mappingEngine->SetTrackingController(t_controller);
 
 
-  
+
   mappingEngine->UpdateImgNumber(imgNum);
 
 
@@ -136,10 +206,15 @@ int main(int argc, char **argv) {
 
 
 
+  bool trackingOnly = true;
+  int KF_freq = 1;
+
+
 
 
 
   while (imgNum<=totFrames) {
+    trackingOnly = (imgNum%KF_freq != 0);
 
     std::clock_t start;
     std::clock_t start_subtask;
@@ -155,6 +230,8 @@ int main(int argc, char **argv) {
 
 
     imgNum = reader->readNext();
+    if(imgNum == -1) return 0;
+
     time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
     cout<<"readNext "<<time<<endl;
     start_subtask=std::clock();
@@ -173,9 +250,7 @@ int main(int argc, char **argv) {
     t_state = trackingEngine->TrackFrame(wholeView.get());
     time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
     wctduration = (std::chrono::system_clock::now() - wcts_sub);
-    cout<<"TrackFrame "<<wctduration.count()<<endl;
-    start_subtask=std::clock();
-    wcts_sub=std::chrono::system_clock::now();
+
 
 
     cout<<"Tracker Res: "<<t_state.get()->trackerResult<<endl;
@@ -184,7 +259,10 @@ int main(int argc, char **argv) {
     }
 
     mappingEngine->UpdateTrackingState(t_state);
-
+      cout<<"TrackFrame "<<wctduration.count()<<endl;
+      start_subtask=std::clock();
+      wcts_sub=std::chrono::system_clock::now();
+    if(trackingOnly) continue; //tracking only
 
     mappingEngine->CreateView(reader->depth_img, reader->rgb_img, reader->label_img_vector);
 
@@ -214,10 +292,11 @@ int main(int argc, char **argv) {
     cout<<"Img "<<imgNum<< " Time "<<wctduration.count()<<endl<<endl;
 
   }
+*/
 
-
+//  delete mainEngine;
   delete reader;
-  delete trackingEngine;
-  delete mappingEngine;
+//  delete trackingEngine;
+//  delete mappingEngine;
   return 0;
 }

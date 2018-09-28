@@ -13,11 +13,12 @@
 
 struct RGB_D_NamePair{
   string rgb_name;
+  string rgb_num;
   string depth_name;
 };
 
 class TUM_Reader : public DatasetReader{
- private:
+protected:
   string calib_path;
   std::ifstream associate_f_stream;
  public:
