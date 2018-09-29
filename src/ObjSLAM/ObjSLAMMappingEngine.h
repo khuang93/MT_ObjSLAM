@@ -96,18 +96,12 @@ namespace ObjSLAM {
             denseMapper = new ITMLib::ITMDenseMapper<TVoxel, TIndex>(settings.get());
 
             sceneIsBackground = false;
-//    r_state =
-//        ITMLib::ITMRenderStateFactory<TIndex>::CreateRenderState(imgSize, &(settings->sceneParams),
-//                                                                 MEMORYDEVICE_CPU);
 
             visualisationEngine =
                     ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(
                             settings->deviceType);
 
             sceneIsBackground = true;
-//    r_state_BG =
-//        ITMLib::ITMRenderStateFactory<TIndex>::CreateRenderState(imgSize, &(settings->sceneParams),
-//                                                                 MEMORYDEVICE_CPU);
 
             visualisationEngine_BG =
                     ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(
@@ -120,7 +114,7 @@ namespace ObjSLAM {
             renderState_RenderAll = std::shared_ptr<ITMLib::ITMRenderState>(
                     new ITMLib::ITMRenderState_VH(ITMLib::ITMVoxelBlockHash::noTotalEntries_BG,
                                                   imgSize,
-                                                  settings->sceneParams.viewFrustum_min,
+                                                  2.0f, //vf_min set to be larger so the roof of room is not rendered
                                                   settings->sceneParams.viewFrustum_max,
                                                   MEMORYDEVICE_CPU));
 

@@ -997,7 +997,7 @@ namespace ObjSLAM {
         for (int blockNo = 0; blockNo < renderState_vh->noVisibleEntries; ++blockNo) {
             int blockID = visibleEntryIDs[blockNo];
             ITMHashEntry &blockData(scene->index.GetEntries()[blockID]);
-            voxelPos_vec.push_back(blockData.pos);
+            voxelPos_vec.push_back(blockData.pos); //TODO here sometimes segfault due to blockdata being empty
 //    cout << "BlockNo" << blockNo << " Pos" << blockData.pos << endl;
         }
     }
@@ -1039,26 +1039,9 @@ namespace ObjSLAM {
         //Insert function: prepare tracking with all objs
         t_controller->Prepare(t_state_above.get(), renderState_RenderAll.get(), this->obj_inst_ptr_vector,
                               visualisationEngine_BG);
-
-
+        
         img_above->ChangeDims(BG_object_ptr->getRenderState().get()->raycastImage->noDims);
 
-        std::shared_ptr<ITMLib::ITMRenderState> renderState_tmp(
-                new ITMLib::ITMRenderState_VH((sceneIsBackground
-                                               ? ITMLib::ITMVoxelBlockHash::noTotalEntries_BG
-                                               : ITMLib::ITMVoxelBlockHash::noTotalEntries),
-                                              imgSize,
-                                              settings->sceneParams.viewFrustum_min,
-                                              settings->sceneParams.viewFrustum_max,
-                                              MEMORYDEVICE_CPU));
-/*
-        visualisationEngine_BG->FindVisibleBlocks(scene.get(), pose_visualize,
-                                                  &BG_object_ptr->getCurrentView()->calib.intrinsics_d,
-                                                  renderState_tmp.get());
-
-        visualisationEngine_BG->CreateExpectedDepths(scene.get(), pose_visualize,
-                                                     &BG_object_ptr->getCurrentView()->calib.intrinsics_d,
-                                                     renderState_tmp.get());*/
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
