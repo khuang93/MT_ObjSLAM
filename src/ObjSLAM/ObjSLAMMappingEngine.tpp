@@ -328,7 +328,7 @@ namespace ObjSLAM {
         cout << "Number of Objects = " << number_totalObjects << endl;
         cout << "Number of visible Objects = " << number_activeObjects << endl;
 
-
+        BG_VoxelCleanUp();
 
         auto *pose_visualize = this->t_state->pose_d;
         img_BG->ChangeDims(BG_object_ptr->getRenderState().get()->raycastImage->noDims);
@@ -435,8 +435,6 @@ namespace ObjSLAM {
                     img->SetFrom(obj_inst_ptr->getRenderState().get()->raycastImage,
                                  ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
-//                    img_BG->SetFrom(obj_inst_ptr->getRenderState().get()->raycastImage,
-//                                 ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
                     string name =
                             "Label_" + label_ptr.get()->getLabelClassName() + ".Object" + to_string(j) + ".Frame" +
@@ -465,12 +463,12 @@ namespace ObjSLAM {
 
 
         string name_BG =
-                "Label_BG.Object0.Frame" +
+                "Label_BG_Fused.Object0.Frame" +
                 to_string(imgNumber)
                 + ".ppm";
 
         SaveImageToFile(img_BG.get(), name_BG.c_str());
-        BG_VoxelCleanUp();
+
 
         renderImageFromAbove();
 
