@@ -327,7 +327,7 @@ namespace ObjSLAM {
 
         cout << "Number of Objects = " << number_totalObjects << endl;
         cout << "Number of visible Objects = " << number_activeObjects << endl;
-        BG_VoxelCleanUp();
+
 
 
         auto *pose_visualize = this->t_state->pose_d;
@@ -435,6 +435,8 @@ namespace ObjSLAM {
                     img->SetFrom(obj_inst_ptr->getRenderState().get()->raycastImage,
                                  ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
+//                    img_BG->SetFrom(obj_inst_ptr->getRenderState().get()->raycastImage,
+//                                 ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
 
                     string name =
                             "Label_" + label_ptr.get()->getLabelClassName() + ".Object" + to_string(j) + ".Frame" +
@@ -451,7 +453,10 @@ namespace ObjSLAM {
 #endif
                 for (int idx = 0; idx < img_BG->dataSize; idx++) {
                     ITMLib::ITMRenderState *r_state_obj = obj_inst_ptr->getRenderState().get();
-                    img_BG->GetData(MEMORYDEVICE_CPU)[idx] += r_state_obj->raycastImage->GetData(MEMORYDEVICE_CPU)[idx];
+                    Vector4u pixel = img_BG->GetData(MEMORYDEVICE_CPU)[idx];
+                    Vector4u pixel_obj = r_state_obj->raycastImage->GetData(MEMORYDEVICE_CPU)[idx];
+                    if(pixel.r==0&&pixel.g==0&&pixel.b==0)
+                        img_BG->GetData(MEMORYDEVICE_CPU)[idx] += pixel_obj;
                 }
 
 
@@ -465,6 +470,7 @@ namespace ObjSLAM {
                 + ".ppm";
 
         SaveImageToFile(img_BG.get(), name_BG.c_str());
+        BG_VoxelCleanUp();
 
         renderImageFromAbove();
 
@@ -1075,7 +1081,11 @@ namespace ObjSLAM {
 #endif
             for (int idx = 0; idx < img_above->dataSize; idx++) {
                 ITMLib::ITMRenderState *r_state_abv = obj_inst_ptr_vector.at(i)->getRenderStateAbove().get();
-                img_above->GetData(MEMORYDEVICE_CPU)[idx] += r_state_abv->raycastImage->GetData(MEMORYDEVICE_CPU)[idx];
+                Vector4u pixel = img_above->GetData(MEMORYDEVICE_CPU)[idx];
+                Vector4u pixel_obj = r_state_abv->raycastImage->GetData(MEMORYDEVICE_CPU)[idx];
+                if(pixel.r==0&&pixel.g==0&&pixel.b==0)
+                    img_above->GetData(MEMORYDEVICE_CPU)[idx] += pixel_obj;
+//                img_above->GetData(MEMORYDEVICE_CPU)[idx] += r_state_abv->raycastImage->GetData(MEMORYDEVICE_CPU)[idx];
             }
 
         }

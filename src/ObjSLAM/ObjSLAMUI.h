@@ -37,16 +37,13 @@ namespace ObjSLAM {
         int currentObjNum = 0;
         bool continueProcess=true;
 
-        static const int OBJ_KEY_LEFT = 75;
-        static const int OBJ_KEY_UP = 111;
-        static const int OBJ_KEY_RIGHT = 77;
-        static const int OBJ_KEY_DOWN = 116;
+
 
     public:
         //constuctor
         ObjSLAMUI(Vector2i _imgSize) : imgSize(_imgSize) {
-            w = imgSize.width * 2;
-            h = imgSize.height * 2;
+            w = imgSize.width * 1.5;
+            h = imgSize.height * 1.5;
             cout << "UI Created!\n";
         }
 
