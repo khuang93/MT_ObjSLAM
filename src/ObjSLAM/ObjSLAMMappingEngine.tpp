@@ -181,7 +181,7 @@ namespace ObjSLAM {
                         number_totalObjects = obj_inst_ptr_vector.size();
                     }
                     sceneIsBackground = obj_inst_ptr->checkIsBackground();
-                    obj_inst_ptr->view_count = 1;
+//                    obj_inst_ptr->view_count = 1;
                     if (obj_inst_ptr->checkIsBackground() && BG_object_ptr.get() == nullptr) {
                         BG_object_ptr = obj_inst_ptr;
                     }
@@ -223,8 +223,8 @@ namespace ObjSLAM {
 //                    denseMapper->ResetScene(obj_inst_scene_ptr.get());
 
                 } else {
-                    obj_inst_ptr->view_count++;
-                    cout << "obj_view_count = " << obj_inst_ptr->view_count << endl;
+//                    obj_inst_ptr->view_count++;
+//                    cout << "obj_view_count = " << obj_inst_ptr->view_count << endl;
                 }
 
 
@@ -327,8 +327,6 @@ namespace ObjSLAM {
 
         cout << "Number of Objects = " << number_totalObjects << endl;
         cout << "Number of visible Objects = " << number_activeObjects << endl;
-
-        BG_VoxelCleanUp();
 
         auto *pose_visualize = this->t_state->pose_d;
         img_BG->ChangeDims(BG_object_ptr->getRenderState().get()->raycastImage->noDims);
@@ -496,7 +494,7 @@ namespace ObjSLAM {
             const ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
             bool prevVisibility = obj_inst_ptr->isVisible;
 
-            auto const *scene = obj_inst_ptr->getScene().get();
+            auto  *scene = obj_inst_ptr->getScene().get();
             visualisationEngine->FindVisibleBlocks(scene,
                                                    this->t_state->pose_d,
                                                    &obj_inst_ptr->getCurrentView()->calib.intrinsics_d,
@@ -522,6 +520,8 @@ namespace ObjSLAM {
 //        active_obj_ptr_vector.shrink_to_fit();
         this->number_totalObjects = obj_inst_ptr_vector.size();
         this->number_activeObjects = active_obj_ptr_vector.size();
+
+        BG_VoxelCleanUp();
     }
 
 //check if same obj by 2d overlap
@@ -875,11 +875,11 @@ namespace ObjSLAM {
         sceneIsBackground = object->checkIsBackground();
         float threshold = 0.8;
         short k_weight = 4;
-        float th_weight = 0.1;
-        short k_minAge = 5;
+        float th_weight = 0.6;
+        short k_minAge = 2;
 
         auto scene = object->getScene();
-        short object_view_count = object->view_count;
+//        short object_view_count = object->view_count;
 
         //stuffs varry over from ResetScene
         int numBlocks = scene->index.getNumAllocatedVoxelBlocks();
@@ -897,7 +897,7 @@ namespace ObjSLAM {
 #endif
 //        for (int entryId = 0; entryId < noVisibleEntries; entryId++) {
         for (int i = 0; i < (sceneIsBackground ? scene->index.noTotalEntries_BG : scene->index.noTotalEntries); ++i) {
-            float abs_weight_th = th_weight / MIN(settings->sceneParams.maxW, object_view_count);
+//            float abs_weight_th = th_weight / MIN(settings->sceneParams.maxW, object_view_count);
 
             const ITMHashEntry &currentHashEntry = hashTable[i];
 
@@ -907,13 +907,12 @@ namespace ObjSLAM {
             TVoxel *localVoxelBlock = &(localVBA[currentHashEntry.ptr * (SDF_BLOCK_SIZE3)]);
 
             for (int locId = 0; locId < SDF_BLOCK_SIZE3; locId++) {
-/*
-                if ((float) (localVoxelBlock[locId].view_count) / (float) (object_view_count) < threshold) {
-                    //remove this voxel
-                    localVoxelBlock[locId] = TVoxel();
 
-                }*/
-                if ((localVoxelBlock[locId].w_depth) > k_minAge && localVoxelBlock[locId].w_depth <= abs_weight_th) {
+                int w=localVoxelBlock[locId].w_depth;
+                int view_count = localVoxelBlock[locId].view_count;
+                int alloc_count =  localVoxelBlock[locId].alloc_count;
+//                std::cout<<"weight "<<w<<" view count "<<view_count<<" alloc count "<<alloc_count<<std::endl;
+                if (alloc_count > k_minAge && alloc_count<= th_weight*view_count) {
                     //remove this voxel
                     localVoxelBlock[locId] = TVoxel();
                 }
@@ -954,17 +953,13 @@ namespace ObjSLAM {
 
             //loop in the hashBucket
             while (true) {
-//      ITMHashEntry hashEntry = voxelIndex[hashIdx];
                 ITMHashEntry hashEntry = scene_BG->index.GetEntries()[hashIdx];
 
                 if (IS_EQUAL3(hashEntry.pos, blockPos) && hashEntry.ptr >= 0) {
-//        cache.blockPos = blockPos; cache.blockPtr = hashEntry.ptr * SDF_BLOCK_SIZE3; //khuang: actually no need to use cache
-//        vmIndex = hashIdx + 1; // add 1 to support legacy true / false operations for isFound
+
 
                     int blockIdx = hashEntry.ptr * SDF_BLOCK_SIZE3;
                     if (hashEntry.ptr >= 0) {
-
-//          voxelAllocationList[vbaIdx + 1] = hashEntry.ptr;
 
                         //copied from SwappingEngine_CPU
                         int vbaIdx = noAllocatedVoxelEntries;
@@ -982,7 +977,6 @@ namespace ObjSLAM {
                 if (hashEntry.offset < 1) break;
                 hashIdx = (sceneIsBackground ? SDF_BUCKET_NUM_BG : SDF_BUCKET_NUM) + hashEntry.offset - 1;
             }
-
         }
     }
 

@@ -114,7 +114,7 @@ namespace ObjSLAM {
             renderState_RenderAll = std::shared_ptr<ITMLib::ITMRenderState>(
                     new ITMLib::ITMRenderState_VH(ITMLib::ITMVoxelBlockHash::noTotalEntries_BG,
                                                   imgSize,
-                                                  2.0f, //vf_min set to be larger so the roof of room is not rendered
+                                                  3.0f, //vf_min set to be larger so the roof of room is not rendered
                                                   settings->sceneParams.viewFrustum_max,
                                                   MEMORYDEVICE_CPU));
 
