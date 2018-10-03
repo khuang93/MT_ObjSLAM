@@ -875,7 +875,7 @@ namespace ObjSLAM {
         sceneIsBackground = object->checkIsBackground();
         float threshold = 0.8;
         short k_weight = 4;
-        float th_weight = 0.6;
+        float th_weight = 0.5;
         short k_minAge = 2;
 
         auto scene = object->getScene();
