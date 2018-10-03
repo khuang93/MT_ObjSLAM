@@ -35,7 +35,7 @@ namespace ObjSLAM {
     public:
 
         bool isVisible = true;
-        short view_count = 0;
+//        short view_count = 0;
 
         //Constructor
         ObjectInstance(std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> _label) :
@@ -77,9 +77,9 @@ namespace ObjSLAM {
 
         ITMLib::ITMView *GetAnchorView_ITM() { return anchor_view_itm.get(); }
 
-        std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> &GetScene() { return this->scene; }
+        std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> GetScene() { return this->scene; }
 
-        std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> &GetClassLabel() { return label; }
+        std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> GetClassLabel() { return label; }
 
         std::shared_ptr<ITMLib::ITMRenderState> &GetRenderState() { return this->r_state; }
         std::shared_ptr<ITMLib::ITMRenderState> &GetRenderStateAbove() { return this->r_state_above; }

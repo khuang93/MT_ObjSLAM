@@ -14,7 +14,8 @@ namespace ObjSLAM {
             mainEngine->TrackFrame();
             mainEngine->UpdateMappingEngine();
             mainEngine->MapFrame();
-            mainEngine->OutputPics();
+
+            if(imgNum%10==0) mainEngine->OutputPics();
 
         }
     }

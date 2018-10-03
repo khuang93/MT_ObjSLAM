@@ -25,6 +25,7 @@
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMTrackingController.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/Meshing/ITMMesh.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Meshing/ITMMeshingEngineFactory.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Visualisation/CPU/ITMVisualisationEngine_CPU.h>
 
 
 #include "DatasetReader.h"
@@ -50,9 +51,8 @@ namespace ObjSLAM {
         vector<shared_ptr<ObjectView<TVoxel, TIndex>>> view_vec;
         shared_ptr<ITMLib::ITMTrackingState> t_state /*= NULL*/;
         shared_ptr<ITMLib::ITMTrackingState> t_state_above /*= NULL*/;
-
         ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
-        ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine_BG;
+        ITMLib::ITMVisualisationEngine_CPU<TVoxel, TIndex> *visualisationEngine_BG;
         shared_ptr<ITMLib::ITMTrackingController> t_controller;
 
         Vector2i imgSize;
@@ -103,9 +103,9 @@ namespace ObjSLAM {
 
             sceneIsBackground = true;
 
-            visualisationEngine_BG =
-                    ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(
-                            settings->deviceType);
+            visualisationEngine_BG =new ITMLib::ITMVisualisationEngine_CPU<TVoxel,TIndex>;
+/*                    ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(
+                            settings->deviceType);*/
 
             sceneParams_ptr = std::shared_ptr<ITMLib::ITMSceneParams>(&(this->settings->sceneParams));
             ReserveVectors(totFrames);
@@ -129,20 +129,16 @@ namespace ObjSLAM {
         }
 
 
+        ~ObjSLAMMappingEngine() { DeleteAll(); }
+
         void CreateView(ObjFloatImage *_depth,
                         ObjUChar4Image *_rgb,
                         LabelImgVector _label_img_vector);
 
         void ProcessFrame();
 
-        void UpdateObjBoolImg();
-
-        void ApplyBoolImg(ObjectInstance_ptr<TVoxel, TIndex> BGobj, shared_ptr<ObjBoolImage> boolImg);
-
         void ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview,
                               std::shared_ptr<ObjectInstance<TVoxel, TIndex>> obj_inst_ptr);
-
-        bool CheckIsNewObject(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr);
 
         bool CheckIsSameObject(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
                                ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_2);
@@ -152,7 +148,7 @@ namespace ObjSLAM {
 
         ORUtils::Image<Vector4u> *ProjectObjectToImg(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
 
-        ORUtils::Image<Vector4f> *projectObjectToFloatImg(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
+        ORUtils::Image<Vector4f> *ProjectObjectToFloatImg(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
 
         bool CheckBoundingCubeOverlap(ORUtils::Vector6<float> first, ORUtils::Vector6<float> second);
 
@@ -161,8 +157,6 @@ namespace ObjSLAM {
         bool CheckImageOverlap(ObjSLAM::ObjFloatImage *first, ObjSLAM::ObjFloatImage *second);
 
         bool CheckImageOverlap(ORUtils::Image<Vector4u> *first, ObjSLAM::ObjFloatImage *second);
-
-        ORUtils::Vector4<int> getBoundingBox(ObjFloatImage *input);
 
         void UpdateTrackingState(const ORUtils::SE3Pose *_pose);
 
@@ -174,14 +168,12 @@ namespace ObjSLAM {
 
         void SetTrackingController(shared_ptr<ITMLib::ITMTrackingController> _t_controller);
 
+
         void UpdateImgNumber(int _imgNum) { imgNumber = _imgNum; };
 
-
-        void RenderAllObjImages();
-
-        void OutputAllObjImages();
-
         void PrepareTrackingWithAllObj();
+
+        void UpdateVisibilityOfObj(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr, const  ORUtils::SE3Pose* pose);
 
         void UpdateVisibilityOfAllObj();
 
@@ -195,23 +187,25 @@ namespace ObjSLAM {
 
         void RenderImageFromAbove();
 
-        int GetObjectNumber() { return obj_inst_ptr_vector.size(); }
-
-        //TODO
 //  void visualizeObjectFromMultiPerspective(std::shared_ptr<ObjectInstance> obj_inst_ptr);
+//TODO
+        void RenderAllObjImages();
+
+        void OutputAllObjImages();
+
+        int GetObjectNumber() { return obj_inst_ptr_vector.size(); }
 
         void BG_VoxelCleanUp();
 
+
         void Object_Cleanup(ObjectInstance_ptr<TVoxel, TIndex> object);
 
+        std::vector<ObjectInstance_ptr<TVoxel, TIndex>> getObjInstPtrVec(){return this->obj_inst_ptr_vector;}
 
-//  std::vector<ObjectInstance_ptr<TVoxel, TIndex>> getObjInstPtrVec(){return this->obj_inst_ptr_vector;}
         std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>>
         GetLabelPtrVec() { return this->label_ptr_vector; }
 
         void SaveSceneToMesh(const char *objFileName, std::shared_ptr<ITMLib::ITMScene<TVoxel, TIndex>> scene_ptr);
-
-        ~ObjSLAMMappingEngine() { DeleteAll(); }
 
 
     };
