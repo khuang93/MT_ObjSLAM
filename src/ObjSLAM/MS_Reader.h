@@ -14,7 +14,7 @@ public:
 
 //        img_number=1;
 //        calib_path = path+"calib.txt";
-//        readCalib(calib_path);
+//        ReadCalib(calib_path);
 //        string associate_file_name = path + "/associate.txt";
 //        associate_f_stream.open(associate_file_name);
 //        viewBuilder = new ITMLib::ITMViewBuilder_CPU(*calib);
@@ -23,7 +23,7 @@ public:
     }
 
 
-    RGB_D_NamePair get_RGB_D_filenames(std::istream & associate_src){
+    RGB_D_NamePair Get_RGB_D_filenames(std::istream &associate_src){
             string depth_name;
             string rgb_name;
             string garbage;

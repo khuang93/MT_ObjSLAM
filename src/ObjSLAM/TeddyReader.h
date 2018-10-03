@@ -18,7 +18,7 @@ class TeddyReader : public DatasetReader{
   TeddyReader(string _path, Vector2i _imgSize):DatasetReader(_path, _imgSize){
     img_number=0;
     calib_path = path+"calib.txt";
-    readCalib(calib_path);
+      ReadCalib(calib_path);
     viewBuilder = new ITMLib::ITMViewBuilder_CPU(*calib);
     cout<<"Created TeddyReader Path "<<path<<endl;
   }
@@ -27,11 +27,11 @@ class TeddyReader : public DatasetReader{
 //      delete viewBuilder;
   }
 
-  int readNext();
+  int ReadNext();
 
   ObjSLAM::ObjShortImage *ConvertToRealDepth(ObjSLAM::ObjFloatImage *depth);
 
-//  bool readCalib();
+//  bool ReadCalib();
 };
 
 #endif //MT_OBJSLAM_TEDDYREADER_H

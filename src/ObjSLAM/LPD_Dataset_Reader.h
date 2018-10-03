@@ -70,7 +70,7 @@ class LPD_Dataset_Reader : public DatasetReader {
     deleteVariables();
   }
 
-  int readNext() {
+  int ReadNext() {
     cout << "img_number = " << img_number << endl;
 //    if (img_number > 1) {
 //      deleteVariables();
@@ -86,7 +86,7 @@ class LPD_Dataset_Reader : public DatasetReader {
     string label_path = path + "/pixel_label/cam0/" + to_string(img_number) + ".txt";
     string pose_path = path + "/groundTruthPoseVel_imu.txt";
 
-    std::vector<string> fileNames = getFileNames(path + "/pixel_label/cam0/");
+    std::vector<string> fileNames = GetFileNames(path + "/pixel_label/cam0/");
     std::vector<string> filteredNames;
 
     for (int i = 0; i < fileNames.size(); i++) {
@@ -122,13 +122,13 @@ class LPD_Dataset_Reader : public DatasetReader {
     ObjSLAM::LPD_RAW_Pose *raw_pose = ReadLPDRawPose(pose_in, time);
     //T_bw
     ObjSLAM::ObjCameraPose *T_bw = convertRawPose_to_Pose(raw_pose);
-//    cout<<T_bw->getSE3Pose().GetM();
+//    cout<<T_bw->GetSE3Pose().GetM();
     //T_cb
     ObjSLAM::ObjCameraPose *T_cb = new ObjSLAM::ObjCameraPose(0.5, -0.5, 0.5, -0.5, 0, 0, 0);
-//    cout<<T_cb->getSE3Pose().GetM();
+//    cout<<T_cb->GetSE3Pose().GetM();
     //Cam to World
-//    ORUtils::SE3Pose T_cw_SE3 = T_cb->getSE3Pose().GetM() * T_bw->getSE3Pose().GetM();
-    ORUtils::SE3Pose T_cw_SE3 = T_bw->getSE3Pose().GetM() * T_cb->getSE3Pose().GetM();
+//    ORUtils::SE3Pose T_cw_SE3 = T_cb->getSE3Pose().GetM() * T_bw->GetSE3Pose().GetM();
+    ORUtils::SE3Pose T_cw_SE3 = T_bw->GetSE3Pose().GetM() * T_cb->GetSE3Pose().GetM();
 
     ORUtils::SE3Pose T_wc_SE3(T_cw_SE3.GetInvM());
 
@@ -320,7 +320,7 @@ class LPD_Dataset_Reader : public DatasetReader {
 
 
 
-//  ITMLib::ITMRGBDCalib *getCalib() {
+//  ITMLib::ITMRGBDCalib *GetCalib() {
 //    return calib;
 //  }
 
@@ -349,7 +349,7 @@ class LPD_Dataset_Reader : public DatasetReader {
   int getHeight() {
     return height;
   }
-  Vector2i getSize() {
+  Vector2i GetSize() {
     return imgSize;
   }
 

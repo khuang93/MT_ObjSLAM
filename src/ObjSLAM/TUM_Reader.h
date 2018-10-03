@@ -26,7 +26,7 @@ protected:
 
     img_number=1;
     calib_path = path+"calib.txt";
-    readCalib(calib_path);
+      ReadCalib(calib_path);
     string associate_file_name = path + "/associate.txt";
     associate_f_stream.open(associate_file_name);
     viewBuilder = new ITMLib::ITMViewBuilder_CPU(*calib);
@@ -38,16 +38,16 @@ protected:
 
   }
 
-  int readNext();
+  int ReadNext();
 
-  RGB_D_NamePair get_RGB_D_filenames(std::istream & associate_src);
+  RGB_D_NamePair Get_RGB_D_filenames(std::istream &associate_src);
 
 
 
 
   ObjSLAM::ObjShortImage *ConvertToRealDepth(ObjSLAM::ObjFloatImage *depth);
 
-//  bool readCalib(string calib_path);
+//  bool ReadCalib(string calib_path);
 
 
 };

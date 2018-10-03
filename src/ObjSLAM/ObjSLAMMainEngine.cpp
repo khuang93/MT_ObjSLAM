@@ -13,8 +13,8 @@
 //int totFrames;
 
 
-int ObjSLAMMainEngine::readNext() {
-   imgNum = reader->readNext();
+int ObjSLAMMainEngine::ReadNext() {
+   imgNum = reader->ReadNext();
    if(imgNum==-1) return -1; //no more image
    sceneIsBackground=true;
 
@@ -30,22 +30,22 @@ int ObjSLAMMainEngine::readNext() {
    return imgNum;
 }
 
-void ObjSLAMMainEngine::trackFrame() {
+void ObjSLAMMainEngine::TrackFrame() {
    t_state=trackingEngine->TrackFrame(wholeView.get());
 }
 
 
-void ObjSLAMMainEngine::mapFrame() {
+void ObjSLAMMainEngine::MapFrame() {
    mappingEngine->ProcessFrame();
 
    mapperFree=true;
 }
 
-void ObjSLAMMainEngine::outputPics(){
-    mappingEngine->outputAllObjImages();
+void ObjSLAMMainEngine::OutputPics(){
+    mappingEngine->RenderAllObjImages();
 }
 
-void ObjSLAMMainEngine::updateMappingEngine(){
+void ObjSLAMMainEngine::UpdateMappingEngine(){
 
   mapperFree=false;
   mappingEngine->UpdateImgNumber(imgNum);
@@ -54,23 +54,23 @@ void ObjSLAMMainEngine::updateMappingEngine(){
   mappingEngine->CreateView(depth_img, rgb_img, label_img_vector);
 }
 
-ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::getImage(int n){
+ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::GetImage(int n){
     if(n<this->mappingEngine->number_activeObjects){
-        return mappingEngine->getImage(n);
+        return mappingEngine->GetImage(n);
     }else{
-        return mappingEngine->getImage(0);
+        return mappingEngine->GetImage(0);
     }
 }
 
-ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::getInputImage() {
+ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::GetInputImage() {
     return this->wholeView->rgb;
 }
 
-ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::getBGImage() {
-    return this->mappingEngine->getBGImage();
+ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::GetBGImage() {
+    return this->mappingEngine->GetBGImage();
 }
 
 
-ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::getAboveImage() {
-    return this->mappingEngine->getImageFromAbove();
+ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::GetAboveImage() {
+    return this->mappingEngine->GetImageFromAbove();
 }

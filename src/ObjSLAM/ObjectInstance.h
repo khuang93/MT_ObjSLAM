@@ -40,70 +40,70 @@ namespace ObjSLAM {
         //Constructor
         ObjectInstance(std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> _label) :
                 label(_label) {
-            isBackground = (this->getLabelIndex() == 0);
+            isBackground = (this->GetLabelIndex() == 0);
 //    view_count=1;
         }
 
-        void addObjectInstanceToLabel();
+        void AddObjectInstanceToLabel();
 
-        bool checkIsBackground() { return isBackground; }
+        bool CheckIsBackground() { return isBackground; }
 
-        void setScene(std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> _scene) { scene = _scene; }
+        void SetScene(std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> _scene) { scene = _scene; }
 
-        void setAnchorView(std::shared_ptr<ObjectView<TVoxel, TIndex>> _anchor_view) { anchor_view = _anchor_view; }
+        void SetAnchorView(std::shared_ptr<ObjectView<TVoxel, TIndex>> _anchor_view) { anchor_view = _anchor_view; }
 
-        void setAnchorView(ObjectView<TVoxel, TIndex> *_anchor_view) {
+        void SetAnchorView(ObjectView<TVoxel, TIndex> *_anchor_view) {
             anchor_view = std::shared_ptr<ObjectView<TVoxel, TIndex>>(_anchor_view);
         }
 
-        void setCurrentView(std::shared_ptr<ITMLib::ITMView> _current_view) { current_view = _current_view; }
+        void SetCurrentView(std::shared_ptr<ITMLib::ITMView> _current_view) { current_view = _current_view; }
 
 
-        void setAnchorView_ITM(std::shared_ptr<ITMLib::ITMView> _anchor_view) { anchor_view_itm = _anchor_view; }
+        void SetAnchorView_ITM(std::shared_ptr<ITMLib::ITMView> _anchor_view) { anchor_view_itm = _anchor_view; }
 
-        void setRenderState(std::shared_ptr<ITMLib::ITMRenderState> _r_state) { r_state = _r_state; }
+        void SetRenderState(std::shared_ptr<ITMLib::ITMRenderState> _r_state) { r_state = _r_state; }
 
-        void setRenderState(std::shared_ptr<ITMLib::ITMRenderState> _r_state,
+        void SetRenderState(std::shared_ptr<ITMLib::ITMRenderState> _r_state,
                             std::shared_ptr<ITMLib::ITMRenderState> _r_state_abv) {
             r_state = _r_state;
             r_state_above = _r_state_abv;
         }
 
-        void setTrackingState(std::shared_ptr<ITMLib::ITMTrackingState> _t_state) { t_state = _t_state; }
+        void SetTrackingState(std::shared_ptr<ITMLib::ITMTrackingState> _t_state) { t_state = _t_state; }
 
-        std::shared_ptr<ITMLib::ITMView> getCurrentView() { return current_view; }
+        std::shared_ptr<ITMLib::ITMView> GetCurrentView() { return current_view; }
 
-        std::shared_ptr<ObjectView<TVoxel, TIndex>> &getAnchorView() { return anchor_view; }
+        std::shared_ptr<ObjectView<TVoxel, TIndex>> &GetAnchorView() { return anchor_view; }
 
-        ITMLib::ITMView *getAnchorView_ITM() { return anchor_view_itm.get(); }
+        ITMLib::ITMView *GetAnchorView_ITM() { return anchor_view_itm.get(); }
 
-        std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> &getScene() { return this->scene; }
+        std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> &GetScene() { return this->scene; }
 
-        std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> &getClassLabel() { return label; }
+        std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> &GetClassLabel() { return label; }
 
-        std::shared_ptr<ITMLib::ITMRenderState> &getRenderState() { return this->r_state; }
-        std::shared_ptr<ITMLib::ITMRenderState> &getRenderStateAbove() { return this->r_state_above; }
+        std::shared_ptr<ITMLib::ITMRenderState> &GetRenderState() { return this->r_state; }
+        std::shared_ptr<ITMLib::ITMRenderState> &GetRenderStateAbove() { return this->r_state_above; }
 
-        std::shared_ptr<ITMLib::ITMTrackingState> &getTrackingState() { return this->t_state; }
+        std::shared_ptr<ITMLib::ITMTrackingState> &GetTrackingState() { return this->t_state; }
 
-        std::shared_ptr<ORUtils::Image<bool>> getBoolImage() { return this->prevFrameProjectedToCurrent; }
+        std::shared_ptr<ORUtils::Image<bool>> GetBoolImage() { return this->prevFrameProjectedToCurrent; }
 
         void
-        setBoolImage(std::shared_ptr<ORUtils::Image<bool>> _boolImg) { this->prevFrameProjectedToCurrent = _boolImg; }
+        SetBoolImage(std::shared_ptr<ORUtils::Image<bool>> _boolImg) { this->prevFrameProjectedToCurrent = _boolImg; }
 
-        void initBoolImage() {
+        void InitBoolImage() {
             prevFrameProjectedToCurrent = std::make_shared<ORUtils::Image<bool>>(this->current_view->depth->noDims,
                                                                                  true, false);
             for (size_t i = 0; i < prevFrameProjectedToCurrent->dataSize; ++i)
                 prevFrameProjectedToCurrent->GetData(MEMORYDEVICE_CPU)[i] = true;
         }
 
-        void updateBoolImage(ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *vis_eng);
+        void UpdateBoolImage(ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *vis_eng);
 
-        int getLabelIndex() { return this->getClassLabel()->getLabelIndex(); }
+        int GetLabelIndex() { return this->GetClassLabel()->GetLabelIndex(); }
 
-        void updateVisibility() {
-            isVisible = ((ITMLib::ITMRenderState_VH *) this->getRenderState().get())->noVisibleEntries > 0;
+        void UpdateVisibility() {
+            isVisible = ((ITMLib::ITMRenderState_VH *) this->GetRenderState().get())->noVisibleEntries > 0;
         }
 
     };

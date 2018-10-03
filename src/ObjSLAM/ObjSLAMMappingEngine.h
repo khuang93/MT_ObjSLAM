@@ -73,15 +73,15 @@ namespace ObjSLAM {
         ITMLib::ITMDenseMapper<TVoxel, TIndex> *denseMapper;
         std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> label_ptr_vector;
 
-        void deleteAll();
+        void DeleteAll();
 
-        void reserveVectors(int memory_size) {
+        void ReserveVectors(int memory_size) {
             this->obj_inst_ptr_vector.reserve(memory_size);
             this->active_obj_ptr_vector.reserve(memory_size);
             this->view_vec.reserve(memory_size);
         }
 
-        void getVoxelPosFromScene(std::vector<Vector3s> &voxelPos_vec, ObjectInstance_ptr<TVoxel, TIndex> obj_ptr);
+        void GetVoxelPosFromScene(std::vector<Vector3s> &voxelPos_vec, ObjectInstance_ptr<TVoxel, TIndex> obj_ptr);
 
     public:
         int number_activeObjects = 0;
@@ -108,7 +108,7 @@ namespace ObjSLAM {
                             settings->deviceType);
 
             sceneParams_ptr = std::shared_ptr<ITMLib::ITMSceneParams>(&(this->settings->sceneParams));
-            reserveVectors(totFrames);
+            ReserveVectors(totFrames);
 
 
             renderState_RenderAll = std::shared_ptr<ITMLib::ITMRenderState>(
@@ -142,25 +142,25 @@ namespace ObjSLAM {
         void ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview,
                               std::shared_ptr<ObjectInstance<TVoxel, TIndex>> obj_inst_ptr);
 
-        bool checkIsNewObject(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr);
+        bool CheckIsNewObject(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr);
 
-        bool checkIsSameObject(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
+        bool CheckIsSameObject(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
                                ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_2);
 
-        bool checkIsSameObject2D(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
+        bool CheckIsSameObject2D(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
                                  ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_2);
 
-        ORUtils::Image<Vector4u> *projectObjectToImg(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
+        ORUtils::Image<Vector4u> *ProjectObjectToImg(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
 
         ORUtils::Image<Vector4f> *projectObjectToFloatImg(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
 
-        bool checkBoundingCubeOverlap(ORUtils::Vector6<float> first, ORUtils::Vector6<float> second);
+        bool CheckBoundingCubeOverlap(ORUtils::Vector6<float> first, ORUtils::Vector6<float> second);
 
-        double calculateCubeVolume(ORUtils::Vector6<float> corners);
+        double CalculateCubeVolume(ORUtils::Vector6<float> corners);
 
-        bool checkImageOverlap(ObjSLAM::ObjFloatImage *first, ObjSLAM::ObjFloatImage *second);
+        bool CheckImageOverlap(ObjSLAM::ObjFloatImage *first, ObjSLAM::ObjFloatImage *second);
 
-        bool checkImageOverlap(ORUtils::Image<Vector4u> *first, ObjSLAM::ObjFloatImage *second);
+        bool CheckImageOverlap(ORUtils::Image<Vector4u> *first, ObjSLAM::ObjFloatImage *second);
 
         ORUtils::Vector4<int> getBoundingBox(ObjFloatImage *input);
 
@@ -176,25 +176,26 @@ namespace ObjSLAM {
 
         void UpdateImgNumber(int _imgNum) { imgNumber = _imgNum; };
 
-        void outputAllLabelStats();
 
-        void outputAllObjImages();
+        void RenderAllObjImages();
 
-        void prepareTrackingWithAllObj();
+        void OutputAllObjImages();
+
+        void PrepareTrackingWithAllObj();
 
         void UpdateVisibilityOfAllObj();
 
-        ObjUChar4Image *getImage(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
+        ObjUChar4Image *GetImage(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
 
-        ObjUChar4Image *getImage(int object_index);
+        ObjUChar4Image *GetImage(int object_index);
 
-        ObjUChar4Image *getBGImage();
+        ObjUChar4Image *GetBGImage();
 
-        ObjUChar4Image *getImageFromAbove();
+        ObjUChar4Image *GetImageFromAbove();
 
-        void renderImageFromAbove();
+        void RenderImageFromAbove();
 
-        int getObjectNumber() { return obj_inst_ptr_vector.size(); }
+        int GetObjectNumber() { return obj_inst_ptr_vector.size(); }
 
         //TODO
 //  void visualizeObjectFromMultiPerspective(std::shared_ptr<ObjectInstance> obj_inst_ptr);
@@ -206,11 +207,11 @@ namespace ObjSLAM {
 
 //  std::vector<ObjectInstance_ptr<TVoxel, TIndex>> getObjInstPtrVec(){return this->obj_inst_ptr_vector;}
         std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>>
-        getLabelPtrVec() { return this->label_ptr_vector; }
+        GetLabelPtrVec() { return this->label_ptr_vector; }
 
         void SaveSceneToMesh(const char *objFileName, std::shared_ptr<ITMLib::ITMScene<TVoxel, TIndex>> scene_ptr);
 
-        ~ObjSLAMMappingEngine() { deleteAll(); }
+        ~ObjSLAMMappingEngine() { DeleteAll(); }
 
 
     };

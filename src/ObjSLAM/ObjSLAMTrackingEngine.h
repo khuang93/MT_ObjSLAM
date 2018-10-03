@@ -35,13 +35,13 @@ class ObjSLAMTrackingEngine {
   ~ObjSLAMTrackingEngine();
   shared_ptr<ITMLib::ITMTrackingState>  TrackFrame(ITMLib::ITMView * view);
 
-  shared_ptr<ITMLib::ITMTrackingState>  getTrackingState();
+  shared_ptr<ITMLib::ITMTrackingState>  GetTrackingState();
 
-  shared_ptr<ITMLib::ITMTrackingController> getTrackingController();
+  shared_ptr<ITMLib::ITMTrackingController> GetTrackingController();
 
-  void outputTrackingResults(std::string path);
+  void OutputTrackingResults(std::string path);
 
-  void outputTrackingResults(std::ofstream& of);
+  void OutputTrackingResults(std::ofstream &of);
 };
 
 }

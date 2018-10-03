@@ -47,30 +47,29 @@ namespace ObjSLAM {
             cout << "UI Created!\n";
         }
 
-        void setMainEngine(ObjSLAMMainEngine *_mainEng) {
+        void SetMainEngine(ObjSLAMMainEngine *_mainEng) {
             mainEngine = _mainEng;
-
         }
 
         void ProcessFrame();
 
         void ProcessContinuous();
 
-        void run();
+        void Run();
 
-        void reg();
+        void Reg();
 
         void CreateDisplay();
 
-        void chooseNextObj();
+        void SelectNextObj();
 
-        void choosePrevObj();
+        void SelectPrevObj();
 
-        void pause();
+        void Pause();
 
-        void oneFrame();
+        void OneFrame();
 
-        void continuous();
+        void Continuous();
 
         void DrawLabels();
 

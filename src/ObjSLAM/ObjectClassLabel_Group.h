@@ -31,21 +31,19 @@ class ObjectClassLabel_Group {
 
   ObjectClassLabel_Group(int _index):LabelIndex(_index){ LabelClassName = ObjectClassLabel_Group::label_list.at(LabelIndex);}
 
-  int getLabelIndex(){  return LabelIndex;}
+  int GetLabelIndex(){  return LabelIndex;}
 
-  std::string getLabelClassName(){  return LabelClassName;}
+  std::string GetLabelClassName(){  return LabelClassName;}
 
-  void addObjectInstance(std::shared_ptr<ObjectInstance<TVoxel, TIndex>> object_ptr){this->object_ptr_vector.push_back(object_ptr);}
+  void AddObjectInstance(std::shared_ptr<ObjectInstance<TVoxel, TIndex>> object_ptr){this->object_ptr_vector.push_back(object_ptr);}
 
-  std::vector<std::shared_ptr<ObjectInstance<TVoxel, TIndex>>>& getObjPtrVector(){return object_ptr_vector;}
+  std::vector<std::shared_ptr<ObjectInstance<TVoxel, TIndex>>>& GetObjPtrVector(){return object_ptr_vector;}
 
 
   friend std::ostream& operator<< (std::ostream& stream, ObjectClassLabel_Group<TVoxel, TIndex>& label){
-    return stream<<"Class Label of "<<label.getLabelClassName();
+    return stream<<"Class Label of "<< label.GetLabelClassName();
   }
-
-//  void addObjectInstance(ObjectInstance<TVoxel, TIndex>* object_ptr);
-
+  
 };
 
 

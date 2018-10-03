@@ -3,7 +3,7 @@
 //
 #include "DatasetReader.h"
 
-std::vector<std::string> DatasetReader::getFileNames(std::string directoryPath) {
+std::vector<std::string> DatasetReader::GetFileNames(std::string directoryPath) {
   namespace fs = boost::filesystem;
   std::vector<std::string> names;
 
@@ -141,7 +141,7 @@ std::shared_ptr<ObjSLAM::ObjUIntImage> DatasetReader::ReadLabel_OneFile(std::str
   return res;
 }
 
-std::shared_ptr<ITMLib::ITMRGBDCalib> DatasetReader::getCalib() {
+std::shared_ptr<ITMLib::ITMRGBDCalib> DatasetReader::GetCalib() {
   return calib;
 }
 
@@ -157,14 +157,14 @@ int DatasetReader::getWidth() {
 int DatasetReader::getHeight() {
   return height;
 }
-Vector2i DatasetReader::getSize() {
+Vector2i DatasetReader::GetSize() {
   return imgSize;
 }
 
-bool DatasetReader::readCalib(string calib_path) {
+bool DatasetReader::ReadCalib(string calib_path) {
   ifstream src;
   src.open(calib_path);
-  cout<<"readCalib"<<endl;
+  cout<<"ReadCalib"<<endl;
 //  calib = new ITMLib::ITMRGBDCalib();
   calib = std::make_shared<ITMLib::ITMRGBDCalib>();
   ITMLib::readRGBDCalib(calib_path.c_str(), *calib);

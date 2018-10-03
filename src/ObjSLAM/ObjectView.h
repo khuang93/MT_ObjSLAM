@@ -69,7 +69,7 @@ namespace ObjSLAM {
         ObjectView(const ITMLib::ITMRGBDCalib &_calibration, Vector2i _imgSize, bool useGPU, ObjCameraPose pose,
                    vector<int> _rgb_d_pixel_idx_vec) :
                 calibration(_calibration), imgSize_rgb(_imgSize), rgb_d_pixel_idx_vec(_rgb_d_pixel_idx_vec) {
-            camera_Pose = new ObjCameraPose(pose.getSE3Pose());
+            camera_Pose = new ObjCameraPose(pose.GetSE3Pose());
         }
 
         //Constructor with pose
@@ -86,7 +86,7 @@ namespace ObjSLAM {
                 /*depth_Image(_depth), rgb_Image(_rgb),*/ label_img_vector(_label_img_vector),
                 rgb_d_pixel_idx_vec(_rgb_d_pixel_idx_vec) {
 
-            camera_Pose = new ObjCameraPose(pose.getSE3Pose());
+            camera_Pose = new ObjCameraPose(pose.GetSE3Pose());
             rgb_Image->SetFrom(_rgb, ORUtils::Image<Vector4u>::CPU_TO_CPU);
             depth_Image->SetFrom(_depth, ORUtils::Image<float>::CPU_TO_CPU);
             //TODO debug info
@@ -113,30 +113,28 @@ namespace ObjSLAM {
             delete camera_Pose;
         }
 
-        void setListOfObjects(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
+        void SetListOfObjects(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
 
-        void setListOfObjects_New(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
+        void SetListOfObjects_New(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
 
         void
-        updateObjectTrackingState(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
+        UpdateObjectTrackingState(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
 
 
-        static std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> addLabelToVector(
+        static std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> AddLabelToVector(
                 std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector,
                 std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> new_label);
 
 
-        ObjCameraPose getCameraPose();
+        ObjCameraPose GetCameraPose();
 
-        void setCameraPose(ObjCameraPose _pose);
+        void SetCameraPose(ObjCameraPose _pose);
 
-        void setCameraPose(const ORUtils::SE3Pose *_se3pose);
+        void SetCameraPose(const ORUtils::SE3Pose *_se3pose);
 
-        std::map<int, Object_View_Tup<TVoxel, TIndex>> getObjMap();
+        std::vector<Object_View_Tup<TVoxel, TIndex>> GetObjVec();
 
-        std::vector<Object_View_Tup<TVoxel, TIndex>> getObjVec();
-
-        std::shared_ptr<ITMLib::ITMView> getBackgroundView();
+        std::shared_ptr<ITMLib::ITMView> GetBackgroundView();
 
         ObjectView(const ObjectView &);
 

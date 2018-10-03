@@ -37,20 +37,20 @@ ObjSLAMTrackingEngine::~ObjSLAMTrackingEngine(){
 shared_ptr<ITMLib::ITMTrackingState> ObjSLAMTrackingEngine::TrackFrame(ITMLib::ITMView *view) {
   this->t_controller.get()->Track(t_state.get(), view);
   std::cout << t_state->pose_d->GetM();
-  outputTrackingResults("trackingResults.txt");
+  OutputTrackingResults("trackingResults.txt");
   imgNumber++;
   return t_state;
 }
 
-shared_ptr<ITMLib::ITMTrackingState>  ObjSLAMTrackingEngine::getTrackingState() {
+shared_ptr<ITMLib::ITMTrackingState>  ObjSLAMTrackingEngine::GetTrackingState() {
   return t_state;
 }
 
-shared_ptr<ITMLib::ITMTrackingController> ObjSLAMTrackingEngine::getTrackingController() {
+shared_ptr<ITMLib::ITMTrackingController> ObjSLAMTrackingEngine::GetTrackingController() {
   return t_controller;
 }
 
-void ObjSLAMTrackingEngine::outputTrackingResults(std::string path) {
+void ObjSLAMTrackingEngine::OutputTrackingResults(std::string path) {
 
   std::ofstream of;
   if (imgNumber == 1) {
@@ -58,15 +58,15 @@ void ObjSLAMTrackingEngine::outputTrackingResults(std::string path) {
   } else {
     of.open(path, ios::app);
   }
-  outputTrackingResults(of);
+  OutputTrackingResults(of);
 }
 
-void ObjSLAMTrackingEngine::outputTrackingResults(std::ofstream &of) {
+void ObjSLAMTrackingEngine::OutputTrackingResults(std::ofstream &of) {
   ObjCameraPose obj_cam_pose(*(t_state.get()->pose_d));
   ORUtils::SE3Pose pose_inv(t_state.get()->pose_d->GetInvM());
   ORUtils::Vector3<float> pos = pose_inv.GetT();
   ObjCameraPose obj_cam_pose_inv(pose_inv);
-  Eigen::Quaterniond eigen_quat = obj_cam_pose_inv.getQuaternion(); //try the inv of the pose
+  Eigen::Quaterniond eigen_quat = obj_cam_pose_inv.GetQuaternion(); //try the inv of the pose
   double time = imgNumber+reader_SkipFrames*(imgNumber-1);
 
   of << time << ", "<< pos.x << ", " << pos.y << ", " << pos.z-2.25  << ", " << eigen_quat.x() << ", " << eigen_quat.y() << ", "

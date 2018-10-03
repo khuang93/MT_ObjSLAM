@@ -1,6 +1,6 @@
 For MaskRCNN:
 use pip v9
-run the install script
+Run the install script
 clone coco repo
 install coco with corrected code
 install tensorflow 

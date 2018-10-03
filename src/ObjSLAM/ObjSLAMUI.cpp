@@ -10,11 +10,11 @@ namespace ObjSLAM {
     void ObjSLAMUI::ProcessFrame() {
         if (imgNum <= totFrames) {
             sceneIsBackground = true;
-            imgNum = mainEngine->readNext();
-            mainEngine->trackFrame();
-            mainEngine->updateMappingEngine();
-            mainEngine->mapFrame();
-            mainEngine->outputPics();
+            imgNum = mainEngine->ReadNext();
+            mainEngine->TrackFrame();
+            mainEngine->UpdateMappingEngine();
+            mainEngine->MapFrame();
+            mainEngine->OutputPics();
 
         }
     }
@@ -32,31 +32,31 @@ namespace ObjSLAM {
     }
 
 
-    void ObjSLAMUI::chooseNextObj() {
+    void ObjSLAMUI::SelectNextObj() {
         cout << "Object Number: \n";
-        currentObjNum = (++currentObjNum) % this->mainEngine->getActiveObjNumber();
+        currentObjNum = (++currentObjNum) % this->mainEngine->GetActiveObjNumber();
         cout << currentObjNum << endl;
     }
 
-    void ObjSLAMUI::choosePrevObj() {
+    void ObjSLAMUI::SelectPrevObj() {
         cout << "Object Number: \n";
         currentObjNum =
-                (--currentObjNum + this->mainEngine->getActiveObjNumber()) % this->mainEngine->getActiveObjNumber();
+                (--currentObjNum + this->mainEngine->GetActiveObjNumber()) % this->mainEngine->GetActiveObjNumber();
         cout << currentObjNum << endl;
     }
 
-    void ObjSLAMUI::pause() {
+    void ObjSLAMUI::Pause() {
         cout << "Pause ";
         continueProcess = !continueProcess;
         cout << !continueProcess << endl;
     }
 
-    void ObjSLAMUI::oneFrame() {
-        pause();
+    void ObjSLAMUI::OneFrame() {
+        Pause();
         ProcessFrame();
     }
 
-    void ObjSLAMUI::continuous() {
+    void ObjSLAMUI::Continuous() {
         cout << "Continuous ";
         continueProcess = true;
         cout << continueProcess << endl;
@@ -64,23 +64,23 @@ namespace ObjSLAM {
     }
 
 
-    void ObjSLAMUI::reg() {
-        pangolin::RegisterKeyPressCallback(pangolin::PANGO_KEY_RIGHT, [this]() { chooseNextObj(); });
-        pangolin::RegisterKeyPressCallback(pangolin::PANGO_KEY_LEFT, [this]() { choosePrevObj(); });
+    void ObjSLAMUI::Reg() {
+        pangolin::RegisterKeyPressCallback(pangolin::PANGO_KEY_RIGHT, [this]() { SelectNextObj(); });
+        pangolin::RegisterKeyPressCallback(pangolin::PANGO_KEY_LEFT, [this]() { SelectPrevObj(); });
 
-        pangolin::RegisterKeyPressCallback('>', [this]() { chooseNextObj(); });
-        pangolin::RegisterKeyPressCallback('<', [this]() { choosePrevObj(); });
+        pangolin::RegisterKeyPressCallback('>', [this]() { SelectNextObj(); });
+        pangolin::RegisterKeyPressCallback('<', [this]() { SelectPrevObj(); });
 
-        pangolin::RegisterKeyPressCallback('.', [this]() { chooseNextObj(); });
-        pangolin::RegisterKeyPressCallback(',', [this]() { choosePrevObj(); });
+        pangolin::RegisterKeyPressCallback('.', [this]() { SelectNextObj(); });
+        pangolin::RegisterKeyPressCallback(',', [this]() { SelectPrevObj(); });
 
-        pangolin::RegisterKeyPressCallback('p', [this]() { pause(); });
-        pangolin::RegisterKeyPressCallback('c', [this]() { continuous(); });
-        pangolin::RegisterKeyPressCallback('n', [this]() { oneFrame(); });
+        pangolin::RegisterKeyPressCallback('p', [this]() { Pause(); });
+        pangolin::RegisterKeyPressCallback('c', [this]() { Continuous(); });
+        pangolin::RegisterKeyPressCallback('n', [this]() { OneFrame(); });
 
     }
 
-    void ObjSLAMUI::run() {
+    void ObjSLAMUI::Run() {
 
         CreateDisplay();
 
@@ -94,7 +94,7 @@ namespace ObjSLAM {
         );
 
 
-        reg();
+        Reg();
 
 /*//        pangolin::View &d_cam = pangolin::Display("cam")
 //                .SetBounds(0, 1.0f, 0, 1.0f, -640 / 480.0)
@@ -138,7 +138,7 @@ namespace ObjSLAM {
         while (imgNum != -1 && !pangolin::ShouldQuit()) {
 
 
-            auto *itmImage_BG = mainEngine->getBGImage();
+            auto *itmImage_BG = mainEngine->GetBGImage();
             unsigned char *image_BG = new unsigned char[itmImage_BG->noDims.x * itmImage_BG->noDims.y * 3];
 
             ORUtils::Vector2<int> noDims = itmImage_BG->noDims;
@@ -157,7 +157,7 @@ namespace ObjSLAM {
             imageTexture_BG.Upload(image_BG, GL_RGB, GL_UNSIGNED_BYTE);
 
 
-            auto *itmImage_obj = mainEngine->getImage(currentObjNum);
+            auto *itmImage_obj = mainEngine->GetImage(currentObjNum);
             unsigned char *image_obj = new unsigned char[itmImage_obj->noDims.x * itmImage_obj->noDims.y * 3];
 
 
@@ -175,7 +175,7 @@ namespace ObjSLAM {
             imageTexture_obj.Upload(image_obj, GL_RGB, GL_UNSIGNED_BYTE);
 
 
-            auto *itmImage_rgb = mainEngine->getInputImage();
+            auto *itmImage_rgb = mainEngine->GetInputImage();
 
             unsigned char *image_rgb = new unsigned char[itmImage_rgb->noDims.x * itmImage_rgb->noDims.y * 3];
 
@@ -195,7 +195,7 @@ namespace ObjSLAM {
 
 
             //above
-            auto *itmImage_above = mainEngine->getAboveImage();
+            auto *itmImage_above = mainEngine->GetAboveImage();
 
             unsigned char *image_above = new unsigned char[itmImage_above->noDims.x * itmImage_above->noDims.y * 3];
 

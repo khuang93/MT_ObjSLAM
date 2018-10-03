@@ -48,24 +48,24 @@ class ObjCameraPose  {
 
 
 
-  Eigen::Quaterniond getQuaternion();
+  Eigen::Quaterniond GetQuaternion();
 
-  Eigen::Quaterniond getQuaternionInv();
+  Eigen::Quaterniond GetQuaternionInv();
+  
+  Eigen::Matrix4d GetEigenMat();
 
-  Eigen::Matrix4d getEigenMat();
-
-  ORUtils::SE3Pose& getSE3Pose();
+  ORUtils::SE3Pose& GetSE3Pose();
 
   static ObjCameraPose GetTransformation(ObjCameraPose& fromPose, ObjCameraPose& toPose);
 
   static ObjCameraPose GetTransformation(ORUtils::SE3Pose& fromPose, ORUtils::SE3Pose& toPose);
 
-  void setQuaternion(double w, double x, double y, double z);
+  void SetQuaternion(double w, double x, double y, double z);
 
-  void setQuaternion(Eigen::Quaterniond _pose);
+  void SetQuaternion(Eigen::Quaterniond _pose);
 
   friend std::ostream& operator<<(std::ostream& os, ObjCameraPose& obj_cam_pose){
-    os<<obj_cam_pose.getSE3Pose().GetM();
+    os<< obj_cam_pose.GetSE3Pose().GetM();
 
     return os;
   }
