@@ -66,6 +66,8 @@ namespace ObjSLAM {
 
         std::shared_ptr<ITMLib::ITMRenderState> renderState_RenderAll;
 
+        std::shared_ptr<ITMLib::ITMRenderState> renderState_RenderAbove;
+
 
         std::shared_ptr<ObjectInstance<TVoxel, TIndex>> BG_object_ptr;
         std::shared_ptr<ITMLib::ITMSceneParams> sceneParams_ptr;
@@ -112,6 +114,13 @@ namespace ObjSLAM {
 
 
             renderState_RenderAll = std::shared_ptr<ITMLib::ITMRenderState>(
+                    new ITMLib::ITMRenderState_VH(ITMLib::ITMVoxelBlockHash::noTotalEntries_BG,
+                                                  imgSize,
+                                                  3.0f, //vf_min set to be larger so the roof of room is not rendered
+                                                  settings->sceneParams.viewFrustum_max,
+                                                  MEMORYDEVICE_CPU));
+
+            renderState_RenderAbove= std::shared_ptr<ITMLib::ITMRenderState>(
                     new ITMLib::ITMRenderState_VH(ITMLib::ITMVoxelBlockHash::noTotalEntries_BG,
                                                   imgSize,
                                                   3.0f, //vf_min set to be larger so the roof of room is not rendered

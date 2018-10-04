@@ -791,10 +791,10 @@ namespace ObjSLAM {
 
         auto *pose_visualize = this->t_state_above->pose_d;
 
-        renderState_RenderAll->raycastImage->Clear();
+        renderState_RenderAbove->raycastImage->Clear();
 
         //Insert function: prepare tracking with all objs
-        t_controller->Prepare(t_state_above.get(), renderState_RenderAll.get(), this->obj_inst_ptr_vector,
+        t_controller->Prepare(t_state_above.get(), renderState_RenderAbove.get(), this->obj_inst_ptr_vector,
                               visualisationEngine_BG);
 
         img_above->ChangeDims(BG_object_ptr->GetRenderState().get()->raycastImage->noDims);
@@ -949,16 +949,26 @@ namespace ObjSLAM {
             }
         }
 
-
+        sceneIsBackground=true;
+//        t_controller->Prepare(t_state.get(),renderState_RenderAll.get(),obj_inst_ptr_vector, visualisationEngine_BG);
         (visualisationEngine_BG)->RenderImageMulti(this->obj_inst_ptr_vector, pose_visualize,
                                                  &BG_object_ptr.get()->GetAnchorView_ITM()->calib.intrinsics_d,
-                                                  this->renderState_RenderAll.get(),
-                                                   this->renderState_RenderAll->raycastImage,
+                                                  BG_object_ptr->GetRenderState().get(),
+                                                   img_BG.get(),
                                                  ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                  ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
-        img_BG->SetFrom(this->renderState_RenderAll->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU );
-        string name_BG =
-                "Label_BG_Fused.Object0.Frame" +
+
+//
+//        (visualisationEngine_BG)->RenderImage(BG_object_ptr->GetScene().get(), pose_visualize,
+//                                                   &BG_object_ptr.get()->GetAnchorView_ITM()->calib.intrinsics_d,
+//                                              BG_object_ptr->GetRenderState().get(),
+//                                                   img_BG.get(),
+//                                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
+//                                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+
+
+//        img_BG->SetFrom(this->renderState_RenderAll->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU );
+        string name_BG = "Label_BG_Fused.Object0.Frame" +
                 to_string(imgNumber)
                 + ".ppm";
 
