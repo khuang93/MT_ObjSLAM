@@ -212,6 +212,8 @@ namespace ObjSLAM {
 
 
         auto scene = obj_inst_ptr->GetScene().get();
+        obj_inst_ptr->GetRenderState()->raycastResult->Clear();
+        obj_inst_ptr->GetRenderState()->raycastImage->Clear();
 
         if (!obj_inst_ptr.get()->CheckIsBackground()) {
             sceneIsBackground = false;
@@ -961,7 +963,7 @@ namespace ObjSLAM {
 
 
 //uncomment this for pixel wise fusion of rendering
-///*//possible data race due to outer loop?
+/*//possible data race due to outer loop?
 #ifdef WITH_OPENMP
 #pragma omp parallel
 #endif
