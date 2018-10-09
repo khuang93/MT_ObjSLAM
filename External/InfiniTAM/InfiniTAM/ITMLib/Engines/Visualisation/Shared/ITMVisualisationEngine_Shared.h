@@ -175,12 +175,14 @@ _CPU_AND_GPU_CODE_ inline bool castRay(DEVICEPTR(Vector4f) &pt_out, DEVICEPTR(uc
     Matrix4f M;
     invM.inv(M);
     Vector4f pt_result_4;
-    pt_result_4.x=pt_result.x;pt_result_4.y=pt_result.y;pt_result_4.z=pt_result.z;
-    pt_result_4.w=0;
+    pt_result_4.x = pt_result.x;
+    pt_result_4.y = pt_result.y;
+    pt_result_4.z = pt_result.z;
+    pt_result_4.w = 0;
 
-    double dist_old = NORM3(TO_VECTOR3(M*pt_out));
-    double dist_new = NORM3(TO_VECTOR3(M*pt_result_4));
-    if(dist_new<dist_old || dist_old==0){
+    double dist_old = NORM3(TO_VECTOR3(M * pt_out));
+    double dist_new = NORM3(TO_VECTOR3(M * pt_result_4));
+    if (dist_old == 0 && pt_found || pt_found && (dist_old - dist_new > 0.001 && dist_old - dist_new < 1)) {
         //TODO z choose the smallest distance.
         pt_out.x = pt_result.x;
         pt_out.y = pt_result.y;
@@ -597,8 +599,8 @@ _CPU_AND_GPU_CODE_ inline void processPixelICP(DEVICEPTR(Vector4f) *pointsMap, D
 
         //use the smallest depth --> the surface closest to the camera
 //		if(pointsMap[locId].w>0.0f && NORM3(TO_VECTOR3(pointsMap[locId])) > NORM3(TO_VECTOR3(outPoint4))){
-            pointsMap[locId] = outPoint4;
-            normalsMap[locId] = outNormal4;
+        pointsMap[locId] = outPoint4;
+        normalsMap[locId] = outNormal4;
 //		}
     } else if (pointsMap[locId].w >
                0.0f) { //the current view is empty here but this point is already set with previous ones
