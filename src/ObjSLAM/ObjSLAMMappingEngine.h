@@ -216,6 +216,7 @@ namespace ObjSLAM {
 
         void SaveSceneToMesh(const char *objFileName, std::shared_ptr<ITMLib::ITMScene<TVoxel, TIndex>> scene_ptr);
 
+        void write2PLYfile(const ORUtils::Image<ORUtils::Vector4<float>>* pcl, const std::string filename);
 
     };
 }

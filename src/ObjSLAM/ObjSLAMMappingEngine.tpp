@@ -196,11 +196,14 @@ namespace ObjSLAM {
             }
         }
         //Insert function: prepare tracking with all objs
-        t_controller->Prepare(t_state.get(), BG_object_ptr->GetRenderState().get(), this->obj_inst_ptr_vector,
+        this->renderState_RenderAll->raycastResult->Clear();
+        t_controller->Prepare(t_state.get(), this->renderState_RenderAll.get(), this->obj_inst_ptr_vector,
                               visualisationEngine_BG);
+
+        write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img" + to_string(imgNumber) + ".ply");
+        write2PLYfile(BG_object_ptr->GetTrackingState()->pointCloud->locations, "t_state_PCL_img" + to_string(imgNumber) + ".ply");
 //  PrepareTrackingWithAllObj();
     }
-
 
 
     template<class TVoxel, class TIndex>
@@ -225,7 +228,7 @@ namespace ObjSLAM {
 
             denseMapper->UpdateVisibleList(itmview.get(), tmp_t_state.get(), scene,
                                            obj_inst_ptr->GetRenderState().get(), true);
-
+            obj_inst_ptr->GetRenderState()->raycastResult->Clear();
             t_controller->Prepare(tmp_t_state.get(),
                                   scene,
                                   obj_inst_ptr.get()->GetAnchorView_ITM(),
@@ -236,17 +239,24 @@ namespace ObjSLAM {
             sceneIsBackground = true;
 //            cout<<"sceneIsBackground "<<sceneIsBackground<<endl;
             this->t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
-            denseMapper->ProcessFrame(obj_inst_ptr->GetCurrentView().get(),
+            denseMapper->ProcessFrame(BG_object_ptr->GetCurrentView().get(),
                                       this->t_state.get(),
                                       scene,
-                                      obj_inst_ptr->GetRenderState().get(),
+                                      this->renderState_RenderAll.get(),
                                       true);
 
-            denseMapper->UpdateVisibleList(obj_inst_ptr->GetCurrentView().get(),
+            denseMapper->UpdateVisibleList(BG_object_ptr->GetCurrentView().get(),
                                            this->t_state.get(),
                                            scene,
-                                           obj_inst_ptr->GetRenderState().get(),
+                                           this->renderState_RenderAll.get(),
                                            true);
+            BG_object_ptr->GetRenderState()->raycastResult->Clear();
+            //BG renderstate
+            t_controller->Prepare(this->t_state.get(),
+                                  scene,
+                                  BG_object_ptr->GetAnchorView_ITM(),
+                                  visualisationEngine_BG,
+                                  BG_object_ptr->GetRenderState().get());
 
         }
 
@@ -255,7 +265,7 @@ namespace ObjSLAM {
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateVisibilityOfObj(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr,
                                                                      const ORUtils::SE3Pose *pose) {
-
+        sceneIsBackground=obj_inst_ptr->CheckIsBackground();
         auto *scene = obj_inst_ptr->GetScene().get();
         visualisationEngine->FindVisibleBlocks(scene,
                                                pose,
@@ -597,23 +607,6 @@ namespace ObjSLAM {
     }
 
 
-/*    template<class TVoxel, class TIndex>
-    void ObjSLAMMappingEngine<TVoxel, TIndex>::preAllocateObjects(int n){
-//        sceneIsBackground=true;
-//        auto bg_scene = std::make_shared<ObjectInstanceScene<TVoxel,TIndex>>(sceneParams_ptr.get(), false, MEMORYDEVICE_CPU);
-        sceneIsBackground=false;
-
-        preAllocation_array = new std::shared_ptr<ObjectInstanceScene<TVoxel,TIndex>>[n];
-
-#ifdef WITH_OPENMP
-#pragma omp parallel for
-#endif
-        for(int i=0; i<n;++i){
-            auto scene = std::make_shared<ObjectInstanceScene<TVoxel,TIndex>>(sceneParams_ptr.get(), false, MEMORYDEVICE_CPU);
-            preAllocation_array[n] = scene;
-        }
-    }*/
-
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::SaveSceneToMesh(const char *objFileName,
                                                                std::shared_ptr<ITMLib::ITMScene<TVoxel,
@@ -627,6 +620,34 @@ namespace ObjSLAM {
 
         delete this_mesh;
     }
+
+    template<class TVoxel, class TIndex>
+    void ObjSLAMMappingEngine<TVoxel, TIndex>::write2PLYfile(const ORUtils::Image<ORUtils::Vector4<float>> *pcl,
+                                                             const std::string filename) {
+        std::ofstream fileWriter;
+        fileWriter.open(filename.c_str(), std::ofstream::out);
+        if (!fileWriter.is_open()) {
+            std::cout << "Cannot open file for PLY file writing " << filename.c_str() << "\n";
+        }
+        std::cout << "Point cloud is saved to " << filename.c_str() << "\n";
+
+        // write header
+        fileWriter << "ply\n";
+        fileWriter << "format ascii 1.0\n";
+        fileWriter << "element vertex " << pcl->dataSize << "\n";
+        fileWriter << "property float32 x\n";
+        fileWriter << "property float32 y\n";
+        fileWriter << "property float32 z\n";
+        fileWriter << "end_header\n";
+
+        for (int i = 0; i < pcl->dataSize; i++) {
+            ORUtils::Vector4<float> point = pcl->GetElement(i, MEMORYDEVICE_CPU);
+            fileWriter << point.x << " " << point.y << " " << point.z << "\n";
+        }
+
+        fileWriter.close();
+    }
+
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::Object_Cleanup(ObjectInstance_ptr <TVoxel, TIndex> object) {
@@ -857,8 +878,9 @@ namespace ObjSLAM {
         cout << "Number of visible Objects = " << number_activeObjects << endl;
 
         auto *pose_visualize = this->t_state->pose_d;
-        img_BG->ChangeDims(BG_object_ptr->GetRenderState().get()->raycastImage->noDims);
+        img_BG->ChangeDims(this->renderState_RenderAll->raycastImage->noDims);
         img_BG->Clear();
+        this->renderState_RenderAll->raycastImage->Clear();
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
@@ -881,9 +903,10 @@ namespace ObjSLAM {
 //                auto img = std::make_shared<ObjUChar4Image>(imgSize, MEMORYDEVICE_CPU);
 
 
+                obj_inst_ptr->GetRenderState()->raycastImage->Clear();
+
                 if (obj_inst_ptr->GetLabelIndex() != 0) {
                     sceneIsBackground = obj_inst_ptr->CheckIsBackground();
-
 
                     obj_inst_ptr->GetRenderState()->raycastImage->Clear();
 
@@ -900,22 +923,18 @@ namespace ObjSLAM {
 
 
                     visualisationEngine->RenderImage(scene.get(), pose_visualize,
-                                                     &obj_inst_ptr.get()->GetAnchorView_ITM()->calib.intrinsics_d,
+                                                     &obj_inst_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
                                                      obj_inst_ptr->GetRenderState().get(),
                                                      obj_inst_ptr->GetRenderState()->raycastImage,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
 
-/*#pragma omp critical
-                {
                     visualisationEngine_BG->RenderImage(scene.get(), pose_visualize,
-                                                        &obj_inst_ptr.get()->GetAnchorView_ITM()->calib.intrinsics_d,
-                                                        BG_object_ptr->GetRenderState().get(),
-                                                        img_BG.get(),
-//                                                        BG_object_ptr->GetRenderState()->raycastImage,
-                                                        ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
-                                                        ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
-                }*/
+                                                     &obj_inst_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
+                                                     this->renderState_RenderAll.get(),
+                                                     this->renderState_RenderAll->raycastImage,
+                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
+                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
 
 
                 } else {
@@ -924,17 +943,25 @@ namespace ObjSLAM {
 //update visibility? TODO
 
                     visualisationEngine_BG->RenderImage(scene.get(), pose_visualize,
-//                                                        this->t_state->pose_d,
-                                                        &obj_inst_ptr.get()->GetAnchorView_ITM()->calib.intrinsics_d,
-                                                        obj_inst_ptr->GetRenderState().get(),
-                                                        obj_inst_ptr->GetRenderState()->raycastImage,
+                                                        &BG_object_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
+                                                        BG_object_ptr->GetRenderState().get(),
+                                                        BG_object_ptr->GetRenderState()->raycastImage,
                                                         ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                         ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+
+                    visualisationEngine_BG->RenderImage(scene.get(), pose_visualize,
+                                                     &BG_object_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
+                                                     this->renderState_RenderAll.get(),
+                                                     this->renderState_RenderAll->raycastImage,
+                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
+                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+
+                    write2PLYfile(obj_inst_ptr->GetRenderState()->raycastResult, "raycast_img_BG" + to_string(imgNumber) + ".ply");
                 }
 
 
 //uncomment this for pixel wise fusion of rendering
-/*//possible data race due to outer loop?
+///*//possible data race due to outer loop?
 #ifdef WITH_OPENMP
 #pragma omp parallel
 #endif
@@ -946,33 +973,20 @@ namespace ObjSLAM {
                         img_BG->GetData(MEMORYDEVICE_CPU)[idx] += pixel_obj;
                 }
 
-            //*/
-            }
 
-        }
-
-        sceneIsBackground=true;
-//        t_controller->Prepare(t_state.get(),renderState_RenderAll.get(),obj_inst_ptr_vector, visualisationEngine_BG);
-      /*  (visualisationEngine_BG)->RenderImageMulti(this->obj_inst_ptr_vector, pose_visualize,
-                                                 &BG_object_ptr.get()->GetAnchorView_ITM()->calib.intrinsics_d,
-                                                  BG_object_ptr->GetRenderState().get(),
-                                                   img_BG.get(),
-                                                 ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
-                                                 ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);*/
-
-//
-/*        (visualisationEngine_BG)->RenderImage(BG_object_ptr->GetScene().get(), pose_visualize,
-                                                   &BG_object_ptr.get()->GetAnchorView_ITM()->calib.intrinsics_d,
-                                              BG_object_ptr->GetRenderState().get(),
-                                                   img_BG.get(),
-                                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
-                                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);*/
+                //*/
 
 
-//        img_BG->SetFrom(this->renderState_RenderAll->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU );
+            }//end inner obj loop
+
+        }//end outer label loop
+        write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img_ALL" + to_string(imgNumber) + ".ply");
+        sceneIsBackground = true;
+
+        img_BG->SetFrom(this->renderState_RenderAll->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU );
         string name_BG = "Label_BG_Fused.Object0.Frame" +
-                to_string(imgNumber)
-                + ".ppm";
+                         to_string(imgNumber)
+                         + ".ppm";
 
         SaveImageToFile(img_BG.get(), name_BG.c_str());
 
@@ -991,7 +1005,6 @@ namespace ObjSLAM {
             }
         }
     }
-
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::OutputAllObjImages() {
@@ -1020,6 +1033,5 @@ namespace ObjSLAM {
 
         }
     }
+}
 
-
-};
