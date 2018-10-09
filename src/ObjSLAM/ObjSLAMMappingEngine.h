@@ -51,7 +51,7 @@ namespace ObjSLAM {
         vector<shared_ptr<ObjectView<TVoxel, TIndex>>> view_vec;
         shared_ptr<ITMLib::ITMTrackingState> t_state /*= NULL*/;
         shared_ptr<ITMLib::ITMTrackingState> t_state_above /*= NULL*/;
-        ITMLib::ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine;
+        ITMLib::ITMVisualisationEngine_CPU<TVoxel, TIndex> *visualisationEngine;
         ITMLib::ITMVisualisationEngine_CPU<TVoxel, TIndex> *visualisationEngine_BG;
         shared_ptr<ITMLib::ITMTrackingController> t_controller;
 
@@ -99,15 +99,15 @@ namespace ObjSLAM {
 
             sceneIsBackground = false;
 
-            visualisationEngine =
-                    ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(
-                            settings->deviceType);
+            visualisationEngine =new ITMLib::ITMVisualisationEngine_CPU<TVoxel,TIndex>;
+//                    ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(
+//                            settings->deviceType);
 
             sceneIsBackground = true;
 
             visualisationEngine_BG =new ITMLib::ITMVisualisationEngine_CPU<TVoxel,TIndex>;
-/*                    ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(
-                            settings->deviceType);*/
+//                    ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(
+//                            settings->deviceType);
 
             sceneParams_ptr = std::shared_ptr<ITMLib::ITMSceneParams>(&(this->settings->sceneParams));
             ReserveVectors(totFrames);

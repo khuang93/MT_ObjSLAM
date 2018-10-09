@@ -198,10 +198,11 @@ namespace ObjSLAM {
         //Insert function: prepare tracking with all objs
         this->renderState_RenderAll->raycastResult->Clear();
         t_controller->Prepare(t_state.get(), this->renderState_RenderAll.get(), this->obj_inst_ptr_vector,
-                              visualisationEngine_BG);
+                              visualisationEngine); //visualisationEngine_BG
 
         write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img" + to_string(imgNumber) + ".ply");
-        write2PLYfile(BG_object_ptr->GetTrackingState()->pointCloud->locations, "t_state_PCL_img" + to_string(imgNumber) + ".ply");
+        write2PLYfile(BG_object_ptr->GetTrackingState()->pointCloud->locations,
+                      "t_state_PCL_img" + to_string(imgNumber) + ".ply");
 //  PrepareTrackingWithAllObj();
     }
 
@@ -257,8 +258,8 @@ namespace ObjSLAM {
             t_controller->Prepare(this->t_state.get(),
                                   scene,
                                   BG_object_ptr->GetAnchorView_ITM(),
-                                  visualisationEngine_BG,
-                                  BG_object_ptr->GetRenderState().get());
+                                  visualisationEngine,
+                                  BG_object_ptr->GetRenderState().get()); //visualisationEngine_BG
 
         }
 
@@ -267,7 +268,7 @@ namespace ObjSLAM {
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateVisibilityOfObj(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr,
                                                                      const ORUtils::SE3Pose *pose) {
-        sceneIsBackground=obj_inst_ptr->CheckIsBackground();
+        sceneIsBackground = obj_inst_ptr->CheckIsBackground();
         auto *scene = obj_inst_ptr->GetScene().get();
         visualisationEngine->FindVisibleBlocks(scene,
                                                pose,
@@ -312,7 +313,7 @@ namespace ObjSLAM {
         this->number_totalObjects = obj_inst_ptr_vector.size();
         this->number_activeObjects = active_obj_ptr_vector.size();
 
-        BG_VoxelCleanUp();
+//        BG_VoxelCleanUp();
     }
 
 //check if same obj by 2d overlap
@@ -890,8 +891,7 @@ namespace ObjSLAM {
         for (size_t i = 0; i < this->label_ptr_vector.size(); ++i) {
             std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>
                     label_ptr = label_ptr_vector.at(i);
-            std::vector<ObjectInstance_ptr<TVoxel, TIndex>>
-                    &
+            std::vector<ObjectInstance_ptr<TVoxel, TIndex>> &
                     obj_inst_vec = (label_ptr.get()->GetObjPtrVector());
             cout << *label_ptr.get() << " : " << obj_inst_vec.size() << endl;
 #ifdef WITH_OPENMP
@@ -902,15 +902,14 @@ namespace ObjSLAM {
 
                 auto scene = obj_inst_ptr->GetScene();
 
-//                auto img = std::make_shared<ObjUChar4Image>(imgSize, MEMORYDEVICE_CPU);
-
-
                 obj_inst_ptr->GetRenderState()->raycastImage->Clear();
+                obj_inst_ptr->GetRenderState()->raycastResult->Clear();
 
                 if (obj_inst_ptr->GetLabelIndex() != 0) {
                     sceneIsBackground = obj_inst_ptr->CheckIsBackground();
 
-                    obj_inst_ptr->GetRenderState()->raycastImage->Clear();
+//                    obj_inst_ptr->GetRenderState()->raycastImage->Clear();
+
 
                     UpdateVisibilityOfObj(obj_inst_ptr, pose_visualize);
 
@@ -931,7 +930,7 @@ namespace ObjSLAM {
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
 
-                    visualisationEngine_BG->RenderImage(scene.get(), pose_visualize,
+                    visualisationEngine->RenderImage(scene.get(), pose_visualize,
                                                      &obj_inst_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
                                                      this->renderState_RenderAll.get(),
                                                      this->renderState_RenderAll->raycastImage,
@@ -943,20 +942,21 @@ namespace ObjSLAM {
 
 //update visibility? TODO
 
-                    visualisationEngine_BG->RenderImage(scene.get(), pose_visualize,
-                                                        &BG_object_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
-                                                        BG_object_ptr->GetRenderState().get(),
-                                                        BG_object_ptr->GetRenderState()->raycastImage,
-                                                        ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
-                                                        ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
-                    visualisationEngine_BG->RenderImage(scene.get(), pose_visualize,
+                    visualisationEngine->RenderImage(scene.get(), pose_visualize,
+                                                     &BG_object_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
+                                                     BG_object_ptr->GetRenderState().get(),
+                                                     BG_object_ptr->GetRenderState()->raycastImage,
+                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
+                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+                    visualisationEngine->RenderImage(scene.get(), pose_visualize,
                                                      &BG_object_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
                                                      this->renderState_RenderAll.get(),
                                                      this->renderState_RenderAll->raycastImage,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
 
-                    write2PLYfile(obj_inst_ptr->GetRenderState()->raycastResult, "raycast_img_BG" + to_string(imgNumber) + ".ply");
+                    write2PLYfile(obj_inst_ptr->GetRenderState()->raycastResult,
+                                  "raycast_img_BG" + to_string(imgNumber) + ".ply");
                 }
 
 
@@ -991,7 +991,7 @@ namespace ObjSLAM {
         write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img_ALL" + to_string(imgNumber) + ".ply");
         sceneIsBackground = true;
 
-        img_BG->SetFrom(this->renderState_RenderAll->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU );
+        img_BG->SetFrom(this->renderState_RenderAll->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);
         string name_BG = "Label_BG_Fused.Object0.Frame" +
                          to_string(imgNumber)
                          + ".ppm";
