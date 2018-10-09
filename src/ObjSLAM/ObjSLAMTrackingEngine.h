@@ -14,7 +14,7 @@
 namespace ObjSLAM {
 using namespace ITMLib;
 class ObjSLAMTrackingEngine {
- private:
+ protected:
   std::shared_ptr<ITMTrackingState> t_state;
 //  ITMRenderState *r_state;
   std::unique_ptr<ITMSceneParams> params = make_unique<ITMSceneParams>(0.5, 4, 0.1, 0.1, 4.0, false);
