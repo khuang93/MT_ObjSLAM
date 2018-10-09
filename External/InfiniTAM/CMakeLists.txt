@@ -1,0 +1,323 @@
+cmake_minimum_required(VERSION 3.5)
+project(InfiniTAM)
+
+set(CMAKE_CXX_STANDARD 11)
+
+include_directories(InfiniTAM/Apps/android/jni)
+include_directories(InfiniTAM/Apps/InfiniTAM)
+include_directories(InfiniTAM/Apps/InfiniTAM_cli)
+include_directories(InfiniTAM/Apps/iOS/Viewer)
+include_directories(InfiniTAM/FernRelocLib)
+include_directories(InfiniTAM/InputSource)
+include_directories(InfiniTAM/ITMLib)
+include_directories(InfiniTAM/ITMLib/Core)
+include_directories(InfiniTAM/ITMLib/Engines/LowLevel)
+include_directories(InfiniTAM/ITMLib/Engines/LowLevel/CPU)
+include_directories(InfiniTAM/ITMLib/Engines/LowLevel/CUDA)
+include_directories(InfiniTAM/ITMLib/Engines/LowLevel/Interface)
+include_directories(InfiniTAM/ITMLib/Engines/LowLevel/Shared)
+include_directories(InfiniTAM/ITMLib/Engines/Meshing)
+include_directories(InfiniTAM/ITMLib/Engines/Meshing/CPU)
+include_directories(InfiniTAM/ITMLib/Engines/Meshing/CUDA)
+include_directories(InfiniTAM/ITMLib/Engines/Meshing/Interface)
+include_directories(InfiniTAM/ITMLib/Engines/Meshing/Shared)
+include_directories(InfiniTAM/ITMLib/Engines/MultiScene)
+include_directories(InfiniTAM/ITMLib/Engines/Reconstruction)
+include_directories(InfiniTAM/ITMLib/Engines/Reconstruction/CPU)
+include_directories(InfiniTAM/ITMLib/Engines/Reconstruction/CUDA)
+include_directories(InfiniTAM/ITMLib/Engines/Reconstruction/Interface)
+include_directories(InfiniTAM/ITMLib/Engines/Reconstruction/Metal)
+include_directories(InfiniTAM/ITMLib/Engines/Reconstruction/Shared)
+include_directories(InfiniTAM/ITMLib/Engines/Swapping)
+include_directories(InfiniTAM/ITMLib/Engines/Swapping/CPU)
+include_directories(InfiniTAM/ITMLib/Engines/Swapping/CUDA)
+include_directories(InfiniTAM/ITMLib/Engines/Swapping/Interface)
+include_directories(InfiniTAM/ITMLib/Engines/Swapping/Metal)
+include_directories(InfiniTAM/ITMLib/Engines/Swapping/Shared)
+include_directories(InfiniTAM/ITMLib/Engines/ViewBuilding)
+include_directories(InfiniTAM/ITMLib/Engines/ViewBuilding/CPU)
+include_directories(InfiniTAM/ITMLib/Engines/ViewBuilding/CUDA)
+include_directories(InfiniTAM/ITMLib/Engines/ViewBuilding/Interface)
+include_directories(InfiniTAM/ITMLib/Engines/ViewBuilding/Shared)
+include_directories(InfiniTAM/ITMLib/Engines/Visualisation)
+include_directories(InfiniTAM/ITMLib/Engines/Visualisation/CPU)
+include_directories(InfiniTAM/ITMLib/Engines/Visualisation/CUDA)
+include_directories(InfiniTAM/ITMLib/Engines/Visualisation/Interface)
+include_directories(InfiniTAM/ITMLib/Engines/Visualisation/Metal)
+include_directories(InfiniTAM/ITMLib/Engines/Visualisation/Shared)
+include_directories(InfiniTAM/ITMLib/Objects/Camera)
+include_directories(InfiniTAM/ITMLib/Objects/Meshing)
+include_directories(InfiniTAM/ITMLib/Objects/Misc)
+include_directories(InfiniTAM/ITMLib/Objects/RenderStates)
+include_directories(InfiniTAM/ITMLib/Objects/Scene)
+include_directories(InfiniTAM/ITMLib/Objects/Tracking)
+include_directories(InfiniTAM/ITMLib/Objects/Views)
+include_directories(InfiniTAM/ITMLib/Trackers)
+include_directories(InfiniTAM/ITMLib/Trackers/CPU)
+include_directories(InfiniTAM/ITMLib/Trackers/CUDA)
+include_directories(InfiniTAM/ITMLib/Trackers/Interface)
+include_directories(InfiniTAM/ITMLib/Trackers/Metal)
+include_directories(InfiniTAM/ITMLib/Trackers/Shared)
+include_directories(InfiniTAM/ITMLib/Utils)
+include_directories(InfiniTAM/MiniSlamGraphLib)
+include_directories(InfiniTAM/ORUtils)
+
+#[[add_executable(InfiniTAM
+        InfiniTAM/Apps/android/jni/InfiniTAMApp.cpp
+        InfiniTAM/Apps/android/jni/InfiniTAMApp.h
+        InfiniTAM/Apps/android/jni/jniExport.cpp
+        InfiniTAM/Apps/InfiniTAM/InfiniTAM.cpp
+        InfiniTAM/Apps/InfiniTAM/UIEngine.cpp
+        InfiniTAM/Apps/InfiniTAM/UIEngine.h
+        InfiniTAM/Apps/InfiniTAM_cli/CLIEngine.cpp
+        InfiniTAM/Apps/InfiniTAM_cli/CLIEngine.h
+        InfiniTAM/Apps/InfiniTAM_cli/InfiniTAM_cli.cpp
+        InfiniTAM/Apps/iOS/Viewer/AppDelegate.h
+        InfiniTAM/Apps/iOS/Viewer/AppDelegate.m
+        InfiniTAM/Apps/iOS/Viewer/InfiniTAM-Prefix.pch
+        InfiniTAM/Apps/iOS/Viewer/main.m
+        InfiniTAM/Apps/iOS/Viewer/ViewController.h
+        InfiniTAM/Apps/iOS/Viewer/ViewController.mm
+        InfiniTAM/cmake/cuda_compute_capability.cpp
+        InfiniTAM/FernRelocLib/FernConservatory.cpp
+        InfiniTAM/FernRelocLib/FernConservatory.h
+        InfiniTAM/FernRelocLib/PixelUtils.h
+        InfiniTAM/FernRelocLib/PoseDatabase.cpp
+        InfiniTAM/FernRelocLib/PoseDatabase.h
+        InfiniTAM/FernRelocLib/Relocaliser.cpp
+        InfiniTAM/FernRelocLib/Relocaliser.h
+        InfiniTAM/FernRelocLib/RelocDatabase.cpp
+        InfiniTAM/FernRelocLib/RelocDatabase.h
+        InfiniTAM/Files/PrimeSense/calib.txt
+        InfiniTAM/Files/Teddy/calib.txt
+        InfiniTAM/InputSource/CompositeImageSourceEngine.cpp
+        InfiniTAM/InputSource/CompositeImageSourceEngine.h
+        InfiniTAM/InputSource/FFMPEGReader.cpp
+        InfiniTAM/InputSource/FFMPEGReader.h
+        InfiniTAM/InputSource/FFMPEGWriter.cpp
+        InfiniTAM/InputSource/FFMPEGWriter.h
+        InfiniTAM/InputSource/IdleImageSourceEngine.cpp
+        InfiniTAM/InputSource/IdleImageSourceEngine.h
+        InfiniTAM/InputSource/ImageSourceEngine.cpp
+        InfiniTAM/InputSource/ImageSourceEngine.h
+        InfiniTAM/InputSource/IMUSourceEngine.cpp
+        InfiniTAM/InputSource/IMUSourceEngine.h
+        InfiniTAM/InputSource/Kinect2Engine.cpp
+        InfiniTAM/InputSource/Kinect2Engine.h
+        InfiniTAM/InputSource/LibUVCEngine.cpp
+        InfiniTAM/InputSource/LibUVCEngine.h
+        InfiniTAM/InputSource/OpenNIEngine.cpp
+        InfiniTAM/InputSource/OpenNIEngine.h
+        InfiniTAM/InputSource/PicoFlexxEngine.cpp
+        InfiniTAM/InputSource/PicoFlexxEngine.h
+        InfiniTAM/InputSource/RealSense2Engine.cpp
+        InfiniTAM/InputSource/RealSense2Engine.h
+        InfiniTAM/InputSource/RealSenseEngine.cpp
+        InfiniTAM/InputSource/RealSenseEngine.h
+        InfiniTAM/ITMLib/Core/ITMBasicEngine.h
+        InfiniTAM/ITMLib/Core/ITMBasicSurfelEngine.h
+        InfiniTAM/ITMLib/Core/ITMDenseMapper.h
+        InfiniTAM/ITMLib/Core/ITMDenseSurfelMapper.h
+        InfiniTAM/ITMLib/Core/ITMMainEngine.h
+        InfiniTAM/ITMLib/Core/ITMMultiEngine.h
+        InfiniTAM/ITMLib/Core/ITMTrackingController.h
+        InfiniTAM/ITMLib/Engines/LowLevel/CPU/ITMLowLevelEngine_CPU.cpp
+        InfiniTAM/ITMLib/Engines/LowLevel/CPU/ITMLowLevelEngine_CPU.h
+        InfiniTAM/ITMLib/Engines/LowLevel/CUDA/ITMLowLevelEngine_CUDA.h
+        InfiniTAM/ITMLib/Engines/LowLevel/Interface/ITMLowLevelEngine.h
+        InfiniTAM/ITMLib/Engines/LowLevel/Shared/ITMLowLevelEngine_Shared.h
+        InfiniTAM/ITMLib/Engines/LowLevel/ITMLowLevelEngineFactory.cpp
+        InfiniTAM/ITMLib/Engines/LowLevel/ITMLowLevelEngineFactory.h
+        InfiniTAM/ITMLib/Engines/Meshing/CPU/ITMMeshingEngine_CPU.h
+        InfiniTAM/ITMLib/Engines/Meshing/CPU/ITMMultiMeshingEngine_CPU.h
+        InfiniTAM/ITMLib/Engines/Meshing/CUDA/ITMMeshingEngine_CUDA.h
+        InfiniTAM/ITMLib/Engines/Meshing/CUDA/ITMMultiMeshingEngine_CUDA.h
+        InfiniTAM/ITMLib/Engines/Meshing/Interface/ITMMeshingEngine.h
+        InfiniTAM/ITMLib/Engines/Meshing/Interface/ITMMultiMeshingEngine.h
+        InfiniTAM/ITMLib/Engines/Meshing/Shared/ITMMeshingEngine_Shared.h
+        InfiniTAM/ITMLib/Engines/Meshing/Shared/ITMMultiMeshingEngine_Shared.h
+        InfiniTAM/ITMLib/Engines/Meshing/ITMMeshingEngineFactory.h
+        InfiniTAM/ITMLib/Engines/Meshing/ITMMultiMeshingEngineFactory.h
+        InfiniTAM/ITMLib/Engines/MultiScene/ITMActiveMapManager.cpp
+        InfiniTAM/ITMLib/Engines/MultiScene/ITMActiveMapManager.h
+        InfiniTAM/ITMLib/Engines/MultiScene/ITMGlobalAdjustmentEngine.cpp
+        InfiniTAM/ITMLib/Engines/MultiScene/ITMGlobalAdjustmentEngine.h
+        InfiniTAM/ITMLib/Engines/MultiScene/ITMMapGraphManager.h
+        InfiniTAM/ITMLib/Engines/Reconstruction/CPU/ITMSceneReconstructionEngine_CPU.h
+        InfiniTAM/ITMLib/Engines/Reconstruction/CPU/ITMSurfelSceneReconstructionEngine_CPU.h
+        InfiniTAM/ITMLib/Engines/Reconstruction/CUDA/ITMSceneReconstructionEngine_CUDA.h
+        InfiniTAM/ITMLib/Engines/Reconstruction/CUDA/ITMSurfelSceneReconstructionEngine_CUDA.h
+        InfiniTAM/ITMLib/Engines/Reconstruction/Interface/ITMSceneReconstructionEngine.h
+        InfiniTAM/ITMLib/Engines/Reconstruction/Interface/ITMSurfelSceneReconstructionEngine.h
+        InfiniTAM/ITMLib/Engines/Reconstruction/Metal/ITMSceneReconstructionEngine_Metal.h
+        InfiniTAM/ITMLib/Engines/Reconstruction/Metal/ITMSceneReconstructionEngine_Metal.mm
+        InfiniTAM/ITMLib/Engines/Reconstruction/Shared/ITMSceneReconstructionEngine_Shared.h
+        InfiniTAM/ITMLib/Engines/Reconstruction/Shared/ITMSurfelSceneReconstructionEngine_Shared.h
+        InfiniTAM/ITMLib/Engines/Reconstruction/ITMSceneReconstructionEngineFactory.h
+        InfiniTAM/ITMLib/Engines/Reconstruction/ITMSurfelSceneReconstructionEngineFactory.h
+        InfiniTAM/ITMLib/Engines/Swapping/CPU/ITMSwappingEngine_CPU.h
+        InfiniTAM/ITMLib/Engines/Swapping/CUDA/ITMSwappingEngine_CUDA.h
+        InfiniTAM/ITMLib/Engines/Swapping/Interface/ITMSwappingEngine.h
+        InfiniTAM/ITMLib/Engines/Swapping/Metal/ITMSwappingEngine_Metal.h
+        InfiniTAM/ITMLib/Engines/Swapping/Metal/ITMSwappingEngine_Metal.mm
+        InfiniTAM/ITMLib/Engines/Swapping/Shared/ITMSwappingEngine_Shared.h
+        InfiniTAM/ITMLib/Engines/Swapping/ITMSwappingEngineFactory.h
+        InfiniTAM/ITMLib/Engines/ViewBuilding/CPU/ITMViewBuilder_CPU.cpp
+        InfiniTAM/ITMLib/Engines/ViewBuilding/CPU/ITMViewBuilder_CPU.h
+        InfiniTAM/ITMLib/Engines/ViewBuilding/CUDA/ITMViewBuilder_CUDA.h
+        InfiniTAM/ITMLib/Engines/ViewBuilding/Interface/ITMViewBuilder.h
+        InfiniTAM/ITMLib/Engines/ViewBuilding/Shared/ITMViewBuilder_Shared.h
+        InfiniTAM/ITMLib/Engines/ViewBuilding/ITMViewBuilderFactory.cpp
+        InfiniTAM/ITMLib/Engines/ViewBuilding/ITMViewBuilderFactory.h
+        InfiniTAM/ITMLib/Engines/Visualisation/CPU/ITMMultiVisualisationEngine_CPU.h
+        InfiniTAM/ITMLib/Engines/Visualisation/CPU/ITMSurfelVisualisationEngine_CPU.h
+        InfiniTAM/ITMLib/Engines/Visualisation/CPU/ITMVisualisationEngine_CPU.h
+        InfiniTAM/ITMLib/Engines/Visualisation/CUDA/ITMMultiVisualisationEngine_CUDA.h
+        InfiniTAM/ITMLib/Engines/Visualisation/CUDA/ITMSurfelVisualisationEngine_CUDA.h
+        InfiniTAM/ITMLib/Engines/Visualisation/CUDA/ITMVisualisationEngine_CUDA.h
+        InfiniTAM/ITMLib/Engines/Visualisation/CUDA/ITMVisualisationHelpers_CUDA.h
+        InfiniTAM/ITMLib/Engines/Visualisation/Interface/ITMMultiVisualisationEngine.h
+        InfiniTAM/ITMLib/Engines/Visualisation/Interface/ITMSurfelVisualisationEngine.h
+        InfiniTAM/ITMLib/Engines/Visualisation/Interface/ITMVisualisationEngine.cpp
+        InfiniTAM/ITMLib/Engines/Visualisation/Interface/ITMVisualisationEngine.h
+        InfiniTAM/ITMLib/Engines/Visualisation/Metal/ITMVisualisationEngine_Metal.h
+        InfiniTAM/ITMLib/Engines/Visualisation/Metal/ITMVisualisationEngine_Metal.mm
+        InfiniTAM/ITMLib/Engines/Visualisation/Shared/ITMSurfelVisualisationEngine_Settings.h
+        InfiniTAM/ITMLib/Engines/Visualisation/Shared/ITMSurfelVisualisationEngine_Shared.h
+        InfiniTAM/ITMLib/Engines/Visualisation/Shared/ITMVisualisationEngine_Shared.h
+        InfiniTAM/ITMLib/Engines/Visualisation/ITMMultiVisualisationEngineFactory.h
+        InfiniTAM/ITMLib/Engines/Visualisation/ITMSurfelVisualisationEngineFactory.h
+        InfiniTAM/ITMLib/Engines/Visualisation/ITMVisualisationEngineFactory.h
+        InfiniTAM/ITMLib/Objects/Camera/ITMCalibIO.cpp
+        InfiniTAM/ITMLib/Objects/Camera/ITMCalibIO.h
+        InfiniTAM/ITMLib/Objects/Camera/ITMDisparityCalib.h
+        InfiniTAM/ITMLib/Objects/Camera/ITMExtrinsics.h
+        InfiniTAM/ITMLib/Objects/Camera/ITMIntrinsics.h
+        InfiniTAM/ITMLib/Objects/Camera/ITMRGBDCalib.h
+        InfiniTAM/ITMLib/Objects/Meshing/ITMMesh.h
+        InfiniTAM/ITMLib/Objects/Misc/ITMIMUCalibrator.h
+        InfiniTAM/ITMLib/Objects/Misc/ITMIMUMeasurement.h
+        InfiniTAM/ITMLib/Objects/Misc/ITMPointCloud.h
+        InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderState.h
+        InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderState_VH.h
+        InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderStateFactory.h
+        InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderStateMultiScene.h
+        InfiniTAM/ITMLib/Objects/RenderStates/ITMSurfelRenderState.cpp
+        InfiniTAM/ITMLib/Objects/RenderStates/ITMSurfelRenderState.h
+        InfiniTAM/ITMLib/Objects/Scene/ITMGlobalCache.h
+        InfiniTAM/ITMLib/Objects/Scene/ITMLocalMap.h
+        InfiniTAM/ITMLib/Objects/Scene/ITMLocalScene.h
+        InfiniTAM/ITMLib/Objects/Scene/ITMLocalVBA.h
+        InfiniTAM/ITMLib/Objects/Scene/ITMMultiSceneAccess.h
+        InfiniTAM/ITMLib/Objects/Scene/ITMPlainVoxelArray.h
+        InfiniTAM/ITMLib/Objects/Scene/ITMRepresentationAccess.h
+        InfiniTAM/ITMLib/Objects/Scene/ITMScene.h
+        InfiniTAM/ITMLib/Objects/Scene/ITMSurfelScene.h
+        InfiniTAM/ITMLib/Objects/Scene/ITMSurfelTypes.h
+        InfiniTAM/ITMLib/Objects/Scene/ITMVoxelBlockHash.h
+        InfiniTAM/ITMLib/Objects/Scene/ITMVoxelTypes.h
+        InfiniTAM/ITMLib/Objects/Tracking/ITMDepthHierarchyLevel.h
+        InfiniTAM/ITMLib/Objects/Tracking/ITMImageHierarchy.h
+        InfiniTAM/ITMLib/Objects/Tracking/ITMIntensityHierarchyLevel.h
+        InfiniTAM/ITMLib/Objects/Tracking/ITMRGBHierarchyLevel.h
+        InfiniTAM/ITMLib/Objects/Tracking/ITMSceneHierarchyLevel.h
+        InfiniTAM/ITMLib/Objects/Tracking/ITMTemplatedHierarchyLevel.h
+        InfiniTAM/ITMLib/Objects/Tracking/ITMTrackingState.h
+        InfiniTAM/ITMLib/Objects/Tracking/ITMViewHierarchyLevel.h
+        InfiniTAM/ITMLib/Objects/Tracking/TrackerIterationType.h
+        InfiniTAM/ITMLib/Objects/Views/ITMView.h
+        InfiniTAM/ITMLib/Objects/Views/ITMViewIMU.h
+        InfiniTAM/ITMLib/Trackers/CPU/ITMColorTracker_CPU.cpp
+        InfiniTAM/ITMLib/Trackers/CPU/ITMColorTracker_CPU.h
+        InfiniTAM/ITMLib/Trackers/CPU/ITMDepthTracker_CPU.cpp
+        InfiniTAM/ITMLib/Trackers/CPU/ITMDepthTracker_CPU.h
+        InfiniTAM/ITMLib/Trackers/CPU/ITMExtendedTracker_CPU.cpp
+        InfiniTAM/ITMLib/Trackers/CPU/ITMExtendedTracker_CPU.h
+        InfiniTAM/ITMLib/Trackers/CUDA/ITMColorTracker_CUDA.h
+        InfiniTAM/ITMLib/Trackers/CUDA/ITMDepthTracker_CUDA.h
+        InfiniTAM/ITMLib/Trackers/CUDA/ITMExtendedTracker_CUDA.h
+        InfiniTAM/ITMLib/Trackers/Interface/ITMColorTracker.cpp
+        InfiniTAM/ITMLib/Trackers/Interface/ITMColorTracker.h
+        InfiniTAM/ITMLib/Trackers/Interface/ITMCompositeTracker.h
+        InfiniTAM/ITMLib/Trackers/Interface/ITMDepthTracker.cpp
+        InfiniTAM/ITMLib/Trackers/Interface/ITMDepthTracker.h
+        InfiniTAM/ITMLib/Trackers/Interface/ITMExtendedTracker.cpp
+        InfiniTAM/ITMLib/Trackers/Interface/ITMExtendedTracker.h
+        InfiniTAM/ITMLib/Trackers/Interface/ITMFileBasedTracker.cpp
+        InfiniTAM/ITMLib/Trackers/Interface/ITMFileBasedTracker.h
+        InfiniTAM/ITMLib/Trackers/Interface/ITMForceFailTracker.cpp
+        InfiniTAM/ITMLib/Trackers/Interface/ITMForceFailTracker.h
+        InfiniTAM/ITMLib/Trackers/Interface/ITMIMUTracker.cpp
+        InfiniTAM/ITMLib/Trackers/Interface/ITMIMUTracker.h
+        InfiniTAM/ITMLib/Trackers/Interface/ITMTracker.h
+        InfiniTAM/ITMLib/Trackers/Metal/ITMExtendedTracker_Metal.h
+        InfiniTAM/ITMLib/Trackers/Metal/ITMExtendedTracker_Metal.mm
+        InfiniTAM/ITMLib/Trackers/Shared/ITMColorTracker_Shared.h
+        InfiniTAM/ITMLib/Trackers/Shared/ITMDepthTracker_Shared.h
+        InfiniTAM/ITMLib/Trackers/Shared/ITMExtendedTracker_Shared.h
+        InfiniTAM/ITMLib/Trackers/ITMTrackerFactory.h
+        InfiniTAM/ITMLib/Utils/ITMCUDAUtils.h
+        InfiniTAM/ITMLib/Utils/ITMImageTypes.h
+        InfiniTAM/ITMLib/Utils/ITMLibSettings.cpp
+        InfiniTAM/ITMLib/Utils/ITMLibSettings.h
+        InfiniTAM/ITMLib/Utils/ITMMath.h
+        InfiniTAM/ITMLib/Utils/ITMMemoryBlockTypes.h
+        InfiniTAM/ITMLib/Utils/ITMPixelUtils.h
+        InfiniTAM/ITMLib/Utils/ITMProjectionUtils.h
+        InfiniTAM/ITMLib/Utils/ITMSceneParams.h
+        InfiniTAM/ITMLib/Utils/ITMSurfelSceneParams.h
+        InfiniTAM/ITMLib/CPUInstantiations.cpp
+        InfiniTAM/ITMLib/ITMLibDefines.h
+        InfiniTAM/ITMLib/MetalInstantiations.mm
+        InfiniTAM/MiniSlamGraphLib/GraphEdge.cpp
+        InfiniTAM/MiniSlamGraphLib/GraphEdge.h
+        InfiniTAM/MiniSlamGraphLib/GraphEdgeSE3.cpp
+        InfiniTAM/MiniSlamGraphLib/GraphEdgeSE3.h
+        InfiniTAM/MiniSlamGraphLib/GraphNode.h
+        InfiniTAM/MiniSlamGraphLib/GraphNodeSE3.h
+        InfiniTAM/MiniSlamGraphLib/LevenbergMarquardtMethod.cpp
+        InfiniTAM/MiniSlamGraphLib/LevenbergMarquardtMethod.h
+        InfiniTAM/MiniSlamGraphLib/Matrix_CSparse.h
+        InfiniTAM/MiniSlamGraphLib/MatrixWrapper.cpp
+        InfiniTAM/MiniSlamGraphLib/MatrixWrapper.h
+        InfiniTAM/MiniSlamGraphLib/ParameterIndex.h
+        InfiniTAM/MiniSlamGraphLib/PoseGraph.cpp
+        InfiniTAM/MiniSlamGraphLib/PoseGraph.h
+        InfiniTAM/MiniSlamGraphLib/QuaternionHelpers.cpp
+        InfiniTAM/MiniSlamGraphLib/QuaternionHelpers.h
+        InfiniTAM/MiniSlamGraphLib/SlamGraph.cpp
+        InfiniTAM/MiniSlamGraphLib/SlamGraph.h
+        InfiniTAM/MiniSlamGraphLib/SlamGraphErrorFunction.cpp
+        InfiniTAM/MiniSlamGraphLib/SlamGraphErrorFunction.h
+        InfiniTAM/MiniSlamGraphLib/SparseBlockMatrix.h
+        InfiniTAM/MiniSlamGraphLib/SparseRegularBlockMatrix.h
+        InfiniTAM/MiniSlamGraphLib/VariableLengthVector.h
+        InfiniTAM/ORUtils/Cholesky.h
+        InfiniTAM/ORUtils/CUDADefines.h
+        InfiniTAM/ORUtils/FileUtils.cpp
+        InfiniTAM/ORUtils/FileUtils.h
+        InfiniTAM/ORUtils/HomkerMap.h
+        InfiniTAM/ORUtils/Image.h
+        InfiniTAM/ORUtils/KeyValueConfig.cpp
+        InfiniTAM/ORUtils/KeyValueConfig.h
+        InfiniTAM/ORUtils/LexicalCast.h
+        InfiniTAM/ORUtils/MathUtils.h
+        InfiniTAM/ORUtils/Matrix.h
+        InfiniTAM/ORUtils/MemoryBlock.h
+        InfiniTAM/ORUtils/MemoryBlockPersister.h
+        InfiniTAM/ORUtils/MemoryDeviceType.h
+        InfiniTAM/ORUtils/MetalContext.h
+        InfiniTAM/ORUtils/MetalContext.mm
+        InfiniTAM/ORUtils/NVTimer.h
+        InfiniTAM/ORUtils/PlatformIndependence.h
+        InfiniTAM/ORUtils/SE3Pose.cpp
+        InfiniTAM/ORUtils/SE3Pose.h
+        InfiniTAM/ORUtils/SVMClassifier.h
+        InfiniTAM/ORUtils/Vector.h
+        InfiniTAM/.vimrc
+        InfiniTAM/build-nix.sh
+        InfiniTAM/build-realsense-win.sh
+        InfiniTAM/build-win.sh
+        InfiniTAM/CMakeLists.txt
+        InfiniTAM/Doxyfile
+        InfiniTAM/require-msbuild.sh)]]

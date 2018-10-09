@@ -1,6 +1,3 @@
-[submodule "External/InfiniTAM"]
-	path = External/InfiniTAM
-	url = git@github.com:khuang93/InfiniTAM.git
 [submodule "External/g2o"]
 	path = External/g2o
 	url = git@github.com:khuang93/g2o.git
