@@ -98,6 +98,7 @@ class ITMTrackingController {
                const ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine){
     if (!tracker->requiresPointCloudRendering())
       return;
+    renderState->raycastResult->Clear();
     //render for tracking
     bool requiresColourRendering = tracker->requiresColourRendering();
     bool requiresFullRendering = trackingState->TrackerFarFromPointCloud() || !settings->useApproximateRaycast;
@@ -108,7 +109,7 @@ class ITMTrackingController {
 
       const auto *scene = obj_inst_ptr->GetScene().get();
       const auto *view = obj_inst_ptr->GetCurrentView().get();
-
+      visualisationEngine->CreateExpectedDepths(scene, trackingState->pose_d, &(view->calib.intrinsics_d), renderState);
       if (requiresFullRendering) {
         visualisationEngine->CreateICPMaps(scene, view, trackingState, renderState);
         trackingState->pose_pointCloud->SetFrom(trackingState->pose_d);

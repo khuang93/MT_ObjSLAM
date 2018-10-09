@@ -76,6 +76,10 @@ typedef class ORUtils::Vector6<float> Vector6f;
 #define IS_EQUAL3(a,b) (((a).x == (b).x) && ((a).y == (b).y) && ((a).z == (b).z))
 #endif
 
+#ifndef NORM3
+#define NORM3(a) (sqrt(((a).x * (a).x) + ((a).y * (a).y) + ((a).z * (a).z)))
+#endif
+
 #else
 
 typedef metal::float3x3 Matrix3f;

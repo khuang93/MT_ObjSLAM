@@ -295,10 +295,6 @@ static void GenericRaycastMulti(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, 
 
 	std::vector</*const*/ ITMHashEntry*> voxelIndex_vec;
 
-//	voxelData_vec.reserve(obj_inst_ptr_vector.size());
-//
-//	voxelIndex_vec.reserve(obj_inst_ptr_vector.size());
-
 	std::vector<uchar*> entriesVisibleType_vec;
 
 	Vector4f *pointsRay = renderState->raycastResult->GetData(MEMORYDEVICE_CPU);
@@ -332,7 +328,7 @@ static void GenericRaycastMulti(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, 
 
 
 #ifdef WITH_OPENMP
-#pragma omp parallel for
+#pragma omp parallel for private(sceneIsBackground)
 #endif
 		for (int locId = 0; locId < imgSize.x*imgSize.y; ++locId)
 		{
@@ -482,7 +478,13 @@ static void RenderImage_common_multi(std::vector<ObjSLAM::ObjectInstance_ptr<TVo
 		{
 			// this one is generally done for freeview visualisation, so
 			// no, do not update the list of visible blocks
-			GenericRaycastMulti(obj_inst_ptr_vector, imgSize, invM, intrinsics->projectionParamsSimple.all, renderState, false);
+//			GenericRaycastMulti(obj_inst_ptr_vector, imgSize, invM, intrinsics->projectionParamsSimple.all, renderState, false);
+			for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
+				sceneIsBackground = i == 0;
+				ITMScene<TVoxel,TIndex>* scene = obj_inst_ptr_vector.at(i)->GetScene().get();
+				GenericRaycast(scene, imgSize, invM, intrinsics->projectionParamsSimple.all, renderState, false);
+			}
+
 			pointsRay = renderState->raycastResult->GetData(MEMORYDEVICE_CPU);
 		}
 	}
@@ -495,9 +497,10 @@ static void RenderImage_common_multi(std::vector<ObjSLAM::ObjectInstance_ptr<TVo
 
 	for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
 		sceneIsBackground = i == 0 ? true : false;
-		ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
+//sceneIsBackground=true;
+		ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(0);
 
-		const auto *scene = obj_inst_ptr->GetScene().get();
+		const ITMScene<TVoxel,TIndex> *scene = obj_inst_ptr->GetScene().get();
 
 
 
@@ -565,6 +568,7 @@ static void RenderImage_common_multi(std::vector<ObjSLAM::ObjectInstance_ptr<TVo
 				for (int locId = 0; locId < imgSize.x * imgSize.y; locId++)
 				{
 					Vector4f ptRay = pointsRay[locId];
+					ptRay.w=1; //pure test to see if w=0 is the problem
 					processPixelGrey<TVoxel, TIndex>(outRendering[locId], ptRay.toVector3(), ptRay.w > 0, voxelData, voxelIndex, lightSource);
 				}
 		}
