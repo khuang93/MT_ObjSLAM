@@ -933,6 +933,7 @@ namespace ObjSLAM {
                 }
 
 
+//uncomment this for pixel wise fusion of rendering
 /*//possible data race due to outer loop?
 #ifdef WITH_OPENMP
 #pragma omp parallel
@@ -943,28 +944,28 @@ namespace ObjSLAM {
                     Vector4u pixel_obj = r_state_obj->raycastImage->GetData(MEMORYDEVICE_CPU)[idx];
                     if (pixel.r == 0 && pixel.g == 0 && pixel.b == 0)
                         img_BG->GetData(MEMORYDEVICE_CPU)[idx] += pixel_obj;
-                }*/
+                }
 
 
             }
         }
-
+//*/
         sceneIsBackground=true;
 //        t_controller->Prepare(t_state.get(),renderState_RenderAll.get(),obj_inst_ptr_vector, visualisationEngine_BG);
-        (visualisationEngine_BG)->RenderImageMulti(this->obj_inst_ptr_vector, pose_visualize,
+      /*  (visualisationEngine_BG)->RenderImageMulti(this->obj_inst_ptr_vector, pose_visualize,
                                                  &BG_object_ptr.get()->GetAnchorView_ITM()->calib.intrinsics_d,
                                                   BG_object_ptr->GetRenderState().get(),
                                                    img_BG.get(),
                                                  ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
-                                                 ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+                                                 ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);*/
 
 //
-//        (visualisationEngine_BG)->RenderImage(BG_object_ptr->GetScene().get(), pose_visualize,
-//                                                   &BG_object_ptr.get()->GetAnchorView_ITM()->calib.intrinsics_d,
-//                                              BG_object_ptr->GetRenderState().get(),
-//                                                   img_BG.get(),
-//                                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
-//                                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+/*        (visualisationEngine_BG)->RenderImage(BG_object_ptr->GetScene().get(), pose_visualize,
+                                                   &BG_object_ptr.get()->GetAnchorView_ITM()->calib.intrinsics_d,
+                                              BG_object_ptr->GetRenderState().get(),
+                                                   img_BG.get(),
+                                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
+                                                   ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);*/
 
 
 //        img_BG->SetFrom(this->renderState_RenderAll->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU );
