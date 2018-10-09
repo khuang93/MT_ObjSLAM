@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <vector>
 #include <src/ObjSLAM/ObjSLAMDataTypes.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Visualisation/CPU/ITMVisualisationEngine_CPU.h>
 
 #include "../Engines/Visualisation/Interface/ITMSurfelVisualisationEngine.h"
 #include "../Engines/Visualisation/Interface/ITMVisualisationEngine.h"
@@ -95,13 +96,19 @@ class ITMTrackingController {
   void Prepare(ITMTrackingState *trackingState,
                ITMRenderState *renderState,
                std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>> obj_inst_ptr_vector,
-               const ITMVisualisationEngine<TVoxel, TIndex> *visualisationEngine){
+               const ITMVisualisationEngine_CPU<TVoxel, TIndex> *visualisationEngine){
     if (!tracker->requiresPointCloudRendering())
       return;
     renderState->raycastResult->Clear();
     //render for tracking
     bool requiresColourRendering = tracker->requiresColourRendering();
     bool requiresFullRendering = trackingState->TrackerFarFromPointCloud() || !settings->useApproximateRaycast;
+
+
+    if (requiresFullRendering) {
+      visualisationEngine->CreateICPMapsMulti(obj_inst_ptr_vector, obj_inst_ptr_vector.at(0)->GetCurrentView().get(), trackingState, renderState);
+      trackingState->pose_pointCloud->SetFrom(trackingState->pose_d);
+    }
 
     for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
       sceneIsBackground = i == 0 ? true : false;
@@ -110,10 +117,7 @@ class ITMTrackingController {
       const auto *scene = obj_inst_ptr->GetScene().get();
       const auto *view = obj_inst_ptr->GetCurrentView().get();
       visualisationEngine->CreateExpectedDepths(scene, trackingState->pose_d, &(view->calib.intrinsics_d), renderState);
-      if (requiresFullRendering) {
-        visualisationEngine->CreateICPMaps(scene, view, trackingState, renderState);
-        trackingState->pose_pointCloud->SetFrom(trackingState->pose_d);
-      } else {
+      if (!requiresFullRendering) {
         visualisationEngine->ForwardRender(scene, view, trackingState, renderState);
         trackingState->age_pointCloud++;
       }
@@ -125,6 +129,42 @@ class ITMTrackingController {
   }
 
 
+    //multi prepare old version
+   /* template<typename TVoxel, typename TIndex>
+    void Prepare(ITMTrackingState *trackingState,
+                 ITMRenderState *renderState,
+                 std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>> obj_inst_ptr_vector,
+                 const ITMVisualisationEngine_CPU<TVoxel, TIndex> *visualisationEngine){
+      if (!tracker->requiresPointCloudRendering())
+        return;
+      renderState->raycastResult->Clear();
+      //render for tracking
+      bool requiresColourRendering = tracker->requiresColourRendering();
+      bool requiresFullRendering = trackingState->TrackerFarFromPointCloud() || !settings->useApproximateRaycast;
+
+
+
+
+      for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
+        sceneIsBackground = i == 0 ? true : false;
+        ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
+
+        const auto *scene = obj_inst_ptr->GetScene().get();
+        const auto *view = obj_inst_ptr->GetCurrentView().get();
+        visualisationEngine->CreateExpectedDepths(scene, trackingState->pose_d, &(view->calib.intrinsics_d), renderState);
+        if (requiresFullRendering) {
+          visualisationEngine->CreateICPMaps(scene, view,, trackingState, renderState);
+          trackingState->pose_pointCloud->SetFrom(trackingState->pose_d);
+        }else {
+          visualisationEngine->ForwardRender(scene, view, trackingState, renderState);
+          trackingState->age_pointCloud++;
+        }
+      }
+      if (requiresFullRendering) {
+        if (trackingState->age_pointCloud == -1) trackingState->age_pointCloud = -2;
+        else trackingState->age_pointCloud = 0;
+      }
+    }*/
 
 
   ITMTrackingController(ITMTracker *tracker, const ITMLibSettings *settings) {

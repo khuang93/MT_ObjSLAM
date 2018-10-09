@@ -931,13 +931,12 @@ namespace ObjSLAM {
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
 
-                   /* visualisationEngine_BG->RenderImage(scene.get(), pose_visualize,
+                    visualisationEngine_BG->RenderImage(scene.get(), pose_visualize,
                                                      &obj_inst_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
                                                      this->renderState_RenderAll.get(),
                                                      this->renderState_RenderAll->raycastImage,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
-                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
-*/
+                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
 
                 } else {
                     sceneIsBackground = true;
@@ -950,13 +949,12 @@ namespace ObjSLAM {
                                                         BG_object_ptr->GetRenderState()->raycastImage,
                                                         ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                         ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
-/*
                     visualisationEngine_BG->RenderImage(scene.get(), pose_visualize,
                                                      &BG_object_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
                                                      this->renderState_RenderAll.get(),
                                                      this->renderState_RenderAll->raycastImage,
                                                      ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
-                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);*/
+                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
 
                     write2PLYfile(obj_inst_ptr->GetRenderState()->raycastResult, "raycast_img_BG" + to_string(imgNumber) + ".ply");
                 }
@@ -983,13 +981,13 @@ namespace ObjSLAM {
 
         }//end outer label loop
 
-        visualisationEngine_BG->RenderImageMulti(obj_inst_ptr_vector, pose_visualize,
+        /*visualisationEngine_BG->RenderImageMulti(obj_inst_ptr_vector, pose_visualize,
                                                  &BG_object_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
                                                  this->renderState_RenderAll.get(),
                                                  this->renderState_RenderAll->raycastImage,
                                                  ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                  ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
-
+*/
         write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img_ALL" + to_string(imgNumber) + ".ply");
         sceneIsBackground = true;
 

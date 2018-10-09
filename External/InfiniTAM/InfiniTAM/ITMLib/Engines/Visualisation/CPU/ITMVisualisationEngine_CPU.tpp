@@ -201,8 +201,7 @@ void ITMVisualisationEngine_CPU<TVoxel, ITMVoxelBlockHash>::CreateExpectedDepths
     //go through list of visible 8x8x8 blocks
     for (int blockNo = 0; blockNo < noVisibleEntries; ++blockNo) {
         const ITMHashEntry &blockData(scene->index.GetEntries()[visibleEntryIDs[blockNo]]);
-//		std::cout<<"sceneIsBackground"<<sceneIsBackground<<std::endl;
-//		std::cout<<"blockNo"<<blockNo<<std::endl;
+
 
         Vector2i upperLeft, lowerRight;
         Vector2f zRange;
@@ -608,11 +607,6 @@ static void RenderImage_common_multi(std::vector<ObjSLAM::ObjectInstance_ptr<TVo
             // this one is generally done for freeview visualisation, so
             // no, do not update the list of visible blocks
             GenericRaycastMultiObj(obj_inst_ptr_vector, imgSize, invM, intrinsics->projectionParamsSimple.all, renderState, false);
-            /*for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
-                sceneIsBackground = i == 0;
-                ITMScene<TVoxel, TIndex> *scene = obj_inst_ptr_vector.at(i)->GetScene().get();
-                GenericRaycast(scene, imgSize, invM, intrinsics->projectionParamsSimple.all, renderState, false);
-            }*/
 
             pointsRay = renderState->raycastResult->GetData(MEMORYDEVICE_CPU);
         }
@@ -692,9 +686,12 @@ static void RenderImage_common_multi(std::vector<ObjSLAM::ObjectInstance_ptr<TVo
 #endif
                 for (int locId = 0; locId < imgSize.x * imgSize.y; locId++) {
                     Vector4f ptRay = pointsRay[locId];
-                    ptRay.w = 1; //pure test to see if w=0 is the problem
+                   // ptRay.w = 1; //pure test to see if w=0 is the problem
+                   if(ptRay.w>0){
+
                     processPixelGrey<TVoxel, TIndex>(outRendering[locId], ptRay.toVector3(), ptRay.w > 0, voxelData,
                                                      voxelIndex, lightSource);
+                   }
                 }
         }
 
@@ -757,6 +754,54 @@ CreateICPMaps_common(const ITMScene<TVoxel, TIndex> *scene, const ITMView *view,
             }
 
         }
+}
+
+template<class TVoxel, class TIndex>
+static void
+CreateICPMaps_common_MultiObj(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>> &obj_inst_ptr_vector, const ITMView *view, ITMTrackingState *trackingState,
+                     ITMRenderState *renderState) {
+    Vector2i imgSize = renderState->raycastResult->noDims;
+    Matrix4f invM = trackingState->pose_d->GetInvM();
+
+
+    GenericRaycastMultiObj(obj_inst_ptr_vector, imgSize, invM, view->calib.intrinsics_d.projectionParamsSimple.all, renderState, true);
+
+    for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
+        sceneIsBackground = i == 0 ? true : false;
+//sceneIsBackground=true;
+        ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(0);
+
+        const ITMScene<TVoxel, TIndex> *scene = obj_inst_ptr->GetScene().get();
+        //ITMTrackingState* trackingState = obj_inst_ptr->GetTrackingState().get();
+
+        // this one is generally done for the ICP tracker, so yes, update
+        // the list of visible blocks if possible
+
+        trackingState->pose_pointCloud->SetFrom(trackingState->pose_d);
+
+        Vector3f lightSource = -Vector3f(invM.getColumn(2));
+        Vector4f *normalsMap = trackingState->pointCloud->colours->GetData(MEMORYDEVICE_CPU);
+        Vector4f *pointsMap = trackingState->pointCloud->locations->GetData(MEMORYDEVICE_CPU);
+        Vector4f *pointsRay = renderState->raycastResult->GetData(MEMORYDEVICE_CPU);
+        float voxelSize = scene->sceneParams->voxelSize;
+
+
+#ifdef WITH_OPENMP
+#pragma omp parallel for
+#endif
+        for (int y = 0; y < imgSize.y; y++)
+            for (int x = 0; x < imgSize.x; x++) {
+                if (view->calib.intrinsics_d.FocalLengthSignsDiffer()) {
+                    processPixelICP<true, true>(pointsMap, normalsMap, pointsRay, imgSize, x, y, voxelSize, lightSource);
+                } else {
+                    processPixelICP<true, false>(pointsMap, normalsMap, pointsRay, imgSize, x, y, voxelSize, lightSource);
+                }
+
+            }
+
+    }
+
+
 }
 
 template<class TVoxel, class TIndex>
@@ -917,6 +962,23 @@ ITMVisualisationEngine_CPU<TVoxel, ITMVoxelBlockHash>::CreateICPMaps(const ITMSc
                                                                      ITMTrackingState *trackingState,
                                                                      ITMRenderState *renderState) const {
     CreateICPMaps_common(scene, view, trackingState, renderState);
+}
+
+template<class TVoxel, class TIndex>
+void
+ITMVisualisationEngine_CPU<TVoxel, TIndex>::CreateICPMapsMulti(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>> &obj_inst_ptr_vector, const ITMView *view,
+                                                          ITMTrackingState *trackingState,
+                                                          ITMRenderState *renderState) const {
+    CreateICPMaps_common_MultiObj(obj_inst_ptr_vector, view, trackingState, renderState);
+}
+
+template<class TVoxel>
+void
+ITMVisualisationEngine_CPU<TVoxel, ITMVoxelBlockHash>::CreateICPMapsMulti(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, ITMVoxelBlockHash>> &obj_inst_ptr_vector,
+                                                                     const ITMView *view,
+                                                                     ITMTrackingState *trackingState,
+                                                                     ITMRenderState *renderState) const {
+    CreateICPMaps_common_MultiObj(obj_inst_ptr_vector, view, trackingState, renderState);
 }
 
 template<class TVoxel, class TIndex>
