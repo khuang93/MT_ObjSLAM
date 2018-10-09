@@ -946,10 +946,11 @@ namespace ObjSLAM {
                         img_BG->GetData(MEMORYDEVICE_CPU)[idx] += pixel_obj;
                 }
 
-
+            //*/
             }
+
         }
-//*/
+
         sceneIsBackground=true;
 //        t_controller->Prepare(t_state.get(),renderState_RenderAll.get(),obj_inst_ptr_vector, visualisationEngine_BG);
       /*  (visualisationEngine_BG)->RenderImageMulti(this->obj_inst_ptr_vector, pose_visualize,
