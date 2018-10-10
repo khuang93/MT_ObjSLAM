@@ -313,7 +313,7 @@ namespace ObjSLAM {
         this->number_totalObjects = obj_inst_ptr_vector.size();
         this->number_activeObjects = active_obj_ptr_vector.size();
 
-//        BG_VoxelCleanUp();
+        BG_VoxelCleanUp();
     }
 
 //check if same obj by 2d overlap
