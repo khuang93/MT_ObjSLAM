@@ -300,7 +300,7 @@ namespace ObjSLAM {
             imageTexture_obj5.Upload(image_obj5, GL_RGB, GL_UNSIGNED_BYTE);
 
             //
-            auto *itmImage_obj6 = mainEngine->GetImage(currentObjNum+4);
+            auto *itmImage_obj6 = mainEngine->GetImage(currentObjNum+5);
             unsigned char *image_obj6 = new unsigned char[itmImage_obj6->noDims.x * itmImage_obj6->noDims.y * 3];
 
 
