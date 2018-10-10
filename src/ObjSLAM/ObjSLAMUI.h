@@ -61,6 +61,8 @@ namespace ObjSLAM {
 
         void CreateDisplay();
 
+        void CreateObjectsDisplay();
+
         void SelectNextObj();
 
         void SelectPrevObj();

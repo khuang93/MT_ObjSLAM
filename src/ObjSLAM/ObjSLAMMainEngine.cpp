@@ -59,7 +59,8 @@ ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetImage(int n) {
     if (n < this->mappingEngine->number_activeObjects) {
         return mappingEngine->GetImage(n);
     } else {
-        return mappingEngine->GetImage(0);
+        n = n % this->mappingEngine->number_activeObjects;
+        return mappingEngine->GetImage(n);
     }
 }
 
