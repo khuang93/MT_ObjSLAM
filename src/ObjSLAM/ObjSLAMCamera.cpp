@@ -8,7 +8,7 @@
 
 namespace ObjSLAM {
 
-bool ObjSLAMCamera::projectPointCloud2Img(ORUtils::Image<Vector4f> *PCL, ObjFloatImage *out, ObjCameraPose pose) {
+bool ObjSLAMCamera::ProjectPointCloud2Img(ORUtils::Image<Vector4f> *PCL, ObjFloatImage *out, ObjCameraPose pose) {
 /*  Eigen::Matrix3f K; = Eigen::Matrix3d::Zero();
   //K normalized with the focal length in pixels
   K(0, 0) = 1.0f;
@@ -30,7 +30,7 @@ bool ObjSLAMCamera::projectPointCloud2Img(ORUtils::Image<Vector4f> *PCL, ObjFloa
                             this->calib->intrinsics_d.projectionParamsSimple.py,
                             1.0f);
 //  std::cout<<"K"<<K<<std::endl;
-  Matrix4f pose_mat = pose.getSE3Pose().GetM();
+  Matrix4f pose_mat = pose.GetSE3Pose().GetM();
 //  std::cout<<pose_mat<<std::endl<<std::endl;
 
 #ifdef WITH_OPENMP
@@ -56,9 +56,9 @@ bool ObjSLAMCamera::projectPointCloud2Img(ORUtils::Image<Vector4f> *PCL, ObjFloa
 }
 
 //return value: min_xyz and then max_xyz
-ORUtils::Vector6<float> ObjSLAMCamera::projectImg2PointCloud(ObjSLAM::ObjFloatImage *in,
-                                          ORUtils::Image<Vector4f> *PCL,
-                                          ObjSLAM::ObjCameraPose pose) {
+ORUtils::Vector6<float> ObjSLAMCamera::ProjectImg2PointCloud(ObjSLAM::ObjFloatImage *in,
+                                                             ORUtils::Image<Vector4f> *PCL,
+                                                             ObjSLAM::ObjCameraPose pose) {
   ORUtils::Matrix4<float> K(this->calib->intrinsics_d.projectionParamsSimple.fx,
                             0.0f,
                             0.0f,
@@ -77,8 +77,8 @@ ORUtils::Vector6<float> ObjSLAMCamera::projectImg2PointCloud(ObjSLAM::ObjFloatIm
                             1.0f);
   ORUtils::Matrix4<float> K_inv;
   K.inv(K_inv);
-  Matrix4f pose_mat = pose.getSE3Pose().GetM();
-  Eigen::Matrix4d pose_eig = pose.getEigenMat();
+  Matrix4f pose_mat = pose.GetSE3Pose().GetM();
+  Eigen::Matrix4d pose_eig = pose.GetEigenMat();
   Eigen::Matrix4d pose_eig_inv = pose_eig.inverse();
   Matrix4f pose_inv;
   pose_mat.inv(pose_inv);
@@ -117,7 +117,7 @@ ORUtils::Vector6<float> ObjSLAMCamera::projectImg2PointCloud(ObjSLAM::ObjFloatIm
   return boundingCube;
 }
 
-shared_ptr<ORUtils::Image<Vector2i>> ObjSLAMCamera::projectDepthPixelToRGB(ObjSLAM::ObjFloatImage *in) {
+shared_ptr<ORUtils::Image<Vector2i>> ObjSLAMCamera::ProjectDepthPixelToRGB(ObjSLAM::ObjFloatImage *in) {
   Matrix4f tranfo_inv = calib->trafo_rgb_to_depth.calib_inv;
   Matrix4f K_d_inv;
   K_d.inv(K_d_inv);

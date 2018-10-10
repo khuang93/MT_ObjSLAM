@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TrackerMapper (4)" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="../../Datasets/living3n/ 1000 4 0 " PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="TrackerMapper" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="TrackerMapper">
+    <envs>
+      <env name="DISPLAY" value="localhost:0" />
+    </envs>
+    <method v="2">
+      <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+    </method>
+  </configuration>
+</component>

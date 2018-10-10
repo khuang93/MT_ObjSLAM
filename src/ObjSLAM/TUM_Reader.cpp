@@ -4,7 +4,7 @@
 
 #include "TUM_Reader.h"
 
-RGB_D_NamePair TUM_Reader::get_RGB_D_filenames(std::istream & associate_src){
+RGB_D_NamePair TUM_Reader::Get_RGB_D_filenames(std::istream &associate_src){
   string depth_name;
   string rgb_name;
   string rgb_num;
@@ -39,7 +39,7 @@ RGB_D_NamePair TUM_Reader::get_RGB_D_filenames(std::istream & associate_src){
 }
 
 
-int TUM_Reader::readNext(){
+int TUM_Reader::ReadNext(){
   if (label_img_vector.size() != 0) {
     label_img_vector.clear();
   }
@@ -48,7 +48,7 @@ int TUM_Reader::readNext(){
 
 
 
-  RGB_D_NamePair rgbd_name_pair = get_RGB_D_filenames(associate_f_stream);
+  RGB_D_NamePair rgbd_name_pair = Get_RGB_D_filenames(associate_f_stream);
   if(rgbd_name_pair.depth_name.empty()&&rgbd_name_pair.rgb_name.empty()){
     cout<<endl<<"No more images, Programm will exit! \n";
     return -1;
@@ -82,7 +82,7 @@ int TUM_Reader::readNext(){
   rgb_img = ReadOneRGB(rgb_img_path);
 
   //read labels
-//  std::vector<string> label_fileNames = getFileNames(label_path);
+//  std::vector<string> label_fileNames = GetFileNames(label_path);
   std::vector<string> filteredNames;
   string prefix = rgbd_name_pair.rgb_name.erase(0,4) /*+ ".png."*/;
   for (int i = 0; i < LabelFileNames.size(); i++) {

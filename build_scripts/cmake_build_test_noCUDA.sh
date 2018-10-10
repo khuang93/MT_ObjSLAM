@@ -7,5 +7,5 @@ cmake ..  -DWITH_FFMPEG=false -DWITH_CUDA=false -DWITH_OPENMP=false -DWITH_PNG=t
 echo "make"
 make
 
-echo "run"
+echo "Run"
 ./Mapper ../Dataset/RealisticRenderingDataset

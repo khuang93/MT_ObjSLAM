@@ -51,18 +51,18 @@ class DatasetReader {
     width = imgSize.x;
     height = imgSize.y;
     string label_path = path + "/pixel_label/";
-    getFileNames(label_path);
+    GetFileNames(label_path);
   }
 
   /** Virtual function, reads the next frame and returns the frame number as int.
 		*/
-  virtual int readNext()=0;
+  virtual int ReadNext()=0;
 
 //  virtual ObjSLAM::ObjShortImage *ConvertToRealDepth(ObjSLAM::ObjFloatImage *depth)=0;
 
-//  virtual bool readCalib()=0;
+//  virtual bool ReadCalib()=0;
 
-  std::vector<std::string> getFileNames(std::string directoryPath);
+  std::vector<std::string> GetFileNames(std::string directoryPath);
 
   virtual ObjSLAM::ObjFloatImage *ReadOneDepth(std::string Path);
 
@@ -72,16 +72,16 @@ class DatasetReader {
 
   std::shared_ptr<ObjSLAM::ObjUIntImage> ReadLabel_OneFile(std::string Path);
 
-//  ITMLib::ITMRGBDCalib *getCalib();
-  std::shared_ptr<ITMLib::ITMRGBDCalib> getCalib();
+//  ITMLib::ITMRGBDCalib *GetCalib();
+  std::shared_ptr<ITMLib::ITMRGBDCalib> GetCalib();
 
   void setWidth(int w);
   void setHeight(int h);
   int getWidth();
   int getHeight();
-  Vector2i getSize();
+  Vector2i GetSize();
 
-  virtual bool readCalib(string calib_path);
+  virtual bool ReadCalib(string calib_path);
 
   virtual ~DatasetReader(){
     delete viewBuilder;

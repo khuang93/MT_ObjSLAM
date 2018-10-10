@@ -27,7 +27,7 @@ ObjCameraPose::ObjCameraPose(const ORUtils::SE3Pose _se3pose) : se3Pose(_se3pose
   eigen_pose_mat = (rot*trans).matrix();
   eigen_pose_inv = Eigen::Quaterniond(eigen_mat.inverse());
 
-//    cout<<"**DEBUG: SE3Mat\n"<<this->getSE3Pose().GetM()<<endl;
+//    cout<<"**DEBUG: SE3Mat\n"<<this->GetSE3Pose().GetM()<<endl;
 //    //TODO Debug msg
 //    cout<<"ObjCameraPose from SE3Pose created\n";
 }
@@ -74,17 +74,17 @@ void ObjCameraPose::setAllFromQuaternion(double tx, double ty, double tz) {
 //  cout << "ObjCameraPose from Quaternion created\n";
 }
 
-Eigen::Quaterniond ObjCameraPose::getQuaternion() {
+Eigen::Quaterniond ObjCameraPose::GetQuaternion() {
   return eigen_pose;
 }
 
-Eigen::Quaterniond ObjCameraPose::getQuaternionInv() {
+Eigen::Quaterniond ObjCameraPose::GetQuaternionInv() {
   return eigen_pose_inv;
 }
 
 ObjCameraPose ObjCameraPose::GetTransformation(ObjCameraPose& fromPose, ObjCameraPose& toPose){
-  ORUtils::Matrix4<float> fromMatrix = fromPose.getSE3Pose().GetM();
-  ORUtils::Matrix4<float> toMatrix = toPose.getSE3Pose().GetM();
+  ORUtils::Matrix4<float> fromMatrix = fromPose.GetSE3Pose().GetM();
+  ORUtils::Matrix4<float> toMatrix = toPose.GetSE3Pose().GetM();
   ORUtils::Matrix4<float>  inv_fromMatrix;
   fromMatrix.inv(inv_fromMatrix);
   ORUtils::Matrix4<float> resMatrix = toMatrix*inv_fromMatrix;
@@ -103,15 +103,15 @@ ObjCameraPose ObjCameraPose::GetTransformation(ORUtils::SE3Pose& fromPose, ORUti
 }
 
 
-Eigen::Matrix4d ObjCameraPose::getEigenMat() {
+Eigen::Matrix4d ObjCameraPose::GetEigenMat() {
   return eigen_pose_mat;
 }
 
-ORUtils::SE3Pose &ObjCameraPose::getSE3Pose() {
+ORUtils::SE3Pose &ObjCameraPose::GetSE3Pose() {
   return se3Pose;
 }
 
-void ObjCameraPose::setQuaternion(double w, double x, double y, double z) {
+void ObjCameraPose::SetQuaternion(double w, double x, double y, double z) {
   Eigen::Quaterniond temp;
   temp.w() = w;
   temp.x() = x;
@@ -120,7 +120,7 @@ void ObjCameraPose::setQuaternion(double w, double x, double y, double z) {
   eigen_pose = temp;
 }
 
-void ObjCameraPose::setQuaternion(Eigen::Quaterniond _pose) {
+void ObjCameraPose::SetQuaternion(Eigen::Quaterniond _pose) {
   eigen_pose = _pose;
 }
 

@@ -13,64 +13,66 @@
 //int totFrames;
 
 
-int ObjSLAMMainEngine::readNext() {
-   imgNum = reader->readNext();
-   if(imgNum==-1) return -1; //no more image
-   sceneIsBackground=true;
+int ObjSLAMMainEngine::ReadNext() {
+    imgNum = reader->ReadNext();
+    if (imgNum == -1) return -1; //no more image
+    sceneIsBackground = true;
 
-   wholeView->depth->SetFrom(reader->depth_img,ORUtils::Image<float>::CPU_TO_CPU);
-   wholeView->rgb ->SetFrom(reader->rgb_img,ORUtils::Image<Vector4u>::CPU_TO_CPU);
-   bool isKeyFrame=true;
+    wholeView->depth->SetFrom(reader->depth_img, ORUtils::Image<float>::CPU_TO_CPU);
+    wholeView->rgb->SetFrom(reader->rgb_img, ORUtils::Image<Vector4u>::CPU_TO_CPU);
+    bool isKeyFrame = true;
 //   if(isKeyFrame){
-      label_img_vector=reader->label_img_vector;
-      depth_img=reader->depth_img;
-      rgb_img=reader->rgb_img;
+    label_img_vector = reader->label_img_vector;
+    depth_img = reader->depth_img;
+    rgb_img = reader->rgb_img;
 //   }
     framesElapsedBeforeMapping++;
-   return imgNum;
+    return imgNum;
 }
 
-void ObjSLAMMainEngine::trackFrame() {
-   t_state=trackingEngine->TrackFrame(wholeView.get());
+void ObjSLAMMainEngine::TrackFrame() {
+    t_state = trackingEngine->TrackFrame(wholeView.get());
 }
 
 
-void ObjSLAMMainEngine::mapFrame() {
-   mappingEngine->ProcessFrame();
-
-   mapperFree=true;
+void ObjSLAMMainEngine::MapFrame() {
+    mappingEngine->ProcessFrame();
+    mappingEngine->RenderAllObjImages();
+    mapperFree = true;
 }
 
-void ObjSLAMMainEngine::outputPics(){
-    mappingEngine->outputAllObjImages();
+void ObjSLAMMainEngine::OutputPics() {
+    mappingEngine->OutputAllObjImages();
+
 }
 
-void ObjSLAMMainEngine::updateMappingEngine(){
+void ObjSLAMMainEngine::UpdateMappingEngine() {
 
-  mapperFree=false;
-  mappingEngine->UpdateImgNumber(imgNum);
-  framesElapsedBeforeMapping = 0;
-  mappingEngine->UpdateTrackingState(t_state);
-  mappingEngine->CreateView(depth_img, rgb_img, label_img_vector);
+    mapperFree = false;
+    mappingEngine->UpdateImgNumber(imgNum);
+    framesElapsedBeforeMapping = 0;
+    mappingEngine->UpdateTrackingState(t_state);
+    mappingEngine->CreateView(depth_img, rgb_img, label_img_vector);
 }
 
-ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::getImage(int n){
-    if(n<this->mappingEngine->number_activeObjects){
-        return mappingEngine->getImage(n);
-    }else{
-        return mappingEngine->getImage(0);
+ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetImage(int n) {
+    if (n < this->mappingEngine->number_activeObjects) {
+        return mappingEngine->GetImage(n);
+    } else {
+        n = n % this->mappingEngine->number_activeObjects;
+        return mappingEngine->GetImage(n);
     }
 }
 
-ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::getInputImage() {
+ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetInputImage() {
     return this->wholeView->rgb;
 }
 
-ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::getBGImage() {
-    return this->mappingEngine->getBGImage();
+ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetBGImage() {
+    return this->mappingEngine->GetBGImage();
 }
 
 
-ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::getAboveImage() {
-    return this->mappingEngine->getImageFromAbove();
+ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetAboveImage() {
+    return this->mappingEngine->GetImageFromAbove();
 }

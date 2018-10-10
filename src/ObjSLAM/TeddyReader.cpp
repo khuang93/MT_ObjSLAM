@@ -6,7 +6,7 @@
 //#include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Camera/ITMCalibIO.h"
 #include <iomanip>
 
-int TeddyReader::readNext(){
+int TeddyReader::ReadNext(){
   if (label_img_vector.size() != 0) {
     label_img_vector.clear();
   }
@@ -38,7 +38,7 @@ int TeddyReader::readNext(){
 
 
   //read labels
-//  std::vector<string> fileNames = getFileNames(label_path);
+//  std::vector<string> fileNames = GetFileNames(label_path);
   std::vector<string> filteredNames;
 
   for (int i = 0; i < LabelFileNames.size(); i++) {
@@ -68,7 +68,7 @@ ObjSLAM::ObjShortImage *TeddyReader::ConvertToRealDepth(ObjSLAM::ObjFloatImage *
 bool TeddyReader::readCalib(){
 
 
-  readCalib(this->calib_path);
+  ReadCalib(this->calib_path);
 
   return true;
 }

@@ -16,16 +16,16 @@
 #include "ObjSLAMUI.h"
 #include <memory>
 
-#include <g2o/core/base_vertex.h>
-#include <g2o/core/base_unary_edge.h>
-#include <g2o/core/block_solver.h>
-#include <g2o/core/optimization_algorithm_levenberg.h>
-#include <g2o/core/optimization_algorithm_gauss_newton.h>
-#include <g2o/core/optimization_algorithm_dogleg.h>
-#include <g2o/solvers/dense/linear_solver_dense.h>
-
-#include <g2o/types/slam3d/types_slam3d.h>
-#include <g2o/types/slam3d_addons/types_slam3d_addons.h>
+//#include <g2o/core/base_vertex.h>
+//#include <g2o/core/base_unary_edge.h>
+//#include <g2o/core/block_solver.h>
+//#include <g2o/core/optimization_algorithm_levenberg.h>
+//#include <g2o/core/optimization_algorithm_gauss_newton.h>
+//#include <g2o/core/optimization_algorithm_dogleg.h>
+//#include <g2o/solvers/dense/linear_solver_dense.h>
+//
+//#include <g2o/types/slam3d/types_slam3d.h>
+//#include <g2o/types/slam3d_addons/types_slam3d_addons.h>
 
 #include <ctime>
 #include <sys/time.h>
@@ -74,11 +74,8 @@ int main(int argc, char **argv) {
     ObjSLAM::ObjSLAMUI* ui =new ObjSLAM::ObjSLAMUI(imgSize);
 
 
-
-
-//  ITMLib::ITMLibSettings *internalSettings = new ITMLib::ITMLibSettings();
   std::shared_ptr<ITMLib::ITMLibSettings> internalSettings = std::make_shared<ITMLib::ITMLibSettings>();
-  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.1f, 100, 0.01f, 0.1, 10.0, true);
+  internalSettings->sceneParams = ITMLib::ITMSceneParams(0.08f, 100, 0.008f, 0.1, 10.0, true);
   //(0.1, 10, 0.025, 0.1, 4.0, false); //(0.02f, 100, 0.002f, 0.2f, 3.0f, false);  //(0.2, 4, 0.05, 0.1, 4.0, false);
           //0.1f, 5, 0.01f, 0.1, 6.0, false  0.04f, 100, 0.005f, 0.2f, 5.0f, false
 //  float mu, int maxW, float voxelSize, float viewFrustum_min, float viewFrustum_max, bool stopIntegratingAtMaxW
@@ -106,10 +103,10 @@ int main(int argc, char **argv) {
   sceneIsBackground=true;
   ObjSLAMMainEngine* mainEngine =new ObjSLAMMainEngine(internalSettings, std::shared_ptr<DatasetReader>(reader));
 
-  ui->setMainEngine(mainEngine);
-  ui->run();
+  ui->SetMainEngine(mainEngine);
+  ui->Run();
 
-  /*int imgNum = mainEngine->readNext();
+  /*int imgNum = mainEngine->ReadNext();
   // if(imgNum==-1) return 0;
   mainEngine->trackFrame();
   mainEngine->updateMappingEngine();
@@ -118,12 +115,12 @@ int main(int argc, char **argv) {
 
   while (imgNum<=totFrames) {
       sceneIsBackground=true;
-      imgNum = mainEngine->readNext();
+      imgNum = mainEngine->ReadNext();
       if(imgNum==-1) return 0;
-      mainEngine->trackFrame();
-      mainEngine->updateMappingEngine();
-      mainEngine->mapFrame();
-      mainEngine->outputPics();
+      mainEngine->TrackFrame();
+      mainEngine->UpdateMappingEngine();
+      mainEngine->MapFrame();
+      mainEngine->OutputPics();
 
   }*/
 
@@ -138,9 +135,9 @@ int main(int argc, char **argv) {
       while (imgNum<=totFrames) {
           if(mainEngine->framesElapsedBeforeMapping<1){
               sceneIsBackground=true;
-              imgNum = mainEngine->readNext();
+              imgNum = mainEngine->ReadNext();
 //              cout<<"Section 1 imgNum = "<<imgNum;
-              mainEngine->trackFrame();
+              mainEngine->TrackFrame();
           }
 
       }
@@ -152,9 +149,9 @@ int main(int argc, char **argv) {
 //        cout<<"Section 2 imgNum = "<<imgNum;
           if(mainEngine->mapperFree  ){
             cout<<"Section 2 mapperFree? "<<mainEngine->mapperFree;
-            mainEngine->updateMappingEngine();
-            mainEngine->mapFrame();
-            mainEngine->outputPics();
+            mainEngine->UpdateMappingEngine();
+            mainEngine->MapFrame();
+            mainEngine->OutputPics();
           }
       }
   }
@@ -179,7 +176,7 @@ int main(int argc, char **argv) {
   sceneIsBackground = true;
   auto * trackingEngine = new ObjSLAM::ObjSLAMTrackingEngine(internalSettings, reader->getCalib(), imgSize);
 
-  auto t_controller =trackingEngine->getTrackingController();
+  auto t_controller =trackingEngine->GetTrackingController();
 
   //create mapping engine
   auto *mappingEngine =
@@ -192,7 +189,7 @@ int main(int argc, char **argv) {
   mappingEngine->UpdateImgNumber(imgNum);
 
 
-//  auto t_state = trackingEngine->TrackFrame(objview. ->getBackgroundView().get());
+//  auto t_state = trackingEngine->TrackFrame(objview. ->GetBackgroundView().get());
   cout<<sceneIsBackground<<endl;
   shared_ptr<ITMLib::ITMTrackingState>  t_state = trackingEngine->TrackFrame(wholeView.get());
 
@@ -229,16 +226,16 @@ int main(int argc, char **argv) {
     auto wcts_sub = std::chrono::system_clock::now();
 
 
-    imgNum = reader->readNext();
+    imgNum = reader->ReadNext();
     if(imgNum == -1) return 0;
 
     time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
-    cout<<"readNext "<<time<<endl;
+    cout<<"ReadNext "<<time<<endl;
     start_subtask=std::clock();
     wcts_sub=std::chrono::system_clock::now();
 
     sceneIsBackground = true;
-    wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
+    wholeView = make_shared<ITMLib::ITMView>(*reader->GetCalib(),imgSize,imgSize,false);
 
     wholeView->depth->SetFrom(reader->depth_img,ORUtils::Image<float>::CPU_TO_CPU);
     wholeView->rgb ->SetFrom(reader->rgb_img,ORUtils::Image<Vector4u>::CPU_TO_CPU);
@@ -284,7 +281,7 @@ int main(int argc, char **argv) {
 
     time = ( std::clock() - start_subtask ) / (double) CLOCKS_PER_SEC;
     wctduration = (std::chrono::system_clock::now() - wcts_sub);
-    cout<<"outputAllObjImages "<<wctduration.count()<<endl;
+    cout<<"RenderAllObjImages "<<wctduration.count()<<endl;
 
     time = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
     wctduration = (std::chrono::system_clock::now() - wcts);

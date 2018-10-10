@@ -62,11 +62,11 @@ class ObjSLAMCamera {
   ObjSLAMCamera(std::shared_ptr<ITMLib::ITMRGBDCalib> _calib, int w, int h):calib(_calib),imgSize(w, h), width(w), height(h){}
 
  public:
-  bool projectPointCloud2Img(ORUtils::Image<Vector4f> * PCL, ObjFloatImage* out, ObjCameraPose pose);
+  bool ProjectPointCloud2Img(ORUtils::Image<Vector4f> *PCL, ObjFloatImage *out, ObjCameraPose pose);
 
-  ORUtils::Vector6<float> projectImg2PointCloud(ObjFloatImage* in, ORUtils::Image<Vector4f> * PCL,  ObjCameraPose pose);
+  ORUtils::Vector6<float> ProjectImg2PointCloud(ObjFloatImage *in, ORUtils::Image<Vector4f> *PCL, ObjCameraPose pose);
 
-  shared_ptr<ORUtils::Image<Vector2i>> projectDepthPixelToRGB(ObjSLAM::ObjFloatImage *in);
+  shared_ptr<ORUtils::Image<Vector2i>> ProjectDepthPixelToRGB(ObjSLAM::ObjFloatImage *in);
 
   //getters
   const  std::shared_ptr<ITMLib::ITMRGBDCalib> GetCalib(){ return calib;}

@@ -19,16 +19,16 @@
 #include "TUM_Reader.h"
 #include <memory>
 
-#include <g2o/core/base_vertex.h>
-#include <g2o/core/base_unary_edge.h>
-#include <g2o/core/block_solver.h>
-#include <g2o/core/optimization_algorithm_levenberg.h>
-#include <g2o/core/optimization_algorithm_gauss_newton.h>
-#include <g2o/core/optimization_algorithm_dogleg.h>
-#include <g2o/solvers/dense/linear_solver_dense.h>
-
-#include <g2o/types/slam3d/types_slam3d.h>
-#include <g2o/types/slam3d_addons/types_slam3d_addons.h>
+//#include <g2o/core/base_vertex.h>
+//#include <g2o/core/base_unary_edge.h>
+//#include <g2o/core/block_solver.h>
+//#include <g2o/core/optimization_algorithm_levenberg.h>
+//#include <g2o/core/optimization_algorithm_gauss_newton.h>
+//#include <g2o/core/optimization_algorithm_dogleg.h>
+//#include <g2o/solvers/dense/linear_solver_dense.h>
+//
+//#include <g2o/types/slam3d/types_slam3d.h>
+//#include <g2o/types/slam3d_addons/types_slam3d_addons.h>
 
 #include <ctime>
 #include <sys/time.h>
@@ -61,39 +61,39 @@ public:
     ObjSLAMMainEngine(std::shared_ptr<ITMLib::ITMLibSettings> _settings, shared_ptr<DatasetReader> _reader)
             : internalSettings(_settings), reader(_reader) {
         imgSize = Vector2i(640, 480);
-        wholeView = make_shared<ITMLib::ITMView>(*reader->getCalib(),imgSize,imgSize,false);
+        wholeView = make_shared<ITMLib::ITMView>(*reader->GetCalib(),imgSize,imgSize,false);
             sceneIsBackground = true;
         mappingEngine = std::make_shared<ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>>(internalSettings,
-                                                                                                 reader->getCalib(),
+                                                                                                 reader->GetCalib(),
                                                                                                  imgSize);
-        trackingEngine = std::make_shared<ObjSLAM::ObjSLAMTrackingEngine>(internalSettings, reader->getCalib(), imgSize);
-        t_controller=trackingEngine->getTrackingController();
+        trackingEngine = std::make_shared<ObjSLAM::ObjSLAMTrackingEngine>(internalSettings, reader->GetCalib(), imgSize);
+        t_controller= trackingEngine->GetTrackingController();
         mappingEngine->SetTrackingController(t_controller);
-        t_state = trackingEngine->getTrackingState();
+        t_state = trackingEngine->GetTrackingState();
     }
 
     ~ObjSLAMMainEngine(){}
 
-    int readNext();
+    int ReadNext();
 
-    void trackFrame();
+    void TrackFrame();
 
-    void mapFrame();
+    void MapFrame();
 
-    void updateMappingEngine();
+    void UpdateMappingEngine();
 
-    void outputPics();
+    void OutputPics();
 
-    ObjSLAM::ObjUChar4Image* getImage(int n);
+    ObjSLAM::ObjUChar4Image* GetImage(int n);
 
-    ObjSLAM::ObjUChar4Image* getBGImage();
+    ObjSLAM::ObjUChar4Image* GetBGImage();
 
-    ObjSLAM::ObjUChar4Image* getInputImage();
+    ObjSLAM::ObjUChar4Image* GetInputImage();
 
-    ObjSLAM::ObjUChar4Image* getAboveImage();
+    ObjSLAM::ObjUChar4Image* GetAboveImage();
 
-    int getActiveObjNumber(){return this->mappingEngine->number_activeObjects;}
-    int getTotalObjNumber(){return this->mappingEngine->number_totalObjects;}
+    int GetActiveObjNumber(){return this->mappingEngine->number_activeObjects;}
+    int GetTotalObjNumber(){return this->mappingEngine->number_totalObjects;}
 
 
 };

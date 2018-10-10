@@ -37,43 +37,41 @@ namespace ObjSLAM {
         int currentObjNum = 0;
         bool continueProcess=true;
 
-        static const int OBJ_KEY_LEFT = 75;
-        static const int OBJ_KEY_UP = 111;
-        static const int OBJ_KEY_RIGHT = 77;
-        static const int OBJ_KEY_DOWN = 116;
+
 
     public:
         //constuctor
         ObjSLAMUI(Vector2i _imgSize) : imgSize(_imgSize) {
-            w = imgSize.width * 2;
-            h = imgSize.height * 2;
+            w = imgSize.width * 1.5;
+            h = imgSize.height * 1.5;
             cout << "UI Created!\n";
         }
 
-        void setMainEngine(ObjSLAMMainEngine *_mainEng) {
+        void SetMainEngine(ObjSLAMMainEngine *_mainEng) {
             mainEngine = _mainEng;
-
         }
 
         void ProcessFrame();
 
         void ProcessContinuous();
 
-        void run();
+        void Run();
 
-        void reg();
+        void Reg();
 
         void CreateDisplay();
 
-        void chooseNextObj();
+        void CreateObjectsDisplay();
 
-        void choosePrevObj();
+        void SelectNextObj();
 
-        void pause();
+        void SelectPrevObj();
 
-        void oneFrame();
+        void Pause();
 
-        void continuous();
+        void OneFrame();
+
+        void Continuous();
 
         void DrawLabels();
 
