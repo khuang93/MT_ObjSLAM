@@ -141,22 +141,17 @@ namespace ObjSLAM {
                         number_totalObjects = obj_inst_ptr_vector.size();
                     }
                     sceneIsBackground = obj_inst_ptr->CheckIsBackground();
-//                    obj_inst_ptr->view_count = 1;
+
                     if (obj_inst_ptr->CheckIsBackground() && BG_object_ptr.get() == nullptr) {
                         BG_object_ptr = obj_inst_ptr;
                     }
 
-
-                    if (!usePreallocation) {
-                        auto obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(
-                                sceneParams_ptr.get(),
-                                useSwapping,
-                                MEMORYDEVICE_CPU);
-                        obj_inst_ptr->SetScene(obj_inst_scene_ptr);
-                        denseMapper->ResetScene(obj_inst_ptr->GetScene().get());
-                    } else {
-//                        obj_inst_ptr->SetScene(preAllocation_array[number_totalObjects]);
-                    }
+                    auto obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(
+                            sceneParams_ptr.get(),
+                            useSwapping,
+                            MEMORYDEVICE_CPU);
+                    obj_inst_ptr->SetScene(obj_inst_scene_ptr);
+                    denseMapper->ResetScene(obj_inst_ptr->GetScene().get());
 
 
                     std::shared_ptr<ITMLib::ITMRenderState> renderState_ptr(
@@ -201,9 +196,9 @@ namespace ObjSLAM {
                               visualisationEngine); //visualisationEngine_BG
 
         write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img" + to_string(imgNumber) + ".ply");
-        write2PLYfile(BG_object_ptr->GetTrackingState()->pointCloud->locations,
-                      "t_state_PCL_img" + to_string(imgNumber) + ".ply");
-//  PrepareTrackingWithAllObj();
+//        write2PLYfile(BG_object_ptr->GetTrackingState()->pointCloud->locations,
+//                      "t_state_PCL_img" + to_string(imgNumber) + ".ply");
+
     }
 
 
@@ -218,7 +213,7 @@ namespace ObjSLAM {
 
         if (!obj_inst_ptr.get()->CheckIsBackground()) {
             sceneIsBackground = false;
-//            cout<<"sceneIsBackground "<<sceneIsBackground<<endl;
+
             std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = obj_inst_ptr->GetTrackingState();
 
             tmp_t_state->Reset();
@@ -240,18 +235,18 @@ namespace ObjSLAM {
 
         } else {
             sceneIsBackground = true;
-//            cout<<"sceneIsBackground "<<sceneIsBackground<<endl;
+
             this->t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
             denseMapper->ProcessFrame(BG_object_ptr->GetCurrentView().get(),
                                       this->t_state.get(),
                                       scene,
-                                      this->renderState_RenderAll.get(),
+                                      BG_object_ptr->GetRenderState().get(),
                                       true);
 
             denseMapper->UpdateVisibleList(BG_object_ptr->GetCurrentView().get(),
                                            this->t_state.get(),
                                            scene,
-                                           this->renderState_RenderAll.get(),
+                                           BG_object_ptr->GetRenderState().get(),
                                            true);
             BG_object_ptr->GetRenderState()->raycastResult->Clear();
             //BG renderstate
@@ -384,8 +379,6 @@ namespace ObjSLAM {
     template<class TVoxel, class TIndex>
     bool ObjSLAMMappingEngine<TVoxel, TIndex>::CheckImageOverlap(ObjSLAM::ObjFloatImage *first,
                                                                  ObjSLAM::ObjFloatImage *second) {
-//  cout<<"CheckImageOverlap\n";
-        //parameter to set which % of the pixels must match
         double threshold_areaChange = 0.05;
         double threshold_overlap = 0.2;
 
@@ -430,7 +423,6 @@ namespace ObjSLAM {
 
         float area_overlap = (x_max_overlap - x_min_overlap) * (y_max_overlap - y_min_overlap);
 
-//  cout << "check" << min(area_1, area_2) / max(area_1, area_2) << " " << area_overlap / min(area_1, area_2) << endl;
 
         if (area_1 <= area_2) {
             return area_1 / area_2 > threshold_areaChange && area_overlap / area_1 > threshold_overlap;
@@ -988,7 +980,7 @@ namespace ObjSLAM {
                                                  ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                  ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
 */
-        write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img_ALL" + to_string(imgNumber) + ".ply");
+
         sceneIsBackground = true;
 
         img_BG->SetFrom(this->renderState_RenderAll->raycastImage, ORUtils::MemoryBlock<Vector4u>::CPU_TO_CPU);

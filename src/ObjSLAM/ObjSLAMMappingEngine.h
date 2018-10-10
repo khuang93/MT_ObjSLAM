@@ -90,7 +90,7 @@ namespace ObjSLAM {
         int number_totalObjects = 0;
         bool isFree = true;
 
-        //Constructor with LPD Dataset
+        //Constructor
         ObjSLAMMappingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,
                              const std::shared_ptr<ITMLib::ITMRGBDCalib> _calib,
                              const Vector2i _imgSize) : settings(_settings), calib(_calib), imgSize(_imgSize) {
@@ -116,7 +116,7 @@ namespace ObjSLAM {
             renderState_RenderAll = std::shared_ptr<ITMLib::ITMRenderState>(
                     new ITMLib::ITMRenderState_VH(ITMLib::ITMVoxelBlockHash::noTotalEntries_BG,
                                                   imgSize,
-                                                  3.0f, //vf_min set to be larger so the roof of room is not rendered
+                                                  settings->sceneParams.viewFrustum_min, //vf_min set to be larger so the roof of room is not rendered
                                                   settings->sceneParams.viewFrustum_max,
                                                   MEMORYDEVICE_CPU));
 
