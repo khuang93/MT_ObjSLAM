@@ -263,7 +263,7 @@ namespace ObjSLAM {
             imageTexture_obj3.Upload(image_obj3, GL_RGB, GL_UNSIGNED_BYTE);
 
             //
-            auto *itmImage_obj4 = mainEngine->GetImage(currentObjNum+3);
+            auto *itmImage_obj4 = mainEngine->GetImageFar(currentObjNum);
             unsigned char *image_obj4 = new unsigned char[itmImage_obj4->noDims.x * itmImage_obj4->noDims.y * 3];
 
 
@@ -282,7 +282,7 @@ namespace ObjSLAM {
 
 
             //
-            auto *itmImage_obj5 = mainEngine->GetImage(currentObjNum+4);
+            auto *itmImage_obj5 = mainEngine->GetImageFar(currentObjNum+1);
             unsigned char *image_obj5 = new unsigned char[itmImage_obj5->noDims.x * itmImage_obj5->noDims.y * 3];
 
 
@@ -300,7 +300,7 @@ namespace ObjSLAM {
             imageTexture_obj5.Upload(image_obj5, GL_RGB, GL_UNSIGNED_BYTE);
 
             //
-            auto *itmImage_obj6 = mainEngine->GetImage(currentObjNum+5);
+            auto *itmImage_obj6 = mainEngine->GetImageFar(currentObjNum+2);
             unsigned char *image_obj6 = new unsigned char[itmImage_obj6->noDims.x * itmImage_obj6->noDims.y * 3];
 
 

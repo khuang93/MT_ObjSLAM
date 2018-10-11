@@ -245,6 +245,9 @@ static void GenericRaycast(const ITMScene<TVoxel, TIndex> *scene, const Vector2i
     const Vector2f *minmaximg = renderState->renderingRangeImage->GetData(MEMORYDEVICE_CPU);
     float mu = scene->sceneParams->mu;
     float oneOverVoxelSize = 1.0f / scene->sceneParams->voxelSize;
+
+    renderState->raycastResult->Clear();
+
     Vector4f *pointsRay = renderState->raycastResult->GetData(MEMORYDEVICE_CPU);
     const TVoxel *voxelData = scene->localVBA.GetVoxelBlocks();
     const typename ITMVoxelBlockHash::IndexData *voxelIndex = scene->index.getIndexData();
@@ -308,11 +311,14 @@ static void GenericRaycastMultiObj(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxe
 
     Vector4f *pointsRay_final = renderState->raycastResult->GetData(MEMORYDEVICE_CPU);
 
+    typename std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>>::iterator it;
 
-    //TODO this loop is very WEIRD... cannot push back to 2 vectors same time.
-    for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
-        sceneIsBackground = i == 0 ? true : false;
-        ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
+
+    for(it = obj_inst_ptr_vector.begin(); it !=obj_inst_ptr_vector.end(); it++){
+
+
+        ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = *it; //obj_inst_ptr_vector.at(i);
+        sceneIsBackground = obj_inst_ptr->CheckIsBackground();
 
         auto scene = obj_inst_ptr->GetScene();
         /*const*/ ITMHashEntry *voxelIndex = scene->index.getIndexData();
@@ -320,18 +326,17 @@ static void GenericRaycastMultiObj(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxe
         const TVoxel *voxelData = scene->localVBA.GetVoxelBlocks();
 
         ITMRenderState *r_state_tmp = obj_inst_ptr->GetRenderState().get();
-        Vector4f *pointsRay = r_state_tmp->raycastResult->GetData(MEMORYDEVICE_CPU);
+//TODO
+//        r_state_tmp->raycastResult->Clear();
 
-        voxelIndex_vec.push_back(voxelIndex);
-        voxelData_vec.push_back(voxelData);
+        Vector4f *pointsRay = r_state_tmp->raycastResult->GetData(MEMORYDEVICE_CPU);
 
         mu = scene->sceneParams->mu;
         oneOverVoxelSize = 1.0f / scene->sceneParams->voxelSize;
 
-        //TODO check why no value in voxelIndex, voxelData is good
         uchar *entriesVisibleType = NULL;
-        if (updateVisibleList && (dynamic_cast<const ITMRenderState_VH *>(renderState) != NULL)) {
-            entriesVisibleType = ((ITMRenderState_VH *) renderState)->GetEntriesVisibleType();
+        if (updateVisibleList && (dynamic_cast<const ITMRenderState_VH *>(r_state_tmp) != NULL)) {
+            entriesVisibleType = ((ITMRenderState_VH *) r_state_tmp)->GetEntriesVisibleType();
         }
         //entriesVisibleType_vec.push_back(entriesVisibleType);
 #ifdef WITH_OPENMP
@@ -375,7 +380,7 @@ static void GenericRaycastMultiObj(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxe
     Matrix4f M;
     invM.inv(M);
 
-
+//fuse the point clouds
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
 #endif
@@ -389,9 +394,13 @@ static void GenericRaycastMultiObj(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxe
 /*#ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
 #endif*/
-        for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
+        typename std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>>::iterator it;
+        int i = 0;
+        for(it = obj_inst_ptr_vector.begin(); it !=obj_inst_ptr_vector.end(); it++,i++){
+
             sceneIsBackground = i == 0 ? true : false;
-            ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
+            ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = *it; //obj_inst_ptr_vector.at(i);
+
             Vector4f *pt_ray_tmp = obj_inst_ptr->GetRenderState()->raycastResult->GetData(MEMORYDEVICE_CPU);
 
             Vector4f pt_tmp = pt_ray_tmp[locId];
@@ -598,19 +607,22 @@ static void RenderImage_common_multi(std::vector<ObjSLAM::ObjectInstance_ptr<TVo
     Matrix4f invM = pose->GetInvM();
 
     Vector4f *pointsRay;
-    if (raycastType == IITMVisualisationEngine::RENDER_FROM_OLD_RAYCAST)
-        pointsRay = renderState->raycastResult->GetData(MEMORYDEVICE_CPU);
-    else {
-        if (raycastType == IITMVisualisationEngine::RENDER_FROM_OLD_FORWARDPROJ)
-            pointsRay = renderState->forwardProjection->GetData(MEMORYDEVICE_CPU);
-        else {
-            // this one is generally done for freeview visualisation, so
-            // no, do not update the list of visible blocks
-            GenericRaycastMultiObj(obj_inst_ptr_vector, imgSize, invM, intrinsics->projectionParamsSimple.all, renderState, false);
+    GenericRaycastMultiObj(obj_inst_ptr_vector, imgSize, invM, intrinsics->projectionParamsSimple.all, renderState, false);
+    pointsRay = renderState->raycastResult->GetData(MEMORYDEVICE_CPU);
 
-            pointsRay = renderState->raycastResult->GetData(MEMORYDEVICE_CPU);
-        }
-    }
+//    if (raycastType == IITMVisualisationEngine::RENDER_FROM_OLD_RAYCAST)
+//        pointsRay = renderState->raycastResult->GetData(MEMORYDEVICE_CPU);
+//    else {
+//        if (raycastType == IITMVisualisationEngine::RENDER_FROM_OLD_FORWARDPROJ)
+//            pointsRay = renderState->forwardProjection->GetData(MEMORYDEVICE_CPU);
+//        else {
+//            // this one is generally done for freeview visualisation, so
+//            // no, do not update the list of visible blocks
+//            GenericRaycastMultiObj(obj_inst_ptr_vector, imgSize, invM, intrinsics->projectionParamsSimple.all, renderState, false);
+//
+//            pointsRay = renderState->raycastResult->GetData(MEMORYDEVICE_CPU);
+//        }
+//    }
 
 
     Vector3f lightSource = -Vector3f(invM.getColumn(2));

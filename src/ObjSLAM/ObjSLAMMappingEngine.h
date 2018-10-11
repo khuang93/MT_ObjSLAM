@@ -184,11 +184,17 @@ namespace ObjSLAM {
 
         void UpdateVisibilityOfObj(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr, const  ORUtils::SE3Pose* pose);
 
+        void UpdateFarVisibilityOfObj(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr, const  ORUtils::SE3Pose* pose);
+
         void UpdateVisibilityOfAllObj();
 
         ObjUChar4Image *GetImage(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
 
         ObjUChar4Image *GetImage(int object_index);
+
+        ObjUChar4Image *GetImageFar(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
+
+        ObjUChar4Image *GetImageFar(int object_index);
 
         ObjUChar4Image *GetBGImage();
 
@@ -199,6 +205,8 @@ namespace ObjSLAM {
 //  void visualizeObjectFromMultiPerspective(std::shared_ptr<ObjectInstance> obj_inst_ptr);
 //TODO
         void RenderAllObjImages();
+
+        void RenderAllObjImagesFar();
 
         void OutputAllObjImages();
 

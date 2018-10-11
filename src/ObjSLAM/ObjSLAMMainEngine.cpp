@@ -37,7 +37,21 @@ void ObjSLAMMainEngine::TrackFrame() {
 
 void ObjSLAMMainEngine::MapFrame() {
     mappingEngine->ProcessFrame();
+
+    Visualize();
+
+    mapperFree = true;
+}
+
+void ObjSLAMMainEngine::Visualize() {
+
+
     mappingEngine->RenderAllObjImages();
+
+    mappingEngine->RenderAllObjImagesFar();
+
+    mappingEngine->RenderImageFromAbove();
+
     mapperFree = true;
 }
 
@@ -61,6 +75,15 @@ ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetImage(int n) {
     } else {
         n = n % this->mappingEngine->number_activeObjects;
         return mappingEngine->GetImage(n);
+    }
+}
+
+ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetImageFar(int n) {
+    if (n < this->mappingEngine->number_activeObjects) {
+        return mappingEngine->GetImageFar(n);
+    } else {
+        n = n % this->mappingEngine->number_activeObjects;
+        return mappingEngine->GetImageFar(n);
     }
 }
 

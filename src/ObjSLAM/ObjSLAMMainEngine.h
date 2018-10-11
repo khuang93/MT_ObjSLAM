@@ -80,11 +80,15 @@ public:
 
     void MapFrame();
 
+    void Visualize();
+
     void UpdateMappingEngine();
 
     void OutputPics();
 
     ObjSLAM::ObjUChar4Image* GetImage(int n);
+
+    ObjSLAM::ObjUChar4Image* GetImageFar(int n);
 
     ObjSLAM::ObjUChar4Image* GetBGImage();
 

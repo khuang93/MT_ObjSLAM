@@ -29,6 +29,7 @@ namespace ObjSLAM {
         std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> scene;
         std::shared_ptr<ITMLib::ITMRenderState> r_state;
         std::shared_ptr<ITMLib::ITMRenderState> r_state_above;
+        std::shared_ptr<ITMLib::ITMRenderState> r_state_far;
         std::shared_ptr<ITMLib::ITMTrackingState> t_state;
         std::shared_ptr<ORUtils::Image<bool>> prevFrameProjectedToCurrent;
         bool isBackground = false;
@@ -69,6 +70,8 @@ namespace ObjSLAM {
             r_state_above = _r_state_abv;
         }
 
+        void SetRenderStateFar(std::shared_ptr<ITMLib::ITMRenderState> _r_state) { r_state_far = _r_state; }
+
         void SetTrackingState(std::shared_ptr<ITMLib::ITMTrackingState> _t_state) { t_state = _t_state; }
 
         std::shared_ptr<ITMLib::ITMView> GetCurrentView() { return current_view; }
@@ -82,6 +85,7 @@ namespace ObjSLAM {
         std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>> GetClassLabel() { return label; }
 
         std::shared_ptr<ITMLib::ITMRenderState> &GetRenderState() { return this->r_state; }
+        std::shared_ptr<ITMLib::ITMRenderState> &GetRenderStateFar() { return this->r_state_far; }
         std::shared_ptr<ITMLib::ITMRenderState> &GetRenderStateAbove() { return this->r_state_above; }
 
         std::shared_ptr<ITMLib::ITMTrackingState> &GetTrackingState() { return this->t_state; }

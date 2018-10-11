@@ -170,8 +170,17 @@ namespace ObjSLAM {
                                                           settings->sceneParams.viewFrustum_min,
                                                           settings->sceneParams.viewFrustum_max,
                                                           MEMORYDEVICE_CPU));
-                    obj_inst_ptr->SetRenderState(renderState_ptr, renderState_above_ptr);
 
+                    std::shared_ptr<ITMLib::ITMRenderState> renderState_far_ptr(
+                            new ITMLib::ITMRenderState_VH((sceneIsBackground
+                                                           ? ITMLib::ITMVoxelBlockHash::noTotalEntries_BG
+                                                           : ITMLib::ITMVoxelBlockHash::noTotalEntries),
+                                                          imgSize,
+                                                          settings->sceneParams.viewFrustum_min,
+                                                          settings->sceneParams.viewFrustum_max,
+                                                          MEMORYDEVICE_CPU));
+                    obj_inst_ptr->SetRenderState(renderState_ptr, renderState_above_ptr);
+                    obj_inst_ptr->SetRenderStateFar(renderState_far_ptr);
                     auto t_state_ptr = std::make_shared<ITMLib::ITMTrackingState>(imgSize, MEMORYDEVICE_CPU);
                     obj_inst_ptr->SetTrackingState(t_state_ptr);
 
@@ -228,12 +237,11 @@ namespace ObjSLAM {
                                            obj_inst_ptr->GetRenderState().get(), true);
             obj_inst_ptr->GetRenderState()->raycastResult->Clear();
 
-            /*t_controller->Prepare(tmp_t_state.get(),
+            t_controller->Prepare(tmp_t_state.get(),
                                   scene,
                                   obj_inst_ptr.get()->GetAnchorView_ITM(),
                                   visualisationEngine,
                                   obj_inst_ptr->GetRenderState().get());
-*/
         } else {
             sceneIsBackground = true;
 
@@ -251,11 +259,11 @@ namespace ObjSLAM {
                                            true);
             BG_object_ptr->GetRenderState()->raycastResult->Clear();
             //BG renderstate
-            /*t_controller->Prepare(this->t_state.get(),
+            t_controller->Prepare(this->t_state.get(),
                                   scene,
                                   BG_object_ptr->GetAnchorView_ITM(),
                                   visualisationEngine,
-                                  BG_object_ptr->GetRenderState().get()); //visualisationEngine_BG*/
+                                  BG_object_ptr->GetRenderState().get()); //visualisationEngine_BG
 
         }
 
@@ -279,6 +287,24 @@ namespace ObjSLAM {
 
     }
 
+
+    template<class TVoxel, class TIndex>
+    void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateFarVisibilityOfObj(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr,
+                                                                     const ORUtils::SE3Pose *pose) {
+        sceneIsBackground = obj_inst_ptr->CheckIsBackground();
+        auto *scene = obj_inst_ptr->GetScene().get();
+        visualisationEngine->FindVisibleBlocks(scene,
+                                               pose,
+                                               &obj_inst_ptr->GetCurrentView()->calib.intrinsics_d,
+                                               obj_inst_ptr->GetRenderStateFar().get());
+
+        visualisationEngine->CreateExpectedDepths(scene,
+                                                  pose,
+                                                  &obj_inst_ptr->GetCurrentView()->calib.intrinsics_d,
+                                                  obj_inst_ptr->GetRenderStateFar().get());
+
+
+    }
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateVisibilityOfAllObj() {
@@ -796,6 +822,25 @@ namespace ObjSLAM {
 
 
     template<class TVoxel, class TIndex>
+    ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::GetImageFar(int object_index) {
+        if (object_index == 0) return GetImageFar(BG_object_ptr);
+
+        if (object_index < number_activeObjects) {
+            return GetImageFar(active_obj_ptr_vector.at(object_index));
+        } else {
+            cout << "Object Index larger than total number of objects, showing first object...\n";
+            return GetImageFar(BG_object_ptr);
+        }
+    }
+
+
+    template<class TVoxel, class TIndex>
+    ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::GetImageFar(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr) {
+        return obj_inst_ptr->GetRenderStateFar()->raycastImage;
+    }
+
+
+    template<class TVoxel, class TIndex>
     ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::GetBGImage() {
         return this->img_BG.get();
     }
@@ -868,15 +913,58 @@ namespace ObjSLAM {
 
 
     template<class TVoxel, class TIndex>
+    void ObjSLAMMappingEngine<TVoxel, TIndex>::RenderAllObjImagesFar(){
+
+        auto* pose_visualize_far = new ORUtils::SE3Pose();
+        pose_visualize_far->SetFrom(this->t_state->pose_d);
+        auto pose_T = pose_visualize_far->GetT();
+        pose_T.z+=4.0f;
+        pose_visualize_far->SetT(pose_T);
+
+
+        this->img_above = std::make_shared<ObjUChar4Image>(imgSize, MEMORYDEVICE_CPU);
+
+#ifdef WITH_OPENMP
+#pragma omp parallel for private(sceneIsBackground)
+#endif
+        for (int i = 0; i < active_obj_ptr_vector.size(); ++i) {
+
+            auto obj_inst_ptr = active_obj_ptr_vector.at(i);
+
+            sceneIsBackground = obj_inst_ptr->CheckIsBackground();
+
+            auto scene = obj_inst_ptr->GetScene();
+
+            obj_inst_ptr->GetRenderStateFar()->raycastImage->Clear();
+            obj_inst_ptr->GetRenderStateFar()->raycastResult->Clear();
+
+
+            obj_inst_ptr->GetRenderState()->raycastResult->Clear();
+
+            UpdateFarVisibilityOfObj(obj_inst_ptr, pose_visualize_far);
+
+            visualisationEngine_BG->RenderImage(scene.get(), pose_visualize_far,
+                                                &obj_inst_ptr->GetCurrentView()->calib.intrinsics_d,
+                                                obj_inst_ptr->GetRenderStateFar().get(),
+                                                obj_inst_ptr->GetRenderStateFar()->raycastImage,
+                                                ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
+                                                ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
+        }
+
+
+
+        delete pose_visualize_far;
+
+    }
+
+    template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::RenderAllObjImages() {
 
         cout << "Number of Objects = " << number_totalObjects << endl;
         cout << "Number of visible Objects = " << number_activeObjects << endl;
 
         auto *pose_visualize = this->t_state->pose_d;
-        img_BG->ChangeDims(this->renderState_RenderAll->raycastImage->noDims);
-        img_BG->Clear();
-        this->renderState_RenderAll->raycastImage->Clear();
+
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
@@ -934,6 +1022,7 @@ namespace ObjSLAM {
                     sceneIsBackground = true;
 
 //update visibility? TODO
+                    UpdateVisibilityOfObj(obj_inst_ptr, pose_visualize);
 
                     visualisationEngine->RenderImage(scene.get(), pose_visualize,
                                                      &BG_object_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
@@ -974,6 +1063,24 @@ namespace ObjSLAM {
 
         }//end outer label loop
 
+
+        //fused image with all obj
+
+        img_BG->ChangeDims(this->renderState_RenderAll->raycastImage->noDims);
+        img_BG->Clear();
+
+        this->renderState_RenderAll->raycastImage->Clear();
+        this->renderState_RenderAll->raycastResult->Clear();
+
+        std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = std::make_shared<ITMLib::ITMTrackingState>(imgSize,MEMORYDEVICE_CPU);
+
+        tmp_t_state->Reset();
+
+        tmp_t_state->pose_d->SetFrom(pose_visualize);
+
+        t_controller->Prepare(tmp_t_state.get(), renderState_RenderAll.get(), this->obj_inst_ptr_vector,
+                              visualisationEngine_BG);
+
         visualisationEngine_BG->RenderImageMulti(obj_inst_ptr_vector, pose_visualize,
                                                  &BG_object_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
                                                  this->renderState_RenderAll.get(),
@@ -994,7 +1101,7 @@ namespace ObjSLAM {
         SaveImageToFile(img_BG.get(), name_BG.c_str());
 
 
-        RenderImageFromAbove();
+
 
         //save stl
         if (saveSTL && imgNumber % STL_Frequency == 0) {
@@ -1032,6 +1139,13 @@ namespace ObjSLAM {
                         + ".ppm";
 
                 SaveImageToFile(obj_inst_ptr->GetRenderState()->raycastImage, name.c_str());
+
+                name =
+                        "Label_" + label_ptr.get()->GetLabelClassName() + ".Object" + to_string(j) + ".Frame" +
+                        to_string(imgNumber)
+                        + "_Far.ppm";
+
+                SaveImageToFile(obj_inst_ptr->GetRenderStateFar()->raycastImage, name.c_str());
             }
 
         }
