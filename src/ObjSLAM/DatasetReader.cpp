@@ -21,7 +21,8 @@ std::vector<std::string> DatasetReader::GetFileNames(std::string directoryPath) 
 }
 
 
-ObjSLAM::ObjFloatImage *DatasetReader::ReadOneDepth(std::string Path) {
+
+std::shared_ptr<ObjSLAM::ObjFloatImage> DatasetReader::ReadOneDepth(std::string Path) {
   ifstream in;
 
   in.open(Path);
@@ -39,7 +40,9 @@ ObjSLAM::ObjFloatImage *DatasetReader::ReadOneDepth(std::string Path) {
 //    cout << "**Input size is " << vector_in.size() << endl;
 
 //    ORUtils::Vector2<int> imgSize(width, height);
-  auto *res = new ObjSLAM::ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
+//  auto *res = new ObjSLAM::ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
+
+  auto res = std::make_shared<ObjSLAM::ObjFloatImage>(imgSize, MEMORYDEVICE_CPU);
 
   res->ChangeDims(imgSize);
 
@@ -58,26 +61,26 @@ ObjSLAM::ObjFloatImage *DatasetReader::ReadOneDepth(std::string Path) {
   return res;
 }
 
-ObjSLAM::ObjShortImage *DatasetReader::ReadOneDisparity(std::string Path) {
+std::shared_ptr<ObjSLAM::ObjShortImage> DatasetReader::ReadOneDisparity(std::string Path) {
   ifstream in;
 
   in.open(Path);
   //read rgb from png file
 
 
-
-  auto *res = new ObjSLAM::ObjShortImage(imgSize, MEMORYDEVICE_CPU);
+  auto res = std::make_shared<ObjSLAM::ObjShortImage>(imgSize, MEMORYDEVICE_CPU);
+//  auto *res = new ObjSLAM::ObjShortImage(imgSize, MEMORYDEVICE_CPU);
 
   res->ChangeDims(imgSize);
 
-  ReadImageFromFile(res, Path.c_str());
+  ReadImageFromFile(res.get(), Path.c_str());
 
 //    SaveImageToFile(res, "testRGB");
 
   return res;
 }
 
-ObjSLAM::ObjUChar4Image *DatasetReader::ReadOneRGB(std::string Path){
+std::shared_ptr<ObjSLAM::ObjUChar4Image> DatasetReader::ReadOneRGB(std::string Path){
   ifstream in;
 
   in.open(Path);
@@ -85,12 +88,12 @@ ObjSLAM::ObjUChar4Image *DatasetReader::ReadOneRGB(std::string Path){
   //read rgb from png file
 
 
-
-  auto *res = new ObjSLAM::ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
+  auto res = std::make_shared<ObjSLAM::ObjUChar4Image>(imgSize, MEMORYDEVICE_CPU);
+//  auto *res = new ObjSLAM::ObjUChar4Image(imgSize, MEMORYDEVICE_CPU);
 
   res->ChangeDims(imgSize);
 
-  ReadImageFromFile(res, Path.c_str());
+  ReadImageFromFile(res.get(), Path.c_str());
 
 //    SaveImageToFile(res, "testRGB");
 

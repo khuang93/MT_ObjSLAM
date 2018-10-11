@@ -22,17 +22,20 @@ int TeddyReader::ReadNext(){
 
 
 
-  ObjSLAM::ObjShortImage* disparity_raw =  ReadOneDisparity(depth_path);
+
+  shared_ptr<ObjSLAM::ObjShortImage> disparity_raw =  ReadOneDisparity(depth_path);
 
 //  std::cout<<depth_path<<"value"<<disparity_raw->GetData(MEMORYDEVICE_CPU)[0]<<endl;
 
-  depth_img = new ObjSLAM::ObjFloatImage(imgSize,MEMORYDEVICE_CPU);
-  viewBuilder->ConvertDisparityToDepth(depth_img,disparity_raw,&(calib->intrinsics_d),calib->disparityCalib.GetParams());
-  delete disparity_raw;
+  depth_img = shared_ptr<ObjSLAM::ObjFloatImage>(new ObjSLAM::ObjFloatImage(imgSize,MEMORYDEVICE_CPU));
+
+
+  viewBuilder->ConvertDisparityToDepth(depth_img.get(),disparity_raw.get(),&(calib->intrinsics_d),calib->disparityCalib.GetParams());
+//  delete disparity_raw;
 
 
 //  std::cout<<"depth"<<depth_img->GetData(MEMORYDEVICE_CPU)[0]<<endl;
-  SaveImageToFile(depth_img, "testDepth.ppm");
+  SaveImageToFile(depth_img.get(), "testDepth.ppm");
 
   rgb_img = ReadOneRGB(rgb_path);
 

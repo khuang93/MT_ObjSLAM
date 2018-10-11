@@ -18,13 +18,13 @@ int ObjSLAMMainEngine::ReadNext() {
     if (imgNum == -1) return -1; //no more image
     sceneIsBackground = true;
 
-    wholeView->depth->SetFrom(reader->depth_img, ORUtils::Image<float>::CPU_TO_CPU);
-    wholeView->rgb->SetFrom(reader->rgb_img, ORUtils::Image<Vector4u>::CPU_TO_CPU);
+    wholeView->depth->SetFrom(reader->depth_img.get(), ORUtils::Image<float>::CPU_TO_CPU);
+    wholeView->rgb->SetFrom(reader->rgb_img.get(), ORUtils::Image<Vector4u>::CPU_TO_CPU);
     bool isKeyFrame = true;
 //   if(isKeyFrame){
     label_img_vector = reader->label_img_vector;
-    depth_img = reader->depth_img;
-    rgb_img = reader->rgb_img;
+    depth_img = reader->depth_img.get();
+    rgb_img = reader->rgb_img.get();
 //   }
     framesElapsedBeforeMapping++;
     return imgNum;

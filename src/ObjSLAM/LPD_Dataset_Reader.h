@@ -108,11 +108,11 @@ class LPD_Dataset_Reader : public DatasetReader {
     }
 
     //depth
-    ObjSLAM::ObjFloatImage *ray_depth_img = ReadOneDepth(depth_path);
+    shared_ptr<ObjSLAM::ObjFloatImage> ray_depth_img = ReadOneDepth(depth_path);
 
-    depth_img = convertRayDepthToZDepth(ray_depth_img);
+    depth_img = convertRayDepthToZDepth(ray_depth_img.get());
 
-    delete ray_depth_img;
+//    delete ray_depth_img;
 //    string name = to_string(img_number)+".ppm";
 //    SaveImageToFile(depth_img,name.c_str());
     rgb_img = ReadOneRGB(rgb_path);
@@ -144,9 +144,11 @@ class LPD_Dataset_Reader : public DatasetReader {
     return img_number++;
   }
 
-  ObjSLAM::ObjFloatImage *convertRayDepthToZDepth(ObjSLAM::ObjFloatImage *in) {
+ shared_ptr<ObjSLAM::ObjFloatImage> convertRayDepthToZDepth(ObjSLAM::ObjFloatImage *in) {
 //    ORUtils::Vector2<int> imgSize(width, height);
-    auto *res = new ObjSLAM::ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
+//    auto *res = new ObjSLAM::ObjFloatImage(imgSize, MEMORYDEVICE_CPU);
+
+    auto res = std:: make_shared<ObjSLAM::ObjFloatImage>(imgSize, MEMORYDEVICE_CPU);
 
     Eigen::Matrix3f K;/* = Eigen::Matrix3d::Zero();*/
     K(0, 0) = this->calib->intrinsics_d.projectionParamsSimple.fx;
@@ -331,8 +333,8 @@ class LPD_Dataset_Reader : public DatasetReader {
 //    delete(this->depth_img);
 //    delete(this->pose_cw);
 //    delete this->label_img;
-    delete this->rgb_img;
-    delete this->depth_img;
+//    delete this->rgb_img;
+//    delete this->depth_img;
     delete this->pose_wc;
     label_img_vector.clear();
   }

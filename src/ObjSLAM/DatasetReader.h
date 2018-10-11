@@ -42,8 +42,8 @@ class DatasetReader {
   std::vector<std::string> LabelFileNames;
 
  public:
-  ObjSLAM::ObjUChar4Image *rgb_img;
-  ObjSLAM::ObjFloatImage *depth_img;
+  std::shared_ptr<ObjSLAM::ObjUChar4Image> rgb_img;
+    std::shared_ptr<ObjSLAM::ObjFloatImage> depth_img;
   std::shared_ptr<ObjSLAM::ObjUIntImage> label_img;
   LabelImgVector label_img_vector;
 
@@ -64,11 +64,11 @@ class DatasetReader {
 
   std::vector<std::string> GetFileNames(std::string directoryPath);
 
-  virtual ObjSLAM::ObjFloatImage *ReadOneDepth(std::string Path);
+  virtual std::shared_ptr<ObjSLAM::ObjFloatImage> ReadOneDepth(std::string Path);
 
-  virtual ObjSLAM::ObjShortImage *ReadOneDisparity(std::string Path);
+  virtual std::shared_ptr<ObjSLAM::ObjShortImage> ReadOneDisparity(std::string Path);
 
-  ObjSLAM::ObjUChar4Image *ReadOneRGB(std::string Path);
+  std::shared_ptr<ObjSLAM::ObjUChar4Image> ReadOneRGB(std::string Path);
 
   std::shared_ptr<ObjSLAM::ObjUIntImage> ReadLabel_OneFile(std::string Path);
 

@@ -68,14 +68,14 @@ int TUM_Reader::ReadNext(){
 
 
 
-  ObjSLAM::ObjShortImage* disparity_raw =  ReadOneDisparity(depth_img_path);
+  shared_ptr<ObjSLAM::ObjShortImage> disparity_raw =  ReadOneDisparity(depth_img_path);
 
   std::cout<<rgb_img_path<<endl;
   std::cout<<depth_img_path<<endl;
 
-  depth_img = new ObjSLAM::ObjFloatImage(imgSize,MEMORYDEVICE_CPU);
-  viewBuilder->ConvertDepthAffineToFloat(depth_img,disparity_raw,calib->disparityCalib.GetParams());
-  delete disparity_raw;
+  depth_img = std::make_shared<ObjSLAM::ObjFloatImage>(imgSize,MEMORYDEVICE_CPU);
+  viewBuilder->ConvertDepthAffineToFloat(depth_img.get(),disparity_raw.get(),calib->disparityCalib.GetParams());
+//  delete disparity_raw;
 //  std::cout<<"depth"<<depth_img->GetData(MEMORYDEVICE_CPU)[0]<<endl;
 //  SaveImageToFile(depth_img, "testDepth.ppm");
 

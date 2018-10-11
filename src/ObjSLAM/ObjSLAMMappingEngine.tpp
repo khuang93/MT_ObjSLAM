@@ -227,12 +227,13 @@ namespace ObjSLAM {
             denseMapper->UpdateVisibleList(itmview.get(), tmp_t_state.get(), scene,
                                            obj_inst_ptr->GetRenderState().get(), true);
             obj_inst_ptr->GetRenderState()->raycastResult->Clear();
-            t_controller->Prepare(tmp_t_state.get(),
+
+            /*t_controller->Prepare(tmp_t_state.get(),
                                   scene,
                                   obj_inst_ptr.get()->GetAnchorView_ITM(),
                                   visualisationEngine,
                                   obj_inst_ptr->GetRenderState().get());
-
+*/
         } else {
             sceneIsBackground = true;
 
@@ -250,11 +251,11 @@ namespace ObjSLAM {
                                            true);
             BG_object_ptr->GetRenderState()->raycastResult->Clear();
             //BG renderstate
-            t_controller->Prepare(this->t_state.get(),
+            /*t_controller->Prepare(this->t_state.get(),
                                   scene,
                                   BG_object_ptr->GetAnchorView_ITM(),
                                   visualisationEngine,
-                                  BG_object_ptr->GetRenderState().get()); //visualisationEngine_BG
+                                  BG_object_ptr->GetRenderState().get()); //visualisationEngine_BG*/
 
         }
 
