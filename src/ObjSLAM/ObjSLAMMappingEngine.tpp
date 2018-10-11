@@ -374,6 +374,8 @@ namespace ObjSLAM {
 
         const auto scene = obj_inst_ptr->GetScene();
 
+        UpdateVisibilityOfObj(obj_inst_ptr, this->t_state->pose_d);
+
         visualisationEngine->RenderImage(scene.get(),
                                          this->t_state->pose_d,
                                          &obj_inst_ptr.get()->GetAnchorView_ITM()->calib.intrinsics_d,
@@ -1072,7 +1074,7 @@ namespace ObjSLAM {
         this->renderState_RenderAll->raycastImage->Clear();
         this->renderState_RenderAll->raycastResult->Clear();
 
-        std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = std::make_shared<ITMLib::ITMTrackingState>(imgSize,MEMORYDEVICE_CPU);
+      /*  std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = std::make_shared<ITMLib::ITMTrackingState>(imgSize,MEMORYDEVICE_CPU);
 
         tmp_t_state->Reset();
 
@@ -1080,7 +1082,7 @@ namespace ObjSLAM {
 
         t_controller->Prepare(tmp_t_state.get(), renderState_RenderAll.get(), this->obj_inst_ptr_vector,
                               visualisationEngine_BG);
-
+*/
         visualisationEngine_BG->RenderImageMulti(obj_inst_ptr_vector, pose_visualize,
                                                  &BG_object_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
                                                  this->renderState_RenderAll.get(),
