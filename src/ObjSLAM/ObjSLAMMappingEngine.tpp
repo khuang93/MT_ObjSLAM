@@ -709,6 +709,7 @@ namespace ObjSLAM {
 #ifdef WITH_OPENMP
 #pragma omp for
 #endif */
+        sceneIsBackground = false;
         for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
             ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
             if (!obj_inst_ptr->CheckIsBackground()) GetVoxelPosFromScene(voxelPos_vec, obj_inst_ptr);
@@ -727,7 +728,7 @@ namespace ObjSLAM {
 
             //loop in the hashBucket
             while (true) {
-                ITMHashEntry hashEntry = scene_BG->index.GetEntries()[hashIdx];
+                ITMHashEntry& hashEntry = scene_BG->index.GetEntries()[hashIdx];
 
                 if (IS_EQUAL3(hashEntry.pos, blockPos) && hashEntry.ptr >= 0) {
 
@@ -741,7 +742,6 @@ namespace ObjSLAM {
                             noAllocatedVoxelEntries++;
                             voxelAllocationList[vbaIdx + 1] = hashEntry.ptr;
                             hashEntry.ptr = -1;
-
                             for (int idx = 0; idx < SDF_BLOCK_SIZE3; idx++) voxelData[blockIdx + idx] = TVoxel();
                         }
                     }
@@ -757,7 +757,7 @@ namespace ObjSLAM {
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::
-    GetVoxelPosFromScene(std::vector<Vector3s> &voxelPos_vec, ObjectInstance_ptr <TVoxel, TIndex> obj_ptr) {
+    GetVoxelPosFromScene(std::vector<Vector3s> &voxelPos_vec, const ObjectInstance_ptr <TVoxel, TIndex> obj_ptr) {
 
         ITMLib::ITMScene<TVoxel, TIndex> *scene = obj_ptr->GetScene().get();
 //  TIndex index = scene->index;
@@ -771,7 +771,7 @@ namespace ObjSLAM {
             int blockID = visibleEntryIDs[blockNo];
             ITMHashEntry &blockData(scene->index.GetEntries()[blockID]);
             voxelPos_vec.push_back(blockData.pos); //TODO here sometimes segfault due to blockdata being empty
-//    cout << "BlockNo" << blockNo << " Pos" << blockData.pos << endl;
+    // cout << "BlockNo" << blockNo << " Pos" << blockData.pos << endl;
         }
     }
 

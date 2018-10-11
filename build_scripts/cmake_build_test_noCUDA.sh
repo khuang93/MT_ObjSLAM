@@ -2,7 +2,7 @@
 clear
 
 echo "cmake .."
-cmake ..  -DWITH_FFMPEG=false -DWITH_CUDA=false -DWITH_OPENMP=false -DWITH_PNG=true
+cmake ..  -DWITH_FFMPEG=false -DWITH_CUDA=false -DWITH_OPENMP=true -DWITH_PNG=true
 
 echo "make"
 make
