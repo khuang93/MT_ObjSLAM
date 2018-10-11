@@ -16,7 +16,7 @@
 #define SDF_BLOCK_SIZE 8				// SDF block size
 #define SDF_BLOCK_SIZE3 512				// SDF_BLOCK_SIZE3 = SDF_BLOCK_SIZE * SDF_BLOCK_SIZE * SDF_BLOCK_SIZE
 
-#define SDF_LOCAL_BLOCK_NUM 0x2000		// 0x40000 0x20000 0x10000 Number of locally stored blocks, currently 2^17
+#define SDF_LOCAL_BLOCK_NUM 0x3000		// 0x40000 0x20000 0x10000 Number of locally stored blocks, currently 2^17
 //TODO check if this has a problem with memo, if not keep this for consistent hash value calculation
 #define SDF_BUCKET_NUM SDF_LOCAL_BLOCK_NUM*4		// 0x100000 0x80000 0x40000 Number of Hash Bucket, should be 2^n and bigger than SDF_LOCAL_BLOCK_NUM, SDF_HASH_MASK = SDF_BUCKET_NUM - 1
 #define SDF_HASH_MASK SDF_BUCKET_NUM-1		// 0xfffff 0x7ffff 0x3ffff Used for get hashing value of the bucket index,  SDF_HASH_MASK = SDF_BUCKET_NUM - 1
