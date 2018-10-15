@@ -53,7 +53,7 @@ ITMLibSettings::ITMLibSettings(void)
 
 	// Depth-only extended tracker:
 //	trackerConfig = "type=extended,levels=rrbb,useDepth=1,minstep=1e-4,"
-	trackerConfig = "type=extended,levels=bbbb,useDepth=1,minstep=1e-4,"
+	trackerConfig = "type=extended,levels=rrbb,useDepth=1,minstep=1e-4,"
 					  "outlierSpaceC=0.1,outlierSpaceF=0.004,"
 					  "numiterC=20,numiterF=50,tukeyCutOff=8,"
 					  "framesToSkip=20,framesToWeight=50,failureDec=20.0";
