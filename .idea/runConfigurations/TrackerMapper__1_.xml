@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="TrackerMapper (1)" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="../../polybox/Datasets/living_room_traj0n_frei_png/ 1000 2 1 100" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="TrackerMapper" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="TrackerMapper">
+  <configuration default="false" name="TrackerMapper (1)" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="../../polybox/Datasets/traj0n_frei_png/ 1000 2 1 100" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="TrackerMapper" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="TrackerMapper">
     <method />
   </configuration>
 </component>
