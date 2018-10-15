@@ -154,7 +154,7 @@ _CPU_AND_GPU_CODE_ inline bool castRay(DEVICEPTR(Vector4f) &pt_out, DEVICEPTR(uc
             if (sdfValue <= 0.0f) break;
             stepLength = MAX(sdfValue * stepScale, 1.0f);
         }
-//		std::cout<<sdfValue<<std::endl;
+
         pt_result += stepLength * rayDirection;
         totalLength += stepLength;
     }
@@ -183,7 +183,7 @@ _CPU_AND_GPU_CODE_ inline bool castRay(DEVICEPTR(Vector4f) &pt_out, DEVICEPTR(uc
     double dist_old = NORM3(TO_VECTOR3(M * pt_out));
     double dist_new = NORM3(TO_VECTOR3(M * pt_result_4));
     if ((dist_old == 0 && pt_found )||(pt_found && dist_old - dist_new > 0.001 && dist_old - dist_new < 1)) {
-        //TODO z choose the smallest distance.
+
         pt_out.x = pt_result.x;
         pt_out.y = pt_result.y;
         pt_out.z = pt_result.z;

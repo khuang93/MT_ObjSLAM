@@ -66,10 +66,10 @@ _CPU_AND_GPU_CODE_ inline float rho_deriv2(float r, float huber_b)
 
 template<bool shortIteration, bool rotationOnly, bool useWeights>
 _CPU_AND_GPU_CODE_ inline bool computePerPointGH_exDepth_Ab(THREADPTR(float) *A, THREADPTR(float) &b,
-	const THREADPTR(int) & x, const THREADPTR(int) & y, const CONSTPTR(float) &depth, THREADPTR(float) &depthWeight,
-	const CONSTPTR(Vector2i) & viewImageSize, const CONSTPTR(Vector4f) & viewIntrinsics, const CONSTPTR(Vector2i) & sceneImageSize,
-	const CONSTPTR(Vector4f) & sceneIntrinsics, const CONSTPTR(Matrix4f) & approxInvPose, const CONSTPTR(Matrix4f) & scenePose, const CONSTPTR(Vector4f) *pointsMap,
-	const CONSTPTR(Vector4f) *normalsMap, float spaceThresh, float viewFrustum_min, float viewFrustum_max, float tukeyCutOff, int framesToSkip, int framesToWeight)
+															const THREADPTR(int) & x, const THREADPTR(int) & y, const CONSTPTR(float) &depth, THREADPTR(float) &depthWeight,
+															const CONSTPTR(Vector2i) & viewImageSize, const CONSTPTR(Vector4f) & viewIntrinsics, const CONSTPTR(Vector2i) & sceneImageSize,
+															const CONSTPTR(Vector4f) & sceneIntrinsics, const CONSTPTR(Matrix4f) & approxInvPose, const CONSTPTR(Matrix4f) & scenePose, const CONSTPTR(Vector4f) *pointsMap,
+															const CONSTPTR(Vector4f) *normalsMap, float spaceThresh, float viewFrustum_min, float viewFrustum_max, float tukeyCutOff, int framesToSkip, int framesToWeight)
 {
 	depthWeight = 0;
 
@@ -111,8 +111,7 @@ _CPU_AND_GPU_CODE_ inline bool computePerPointGH_exDepth_Ab(THREADPTR(float) *A,
 
 	depthWeight = MAX(0.0f, 1.0f - (depth - viewFrustum_min) / (viewFrustum_max - viewFrustum_min));
 	depthWeight *= depthWeight;
-//	std::cout<<"depthWeight "<<depthWeight<<std::endl;
-//	std::cout<<"curr3Dpoint "<<curr3Dpoint <<std::endl;
+
 	if (useWeights)
 	{
 		if (curr3Dpoint.w < framesToSkip) return false;
@@ -165,7 +164,7 @@ _CPU_AND_GPU_CODE_ inline bool computePerPointGH_exRGB_inv_Ab(
 		float viewFrustum_min,
 		float viewFrustum_max,
 		float tukeyCutoff
-		)
+)
 {
 	// Before invoking this method, projectPoint_exRGB is invoked to compute the intensity
 	// associated to each depth pixel. Intensities_curr is not the "input" intensity image
@@ -229,32 +228,32 @@ _CPU_AND_GPU_CODE_ inline bool computePerPointGH_exRGB_inv_Ab(
 		Vector3f d_point_col;
 		switch (para + (shortIteration && !rotationOnly ? 3 : 0))
 		{
-		case 0: //rx
-			d_point_col = Vector3f(0, -pt_world.z, pt_world.y);
-			break;
-		case 1: // ry
-			d_point_col = Vector3f(pt_world.z, 0, -pt_world.x);
-			break;
-		case 2: // rz
-			d_point_col = Vector3f(-pt_world.y, pt_world.x, 0);
-			break; //rz
-		case 3: //tx
-			// Identity matrix
-			// We negate it because the ApplyDelta function uses the KinectFusion
-			// skew symmetric matrix and that matrix has negated rotation components.
-			// In order to use the rgb tracker we would need to negate the entire computed step, but given
-			// the peculiar structure of the increment matrix we only need to negate the translation component.
-			d_point_col = -Vector3f(1,0,0);
-			break;
-		case 4: //ty
-			d_point_col = -Vector3f(0,1,0);
-			break;
-		case 5: //tz
-			d_point_col = -Vector3f(0,0,1);
-			break;
-		default:
-			d_point_col = Vector3f(0,0,0); // Should never happen
-			break;
+			case 0: //rx
+				d_point_col = Vector3f(0, -pt_world.z, pt_world.y);
+				break;
+			case 1: // ry
+				d_point_col = Vector3f(pt_world.z, 0, -pt_world.x);
+				break;
+			case 2: // rz
+				d_point_col = Vector3f(-pt_world.y, pt_world.x, 0);
+				break; //rz
+			case 3: //tx
+				// Identity matrix
+				// We negate it because the ApplyDelta function uses the KinectFusion
+				// skew symmetric matrix and that matrix has negated rotation components.
+				// In order to use the rgb tracker we would need to negate the entire computed step, but given
+				// the peculiar structure of the increment matrix we only need to negate the translation component.
+				d_point_col = -Vector3f(1,0,0);
+				break;
+			case 4: //ty
+				d_point_col = -Vector3f(0,1,0);
+				break;
+			case 5: //tz
+				d_point_col = -Vector3f(0,0,1);
+				break;
+			default:
+				d_point_col = Vector3f(0,0,0); // Should never happen
+				break;
 		};
 
 		// Chain the above with scenePose
@@ -298,16 +297,16 @@ _CPU_AND_GPU_CODE_ inline bool computePerPointGH_exRGB_inv_Ab(
 
 template<bool shortIteration, bool rotationOnly, bool useWeights>
 _CPU_AND_GPU_CODE_ inline bool computePerPointGH_exDepth(THREADPTR(float) *localNabla, THREADPTR(float) *localHessian, THREADPTR(float) &localF,
-	const THREADPTR(int) & x, const THREADPTR(int) & y, const CONSTPTR(float) &depth, THREADPTR(float) &depthWeight, CONSTPTR(Vector2i) & viewImageSize, const CONSTPTR(Vector4f) & viewIntrinsics,
-	const CONSTPTR(Vector2i) & sceneImageSize, const CONSTPTR(Vector4f) & sceneIntrinsics, const CONSTPTR(Matrix4f) & approxInvPose, const CONSTPTR(Matrix4f) & scenePose,
-	const CONSTPTR(Vector4f) *pointsMap, const CONSTPTR(Vector4f) *normalsMap, float spaceThresh, float viewFrustum_min, float viewFrustum_max, float tukeyCutOff, int framesToSkip, int framesToWeight)
+														 const THREADPTR(int) & x, const THREADPTR(int) & y, const CONSTPTR(float) &depth, THREADPTR(float) &depthWeight, CONSTPTR(Vector2i) & viewImageSize, const CONSTPTR(Vector4f) & viewIntrinsics,
+														 const CONSTPTR(Vector2i) & sceneImageSize, const CONSTPTR(Vector4f) & sceneIntrinsics, const CONSTPTR(Matrix4f) & approxInvPose, const CONSTPTR(Matrix4f) & scenePose,
+														 const CONSTPTR(Vector4f) *pointsMap, const CONSTPTR(Vector4f) *normalsMap, float spaceThresh, float viewFrustum_min, float viewFrustum_max, float tukeyCutOff, int framesToSkip, int framesToWeight)
 {
 	const int noPara = shortIteration ? 3 : 6;
 	float A[noPara];
 	float b;
 
 	bool ret = computePerPointGH_exDepth_Ab<shortIteration, rotationOnly, useWeights>(A, b, x, y, depth, depthWeight, viewImageSize, viewIntrinsics, sceneImageSize, sceneIntrinsics,
-		approxInvPose, scenePose, pointsMap, normalsMap, spaceThresh, viewFrustum_min, viewFrustum_max, tukeyCutOff, framesToSkip, framesToWeight);
+																					  approxInvPose, scenePose, pointsMap, normalsMap, spaceThresh, viewFrustum_min, viewFrustum_max, tukeyCutOff, framesToSkip, framesToWeight);
 
 	if (!ret) return false;
 
@@ -384,7 +383,7 @@ _CPU_AND_GPU_CODE_ inline void projectPoint_exRGB(
 	int sceneIdx = y * imageSize_depth.x + x;
 
 	if (!computePerPointProjectedColour_exRGB(x, y, out_points, out_rgb, in_rgb, in_depths,
-		 imageSize_rgb, sceneIdx, intrinsics_rgb, intrinsics_depth, scenePose))
+											  imageSize_rgb, sceneIdx, intrinsics_rgb, intrinsics_depth, scenePose))
 	{
 		out_rgb[sceneIdx] = -1.f; // Mark as invalid
 		out_points[sceneIdx] = Vector4f(0.f, 0.f, 0.f, -1.f); // Mark as invalid

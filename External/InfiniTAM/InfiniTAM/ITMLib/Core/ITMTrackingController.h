@@ -91,8 +91,8 @@ class ITMTrackingController {
     }
   }
 
-  //multi prepare
-    /*template<typename TVoxel, typename TIndex>
+  /*//multi prepare
+    template<typename TVoxel, typename TIndex>
     void Prepare(ITMTrackingState *trackingState,
                  ITMRenderState *renderState,
                  std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>> obj_inst_ptr_vector,
@@ -126,8 +126,8 @@ class ITMTrackingController {
         if (trackingState->age_pointCloud == -1) trackingState->age_pointCloud = -2;
         else trackingState->age_pointCloud = 0;
       }
-    }*/
-
+    }
+*/
 
     //multi prepare old version
     template<typename TVoxel, typename TIndex>

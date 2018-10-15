@@ -18,14 +18,14 @@
 
 #define SDF_LOCAL_BLOCK_NUM 0x2000		// 0x40000 0x20000 0x10000 Number of locally stored blocks, currently 2^17
 //TODO check if this has a problem with memo, if not keep this for consistent hash value calculation
-#define SDF_BUCKET_NUM SDF_LOCAL_BLOCK_NUM*4		// 0x100000 0x80000 0x40000 Number of Hash Bucket, should be 2^n and bigger than SDF_LOCAL_BLOCK_NUM, SDF_HASH_MASK = SDF_BUCKET_NUM - 1
-#define SDF_HASH_MASK SDF_BUCKET_NUM-1		// 0xfffff 0x7ffff 0x3ffff Used for get hashing value of the bucket index,  SDF_HASH_MASK = SDF_BUCKET_NUM - 1
-#define SDF_EXCESS_LIST_SIZE SDF_LOCAL_BLOCK_NUM/2	// 0x20000 0x10000 0x8000 Size of excess list, used to handle collisions. Also max offset (unsigned short) value.
+#define SDF_BUCKET_NUM 0x8000//SDF_LOCAL_BLOCK_NUM*4		// 0x100000 0x80000 0x40000 Number of Hash Bucket, should be 2^n and bigger than SDF_LOCAL_BLOCK_NUM, SDF_HASH_MASK = SDF_BUCKET_NUM - 1
+#define SDF_HASH_MASK 0x7fff//SDF_BUCKET_NUM-1		// 0xfffff 0x7ffff 0x3ffff Used for get hashing value of the bucket index,  SDF_HASH_MASK = SDF_BUCKET_NUM - 1
+#define SDF_EXCESS_LIST_SIZE 0x1000//SDF_LOCAL_BLOCK_NUM/2	// 0x20000 0x10000 0x8000 Size of excess list, used to handle collisions. Also max offset (unsigned short) value.
 
-#define SDF_LOCAL_BLOCK_NUM_BG 0x20000
-#define SDF_BUCKET_NUM_BG 0x80000 //SDF_LOCAL_BLOCK_NUM_BG*4
-#define SDF_HASH_MASK_BG 0x7ffff //SDF_BUCKET_NUM_BG-1
-#define SDF_EXCESS_LIST_SIZE_BG 0x10000 //SDF_LOCAL_BLOCK_NUM_BG/2
+#define SDF_LOCAL_BLOCK_NUM_BG 0x40000
+#define SDF_BUCKET_NUM_BG 0x100000 //SDF_LOCAL_BLOCK_NUM_BG*4
+#define SDF_HASH_MASK_BG 0xfffff //SDF_BUCKET_NUM_BG-1
+#define SDF_EXCESS_LIST_SIZE_BG 0x20000 //SDF_LOCAL_BLOCK_NUM_BG/2
 
 
 // for loop closure

@@ -1,8 +1,8 @@
 // Copyright 2014-2017 Oxford University Innovation Limited and the authors of InfiniTAM
 
-#ifndef NOMINMAX 
+#ifndef NOMINMAX
 #define NOMINMAX
-#endif 
+#endif
 
 #include "ITMExtendedTracker.h"
 #include "../../../ORUtils/Cholesky.h"
@@ -11,11 +11,10 @@
 
 #include <math.h>
 #include <limits>
-#include <iostream>
 
 using namespace ITMLib;
 
-const int ITMExtendedTracker::																																																																			MIN_VALID_POINTS_DEPTH = 100;
+const int ITMExtendedTracker::MIN_VALID_POINTS_DEPTH = 100;
 const int ITMExtendedTracker::MIN_VALID_POINTS_RGB = 100;
 
 ITMExtendedTracker::ITMExtendedTracker(Vector2i imgSize_d,
@@ -35,7 +34,7 @@ ITMExtendedTracker::ITMExtendedTracker(Vector2i imgSize_d,
 									   int framesToWeight,
 									   const ITMLowLevelEngine *lowLevelEngine,
 									   MemoryDeviceType memoryType
-									   )
+)
 {
 	this->useDepth = useDepth;
 	this->useColour = useColour;
@@ -202,6 +201,7 @@ void ITMExtendedTracker::PrepareForEvaluation()
 	{
 		ITMDepthHierarchyLevel *currentLevel = viewHierarchy_Depth->GetLevel(i);
 		ITMDepthHierarchyLevel *previousLevel = viewHierarchy_Depth->GetLevel(i - 1);
+
 		lowLevelEngine->FilterSubsampleWithHoles(currentLevel->depth, previousLevel->depth);
 
 		currentLevel->intrinsics = previousLevel->intrinsics * 0.5f;
@@ -322,19 +322,19 @@ void ITMExtendedTracker::ApplyDelta(const Matrix4f & para_old, const float *delt
 
 	switch (currentIterationType)
 	{
-	case TRACKER_ITERATION_ROTATION:
-		step[0] = (float)(delta[0]); step[1] = (float)(delta[1]); step[2] = (float)(delta[2]);
-		step[3] = 0.0f; step[4] = 0.0f; step[5] = 0.0f;
-		break;
-	case TRACKER_ITERATION_TRANSLATION:
-		step[0] = 0.0f; step[1] = 0.0f; step[2] = 0.0f;
-		step[3] = (float)(delta[0]); step[4] = (float)(delta[1]); step[5] = (float)(delta[2]);
-		break;
-	default:
-	case TRACKER_ITERATION_BOTH:
-		step[0] = (float)(delta[0]); step[1] = (float)(delta[1]); step[2] = (float)(delta[2]);
-		step[3] = (float)(delta[3]); step[4] = (float)(delta[4]); step[5] = (float)(delta[5]);
-		break;
+		case TRACKER_ITERATION_ROTATION:
+			step[0] = (float)(delta[0]); step[1] = (float)(delta[1]); step[2] = (float)(delta[2]);
+			step[3] = 0.0f; step[4] = 0.0f; step[5] = 0.0f;
+			break;
+		case TRACKER_ITERATION_TRANSLATION:
+			step[0] = 0.0f; step[1] = 0.0f; step[2] = 0.0f;
+			step[3] = (float)(delta[0]); step[4] = (float)(delta[1]); step[5] = (float)(delta[2]);
+			break;
+		default:
+		case TRACKER_ITERATION_BOTH:
+			step[0] = (float)(delta[0]); step[1] = (float)(delta[1]); step[2] = (float)(delta[2]);
+			step[3] = (float)(delta[3]); step[4] = (float)(delta[4]); step[5] = (float)(delta[5]);
+			break;
 	}
 
 	Matrix4f Tinc;
@@ -416,7 +416,6 @@ void ITMExtendedTracker::TrackCamera(ITMTrackingState *trackingState, const ITMV
 	else trackingState->framesProcessed = 0;
 
 	this->SetEvaluationData(trackingState, view);
-
 	this->PrepareForEvaluation();
 
 	float hessian_good[6 * 6];
