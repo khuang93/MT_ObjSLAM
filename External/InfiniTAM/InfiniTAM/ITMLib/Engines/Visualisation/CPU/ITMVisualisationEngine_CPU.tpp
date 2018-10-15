@@ -313,7 +313,9 @@ static void GenericRaycastMultiObj(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxe
 
     typename std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>>::iterator it;
 
-
+/*#ifdef WITH_OPENMP
+#pragma omp parallel for private(sceneIsBackground)
+#endif*/
     for(it = obj_inst_ptr_vector.begin(); it !=obj_inst_ptr_vector.end(); it++){
 
 
@@ -387,13 +389,9 @@ static void GenericRaycastMultiObj(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxe
     for (int locId = 0; locId < imgSize.x * imgSize.y; ++locId) {
         int y = locId / imgSize.x;
         int x = locId - y * imgSize.x;
-        int locId2 = (int) floor((float) x / minmaximg_subsample) +
-                     (int) floor((float) y / minmaximg_subsample) * imgSize.x;
 
         double dist = DBL_MAX;
-/*#ifdef WITH_OPENMP
-#pragma omp parallel for private(sceneIsBackground)
-#endif*/
+
         typename std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>>::iterator it;
         int i = 0;
         for(it = obj_inst_ptr_vector.begin(); it !=obj_inst_ptr_vector.end(); it++,i++){

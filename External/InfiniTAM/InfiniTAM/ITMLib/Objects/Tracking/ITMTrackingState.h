@@ -29,9 +29,9 @@ namespace ITMLib
 
 		/// Frames processed from start of tracking
 		/// Used as weight in the extended tracker 
-		int framesProcessed;
+		int framesProcessed = 0;
 
-		int age_pointCloud;
+		int age_pointCloud = -1;
 
 		/// Current pose of the depth camera.
 		ORUtils::SE3Pose *pose_d;
@@ -89,6 +89,7 @@ namespace ITMLib
 
 		void Reset()
 		{
+			this->framesProcessed=0;
 			this->age_pointCloud = -1;
 			this->pose_d->SetFrom(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 			this->pose_pointCloud->SetFrom(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
