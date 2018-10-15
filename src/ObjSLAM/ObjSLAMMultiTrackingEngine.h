@@ -16,8 +16,9 @@ namespace ObjSLAM {
 
     public:
         ObjSLAMMultiTrackingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,
+                                   const std::shared_ptr<ITMLib::ITMLibSettings> _settings_obj,
                               const std::shared_ptr<ITMLib::ITMRGBDCalib> _calib,
-                              const Vector2i _imgSize) : ObjSLAMTrackingEngine(_settings, _calib, _imgSize) {
+                              const Vector2i _imgSize) : ObjSLAMTrackingEngine(_settings, _settings_obj, _calib, _imgSize) {
 
         }
 

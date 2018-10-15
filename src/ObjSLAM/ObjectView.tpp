@@ -317,7 +317,7 @@ void ObjectView<TVoxel, TIndex>::setListOfViews() {
 }
 
 template<typename TVoxel, typename TIndex>
-std::vector<Object_View_Tup<TVoxel, TIndex>> ObjectView<TVoxel, TIndex>::GetObjVec() {
+std::vector<Object_View_Tup<TVoxel, TIndex>>& ObjectView<TVoxel, TIndex>::GetObjVec() {
   return this->obj_view_tup_vec;
 }
 

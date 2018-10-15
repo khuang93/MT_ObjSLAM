@@ -264,7 +264,8 @@ namespace ITMLib
 	static ITMTracker *MakeExtendedTracker(const Vector2i& imgSize_rgb, const Vector2i& imgSize_d, ITMLibSettings::DeviceType deviceType, const ORUtils::KeyValueConfig & cfg,
 		const ITMLowLevelEngine *lowLevelEngine, ITMIMUCalibrator *imuCalibrator, const ITMSceneParams *sceneParams)
 	{
-		const char *levelSetup = "rrbb";
+		//TODO changed default value
+		const char *levelSetup = "bbbb";//"rrbb";
 		bool useDepth = true;
 		bool useColour = false;
 		float colourWeight = 0.3f;

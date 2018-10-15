@@ -60,6 +60,7 @@ namespace ObjSLAM {
         std::vector<ObjectInstance_ptr<TVoxel, TIndex>> obj_inst_ptr_vector; //managing a list of all objs for faster loop over all objs
         std::vector<ObjectInstance_ptr<TVoxel, TIndex>> active_obj_ptr_vector; //managing a list of all visible objs
         const std::shared_ptr<ITMLib::ITMLibSettings> settings;
+        const std::shared_ptr<ITMLib::ITMLibSettings> settings_obj;
         const std::shared_ptr<ITMLib::ITMRGBDCalib> calib;
 
 //  std::shared_ptr<ObjUChar4Image> img_from_above;
@@ -71,6 +72,7 @@ namespace ObjSLAM {
 
         std::shared_ptr<ObjectInstance<TVoxel, TIndex>> BG_object_ptr;
         std::shared_ptr<ITMLib::ITMSceneParams> sceneParams_ptr;
+        std::shared_ptr<ITMLib::ITMSceneParams> sceneParams_ptr_obj;
 
         ITMLib::ITMDenseMapper<TVoxel, TIndex> *denseMapper;
         std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> label_ptr_vector;
@@ -91,9 +93,9 @@ namespace ObjSLAM {
         bool isFree = true;
 
         //Constructor
-        ObjSLAMMappingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,
+        ObjSLAMMappingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,const std::shared_ptr<ITMLib::ITMLibSettings> _settings_obj,
                              const std::shared_ptr<ITMLib::ITMRGBDCalib> _calib,
-                             const Vector2i _imgSize) : settings(_settings), calib(_calib), imgSize(_imgSize) {
+                             const Vector2i _imgSize) : settings(_settings), settings_obj(_settings_obj),calib(_calib), imgSize(_imgSize) {
 
             denseMapper = new ITMLib::ITMDenseMapper<TVoxel, TIndex>(settings.get());
 
@@ -110,6 +112,7 @@ namespace ObjSLAM {
 //                            settings->deviceType);
 
             sceneParams_ptr = std::shared_ptr<ITMLib::ITMSceneParams>(&(this->settings->sceneParams));
+            sceneParams_ptr_obj = std::shared_ptr<ITMLib::ITMSceneParams>(&(this->settings_obj->sceneParams));
             ReserveVectors(totFrames);
 
 

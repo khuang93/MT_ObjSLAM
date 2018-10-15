@@ -25,11 +25,12 @@ class ObjSLAMTrackingEngine {
 
   Vector2i imgSize;
   const std::shared_ptr<ITMLib::ITMLibSettings> settings;
+  const std::shared_ptr<ITMLib::ITMLibSettings> settings_obj;
   const std::shared_ptr<ITMLib::ITMRGBDCalib> calib;
   int imgNumber = 1;
 
  public:
-  ObjSLAMTrackingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,
+  ObjSLAMTrackingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,const std::shared_ptr<ITMLib::ITMLibSettings> _settings_obj,
                         const std::shared_ptr<ITMLib::ITMRGBDCalib> _calib,
                         const Vector2i _imgSize);
   ~ObjSLAMTrackingEngine();

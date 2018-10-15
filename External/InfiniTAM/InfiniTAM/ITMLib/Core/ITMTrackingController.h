@@ -91,7 +91,7 @@ class ITMTrackingController {
     }
   }
 
-  /*//multi prepare
+  //multi prepare
     template<typename TVoxel, typename TIndex>
     void Prepare(ITMTrackingState *trackingState,
                  ITMRenderState *renderState,
@@ -127,9 +127,8 @@ class ITMTrackingController {
         else trackingState->age_pointCloud = 0;
       }
     }
-*/
 
-    //multi prepare old version
+  /*  //multi prepare old version
     template<typename TVoxel, typename TIndex>
     void Prepare(ITMTrackingState *trackingState,
                  ITMRenderState *renderState,
@@ -164,7 +163,7 @@ class ITMTrackingController {
         if (trackingState->age_pointCloud == -1) trackingState->age_pointCloud = -2;
         else trackingState->age_pointCloud = 0;
       }
-    }
+    }*/
 
 
   ITMTrackingController(ITMTracker *tracker, const ITMLibSettings *settings) {

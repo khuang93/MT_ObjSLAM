@@ -132,7 +132,7 @@ namespace ObjSLAM {
 
         void SetCameraPose(const ORUtils::SE3Pose *_se3pose);
 
-        std::vector<Object_View_Tup<TVoxel, TIndex>> GetObjVec();
+        std::vector<Object_View_Tup<TVoxel, TIndex>>& GetObjVec();
 
         std::shared_ptr<ITMLib::ITMView> GetBackgroundView();
 

@@ -147,7 +147,7 @@ namespace ObjSLAM {
                     }
 
                     auto obj_inst_scene_ptr = std::make_shared<ObjectInstanceScene<TVoxel, TIndex>>(
-                            sceneParams_ptr.get(),
+                            sceneIsBackground? sceneParams_ptr.get() : sceneParams_ptr_obj.get(),
                             useSwapping,
                             MEMORYDEVICE_CPU);
                     obj_inst_ptr->SetScene(obj_inst_scene_ptr);

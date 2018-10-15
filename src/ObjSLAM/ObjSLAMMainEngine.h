@@ -38,6 +38,7 @@
 class ObjSLAMMainEngine {
 private:
     std::shared_ptr<ITMLib::ITMLibSettings> internalSettings;
+    std::shared_ptr<ITMLib::ITMLibSettings> internalSettings_obj;
     shared_ptr<DatasetReader> reader;
     shared_ptr<ITMLib::ITMView> wholeView;
     shared_ptr<ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>> mappingEngine;
@@ -58,15 +59,15 @@ private:
 public:
     int framesElapsedBeforeMapping = 0;
     bool mapperFree=true;
-    ObjSLAMMainEngine(std::shared_ptr<ITMLib::ITMLibSettings> _settings, shared_ptr<DatasetReader> _reader)
-            : internalSettings(_settings), reader(_reader) {
+    ObjSLAMMainEngine(std::shared_ptr<ITMLib::ITMLibSettings> _settings, std::shared_ptr<ITMLib::ITMLibSettings> _settings_obj,shared_ptr<DatasetReader> _reader)
+            : internalSettings(_settings),internalSettings_obj(_settings_obj) ,reader(_reader) {
         imgSize = Vector2i(640, 480);
         wholeView = make_shared<ITMLib::ITMView>(*reader->GetCalib(),imgSize,imgSize,false);
             sceneIsBackground = true;
-        mappingEngine = std::make_shared<ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>>(internalSettings,
+        mappingEngine = std::make_shared<ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>>(internalSettings,internalSettings_obj,
                                                                                                  reader->GetCalib(),
                                                                                                  imgSize);
-        trackingEngine = std::make_shared<ObjSLAM::ObjSLAMTrackingEngine>(internalSettings, reader->GetCalib(), imgSize);
+        trackingEngine = std::make_shared<ObjSLAM::ObjSLAMTrackingEngine>(internalSettings, internalSettings_obj, reader->GetCalib(), imgSize);
         t_controller= trackingEngine->GetTrackingController();
         mappingEngine->SetTrackingController(t_controller);
         t_state = trackingEngine->GetTrackingState();

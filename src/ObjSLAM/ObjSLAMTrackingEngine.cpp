@@ -9,9 +9,10 @@
 
 namespace ObjSLAM {
 ObjSLAMTrackingEngine::ObjSLAMTrackingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,
+                                             const std::shared_ptr<ITMLib::ITMLibSettings> _settings_obj,
                                              const std::shared_ptr<ITMLib::ITMRGBDCalib> _calib,
                                              const Vector2i _imgSize)
-    : settings(_settings), calib(_calib), imgSize(_imgSize) {
+    : settings(_settings), settings_obj(_settings_obj), calib(_calib), imgSize(_imgSize) {
   lowEngine = ITMLib::ITMLowLevelEngineFactory::MakeLowLevelEngine(settings->deviceType);
 
   tracker = ITMLib::ITMTrackerFactory::Instance().Make(imgSize,
