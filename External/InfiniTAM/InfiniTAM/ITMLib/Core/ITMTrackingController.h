@@ -110,9 +110,12 @@ class ITMTrackingController {
         trackingState->pose_pointCloud->SetFrom(trackingState->pose_d);
       }
 
-      for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
+    int i = 0;
+    typename std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>>::iterator it;
+    for(it = obj_inst_ptr_vector.begin(); it !=obj_inst_ptr_vector.end(); it++,i++){
+//      for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
         sceneIsBackground = i == 0 ? true : false;
-        ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
+        ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = *it;//obj_inst_ptr_vector.at(i);
 
         const auto *scene = obj_inst_ptr->GetScene().get();
         const auto *view = obj_inst_ptr->GetCurrentView().get();

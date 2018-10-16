@@ -783,11 +783,13 @@ CreateICPMaps_common_MultiObj(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TI
 
 
     GenericRaycastMultiObj(obj_inst_ptr_vector, imgSize, invM, view->calib.intrinsics_d.projectionParamsSimple.all, renderState, true);
-
-    for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
+    int i = 0;
+    typename std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>>::iterator it;
+    for(it = obj_inst_ptr_vector.begin(); it !=obj_inst_ptr_vector.end(); it++,i++){
+//    for (size_t i = 0; i < obj_inst_ptr_vector.size(); ++i) {
         sceneIsBackground = i == 0 ? true : false;
 //sceneIsBackground=true;
-        ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(0);
+        ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = *it;//obj_inst_ptr_vector.at(0);
 
         const ITMScene<TVoxel, TIndex> *scene = obj_inst_ptr->GetScene().get();
         //ITMTrackingState* trackingState = obj_inst_ptr->GetTrackingState().get();
