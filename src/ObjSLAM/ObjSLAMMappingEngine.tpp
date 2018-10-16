@@ -700,7 +700,7 @@ namespace ObjSLAM {
         float threshold = 0.8;
         short k_weight = 4;
         float th_weight = 0.5;
-        short k_minAge = 2;
+        short k_minAge = 4;
 
         auto scene = object->GetScene();
 //        short object_view_count = object->view_count;
