@@ -1018,13 +1018,13 @@ namespace ObjSLAM {
                     UpdateVisibilityOfObj(obj_inst_ptr, pose_visualize);
 
 
-                    if (!obj_inst_ptr->isVisible) {
-                        auto scene = obj_inst_ptr.get()->GetScene();
-                        string stlname = obj_inst_ptr->GetClassLabel()->GetLabelClassName() + "." + to_string(j) +
-                                         "_cleaned.stl";
-                        SaveSceneToMesh(stlname.c_str(), scene);
-                        continue;
-                    }
+//                    if (!obj_inst_ptr->isVisible) {
+//                        auto scene = obj_inst_ptr.get()->GetScene();
+//                        string stlname = obj_inst_ptr->GetClassLabel()->GetLabelClassName() + "." + to_string(j) +
+//                                         "_cleaned.stl";
+//                        SaveSceneToMesh(stlname.c_str(), scene);
+//                        continue;
+//                    }
 
 
                     visualisationEngine->RenderImage(scene.get(), pose_visualize,

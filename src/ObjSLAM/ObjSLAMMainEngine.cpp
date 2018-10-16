@@ -38,7 +38,7 @@ void ObjSLAMMainEngine::TrackFrame() {
 void ObjSLAMMainEngine::MapFrame() {
     mappingEngine->ProcessFrame();
 
-    Visualize();
+//    Visualize();
 
     mapperFree = true;
 }
