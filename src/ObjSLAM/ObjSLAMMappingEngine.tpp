@@ -287,6 +287,24 @@ namespace ObjSLAM {
 
     }
 
+    template<class TVoxel, class TIndex>
+    void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateVisibilityAndViewCountOfObj(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr,
+                                                                     const ORUtils::SE3Pose *pose) {
+        sceneIsBackground = obj_inst_ptr->CheckIsBackground();
+        auto *scene = obj_inst_ptr->GetScene().get();
+        visualisationEngine->FindVisibleBlocksAndUpdateViewCount(scene,
+                                               pose,
+                                               &obj_inst_ptr->GetCurrentView()->calib.intrinsics_d,
+                                               obj_inst_ptr->GetRenderState().get());
+
+        visualisationEngine->CreateExpectedDepths(scene,
+                                                  pose,
+                                                  &obj_inst_ptr->GetCurrentView()->calib.intrinsics_d,
+                                                  obj_inst_ptr->GetRenderState().get());
+        obj_inst_ptr->UpdateVisibility();
+
+    }
+
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateFarVisibilityOfObj(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr,
@@ -317,7 +335,7 @@ namespace ObjSLAM {
             const ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
             bool prevVisibility = obj_inst_ptr->isVisible;
 
-            UpdateVisibilityOfObj(obj_inst_ptr, this->t_state->pose_d);
+            UpdateVisibilityAndViewCountOfObj(obj_inst_ptr, this->t_state->pose_d);
 
 #pragma omp critical
             {
@@ -336,6 +354,9 @@ namespace ObjSLAM {
         this->number_activeObjects = active_obj_ptr_vector.size();
 
         BG_VoxelCleanUp();
+        for (size_t i = 1; i < this->active_obj_ptr_vector.size(); ++i) {
+            Object_Cleanup(active_obj_ptr_vector.at(i));
+        }
     }
 
 //check if same obj by 2d overlap
