@@ -56,6 +56,8 @@ void ObjectView<TVoxel, TIndex>::SetListOfObjects(
 
   cout << "Setting Obj List...";
 
+  int pixel_count_TH=1600;
+
   auto label_ptr_bg_new = std::make_shared<ObjectClassLabel_Group<TVoxel, TIndex>>
       (0);
   shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>
@@ -69,6 +71,25 @@ void ObjectView<TVoxel, TIndex>::SetListOfObjects(
 #pragma omp parallel for
 #endif
   for (LabelImgVector::iterator it = label_img_vector.begin(); it != label_img_vector.end(); ++it) {
+
+    //skip labels with pixels less than count_TH=40;
+    int count_non0_pix=0;
+#ifdef WITH_OPENMP
+#pragma omp parallel for
+#endif
+    //it over pixels
+
+    for (int i = 0; i < (*it)->dataSize; ++i) {
+      if((*it)->GetElement(i, MEMORYDEVICE_CPU)!=0){
+
+//          #pragma omp critical{
+                count_non0_pix++;
+//              }
+
+      }
+    }
+    if(count_non0_pix<pixel_count_TH) continue;
+
 
     int labelIndex = 0;
 
