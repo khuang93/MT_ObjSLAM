@@ -204,9 +204,7 @@ namespace ObjSLAM {
         t_controller->Prepare(t_state.get(), this->renderState_RenderAll.get(), this->obj_inst_ptr_vector,
                               visualisationEngine); //visualisationEngine_BG
 
-        write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img" + to_string(imgNumber) + ".ply");
-//        write2PLYfile(BG_object_ptr->GetTrackingState()->pointCloud->locations,
-//                      "t_state_PCL_img" + to_string(imgNumber) + ".ply");
+//        write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img" + to_string(imgNumber) + ".ply");
 
     }
 
@@ -222,6 +220,9 @@ namespace ObjSLAM {
 
         if (!obj_inst_ptr.get()->CheckIsBackground()) {
             sceneIsBackground = false;
+
+            ORUtils::SE3Pose anchor_pose = obj_inst_ptr->GetAnchorView()->GetCameraPose().GetSE3Pose();
+
 
             std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = obj_inst_ptr->GetTrackingState();
 
@@ -700,7 +701,7 @@ namespace ObjSLAM {
         float threshold = 0.8;
         short k_weight = 4;
         float th_weight = 0.5;
-        short k_minAge = 4;
+        short k_minAge = 6;
 
         auto scene = object->GetScene();
 //        short object_view_count = object->view_count;
@@ -841,6 +842,24 @@ namespace ObjSLAM {
     template<class TVoxel, class TIndex>
     ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::GetImage(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr) {
         return obj_inst_ptr->GetRenderState()->raycastImage;
+    }
+
+    template<class TVoxel, class TIndex>
+    ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::GetRGBImage(int object_index) {
+        if (object_index == 0) return GetImage(BG_object_ptr);
+
+        if (object_index < number_activeObjects) {
+            return GetRGBImage(active_obj_ptr_vector.at(object_index));
+        } else {
+            cout << "Object Index larger than total number of objects, showing first object...\n";
+            return GetRGBImage(BG_object_ptr);
+        }
+    }
+
+
+    template<class TVoxel, class TIndex>
+    ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::GetRGBImage(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr) {
+        return obj_inst_ptr->GetCurrentView()->rgb;
     }
 
 
@@ -1060,8 +1079,8 @@ namespace ObjSLAM {
 //                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
 //                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
 
-                    write2PLYfile(obj_inst_ptr->GetRenderState()->raycastResult,
-                                  "raycast_img_BG" + to_string(imgNumber) + ".ply");
+//                    write2PLYfile(obj_inst_ptr->GetRenderState()->raycastResult,
+//                                  "raycast_img_BG" + to_string(imgNumber) + ".ply");
                 }
 
 
@@ -1110,8 +1129,8 @@ namespace ObjSLAM {
                                                  this->renderState_RenderAll->raycastImage,
                                                  ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                  ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
-        write2PLYfile(renderState_RenderAll->raycastResult,
-                      "raycast_img_Fused_vis" + to_string(imgNumber) + ".ply");
+//        write2PLYfile(renderState_RenderAll->raycastResult,
+//                      "raycast_img_Fused_vis" + to_string(imgNumber) + ".ply");
 
 
         sceneIsBackground = true;

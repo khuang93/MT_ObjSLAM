@@ -188,7 +188,7 @@ namespace ObjSLAM {
             imageTexture_obj.Upload(image_obj, GL_RGB, GL_UNSIGNED_BYTE);
 
 
-            auto *itmImage_rgb = mainEngine->GetInputImage();
+            auto *itmImage_rgb = mainEngine->GetInputImage();//GetRGBImage(currentObjNum);
 
             unsigned char *image_rgb = new unsigned char[itmImage_rgb->noDims.x * itmImage_rgb->noDims.y * 3];
 

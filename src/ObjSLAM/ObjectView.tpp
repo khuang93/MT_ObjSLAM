@@ -63,10 +63,23 @@ void ObjectView<TVoxel, TIndex>::SetListOfObjects(
   shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>
       label_ptr_bg = AddLabelToVector(label_ptr_vector,
                                       label_ptr_bg_new);
-  std::shared_ptr<ITMLib::ITMRGBDCalib> new_calib_ptr = std::make_shared<ITMLib::ITMRGBDCalib>();
-  *new_calib_ptr = calibration;
-  auto *cam = new ObjSLAMCamera(new_calib_ptr, imgSize_d);
-  d_to_rgb_correspondence = cam->ProjectDepthPixelToRGB(this->depth_Image);
+
+
+  if(!is_RGB_D_aligned){
+
+    std::shared_ptr<ITMLib::ITMRGBDCalib> new_calib_ptr = std::make_shared<ITMLib::ITMRGBDCalib>();
+    *new_calib_ptr = calibration;
+    auto *cam = new ObjSLAMCamera(new_calib_ptr, imgSize_d);
+    d_to_rgb_correspondence = cam->ProjectDepthPixelToRGB(this->depth_Image);
+    delete cam;
+  }/*else{
+    for(int y = 0; y < d_to_rgb_correspondence->noDims.y;++y)for(int x = 0; x < d_to_rgb_correspondence->noDims.x;++x){
+      int locId =
+      d_to_rgb_correspondence->GetData(MEMORYDEVICE_CPU)[i].y=y;
+      d_to_rgb_correspondence->GetData(MEMORYDEVICE_CPU)[i].x=x;
+    }
+  }*/
+
 #ifdef WITH_OPENMP
 #pragma omp parallel for
 #endif
@@ -101,14 +114,16 @@ void ObjectView<TVoxel, TIndex>::SetListOfObjects(
     //it over pixels
     for (int i = 0; i < (*it)->dataSize; ++i) {
 
-      Vector2i rgb_pixel_loc = d_to_rgb_correspondence->GetElement(i, MEMORYDEVICE_CPU);
-      int idx_rgb = (rgb_pixel_loc.x != -1 && rgb_pixel_loc.y != -1) ? (rgb_pixel_loc.y * imgSize_d.x + rgb_pixel_loc.x) : -1;
 
-     /* if (rgb_pixel_loc.x != -1 && rgb_pixel_loc.y != -1) {
-        idx_rgb = rgb_pixel_loc.y * imgSize_d.x + rgb_pixel_loc.x;
-      }else{
-        idx_rgb = -1;
-      }*/
+
+      int idx_rgb = -1;
+      if(is_RGB_D_aligned){
+        idx_rgb=i;
+      } else {
+        Vector2i rgb_pixel_loc  = d_to_rgb_correspondence->GetElement(i, MEMORYDEVICE_CPU);
+        idx_rgb = (rgb_pixel_loc.x != -1 && rgb_pixel_loc.y != -1) ? (rgb_pixel_loc.y * imgSize_d.x + rgb_pixel_loc.x) : -1;
+      }
+
 //TODO optimize it!!!
       if (idx_rgb != -1) {
         //if the label is not empty
@@ -160,12 +175,17 @@ void ObjectView<TVoxel, TIndex>::SetListOfObjects(
 #pragma omp parallel for
 #endif
   for (int i = 0; i < this->depth_Image->dataSize; i++) {
-    Vector2i rgb_pixel_loc = d_to_rgb_correspondence->GetElement(i, MEMORYDEVICE_CPU);
-    int idx_rgb = rgb_pixel_loc.y * imgSize_d.x + rgb_pixel_loc.x;
-
-    if (rgb_pixel_loc.x == -1 || rgb_pixel_loc.y == -1) {
-      idx_rgb = -1;
+    int idx_rgb = -1;
+    if(is_RGB_D_aligned){
+      idx_rgb=i;
+    } else {
+      Vector2i rgb_pixel_loc  = d_to_rgb_correspondence->GetElement(i, MEMORYDEVICE_CPU);
+      idx_rgb = (rgb_pixel_loc.x != -1 && rgb_pixel_loc.y != -1) ? (rgb_pixel_loc.y * imgSize_d.x + rgb_pixel_loc.x) : -1;
+      if (rgb_pixel_loc.x == -1 || rgb_pixel_loc.y == -1) {
+        idx_rgb = -1;
+      }
     }
+
     if (idx_rgb != -1) {
       bool is_background = true;
       for (LabelImgVector::iterator it = label_img_vector.begin(); it != label_img_vector.end(); it++) {
@@ -190,7 +210,7 @@ void ObjectView<TVoxel, TIndex>::SetListOfObjects(
 
 //  SaveImageToFile(single_obj_ITMView_bg->depth,"test.ppm");
 //  return label_ptr_vector;
-  delete cam;
+
   cout << "Finished! \n";
 }
 

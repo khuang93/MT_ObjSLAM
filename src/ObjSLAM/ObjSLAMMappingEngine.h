@@ -205,6 +205,11 @@ namespace ObjSLAM {
 
         ObjUChar4Image *GetImageFromAbove();
 
+        ObjUChar4Image *GetRGBImage(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
+
+        ObjUChar4Image *GetRGBImage(int object_index);
+
+
         void RenderImageFromAbove();
 
 //  void visualizeObjectFromMultiPerspective(std::shared_ptr<ObjectInstance> obj_inst_ptr);

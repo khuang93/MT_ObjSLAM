@@ -95,6 +95,8 @@ public:
 
     ObjSLAM::ObjUChar4Image* GetInputImage();
 
+    ObjSLAM::ObjUChar4Image* GetRGBImage(int n);
+
     ObjSLAM::ObjUChar4Image* GetAboveImage();
 
     int GetActiveObjNumber(){return this->mappingEngine->number_activeObjects;}

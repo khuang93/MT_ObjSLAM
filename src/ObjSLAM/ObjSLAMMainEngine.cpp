@@ -78,6 +78,16 @@ ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetImage(int n) {
     }
 }
 
+
+ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::GetRGBImage(int n){
+    if (n < this->mappingEngine->number_activeObjects) {
+        return mappingEngine->GetRGBImage(n);
+    } else {
+        n = n % this->mappingEngine->number_activeObjects;
+        return mappingEngine->GetRGBImage(n);
+    }
+}
+
 ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetImageFar(int n) {
     if (n < this->mappingEngine->number_activeObjects) {
         return mappingEngine->GetImageFar(n);
