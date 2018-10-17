@@ -43,6 +43,8 @@ shared_ptr<ITMLib::ITMTrackingState> ObjSLAMTrackingEngine::TrackFrame(ITMLib::I
   return t_state;
 }
 
+
+
 shared_ptr<ITMLib::ITMTrackingState>  ObjSLAMTrackingEngine::GetTrackingState() {
   return t_state;
 }

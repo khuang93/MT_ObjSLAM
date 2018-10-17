@@ -152,6 +152,8 @@ namespace ObjSLAM {
 
         void ProcessFrame();
 
+        void RefineTrackingResult();
+
         void ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview,
                               std::shared_ptr<ObjectInstance<TVoxel, TIndex>> obj_inst_ptr);
 

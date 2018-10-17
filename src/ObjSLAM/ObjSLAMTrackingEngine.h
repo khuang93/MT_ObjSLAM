@@ -36,6 +36,9 @@ class ObjSLAMTrackingEngine {
   ~ObjSLAMTrackingEngine();
   shared_ptr<ITMLib::ITMTrackingState>  TrackFrame(ITMLib::ITMView * view);
 
+    template<class TVoxel, class TIndex>
+  shared_ptr<ITMLib::ITMTrackingState>  TrackFrame(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
+
   shared_ptr<ITMLib::ITMTrackingState>  GetTrackingState();
 
   shared_ptr<ITMLib::ITMTrackingController> GetTrackingController();

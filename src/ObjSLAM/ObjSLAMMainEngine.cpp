@@ -31,12 +31,15 @@ int ObjSLAMMainEngine::ReadNext() {
 }
 
 void ObjSLAMMainEngine::TrackFrame() {
+
     t_state = trackingEngine->TrackFrame(wholeView.get());
 }
 
 
 void ObjSLAMMainEngine::MapFrame() {
     mappingEngine->ProcessFrame();
+
+    trackingEngine->OutputTrackingResults("trackingResults_refined.txt");
 
     Visualize();
 

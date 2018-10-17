@@ -187,30 +187,93 @@ namespace ObjSLAM {
 //                    denseMapper->ResetScene(obj_inst_scene_ptr.get());
 
                 } else {
-//                    obj_inst_ptr->view_count++;
-//                    cout << "obj_view_count = " << obj_inst_ptr->view_count << endl;
+
+                    auto tmp_t_state = obj_inst_ptr->GetTrackingState();
+                    tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
+                    t_controller->Prepare(tmp_t_state.get(),
+                                          obj_inst_ptr->GetScene().get(),
+                                          obj_inst_ptr.get()->GetCurrentView().get(),
+                                          visualisationEngine,
+                                          obj_inst_ptr->GetRenderState().get());
+                    this->t_controller->Track(obj_inst_ptr->GetTrackingState().get(), obj_inst_ptr->GetCurrentView().get());
+                    if(tmp_t_state->trackerResult==ITMTrackingState::TRACKING_FAILED){
+                        tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
+                    }else{
+
+                    }
+                    std::cout<<"Object Pose: \n"<<obj_inst_ptr->GetTrackingState()->pose_d->GetM()<<std::endl;
                 }
 
-
-                //ProcessOneObject
-                ProcessOneObject(itmview, obj_inst_ptr);
 
                 //re-init the bool of newObject
                 newObject = true;
             }
         }
+
+
+        RefineTrackingResult();
+
+#ifdef WITH_OPENMP
+#pragma omp parallel for private(sceneIsBackground)
+#endif
+        for(int i = 0; i<active_obj_ptr_vector.size(); i++){
+            ObjectInstance_ptr<TVoxel,TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
+            //ProcessOneObject
+            ProcessOneObject(obj_inst_ptr->GetCurrentView(), obj_inst_ptr);
+        }
+
+
+
+
         //Insert function: prepare tracking with all objs
         this->renderState_RenderAll->raycastResult->Clear();
 
         std::vector<ObjectInstance_ptr<TVoxel,TIndex>> tmp_vec;
         copy((++obj_inst_ptr_vector.begin()), obj_inst_ptr_vector.end(),back_inserter(tmp_vec));
 
-        t_controller->Prepare(t_state.get(), this->renderState_RenderAll.get(), /*this->obj_inst_ptr_vector*/ tmp_vec,
+        t_controller->Prepare(t_state.get(), this->renderState_RenderAll.get(), this->obj_inst_ptr_vector /*tmp_vec*/,
                               visualisationEngine); //visualisationEngine_BG
 
 
 
         write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img" + to_string(imgNumber) + ".ply");
+
+    }
+
+    template<class TVoxel, class TIndex>
+    void ObjSLAMMappingEngine<TVoxel, TIndex>::RefineTrackingResult(){
+
+        int count=2;
+//        ORUtils::SE3Pose tmp_pose;
+//        tmp_pose.SetFrom(this->t_state->pose_d);
+        float tmp_pose_params[6]{0,0,0,0,0,0};
+
+        for(int j = 0; j < 6; j++){
+            tmp_pose_params[j]+=2*this->t_state->pose_d->GetParams()[j];
+        }
+
+        //tmp_pose.GetParams(ORUtils::Vector3<float>& translation, ORUtils::Vector3<float>& rotation);
+
+
+        for(int i = 0; i<active_obj_ptr_vector.size();i++){
+            ObjectInstance_ptr <TVoxel,TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
+            auto tmp_t_state = obj_inst_ptr->GetTrackingState().get();
+            if(tmp_t_state->trackerResult!=ITMTrackingState::TRACKING_FAILED){
+                for(int j = 0; j < 6; j++){
+                    tmp_pose_params[j]+=tmp_t_state->trackerResult*tmp_t_state->pose_d->GetParams()[j];
+                }
+                count+=tmp_t_state->trackerResult;
+            }
+        }
+
+        for(int j = 0; j < 6; j++){
+            tmp_pose_params[j] /= count;
+        }
+
+
+        this->t_state->pose_d->SetFrom(tmp_pose_params);
+        this->t_state->pose_d->Coerce();
+        cout<<"Refined Pose:\n"<<t_state->pose_d->GetM()<<std::endl;
 
     }
 
@@ -232,7 +295,7 @@ namespace ObjSLAM {
 
             std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = obj_inst_ptr->GetTrackingState();
 
-            tmp_t_state->Reset();
+//            tmp_t_state->Reset();
 //            tmp_t_state->pose_d->SetM(anchor_pose.GetInvM()*t_state->pose_d->GetM());
             tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
             tmp_t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
@@ -1043,13 +1106,13 @@ namespace ObjSLAM {
                     UpdateVisibilityOfObj(obj_inst_ptr, pose_visualize);
 
 
-                    if (!obj_inst_ptr->isVisible) {
-                        auto scene = obj_inst_ptr.get()->GetScene();
-                        string stlname = obj_inst_ptr->GetClassLabel()->GetLabelClassName() + "." + to_string(j) +
-                                         "_cleaned.stl";
-                        SaveSceneToMesh(stlname.c_str(), scene);
-                        continue;
-                    }
+//                    if (!obj_inst_ptr->isVisible) {
+//                        auto scene = obj_inst_ptr.get()->GetScene();
+//                        string stlname = obj_inst_ptr->GetClassLabel()->GetLabelClassName() + "." + to_string(j) +
+//                                         "_cleaned.stl";
+//                        SaveSceneToMesh(stlname.c_str(), scene);
+//                        continue;
+//                    }
 
 
                     visualisationEngine->RenderImage(scene.get(), pose_visualize,

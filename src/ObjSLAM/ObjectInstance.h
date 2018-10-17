@@ -75,7 +75,7 @@ namespace ObjSLAM {
 
         void SetTrackingState(std::shared_ptr<ITMLib::ITMTrackingState> _t_state) { t_state = _t_state; }
 
-        std::shared_ptr<ITMLib::ITMView> GetCurrentView() { return current_view; }
+        std::shared_ptr<ITMLib::ITMView>& GetCurrentView() { return current_view; }
 
         std::shared_ptr<ObjectView<TVoxel, TIndex>> &GetAnchorView() { return anchor_view; }
 
