@@ -227,7 +227,7 @@ namespace ObjSLAM {
             std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = obj_inst_ptr->GetTrackingState();
 
             tmp_t_state->Reset();
-
+//            tmp_t_state->pose_d->SetM(anchor_pose.GetInvM()*t_state->pose_d->GetM());
             tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
             tmp_t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
 
