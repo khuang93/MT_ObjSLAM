@@ -35,7 +35,7 @@ namespace ObjSLAM {
         std::shared_ptr<ORUtils::Image<bool>> prevFrameProjectedToCurrent;
         bool isBackground = false;
     public:
-
+        bool updatedView=false;
         bool isVisible = true;
 //        short view_count = 0;
 
@@ -58,7 +58,7 @@ namespace ObjSLAM {
             anchor_view = std::shared_ptr<ObjectView<TVoxel, TIndex>>(_anchor_view);
         }
 
-        void SetCurrentView(std::shared_ptr<ITMLib::ITMView> _current_view) { current_view = _current_view; }
+        void SetCurrentView(std::shared_ptr<ITMLib::ITMView> _current_view) { current_view = _current_view; updatedView=true; }
 
 
         void SetAnchorView_ITM(std::shared_ptr<ITMLib::ITMView> _anchor_view) { anchor_view_itm = _anchor_view; }

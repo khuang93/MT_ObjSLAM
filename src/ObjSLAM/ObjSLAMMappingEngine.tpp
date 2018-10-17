@@ -219,7 +219,11 @@ namespace ObjSLAM {
         for(int i = 0; i<active_obj_ptr_vector.size(); i++){
             ObjectInstance_ptr<TVoxel,TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
             //ProcessOneObject
-            ProcessOneObject(obj_inst_ptr->GetCurrentView(), obj_inst_ptr);
+                    if(obj_inst_ptr->updatedView){
+                        ProcessOneObject(obj_inst_ptr->GetCurrentView(), obj_inst_ptr);
+                        obj_inst_ptr->updatedView=false;
+                    }
+
         }
 
 
@@ -257,6 +261,7 @@ namespace ObjSLAM {
 
         for(int i = 0; i<active_obj_ptr_vector.size();i++){
             ObjectInstance_ptr <TVoxel,TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
+            if(!obj_inst_ptr->updatedView) continue;
             auto tmp_t_state = obj_inst_ptr->GetTrackingState().get();
             if(tmp_t_state->trackerResult!=ITMTrackingState::TRACKING_FAILED){
                 for(int j = 0; j < 6; j++){
