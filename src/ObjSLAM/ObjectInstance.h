@@ -13,6 +13,7 @@
 #include "ObjectInstanceScene.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Views/ITMView.h"
 #include "ObjSLAMDataTypes.h"
+#include "ObjCameraPose.h"
 
 namespace ObjSLAM {
     template<class TVoxel, class TIndex>
@@ -79,6 +80,8 @@ namespace ObjSLAM {
         std::shared_ptr<ObjectView<TVoxel, TIndex>> &GetAnchorView() { return anchor_view; }
 
         ITMLib::ITMView *GetAnchorView_ITM() { return anchor_view_itm.get(); }
+
+        ObjCameraPose GetAnchorPose() {return anchor_view->GetCameraPose();}
 
         std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> GetScene() { return this->scene; }
 

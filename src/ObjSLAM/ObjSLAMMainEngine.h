@@ -71,6 +71,8 @@ public:
         t_controller= trackingEngine->GetTrackingController();
         mappingEngine->SetTrackingController(t_controller);
         t_state = trackingEngine->GetTrackingState();
+
+        mappingEngine->SetTrackingEngine(trackingEngine);
     }
 
     ~ObjSLAMMainEngine(){}

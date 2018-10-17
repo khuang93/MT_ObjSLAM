@@ -201,10 +201,16 @@ namespace ObjSLAM {
         }
         //Insert function: prepare tracking with all objs
         this->renderState_RenderAll->raycastResult->Clear();
-        t_controller->Prepare(t_state.get(), this->renderState_RenderAll.get(), this->obj_inst_ptr_vector,
+
+        std::vector<ObjectInstance_ptr<TVoxel,TIndex>> tmp_vec;
+        copy((++obj_inst_ptr_vector.begin()), obj_inst_ptr_vector.end(),back_inserter(tmp_vec));
+
+        t_controller->Prepare(t_state.get(), this->renderState_RenderAll.get(), /*this->obj_inst_ptr_vector*/ tmp_vec,
                               visualisationEngine); //visualisationEngine_BG
 
-//        write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img" + to_string(imgNumber) + ".ply");
+
+
+        write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img" + to_string(imgNumber) + ".ply");
 
     }
 

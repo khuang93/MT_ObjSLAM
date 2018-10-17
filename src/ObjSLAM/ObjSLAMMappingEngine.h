@@ -34,6 +34,7 @@
 #include "ObjSLAMCamera.h"
 #include "ObjSLAMDataTypes.h"
 #include "ObjectInstance.h"
+#include "ObjSLAMTrackingEngine.h"
 
 
 namespace ObjSLAM {
@@ -54,6 +55,8 @@ namespace ObjSLAM {
         ITMLib::ITMVisualisationEngine_CPU<TVoxel, TIndex> *visualisationEngine;
         ITMLib::ITMVisualisationEngine_CPU<TVoxel, TIndex> *visualisationEngine_BG;
         shared_ptr<ITMLib::ITMTrackingController> t_controller;
+
+        shared_ptr<ObjSLAMTrackingEngine> trackingEngine;
 
         Vector2i imgSize;
 //  std::vector<ObjectInstanceScene<TVoxel, TIndex> *> object_instance_scene_vector;
@@ -179,6 +182,8 @@ namespace ObjSLAM {
         void UpdateViewPose();
 
         void SetTrackingController(shared_ptr<ITMLib::ITMTrackingController> _t_controller);
+
+        void SetTrackingEngine(shared_ptr<ObjSLAMTrackingEngine> _t_eng){this->trackingEngine=_t_eng; }
 
 
         void UpdateImgNumber(int _imgNum) { imgNumber = _imgNum; };
