@@ -22,7 +22,7 @@ class ObjSLAMTrackingEngine {
   std::shared_ptr<ITMTrackingController> t_controller;
   ITMTracker *tracker;
   ITMLowLevelEngine *lowEngine;
-
+  ORUtils::SE3Pose pose_prev;
   Vector2i imgSize;
   const std::shared_ptr<ITMLib::ITMLibSettings> settings;
   const std::shared_ptr<ITMLib::ITMLibSettings> settings_obj;

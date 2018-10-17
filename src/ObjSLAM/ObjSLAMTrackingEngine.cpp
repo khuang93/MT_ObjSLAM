@@ -37,6 +37,11 @@ ObjSLAMTrackingEngine::~ObjSLAMTrackingEngine(){
 
 shared_ptr<ITMLib::ITMTrackingState> ObjSLAMTrackingEngine::TrackFrame(ITMLib::ITMView *view) {
   this->t_controller.get()->Track(t_state.get(), view);
+  if(t_state->trackerResult==ITMTrackingState::TRACKING_FAILED){
+    t_state->pose_d->SetFrom(&pose_prev);
+  }else{
+    pose_prev.SetFrom(t_state->pose_d);
+  }
   std::cout << t_state->pose_d->GetM();
   OutputTrackingResults("trackingResults.txt");
   imgNumber++;
