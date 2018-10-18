@@ -452,7 +452,8 @@ namespace ObjSLAM {
         this->number_totalObjects = obj_inst_ptr_vector.size();
         this->number_activeObjects = active_obj_ptr_vector.size();
 
-        BG_VoxelCleanUp();
+        if(do_BG_cleanup) BG_VoxelCleanUp();
+        if(!do_Obj_cleanup) return;
         for (size_t i = 1; i < this->active_obj_ptr_vector.size(); ++i) {
             Object_Cleanup(active_obj_ptr_vector.at(i));
         }

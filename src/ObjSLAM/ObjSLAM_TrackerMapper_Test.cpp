@@ -43,6 +43,8 @@ int reader_SkipFrames = 0;
 int numthreads = 4;
 int totFrames;
 bool sceneIsBackground = false;
+bool do_BG_cleanup = true;
+bool do_Obj_cleanup = true;
 
 
 int main(int argc, char **argv) {
@@ -68,6 +70,8 @@ int main(int argc, char **argv) {
     if(saveSTL){
       STL_Frequency = atoi(argv[5]);
     }
+    do_BG_cleanup = (atoi(argv[6])!=0);
+    do_Obj_cleanup = (atoi(argv[7])!=0);
   }
 
 
