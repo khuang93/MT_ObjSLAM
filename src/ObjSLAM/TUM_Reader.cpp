@@ -24,12 +24,13 @@ RGB_D_NamePair TUM_Reader::Get_RGB_D_filenames(std::istream &associate_src){
 
 
   //skip 2 frames
-  for(int i = 0; i < reader_SkipFrames; ++i){
-    associate_src>>garbage;
-    associate_src>>garbage;
-    associate_src>>garbage;
-    associate_src>>garbage;
-  }
+
+//  for(int i = 0; i < reader_SkipFrames; ++i){
+//    associate_src>>garbage;
+//    associate_src>>garbage;
+//    associate_src>>garbage;
+//    associate_src>>garbage;
+//  }
 
   RGB_D_NamePair res;
   res.depth_name=depth_name;

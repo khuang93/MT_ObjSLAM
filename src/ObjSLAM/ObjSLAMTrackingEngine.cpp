@@ -75,7 +75,7 @@ void ObjSLAMTrackingEngine::OutputTrackingResults(std::ofstream &of) {
   ORUtils::Vector3<float> pos = pose_inv.GetT();
   ObjCameraPose obj_cam_pose_inv(pose_inv);
   Eigen::Quaterniond eigen_quat = obj_cam_pose_inv.GetQuaternion(); //try the inv of the pose
-  double time = imgNumber+reader_SkipFrames*(imgNumber-1);
+  double time = imgNumber;//+reader_SkipFrames*(imgNumber-1);
 
   of << time << ", "<< pos.x << ", " << pos.y << ", " << pos.z-2.25  << ", " << eigen_quat.x() << ", " << eigen_quat.y() << ", "
      << eigen_quat.z() << ", " << eigen_quat.w()<< endl;

@@ -14,6 +14,11 @@ namespace ObjSLAM {
             mainEngine->TrackFrame();
             mainEngine->UpdateMappingEngine();
             mainEngine->MapFrame();
+            for(int i = 0; i<reader_SkipFrames;++i){
+                imgNum = mainEngine->ReadNext();
+                mainEngine->TrackFrame();
+            }
+
 
             if(imgNum%10==0) mainEngine->OutputPics();
 
