@@ -872,7 +872,7 @@ namespace ObjSLAM {
             ORUtils::Image<Vector4f>* pcl = obj_inst_ptr->GetRenderState()->raycastResult;
 
 #ifdef WITH_OPENMP
-#pragma omp parallel //private(sceneIsBackground)
+#pragma omp parallel
 #endif
             for(int idx = 0; idx<pcl->dataSize;idx++){
                 Vector3f point = TO_VECTOR3(pcl->GetElement(idx,MEMORYDEVICE_CPU));
