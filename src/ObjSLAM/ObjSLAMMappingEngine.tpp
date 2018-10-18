@@ -249,7 +249,7 @@ namespace ObjSLAM {
         ITMLib::ITMRenderState_VH* tmp_BG_r_state = (ITMLib::ITMRenderState_VH*)BG_object_ptr->GetRenderState().get();
         UpdateVisibilityOfObj(BG_object_ptr, t_state->pose_d);
         if(tmp_BG_r_state->noVisibleEntries==0) return;
-        int BG_weight = BG_object_ptr->GetScene()->localVBA.lastFreeBlockId;
+        int BG_weight = BG_object_ptr->GetScene()->index.getNumAllocatedVoxelBlocks() - BG_object_ptr->GetScene()->localVBA.lastFreeBlockId;
 
         float count=BG_weight*/*tmp_BG_r_state->noVisibleEntries**/t_state->trackerResult;
 //        ORUtils::SE3Pose tmp_pose;
@@ -267,7 +267,7 @@ namespace ObjSLAM {
             ObjectInstance_ptr <TVoxel,TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
             UpdateVisibilityOfObj(obj_inst_ptr, t_state->pose_d);
             ITMLib::ITMRenderState_VH* tmp_r_state = (ITMLib::ITMRenderState_VH*)obj_inst_ptr->GetRenderState().get();
-            int weight = obj_inst_ptr->GetScene()->localVBA.lastFreeBlockId;
+            int weight = obj_inst_ptr->GetScene()->index.getNumAllocatedVoxelBlocks() - obj_inst_ptr->GetScene()->localVBA.lastFreeBlockId;
 
             if(!obj_inst_ptr->updatedView||obj_inst_ptr->GetTrackingState()->trackerResult==ITMTrackingState::TRACKING_FAILED) continue;
             auto tmp_t_state = obj_inst_ptr->GetTrackingState().get();
@@ -798,7 +798,7 @@ namespace ObjSLAM {
         TVoxel *voxelBlocks_ptr = scene->localVBA.GetVoxelBlocks();
         ITMHashEntry *hashTable = scene->index.GetEntries();
         TVoxel *localVBA = scene->localVBA.GetVoxelBlocks();
-
+        int noAllocatedVoxelEntries = scene->localVBA.lastFreeBlockId;
 #ifdef WITH_OPENMP
 #pragma omp parallel for
 #endif
@@ -850,6 +850,10 @@ namespace ObjSLAM {
 
         int size = voxelPos_vec.size();
 
+        ITMHashEntry tmpEntry;
+        memset(&tmpEntry, 0, sizeof(ITMHashEntry));
+        tmpEntry.ptr = -2;
+
         ITMLib::ITMScene<TVoxel, TIndex> *scene_BG = this->BG_object_ptr->GetScene().get();
         sceneIsBackground = true;
         for (size_t i = 0; i < size; ++i) {
@@ -878,6 +882,7 @@ namespace ObjSLAM {
                             for (int idx = 0; idx < SDF_BLOCK_SIZE3; idx++) voxelData[blockIdx + idx] = TVoxel();
                         }
                     }
+                    scene_BG->index.GetEntries()[hashIdx]=tmpEntry;
 
                 }
 
