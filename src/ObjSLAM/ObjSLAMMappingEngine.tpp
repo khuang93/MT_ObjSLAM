@@ -211,7 +211,7 @@ namespace ObjSLAM {
         }
 
 
-        RefineTrackingResult();
+//        RefineTrackingResult();
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
@@ -257,26 +257,37 @@ namespace ObjSLAM {
         float tmp_pose_params[6]{0,0,0,0,0,0};
 
         for(int j = 0; j < 6; j++){
-            tmp_pose_params[j]+=2*this->t_state->pose_d->GetParams()[j];
+            tmp_pose_params[j]+=BG_weight*this->t_state->pose_d->GetParams()[j];
         }
 
         //tmp_pose.GetParams(ORUtils::Vector3<float>& translation, ORUtils::Vector3<float>& rotation);
-
+        float TH=0.01;
 
         for(int i = 0; i<active_obj_ptr_vector.size();i++){
             ObjectInstance_ptr <TVoxel,TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
-            UpdateVisibilityOfObj(obj_inst_ptr, t_state->pose_d);
+            bool outlier=false;
+
+            auto tmp_t_state = obj_inst_ptr->GetTrackingState().get();
             ITMLib::ITMRenderState_VH* tmp_r_state = (ITMLib::ITMRenderState_VH*)obj_inst_ptr->GetRenderState().get();
+
+            for(int j = 3; j < 6; j++){
+                if(abs(this->t_state->pose_d->GetParams()[j]-tmp_t_state->pose_d->GetParams()[j])>TH){
+                    outlier=true;
+                    break;
+                }
+            }
+
+
+            if(!obj_inst_ptr->updatedView||outlier||obj_inst_ptr->GetTrackingState()->trackerResult==ITMTrackingState::TRACKING_FAILED) continue;
+            UpdateVisibilityOfObj(obj_inst_ptr, t_state->pose_d);
+
             int weight = obj_inst_ptr->GetScene()->index.getNumAllocatedVoxelBlocks() - obj_inst_ptr->GetScene()->localVBA.lastFreeBlockId;
 
-            if(!obj_inst_ptr->updatedView||obj_inst_ptr->GetTrackingState()->trackerResult==ITMTrackingState::TRACKING_FAILED) continue;
-            auto tmp_t_state = obj_inst_ptr->GetTrackingState().get();
-            count+=tmp_t_state->trackerResult*weight;
 
             for(int j = 0; j < 6; j++){
                 tmp_pose_params[j]+=weight*tmp_t_state->trackerResult*tmp_t_state->pose_d->GetParams()[j];
             }
-
+            count+=tmp_t_state->trackerResult*weight;
         }
 
         for(int j = 0; j < 6; j++){
@@ -310,8 +321,8 @@ namespace ObjSLAM {
 
 //            tmp_t_state->Reset();
 //            tmp_t_state->pose_d->SetM(anchor_pose.GetInvM()*t_state->pose_d->GetM());
-            tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
-            tmp_t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
+//            tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
+//            tmp_t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
 
             denseMapper->ProcessFrame(itmview.get(), tmp_t_state.get(), scene, obj_inst_ptr->GetRenderState().get(),
                                       true);
@@ -436,7 +447,7 @@ namespace ObjSLAM {
         this->number_totalObjects = obj_inst_ptr_vector.size();
         this->number_activeObjects = active_obj_ptr_vector.size();
 
-//        BG_VoxelCleanUp();
+        BG_VoxelCleanUp();
         for (size_t i = 1; i < this->active_obj_ptr_vector.size(); ++i) {
             Object_Cleanup(active_obj_ptr_vector.at(i));
         }
