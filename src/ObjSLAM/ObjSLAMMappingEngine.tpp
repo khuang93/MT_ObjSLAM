@@ -246,8 +246,12 @@ namespace ObjSLAM {
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::RefineTrackingResult(){
+        ITMLib::ITMRenderState_VH* tmp_BG_r_state = (ITMLib::ITMRenderState_VH*)BG_object_ptr->GetRenderState().get();
+        UpdateVisibilityOfObj(BG_object_ptr, t_state->pose_d);
+        if(tmp_BG_r_state->noVisibleEntries==0) return;
+        int BG_weight = BG_object_ptr->GetScene()->localVBA.lastFreeBlockId;
 
-        int count=2;
+        float count=BG_weight*/*tmp_BG_r_state->noVisibleEntries**/t_state->trackerResult;
 //        ORUtils::SE3Pose tmp_pose;
 //        tmp_pose.SetFrom(this->t_state->pose_d);
         float tmp_pose_params[6]{0,0,0,0,0,0};
@@ -261,14 +265,18 @@ namespace ObjSLAM {
 
         for(int i = 0; i<active_obj_ptr_vector.size();i++){
             ObjectInstance_ptr <TVoxel,TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
-            if(!obj_inst_ptr->updatedView) continue;
+            UpdateVisibilityOfObj(obj_inst_ptr, t_state->pose_d);
+            ITMLib::ITMRenderState_VH* tmp_r_state = (ITMLib::ITMRenderState_VH*)obj_inst_ptr->GetRenderState().get();
+            int weight = obj_inst_ptr->GetScene()->localVBA.lastFreeBlockId;
+
+            if(!obj_inst_ptr->updatedView||obj_inst_ptr->GetTrackingState()->trackerResult==ITMTrackingState::TRACKING_FAILED) continue;
             auto tmp_t_state = obj_inst_ptr->GetTrackingState().get();
-            if(tmp_t_state->trackerResult!=ITMTrackingState::TRACKING_FAILED){
-                for(int j = 0; j < 6; j++){
-                    tmp_pose_params[j]+=tmp_t_state->trackerResult*tmp_t_state->pose_d->GetParams()[j];
-                }
-                count+=tmp_t_state->trackerResult;
+            count+=tmp_t_state->trackerResult*weight;
+
+            for(int j = 0; j < 6; j++){
+                tmp_pose_params[j]+=weight*tmp_t_state->trackerResult*tmp_t_state->pose_d->GetParams()[j];
             }
+
         }
 
         for(int j = 0; j < 6; j++){
@@ -428,7 +436,7 @@ namespace ObjSLAM {
         this->number_totalObjects = obj_inst_ptr_vector.size();
         this->number_activeObjects = active_obj_ptr_vector.size();
 
-        BG_VoxelCleanUp();
+//        BG_VoxelCleanUp();
         for (size_t i = 1; i < this->active_obj_ptr_vector.size(); ++i) {
             Object_Cleanup(active_obj_ptr_vector.at(i));
         }
