@@ -193,18 +193,18 @@ namespace ObjSLAM {
 
                     //init tracking with
                     tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
-//                    t_controller->Prepare(tmp_t_state.get(),
-//                                          obj_inst_ptr->GetScene().get(),
-//                                          obj_inst_ptr.get()->GetCurrentView().get(),
-//                                          visualisationEngine,
-//                                          obj_inst_ptr->GetRenderState().get());
-//                    this->t_controller->Track(obj_inst_ptr->GetTrackingState().get(), obj_inst_ptr->GetCurrentView().get());
-//                    if(tmp_t_state->trackerResult==ITMTrackingState::TRACKING_FAILED){
-//                        tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
-//                    }else{
-//
-//                    }
-//                    std::cout<<"Object Pose: \n"<<obj_inst_ptr->GetTrackingState()->pose_d->GetM()<<std::endl;
+                    t_controller->Prepare(tmp_t_state.get(),
+                                          obj_inst_ptr->GetScene().get(),
+                                          obj_inst_ptr.get()->GetCurrentView().get(),
+                                          visualisationEngine,
+                                          obj_inst_ptr->GetRenderState().get());
+                    this->t_controller->Track(obj_inst_ptr->GetTrackingState().get(), obj_inst_ptr->GetCurrentView().get());
+                    if(tmp_t_state->trackerResult==ITMTrackingState::TRACKING_FAILED){
+                        tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
+                    }else{
+
+                    }
+                    std::cout<<"Object Pose: \n"<<obj_inst_ptr->GetTrackingState()->pose_d->GetM()<<std::endl;
                 }
 
 
@@ -214,7 +214,7 @@ namespace ObjSLAM {
         }
 
 
-//        if(imgNumber>1) RefineTrackingResult();
+        if(imgNumber>1) RefineTrackingResult();
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
@@ -870,7 +870,7 @@ namespace ObjSLAM {
             ITMLib::ITMVoxelBlockHash::IndexCache cache;
 
             ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
-            float oneOverVoxelSize = 1.0f / obj_inst_ptr->GetScene()->sceneParams->voxelSize;
+            float voxelSize = obj_inst_ptr->GetScene()->sceneParams->voxelSize;
             ORUtils::Image<Vector4f>* pcl = obj_inst_ptr->GetRenderState()->raycastResult;
 
 
@@ -878,7 +878,7 @@ namespace ObjSLAM {
 #pragma omp parallel
 #endif
             for(int idx = 0; idx<pcl->dataSize;idx++){
-                Vector3f point = TO_VECTOR3(pcl->GetElement(idx,MEMORYDEVICE_CPU));
+                Vector3f point = TO_VECTOR3(pcl->GetElement(idx,MEMORYDEVICE_CPU)*voxelSize);
                 if(IS_EQUAL3(point, Vector3i(0,0,0))) continue;
                 int index = findVoxel(voxelIndex, Vector3i((int)ROUND(point.x), (int)ROUND(point.y), (int)ROUND(point.z)), vmIndex, cache );
                 if(index!=-1){

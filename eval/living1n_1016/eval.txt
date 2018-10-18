@@ -307,7 +307,7 @@ absolute_translational_error.std 0.027324 m
 absolute_translational_error.min 0.000594 m
 absolute_translational_error.max 0.338291 m
 
-noLabelSkip2
+noLabelSkip2 Run 03
 compared_pose_pairs 322 pairs
 absolute_translational_error.rmse 0.089313 m
 absolute_translational_error.mean 0.043525 m
@@ -315,7 +315,7 @@ absolute_translational_error.median 0.023449 m
 absolute_translational_error.std 0.077990 m
 absolute_translational_error.min 0.015933 m
 absolute_translational_error.max 0.402017 m
-noLabel
+noLabel Run 01
 compared_pose_pairs 965 pairs
 absolute_translational_error.rmse 0.006473 m
 absolute_translational_error.mean 0.006054 m
@@ -339,6 +339,7 @@ absolute_translational_error.median 0.007794 m
 absolute_translational_error.std 0.004617 m
 absolute_translational_error.min 0.000262 m
 absolute_translational_error.max 0.032287 m
+Run02
 compared_pose_pairs 965 pairs
 absolute_translational_error.rmse 0.006404 m
 absolute_translational_error.mean 0.005686 m
