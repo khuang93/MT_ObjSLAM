@@ -844,7 +844,7 @@ namespace ObjSLAM {
         }
     }
 
-    template<class TVoxel, class TIndex>
+    /*template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::BG_VoxelCleanUp() {
         ITMHashEntry tmpEntry;
         memset(&tmpEntry, 0, sizeof(ITMHashEntry));
@@ -895,23 +895,23 @@ namespace ObjSLAM {
                 }
             }
         }
-    }
+    }*/
 
 
-  /*  template<class TVoxel, class TIndex>
+    template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::BG_VoxelCleanUp() {
 
         std::vector<Vector3s> voxelPos_vec;
         voxelPos_vec.reserve(100000);
 
 //TODO Parallelize this loop
-*//*#ifdef WITH_OPENMP
+#ifdef WITH_OPENMP
 #pragma omp parallel
 #endif
   std::vector<Vector3f> voxelPos_vec_private;
 #ifdef WITH_OPENMP
 #pragma omp for
-#endif *//*
+#endif
         sceneIsBackground = false;
         for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
             ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
@@ -962,7 +962,6 @@ namespace ObjSLAM {
             }
         }
     }
-*/
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::
