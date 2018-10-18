@@ -47,7 +47,21 @@ void ObjSLAMMainEngine::MapFrame() {
 }
 
 void ObjSLAMMainEngine::Visualize() {
-
+/*#pragma omp parallel sections
+    {
+#pragma omp section
+        {
+            mappingEngine->RenderAllObjImages();
+        }
+#pragma omp section
+        {
+            mappingEngine->RenderAllObjImagesFar();
+        }
+#pragma omp section
+        {
+            mappingEngine->RenderImageFromAbove();
+        }
+    }*/
 
     mappingEngine->RenderAllObjImages();
 
@@ -82,7 +96,7 @@ ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetImage(int n) {
 }
 
 
-ObjSLAM::ObjUChar4Image* ObjSLAMMainEngine::GetRGBImage(int n){
+ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetRGBImage(int n) {
     if (n < this->mappingEngine->number_activeObjects) {
         return mappingEngine->GetRGBImage(n);
     } else {

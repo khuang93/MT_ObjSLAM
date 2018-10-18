@@ -189,6 +189,8 @@ namespace ObjSLAM {
                 } else {
 
                     auto tmp_t_state = obj_inst_ptr->GetTrackingState();
+
+                    //init tracking with
                     tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
                     t_controller->Prepare(tmp_t_state.get(),
                                           obj_inst_ptr->GetScene().get(),
@@ -211,7 +213,7 @@ namespace ObjSLAM {
         }
 
 
-//        RefineTrackingResult();
+        if(imgNumber>1) RefineTrackingResult();
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
@@ -273,12 +275,13 @@ namespace ObjSLAM {
             for(int j = 3; j < 6; j++){
                 if(abs(this->t_state->pose_d->GetParams()[j]-tmp_t_state->pose_d->GetParams()[j])>TH){
                     outlier=true;
+                    tmp_t_state->pose_d->SetFrom(t_state->pose_d);
                     break;
                 }
             }
 
 
-            if(!obj_inst_ptr->updatedView||outlier||obj_inst_ptr->GetTrackingState()->trackerResult==ITMTrackingState::TRACKING_FAILED) continue;
+     /*       if(!obj_inst_ptr->updatedView||outlier||obj_inst_ptr->GetTrackingState()->trackerResult==ITMTrackingState::TRACKING_FAILED) continue;
             UpdateVisibilityOfObj(obj_inst_ptr, t_state->pose_d);
 
             int weight = obj_inst_ptr->GetScene()->index.getNumAllocatedVoxelBlocks() - obj_inst_ptr->GetScene()->localVBA.lastFreeBlockId;
@@ -287,17 +290,18 @@ namespace ObjSLAM {
             for(int j = 0; j < 6; j++){
                 tmp_pose_params[j]+=weight*tmp_t_state->trackerResult*tmp_t_state->pose_d->GetParams()[j];
             }
-            count+=tmp_t_state->trackerResult*weight;
+            count+=tmp_t_state->trackerResult*weight;*/
         }
 
+        /*
         for(int j = 0; j < 6; j++){
             tmp_pose_params[j] /= count;
-        }
+        }*/
 
 
-        this->t_state->pose_d->SetFrom(tmp_pose_params);
-        this->t_state->pose_d->Coerce();
-        cout<<"Refined Pose:\n"<<t_state->pose_d->GetM()<<std::endl;
+//        this->t_state->pose_d->SetFrom(tmp_pose_params);
+//        this->t_state->pose_d->Coerce();
+//        cout<<"Refined Pose:\n"<<t_state->pose_d->GetM()<<std::endl;
 
     }
 
@@ -1120,6 +1124,7 @@ namespace ObjSLAM {
 #endif
             for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_vec.at(j);
+                if(!obj_inst_ptr->isVisible) continue;
 
                 auto scene = obj_inst_ptr->GetScene();
 
@@ -1133,16 +1138,6 @@ namespace ObjSLAM {
 
 
                     UpdateVisibilityOfObj(obj_inst_ptr, pose_visualize);
-
-
-//                    if (!obj_inst_ptr->isVisible) {
-//                        auto scene = obj_inst_ptr.get()->GetScene();
-//                        string stlname = obj_inst_ptr->GetClassLabel()->GetLabelClassName() + "." + to_string(j) +
-//                                         "_cleaned.stl";
-//                        SaveSceneToMesh(stlname.c_str(), scene);
-//                        continue;
-//                    }
-
 
                     visualisationEngine->RenderImage(scene.get(), pose_visualize,
                                                      &obj_inst_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
@@ -1161,7 +1156,6 @@ namespace ObjSLAM {
                 } else {
                     sceneIsBackground = true;
 
-//update visibility? TODO
                     UpdateVisibilityOfObj(obj_inst_ptr, pose_visualize);
 
                     visualisationEngine->RenderImage(scene.get(), pose_visualize,
@@ -1272,7 +1266,9 @@ namespace ObjSLAM {
 #pragma omp parallel for private(sceneIsBackground)
 #endif
             for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
+
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_vec.at(j);
+                if(!obj_inst_ptr->isVisible) continue;
                 string name =
                         "Label_" + label_ptr.get()->GetLabelClassName() + ".Object" + to_string(j) + ".Frame" +
                         to_string(imgNumber)

@@ -110,7 +110,8 @@ namespace ObjSLAM {
         int GetLabelIndex() { return this->GetClassLabel()->GetLabelIndex(); }
 
         void UpdateVisibility() {
-            isVisible = ((ITMLib::ITMRenderState_VH *) this->GetRenderState().get())->noVisibleEntries > 0;
+            int voxelCount = scene->index.getNumAllocatedVoxelBlocks() - scene->localVBA.lastFreeBlockId -1;
+            isVisible = ((ITMLib::ITMRenderState_VH *) this->GetRenderState().get())->noVisibleEntries > 0 && voxelCount > 0;
         }
 
     };
