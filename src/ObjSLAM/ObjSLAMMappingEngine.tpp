@@ -13,6 +13,7 @@
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMVoxelBlockHash.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderState_VH.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMRepresentationAccess.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Meshing/Shared/ITMMeshingEngine_Shared.h>
 
 //define the global variable
 
@@ -842,21 +843,72 @@ namespace ObjSLAM {
         }
     }
 
-
     template<class TVoxel, class TIndex>
+    void ObjSLAMMappingEngine<TVoxel, TIndex>::BG_VoxelCleanUp() {
+        ITMHashEntry tmpEntry;
+        memset(&tmpEntry, 0, sizeof(ITMHashEntry));
+        tmpEntry.ptr = -2;
+
+
+
+        ITMLib::ITMScene<TVoxel, TIndex> *scene_BG = this->BG_object_ptr->GetScene().get();
+        sceneIsBackground = true;
+
+
+        TVoxel *voxelData = scene_BG->localVBA.GetVoxelBlocks();
+        int *voxelAllocationList = scene_BG->localVBA.GetAllocationList();
+        int noAllocatedVoxelEntries = scene_BG->localVBA.lastFreeBlockId;
+        ITMVoxelBlockHash::IndexData* voxelIndex = scene_BG->index.getIndexData();
+
+#ifdef WITH_OPENMP
+#pragma omp parallel //private(sceneIsBackground)
+#endif
+        for (size_t i = 1; i < this->active_obj_ptr_vector.size(); ++i) {
+//            sceneIsBackground=false;
+            int vmIndex;
+            ITMLib::ITMVoxelBlockHash::IndexCache cache;
+
+            ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
+            ORUtils::Image<Vector4f>* pcl = obj_inst_ptr->GetRenderState()->raycastResult;
+
+#ifdef WITH_OPENMP
+#pragma omp parallel //private(sceneIsBackground)
+#endif
+            for(int idx = 0; idx<pcl->dataSize;idx++){
+                Vector3f point = TO_VECTOR3(pcl->GetElement(idx,MEMORYDEVICE_CPU));
+                int index = findVoxel(voxelIndex, Vector3i((int)ROUND(point.x), (int)ROUND(point.y), (int)ROUND(point.z)), vmIndex, cache );
+                if(index!=-1){
+                    voxelData[index] = TVoxel();
+                }
+                Vector3f p[8];
+                float sdf[8];
+                Vector3i blockLocation;
+                findPointNeighbors(p, sdf, Vector3i((int)ROUND(point.x), (int)ROUND(point.y), (int)ROUND(point.z)), voxelData,voxelIndex);
+                for(int idx2 = 0; idx2 < 8; idx2++){
+                    index = findVoxel(voxelIndex, Vector3i((int)ROUND(p[idx2].x), (int)ROUND(p[idx2].y), (int)ROUND(p[idx2].z)), vmIndex, cache);
+                    if(index!=-1){
+                        voxelData[index] = TVoxel();
+                    }
+                }
+            }
+        }
+    }
+
+
+  /*  template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::BG_VoxelCleanUp() {
 
         std::vector<Vector3s> voxelPos_vec;
         voxelPos_vec.reserve(100000);
 
 //TODO Parallelize this loop
-/*#ifdef WITH_OPENMP
+*//*#ifdef WITH_OPENMP
 #pragma omp parallel
 #endif
   std::vector<Vector3f> voxelPos_vec_private;
 #ifdef WITH_OPENMP
 #pragma omp for
-#endif */
+#endif *//*
         sceneIsBackground = false;
         for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
             ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
@@ -874,6 +926,7 @@ namespace ObjSLAM {
         for (size_t i = 0; i < size; ++i) {
             Vector3s blockPos = voxelPos_vec.at(i);
             int hashIdx = hashIndex(blockPos);
+
             TVoxel *voxelData = scene_BG->localVBA.GetVoxelBlocks();
             int *voxelAllocationList = scene_BG->localVBA.GetAllocationList();
             int noAllocatedVoxelEntries = scene_BG->localVBA.lastFreeBlockId;
@@ -906,7 +959,7 @@ namespace ObjSLAM {
             }
         }
     }
-
+*/
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::
