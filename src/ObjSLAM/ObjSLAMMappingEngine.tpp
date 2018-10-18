@@ -844,7 +844,7 @@ namespace ObjSLAM {
         }
     }
 
-    /*template<class TVoxel, class TIndex>
+    template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::BG_VoxelCleanUp() {
         ITMHashEntry tmpEntry;
         memset(&tmpEntry, 0, sizeof(ITMHashEntry));
@@ -895,10 +895,11 @@ namespace ObjSLAM {
                 }
             }
         }
-    }*/
+    }
 
 
-    template<class TVoxel, class TIndex>
+//old bg clean
+   /* template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::BG_VoxelCleanUp() {
 
         std::vector<Vector3s> voxelPos_vec;
@@ -961,7 +962,7 @@ namespace ObjSLAM {
                 hashIdx = (sceneIsBackground ? SDF_BUCKET_NUM_BG : SDF_BUCKET_NUM) + hashEntry.offset - 1;
             }
         }
-    }
+    }*/
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::
