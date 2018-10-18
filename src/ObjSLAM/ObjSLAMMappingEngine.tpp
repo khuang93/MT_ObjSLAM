@@ -876,10 +876,12 @@ namespace ObjSLAM {
 #endif
             for(int idx = 0; idx<pcl->dataSize;idx++){
                 Vector3f point = TO_VECTOR3(pcl->GetElement(idx,MEMORYDEVICE_CPU));
+                if(IS_EQUAL3(point, Vector3i(0,0,0))) continue;
                 int index = findVoxel(voxelIndex, Vector3i((int)ROUND(point.x), (int)ROUND(point.y), (int)ROUND(point.z)), vmIndex, cache );
                 if(index!=-1){
                     voxelData[index] = TVoxel();
                 }
+
                 Vector3f p[8];
                 float sdf[8];
                 Vector3i blockLocation;
