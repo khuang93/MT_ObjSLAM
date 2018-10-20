@@ -37,6 +37,7 @@ namespace ObjSLAM {
     public:
         bool updatedView=false;
         bool isVisible = true;
+
 //        short view_count = 0;
 
         //Constructor

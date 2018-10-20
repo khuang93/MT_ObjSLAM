@@ -442,6 +442,7 @@ namespace ObjSLAM {
                     active_obj_ptr_vector.erase(
                             std::remove(active_obj_ptr_vector.begin(), active_obj_ptr_vector.end(), obj_inst_ptr),
                             active_obj_ptr_vector.end());
+                    if(!do_Obj_cleanup){ Object_Cleanup(obj_inst_ptr);}
                 }
                 if (!prevVisibility && obj_inst_ptr->isVisible) {
                     active_obj_ptr_vector.push_back(obj_inst_ptr);
@@ -453,10 +454,10 @@ namespace ObjSLAM {
         this->number_activeObjects = active_obj_ptr_vector.size();
 
         if(do_BG_cleanup) BG_VoxelCleanUp();
-        if(!do_Obj_cleanup) return;
-        for (size_t i = 1; i < this->active_obj_ptr_vector.size(); ++i) {
-            Object_Cleanup(active_obj_ptr_vector.at(i));
-        }
+//        if(!do_Obj_cleanup) return;
+//        for (size_t i = 1; i < this->active_obj_ptr_vector.size(); ++i) {
+//            Object_Cleanup(active_obj_ptr_vector.at(i));
+//        }
     }
 
 //check if same obj by 2d overlap
@@ -565,6 +566,8 @@ namespace ObjSLAM {
 
         float area_1 = (x1_max - x1_min) * (y1_max - y1_min);
         float area_2 = (x2_max - x2_min) * (y2_max - y2_min);
+        if(area_1==0||area_2==0) return false;
+
 
         int x_min_overlap = MAX(x1_min, x2_min);
         int y_min_overlap = MAX(y1_min, y2_min);
@@ -625,6 +628,8 @@ namespace ObjSLAM {
 
         float area_1 = (x1_max - x1_min) * (y1_max - y1_min);
         float area_2 = (x2_max - x2_min) * (y2_max - y2_min);
+
+        if(area_1==0||area_2==0) return false;
 
         int x_min_overlap = max(x1_min, x2_min);
         int y_min_overlap = max(y1_min, y2_min);
