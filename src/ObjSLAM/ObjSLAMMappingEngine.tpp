@@ -115,10 +115,10 @@ namespace ObjSLAM {
                         if (!newObject) {
                             obj_inst_ptr = existing_obj_ptr;
                             //visibility
-                            if(!obj_inst_ptr->isVisible){
-                                obj_inst_ptr->isVisible==true;
-                                active_obj_ptr_vector.push_back(obj_inst_ptr);
-                            }
+//                            if(!obj_inst_ptr->isVisible){
+//                                obj_inst_ptr->isVisible==true;
+//                                active_obj_ptr_vector.push_back(obj_inst_ptr);
+//                            }
                             break;
                         }
                     }
@@ -433,7 +433,8 @@ namespace ObjSLAM {
     void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateVisibilityOfAllObj() {
         if (obj_inst_ptr_vector.size() == 0) return;
         sceneIsBackground = false;
-
+        active_obj_ptr_vector.clear();
+        active_obj_ptr_vector.push_back(BG_object_ptr);
 #pragma omp parallel for private(sceneIsBackground)
         for (size_t i = 1; i < this->obj_inst_ptr_vector.size(); ++i) { //start from1 to skip BG
 
@@ -444,15 +445,17 @@ namespace ObjSLAM {
 
 #pragma omp critical
             {
-                if (prevVisibility && !(obj_inst_ptr->isVisible)) {
-                    active_obj_ptr_vector.erase(
-                            std::remove(active_obj_ptr_vector.begin(), active_obj_ptr_vector.end(), obj_inst_ptr),
-                            active_obj_ptr_vector.end());
-                    if(!do_Obj_cleanup){ Object_Cleanup(obj_inst_ptr);}
-                }
-                if (!prevVisibility && obj_inst_ptr->isVisible) {
-                    active_obj_ptr_vector.push_back(obj_inst_ptr);
-                }
+
+                if(obj_inst_ptr->isVisible) active_obj_ptr_vector.push_back(obj_inst_ptr);
+//                if (prevVisibility && !(obj_inst_ptr->isVisible)) {
+//                    active_obj_ptr_vector.erase(
+//                            std::remove(active_obj_ptr_vector.begin(), active_obj_ptr_vector.end(), obj_inst_ptr),
+//                            active_obj_ptr_vector.end());
+//                    if(!do_Obj_cleanup){ Object_Cleanup(obj_inst_ptr);}
+//                }
+//                if (!prevVisibility && obj_inst_ptr->isVisible) {
+//                    active_obj_ptr_vector.push_back(obj_inst_ptr);
+//                }
             }
         }
 //        active_obj_ptr_vector.shrink_to_fit();
@@ -683,8 +686,8 @@ namespace ObjSLAM {
     bool ObjSLAMMappingEngine<TVoxel, TIndex>::CheckBoundingCubeOverlap(ORUtils::Vector6<float> first,
                                                                         ORUtils::Vector6<float> second) {
 
-        double threshold_volumeChange = 0.4;
-        double threshold_overlap = 0.4;
+        double threshold_volumeChange = 0.05;
+        double threshold_overlap = 0.2;
 
         //case where there is 0 overlap
         if (second[0] > first[3] || second[1] > first[4] || second[2] > first[5] || first[0] > second[3]
