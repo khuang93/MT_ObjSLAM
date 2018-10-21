@@ -122,7 +122,7 @@ void ITMVisualisationEngine_CPU<TVoxel, ITMVoxelBlockHash>::FindVisibleBlocksAnd
             for (int idx = blockIdx; idx < blockIdx + SDF_BLOCK_SIZE3; idx++) {
 
                 TVoxel &vox = voxelData[idx];
-                voxelData[idx].view_count++;
+//                voxelData[idx].view_count++;
 
             }
 

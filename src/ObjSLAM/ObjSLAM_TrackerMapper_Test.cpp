@@ -45,7 +45,7 @@ int totFrames;
 bool sceneIsBackground = false;
 bool do_BG_cleanup = true;
 bool do_Obj_cleanup = true;
-
+bool do_Obj_tracking = true;
 
 int main(int argc, char **argv) {
 
@@ -72,7 +72,11 @@ int main(int argc, char **argv) {
     }
     do_BG_cleanup = (atoi(argv[6])!=0);
     do_Obj_cleanup = (atoi(argv[7])!=0);
+    do_Obj_tracking = (atoi(argv[8])!=0);
   }
+  std::cout<<"BG Cleanup = "<<do_BG_cleanup<<std::endl;
+  std::cout<<"Obj Cleanup = "<<do_Obj_cleanup<<std::endl;
+  std::cout<<"Obj Tracking = "<<do_Obj_tracking<<std::endl;
 
 
     ObjSLAM::ObjSLAMUI* ui =new ObjSLAM::ObjSLAMUI(imgSize);

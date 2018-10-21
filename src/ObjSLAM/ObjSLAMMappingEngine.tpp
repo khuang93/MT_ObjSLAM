@@ -190,21 +190,22 @@ namespace ObjSLAM {
                 } else {
 
                     auto tmp_t_state = obj_inst_ptr->GetTrackingState();
-
-                    //init tracking with
                     tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
-                    t_controller->Prepare(tmp_t_state.get(),
-                                          obj_inst_ptr->GetScene().get(),
-                                          obj_inst_ptr.get()->GetCurrentView().get(),
-                                          visualisationEngine,
-                                          obj_inst_ptr->GetRenderState().get());
-                    this->t_controller->Track(obj_inst_ptr->GetTrackingState().get(), obj_inst_ptr->GetCurrentView().get());
-                    if(tmp_t_state->trackerResult==ITMTrackingState::TRACKING_FAILED){
-                        tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
-                    }else{
+                    //init tracking with
+                            if(do_Obj_tracking){
+                                t_controller->Prepare(tmp_t_state.get(),
+                                                      obj_inst_ptr->GetScene().get(),
+                                                      obj_inst_ptr.get()->GetCurrentView().get(),
+                                                      visualisationEngine,
+                                                      obj_inst_ptr->GetRenderState().get());
+                                this->t_controller->Track(obj_inst_ptr->GetTrackingState().get(), obj_inst_ptr->GetCurrentView().get());
+                                if(tmp_t_state->trackerResult==ITMTrackingState::TRACKING_FAILED){
+                                    tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
+                                }else{
 
-                    }
-                    std::cout<<"Object Pose: \n"<<obj_inst_ptr->GetTrackingState()->pose_d->GetM()<<std::endl;
+                                }
+                                std::cout<<"Object Pose: \n"<<obj_inst_ptr->GetTrackingState()->pose_d->GetM()<<std::endl;
+                            }
                 }
 
 
@@ -214,7 +215,7 @@ namespace ObjSLAM {
         }
 
 
-        if(imgNumber>1) RefineTrackingResult();
+        if(imgNumber>1 && do_Obj_tracking) RefineTrackingResult();
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for private(sceneIsBackground)
@@ -273,6 +274,7 @@ namespace ObjSLAM {
             auto tmp_t_state = obj_inst_ptr->GetTrackingState().get();
             ITMLib::ITMRenderState_VH* tmp_r_state = (ITMLib::ITMRenderState_VH*)obj_inst_ptr->GetRenderState().get();
 
+            //if outlier, then reset pose
             for(int j = 3; j < 6; j++){
                 if(abs(this->t_state->pose_d->GetParams()[j]-tmp_t_state->pose_d->GetParams()[j])>TH){
                     outlier=true;
@@ -382,7 +384,7 @@ namespace ObjSLAM {
                                                   pose,
                                                   &obj_inst_ptr->GetCurrentView()->calib.intrinsics_d,
                                                   obj_inst_ptr->GetRenderState().get());
-        obj_inst_ptr->UpdateVisibility();
+//        obj_inst_ptr->UpdateVisibility();
 
     }
 
@@ -454,10 +456,10 @@ namespace ObjSLAM {
         this->number_activeObjects = active_obj_ptr_vector.size();
 
         if(do_BG_cleanup) BG_VoxelCleanUp();
-//        if(!do_Obj_cleanup) return;
-//        for (size_t i = 1; i < this->active_obj_ptr_vector.size(); ++i) {
-//            Object_Cleanup(active_obj_ptr_vector.at(i));
-//        }
+        if(!do_Obj_cleanup) return;
+        for (size_t i = 1; i < this->active_obj_ptr_vector.size(); ++i) {
+            Object_Cleanup(active_obj_ptr_vector.at(i));
+        }
     }
 
 //check if same obj by 2d overlap
@@ -530,7 +532,7 @@ namespace ObjSLAM {
     template<class TVoxel, class TIndex>
     bool ObjSLAMMappingEngine<TVoxel, TIndex>::CheckImageOverlap(ObjSLAM::ObjFloatImage *first,
                                                                  ObjSLAM::ObjFloatImage *second) {
-        double threshold_areaChange = 0.05;
+        double threshold_areaChange = 0.02;
         double threshold_overlap = 0.2;
 
         int x1_min = imgSize.x - 1;
@@ -804,8 +806,8 @@ namespace ObjSLAM {
         sceneIsBackground = object->CheckIsBackground();
         float threshold = 0.8;
         short k_weight = 4;
-        float th_weight = 0.5;
-        short k_minAge = 6;
+        float th_weight = 0.4;
+        short k_minAge = 5;
 
         auto scene = object->GetScene();
 //        short object_view_count = object->view_count;
@@ -1301,13 +1303,15 @@ namespace ObjSLAM {
 
 
         //save stl
-        if (saveSTL && imgNumber % STL_Frequency == 0) {
+        if (saveSTL && (imgNumber/(reader_SkipFrames+1)) % STL_Frequency == 0) {
+
 //#pragma omp parallel for private(sceneIsBackground)
             for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
                 sceneIsBackground = obj_inst_ptr->CheckIsBackground();
+                Object_Cleanup(obj_inst_ptr);
                 auto scene = obj_inst_ptr.get()->GetScene();
-                string stlname = obj_inst_ptr->GetClassLabel()->GetLabelClassName() + "." + to_string(i) + ".stl";
+                string stlname = "Frame"+to_string(imgNumber)+"."+obj_inst_ptr->GetClassLabel()->GetLabelClassName() + "." + to_string(i) + ".stl";
                 SaveSceneToMesh(stlname.c_str(), scene);
             }
         }
