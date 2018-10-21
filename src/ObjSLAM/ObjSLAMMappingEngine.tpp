@@ -69,9 +69,9 @@ namespace ObjSLAM {
             int number_free_preallocation = false; // this->number_preallocation - number_totalObjects;
 
             bool usePreallocation = number_free_preallocation > view->GetObjVec().size();
-#ifdef WITH_OPENMP
-#pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
-#endif
+//#ifdef WITH_OPENMP
+//#pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
+//#endif
             for (int t = 0; t < view->GetObjVec().size(); t++) {
 
                 Object_View_Tup<TVoxel, TIndex> view_tuple = view->GetObjVec().at(t);
@@ -81,7 +81,7 @@ namespace ObjSLAM {
 
                 int labelIndex = label_ptr->GetLabelIndex();
 
-                if (labelIndex == 74) continue; //skip books
+//                if (labelIndex == 74) continue; //skip books
 
                 //set the flag of background or not
                 sceneIsBackground = labelIndex == 0 ? true : false;
@@ -94,41 +94,40 @@ namespace ObjSLAM {
 
 
                 if (obj_ptr_vec->size() == 0) {
-                    obj_inst_ptr->AddObjectInstanceToLabel();
+
 
                     newObject = true;
                 } else {
 
-                    for (size_t i = 0; i < obj_ptr_vec->size(); ++i) {
-                        ObjectInstance_ptr<TVoxel, TIndex> existing_obj_ptr = obj_ptr_vec->at(i);
-                        if (!existing_obj_ptr->isVisible) continue;
+                    typename std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>>::iterator it;
+                    for(it = obj_ptr_vec_val.begin(); it !=obj_ptr_vec_val.end(); it++/*,i++*/){
+//                    for (size_t i = 0; i < obj_ptr_vec->size(); ++i) {
+                        ObjectInstance_ptr<TVoxel, TIndex> existing_obj_ptr = *it;//= obj_ptr_vec->at(i);
+//                        if (!existing_obj_ptr->isVisible) continue;
 
                         if (obj_inst_ptr->CheckIsBackground()) {
                             newObject = false;
-                        } else if (existing_obj_ptr->isVisible) {
+                        } else {
                             sceneIsBackground == false;
                             newObject = !this->CheckIsSameObject2D(existing_obj_ptr, obj_inst_ptr);
 //                            cout<<"sceneIsBackground "<<sceneIsBackground<<endl;
                         }
                         if (!newObject) {
-                            //this is an existing object, no need to compare with further objs
-//            obj_inst_scene_ptr = existing_obj_ptr->GetScene();
-
                             obj_inst_ptr = existing_obj_ptr;
-
                             break;
                         }
                     }
-                    if (newObject) {
-                        obj_inst_ptr->AddObjectInstanceToLabel();
-                        obj_inst_ptr_vector.push_back(obj_inst_ptr);
-                    }
+//                    if (newObject) {
+//                        obj_inst_ptr->AddObjectInstanceToLabel();
+//                        obj_inst_ptr_vector.push_back(obj_inst_ptr);
+//                    }
                 }
 
 
                 obj_inst_ptr->SetCurrentView(itmview);
 
                 if (newObject) {
+                    obj_inst_ptr->AddObjectInstanceToLabel();
 #pragma omp critical
                     {
                         if (obj_inst_ptr->CheckIsBackground()) {
@@ -244,7 +243,7 @@ namespace ObjSLAM {
 
 
 
-        write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img" + to_string(imgNumber) + ".ply");
+//        write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img" + to_string(imgNumber) + ".ply");
 
     }
 
@@ -457,7 +456,7 @@ namespace ObjSLAM {
 
         if(do_BG_cleanup) BG_VoxelCleanUp();
         if(!do_Obj_cleanup) return;
-        for (size_t i = 1; i < this->active_obj_ptr_vector.size(); ++i) {
+        for (size_t i = 0; i < this->active_obj_ptr_vector.size(); ++i) {//TODO do BG clean?
             Object_Cleanup(active_obj_ptr_vector.at(i));
         }
     }
@@ -591,8 +590,8 @@ namespace ObjSLAM {
                                                                  ObjSLAM::ObjFloatImage *second) {
 //  cout<<"CheckImageOverlap\n";
         //parameter to set which % of the pixels must match
-        double threshold_areaChange = 0.05;
-        double threshold_overlap = 0.25;
+        double threshold_areaChange = 0.02;
+        double threshold_overlap = 0.2;
 
         int x1_min = imgSize.x - 1;
         int x2_min = imgSize.x - 1;
@@ -806,7 +805,7 @@ namespace ObjSLAM {
         sceneIsBackground = object->CheckIsBackground();
         float threshold = 0.8;
         short k_weight = 4;
-        float th_weight = 0.4;
+        float th_weight = 0.3;
         short k_minAge = 5;
 
         auto scene = object->GetScene();
@@ -1189,6 +1188,16 @@ namespace ObjSLAM {
 #endif
             for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_vec.at(j);
+//save stl
+                if (saveSTL && (imgNumber/(reader_SkipFrames+1)) % STL_Frequency == 0) {
+                    sceneIsBackground = obj_inst_ptr->CheckIsBackground();
+                    Object_Cleanup(obj_inst_ptr);
+                    auto scene = obj_inst_ptr.get()->GetScene();
+                    string stlname = "Frame"+to_string(imgNumber)+"."+obj_inst_ptr->GetClassLabel()->GetLabelClassName() + ".Object" + to_string(j) + ".stl";
+                    SaveSceneToMesh(stlname.c_str(), scene);
+                }
+
+
                 if(!obj_inst_ptr->isVisible) continue;
 
                 auto scene = obj_inst_ptr->GetScene();
@@ -1303,18 +1312,18 @@ namespace ObjSLAM {
 
 
         //save stl
-        if (saveSTL && (imgNumber/(reader_SkipFrames+1)) % STL_Frequency == 0) {
+/*        if (saveSTL && (imgNumber/(reader_SkipFrames+1)) % STL_Frequency == 0) {
 
 //#pragma omp parallel for private(sceneIsBackground)
             for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
                 sceneIsBackground = obj_inst_ptr->CheckIsBackground();
-                Object_Cleanup(obj_inst_ptr);
-                auto scene = obj_inst_ptr.get()->GetScene();
-                string stlname = "Frame"+to_string(imgNumber)+"."+obj_inst_ptr->GetClassLabel()->GetLabelClassName() + "." + to_string(i) + ".stl";
-                SaveSceneToMesh(stlname.c_str(), scene);
+//                Object_Cleanup(obj_inst_ptr);
+//                auto scene = obj_inst_ptr.get()->GetScene();
+//                string stlname = "Frame"+to_string(imgNumber)+"."+obj_inst_ptr->GetClassLabel()->GetLabelClassName() + "." + to_string(i) + ".stl";
+//                SaveSceneToMesh(stlname.c_str(), scene);
             }
-        }
+        }*/
     }
 
     template<class TVoxel, class TIndex>
