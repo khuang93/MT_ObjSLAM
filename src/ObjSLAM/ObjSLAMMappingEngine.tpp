@@ -187,6 +187,7 @@ namespace ObjSLAM {
                     obj_inst_ptr->SetRenderState(renderState_ptr, renderState_above_ptr);
                     obj_inst_ptr->SetRenderStateFar(renderState_far_ptr);
                     auto t_state_ptr = std::make_shared<ITMLib::ITMTrackingState>(imgSize, MEMORYDEVICE_CPU);
+                    t_state_ptr->pose_d->SetFrom(this->t_state->pose_d);
                     obj_inst_ptr->SetTrackingState(t_state_ptr);
 
 //                    denseMapper->ResetScene(obj_inst_scene_ptr.get());
