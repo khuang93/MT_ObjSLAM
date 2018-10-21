@@ -109,11 +109,16 @@ namespace ObjSLAM {
                             newObject = false;
                         } else {
                             sceneIsBackground == false;
-                            newObject = !this->CheckIsSameObject2D(existing_obj_ptr, obj_inst_ptr);
+                            newObject = !(this->CheckIsSameObject2D(existing_obj_ptr, obj_inst_ptr) && CheckIsSameObject3D(existing_obj_ptr, obj_inst_ptr));
 //                            cout<<"sceneIsBackground "<<sceneIsBackground<<endl;
                         }
                         if (!newObject) {
                             obj_inst_ptr = existing_obj_ptr;
+                            //visibility
+                            if(!obj_inst_ptr->isVisible){
+                                obj_inst_ptr->isVisible==true;
+                                active_obj_ptr_vector.push_back(obj_inst_ptr);
+                            }
                             break;
                         }
                     }
@@ -650,7 +655,7 @@ namespace ObjSLAM {
 
 //check if same obj by 3d overlap
     template<class TVoxel, class TIndex>
-    bool ObjSLAMMappingEngine<TVoxel, TIndex>::CheckIsSameObject(ObjectInstance_ptr <TVoxel, TIndex> obj_ptr_1,
+    bool ObjSLAMMappingEngine<TVoxel, TIndex>::CheckIsSameObject3D(ObjectInstance_ptr <TVoxel, TIndex> obj_ptr_1,
                                                                  ObjectInstance_ptr <TVoxel, TIndex> obj_ptr_2) {
 
         ObjSLAM::ObjFloatImage *first = obj_ptr_1.get()->GetAnchorView_ITM()->depth;
@@ -679,7 +684,7 @@ namespace ObjSLAM {
                                                                         ORUtils::Vector6<float> second) {
 
         double threshold_volumeChange = 0.4;
-        double threshold_overlap = 0.6;
+        double threshold_overlap = 0.4;
 
         //case where there is 0 overlap
         if (second[0] > first[3] || second[1] > first[4] || second[2] > first[5] || first[0] > second[3]

@@ -157,7 +157,7 @@ namespace ObjSLAM {
         void ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview,
                               std::shared_ptr<ObjectInstance<TVoxel, TIndex>> obj_inst_ptr);
 
-        bool CheckIsSameObject(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
+        bool CheckIsSameObject3D(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
                                ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_2);
 
         bool CheckIsSameObject2D(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
