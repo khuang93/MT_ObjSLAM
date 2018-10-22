@@ -91,8 +91,8 @@ set(TrackerMapper_Sources
 
 
 
-add_executable(TrackerMapper ${TrackerMapper_Sources}  /usr/include)
+add_executable(TrackerMapper_cli ${TrackerMapper_Sources}  /usr/include)
 
-TARGET_LINK_LIBRARIES(TrackerMapper  boost_system  boost_filesystem  InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png ${Pangolin_LIBRARIES})
+TARGET_LINK_LIBRARIES(TrackerMapper_cli  boost_system  boost_filesystem  InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png #[[${Pangolin_LIBRARIES}]])
 #TARGET_LINK_LIBRARIES(Mapper  boost_system  boost_filesystem  cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png)
 #looks like it needs link cudart
