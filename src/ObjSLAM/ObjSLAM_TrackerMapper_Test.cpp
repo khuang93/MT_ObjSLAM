@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
   std::cout<<"Obj Tracking = "<<do_Obj_tracking<<std::endl;
 
 
-    ObjSLAM::ObjSLAMUI* ui =new ObjSLAM::ObjSLAMUI(imgSize);
+//    ObjSLAM::ObjSLAMUI* ui =new ObjSLAM::ObjSLAMUI(imgSize);
 
 
   std::shared_ptr<ITMLib::ITMLibSettings> internalSettings = std::make_shared<ITMLib::ITMLibSettings>();
@@ -114,8 +114,24 @@ int main(int argc, char **argv) {
   sceneIsBackground=true;
   ObjSLAMMainEngine* mainEngine =new ObjSLAMMainEngine(internalSettings, internalSettings_obj,std::shared_ptr<DatasetReader>(reader));
 
-  ui->SetMainEngine(mainEngine);
-  ui->Run();
+//  ui->SetMainEngine(mainEngine);
+//  ui->Run();
+  int imgNum = 0;
+  if (imgNum <= totFrames) {
+    sceneIsBackground = true;
+    imgNum = mainEngine->ReadNext();
+    mainEngine->TrackFrame();
+    mainEngine->UpdateMappingEngine();
+    mainEngine->MapFrame();
+    for(int i = 0; i<reader_SkipFrames;++i){
+      imgNum = mainEngine->ReadNext();
+      mainEngine->TrackFrame();
+    }
+
+
+    if(imgNum%10==0) mainEngine->OutputPics();
+  }
+
 
 /*
 
