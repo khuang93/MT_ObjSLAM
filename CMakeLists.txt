@@ -12,7 +12,7 @@ set (SOURCE_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 set (HEADER_DIR "src/ObjSLAM" CACHE STRING "some info" FORCE)
 
 #set(BUILD_PANGOLIN_EIGEN ON CACHE BOOL "")
-find_package(Pangolin REQUIRED)
+#find_package(Pangolin REQUIRED)
 
 find_package( Boost REQUIRED)
 find_package( OpenMP REQUIRED)
@@ -38,7 +38,7 @@ include_directories($(HEADER_DIR)
         /usr/include
         External/InfiniTAM/InfiniTAM/InputSource
         External/InfiniTAM/InfiniTAM/ITMLib
-        ${Pangolin_INCLUDE_DIRS}
+#        ${Pangolin_INCLUDE_DIRS}
         )
 
 
