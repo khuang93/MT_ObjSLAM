@@ -71,6 +71,8 @@ public:
         t_controller= trackingEngine->GetTrackingController();
         mappingEngine->SetTrackingController(t_controller);
         t_state = trackingEngine->GetTrackingState();
+
+        mappingEngine->SetTrackingEngine(trackingEngine);
     }
 
     ~ObjSLAMMainEngine(){}
@@ -94,6 +96,8 @@ public:
     ObjSLAM::ObjUChar4Image* GetBGImage();
 
     ObjSLAM::ObjUChar4Image* GetInputImage();
+
+    ObjSLAM::ObjUChar4Image* GetRGBImage(int n);
 
     ObjSLAM::ObjUChar4Image* GetAboveImage();
 

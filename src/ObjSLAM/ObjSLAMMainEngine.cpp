@@ -31,6 +31,7 @@ int ObjSLAMMainEngine::ReadNext() {
 }
 
 void ObjSLAMMainEngine::TrackFrame() {
+
     t_state = trackingEngine->TrackFrame(wholeView.get());
 }
 
@@ -38,13 +39,29 @@ void ObjSLAMMainEngine::TrackFrame() {
 void ObjSLAMMainEngine::MapFrame() {
     mappingEngine->ProcessFrame();
 
-//    Visualize();
+    trackingEngine->OutputTrackingResults("trackingResults_refined.txt");
+
+    Visualize();
 
     mapperFree = true;
 }
 
 void ObjSLAMMainEngine::Visualize() {
-
+/*#pragma omp parallel sections
+    {
+#pragma omp section
+        {
+            mappingEngine->RenderAllObjImages();
+        }
+#pragma omp section
+        {
+            mappingEngine->RenderAllObjImagesFar();
+        }
+#pragma omp section
+        {
+            mappingEngine->RenderImageFromAbove();
+        }
+    }*/
 
     mappingEngine->RenderAllObjImages();
 
@@ -75,6 +92,16 @@ ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetImage(int n) {
     } else {
         n = n % this->mappingEngine->number_activeObjects;
         return mappingEngine->GetImage(n);
+    }
+}
+
+
+ObjSLAM::ObjUChar4Image *ObjSLAMMainEngine::GetRGBImage(int n) {
+    if (n < this->mappingEngine->number_activeObjects) {
+        return mappingEngine->GetRGBImage(n);
+    } else {
+        n = n % this->mappingEngine->number_activeObjects;
+        return mappingEngine->GetRGBImage(n);
     }
 }
 

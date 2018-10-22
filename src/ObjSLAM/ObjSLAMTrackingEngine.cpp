@@ -37,11 +37,18 @@ ObjSLAMTrackingEngine::~ObjSLAMTrackingEngine(){
 
 shared_ptr<ITMLib::ITMTrackingState> ObjSLAMTrackingEngine::TrackFrame(ITMLib::ITMView *view) {
   this->t_controller.get()->Track(t_state.get(), view);
+  if(t_state->trackerResult==ITMTrackingState::TRACKING_FAILED){
+    t_state->pose_d->SetFrom(&pose_prev);
+  }else{
+    pose_prev.SetFrom(t_state->pose_d);
+  }
   std::cout << t_state->pose_d->GetM();
   OutputTrackingResults("trackingResults.txt");
   imgNumber++;
   return t_state;
 }
+
+
 
 shared_ptr<ITMLib::ITMTrackingState>  ObjSLAMTrackingEngine::GetTrackingState() {
   return t_state;
@@ -68,7 +75,7 @@ void ObjSLAMTrackingEngine::OutputTrackingResults(std::ofstream &of) {
   ORUtils::Vector3<float> pos = pose_inv.GetT();
   ObjCameraPose obj_cam_pose_inv(pose_inv);
   Eigen::Quaterniond eigen_quat = obj_cam_pose_inv.GetQuaternion(); //try the inv of the pose
-  double time = imgNumber+reader_SkipFrames*(imgNumber-1);
+  double time = imgNumber;//+reader_SkipFrames*(imgNumber-1);
 
   of << time << ", "<< pos.x << ", " << pos.y << ", " << pos.z-2.25  << ", " << eigen_quat.x() << ", " << eigen_quat.y() << ", "
      << eigen_quat.z() << ", " << eigen_quat.w()<< endl;

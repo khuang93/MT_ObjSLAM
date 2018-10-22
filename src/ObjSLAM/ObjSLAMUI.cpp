@@ -14,6 +14,11 @@ namespace ObjSLAM {
             mainEngine->TrackFrame();
             mainEngine->UpdateMappingEngine();
             mainEngine->MapFrame();
+            for(int i = 0; i<reader_SkipFrames;++i){
+                imgNum = mainEngine->ReadNext();
+                mainEngine->TrackFrame();
+            }
+
 
             if(imgNum%10==0) mainEngine->OutputPics();
 
@@ -188,7 +193,7 @@ namespace ObjSLAM {
 //            imageTexture_obj.Upload(image_obj, GL_RGB, GL_UNSIGNED_BYTE);
 
 
-            auto *itmImage_rgb = mainEngine->GetInputImage();
+            auto *itmImage_rgb = mainEngine->GetInputImage();//GetRGBImage(currentObjNum);
 
             unsigned char *image_rgb = new unsigned char[itmImage_rgb->noDims.x * itmImage_rgb->noDims.y * 3];
             ORUtils::Vector2<int> noDims = itmImage_rgb->noDims;

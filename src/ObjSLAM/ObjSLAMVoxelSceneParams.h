@@ -11,6 +11,9 @@ extern int STL_Frequency;
 extern int reader_SkipFrames;
 extern int numthreads;
 extern int totFrames;
+extern bool do_BG_cleanup;
+extern bool do_Obj_cleanup;
+extern bool do_Obj_tracking;
 //class ObjSLAMVoxelSceneParams{
 //
 // public:

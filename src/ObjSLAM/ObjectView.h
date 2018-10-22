@@ -36,6 +36,8 @@ namespace ObjSLAM {
     template<typename TVoxel, typename TIndex>
     class ObjectView : public enable_shared_from_this<ObjectView<TVoxel, TIndex>> {
     private:
+        bool is_RGB_D_aligned = false;
+
         ObjCameraPose *camera_Pose;
 
         std::shared_ptr<ObjUIntImage> segmentation_Mask;
@@ -104,6 +106,9 @@ namespace ObjSLAM {
                    LabelImgVector _label_img_vector) :
                 calibration(_calibration), imgSize_rgb(_imgSize_rgb), imgSize_d(_imgSize_d),
                 depth_Image(_depth), rgb_Image(_rgb), label_img_vector(_label_img_vector) {
+                    if(calibration.trafo_rgb_to_depth.calib==calibration.trafo_rgb_to_depth.calib_inv){
+                        is_RGB_D_aligned=true;
+                    }
         }
 
         //Destructor

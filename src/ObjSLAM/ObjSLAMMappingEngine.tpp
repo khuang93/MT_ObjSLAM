@@ -13,6 +13,7 @@
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMVoxelBlockHash.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/RenderStates/ITMRenderState_VH.h>
 #include <External/InfiniTAM/InfiniTAM/ITMLib/Objects/Scene/ITMRepresentationAccess.h>
+#include <External/InfiniTAM/InfiniTAM/ITMLib/Engines/Meshing/Shared/ITMMeshingEngine_Shared.h>
 
 //define the global variable
 
@@ -68,9 +69,9 @@ namespace ObjSLAM {
             int number_free_preallocation = false; // this->number_preallocation - number_totalObjects;
 
             bool usePreallocation = number_free_preallocation > view->GetObjVec().size();
-#ifdef WITH_OPENMP
-#pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
-#endif
+//#ifdef WITH_OPENMP
+//#pragma omp parallel for private(sceneIsBackground) /*num_threads(numthreads)*/
+//#endif
             for (int t = 0; t < view->GetObjVec().size(); t++) {
 
                 Object_View_Tup<TVoxel, TIndex> view_tuple = view->GetObjVec().at(t);
@@ -80,7 +81,7 @@ namespace ObjSLAM {
 
                 int labelIndex = label_ptr->GetLabelIndex();
 
-                if (labelIndex == 74) continue; //skip books
+//                if (labelIndex == 74) continue; //skip books
 
                 //set the flag of background or not
                 sceneIsBackground = labelIndex == 0 ? true : false;
@@ -93,41 +94,45 @@ namespace ObjSLAM {
 
 
                 if (obj_ptr_vec->size() == 0) {
-                    obj_inst_ptr->AddObjectInstanceToLabel();
+
 
                     newObject = true;
                 } else {
 
-                    for (size_t i = 0; i < obj_ptr_vec->size(); ++i) {
-                        ObjectInstance_ptr<TVoxel, TIndex> existing_obj_ptr = obj_ptr_vec->at(i);
-                        if (!existing_obj_ptr->isVisible) continue;
+                    typename std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>>::iterator it;
+                    for(it = obj_ptr_vec_val.begin(); it !=obj_ptr_vec_val.end(); it++/*,i++*/){
+//                    for (size_t i = 0; i < obj_ptr_vec->size(); ++i) {
+                        ObjectInstance_ptr<TVoxel, TIndex> existing_obj_ptr = *it;//= obj_ptr_vec->at(i);
+//                        if (!existing_obj_ptr->isVisible) continue;
 
                         if (obj_inst_ptr->CheckIsBackground()) {
                             newObject = false;
-                        } else if (existing_obj_ptr->isVisible) {
+                        } else {
                             sceneIsBackground == false;
-                            newObject = !this->CheckIsSameObject2D(existing_obj_ptr, obj_inst_ptr);
+                            newObject = !(this->CheckIsSameObject2D(existing_obj_ptr, obj_inst_ptr) && CheckIsSameObject3D(existing_obj_ptr, obj_inst_ptr));
 //                            cout<<"sceneIsBackground "<<sceneIsBackground<<endl;
                         }
                         if (!newObject) {
-                            //this is an existing object, no need to compare with further objs
-//            obj_inst_scene_ptr = existing_obj_ptr->GetScene();
-
                             obj_inst_ptr = existing_obj_ptr;
-
+                            //visibility
+//                            if(!obj_inst_ptr->isVisible){
+//                                obj_inst_ptr->isVisible==true;
+//                                active_obj_ptr_vector.push_back(obj_inst_ptr);
+//                            }
                             break;
                         }
                     }
-                    if (newObject) {
-                        obj_inst_ptr->AddObjectInstanceToLabel();
-                        obj_inst_ptr_vector.push_back(obj_inst_ptr);
-                    }
+//                    if (newObject) {
+//                        obj_inst_ptr->AddObjectInstanceToLabel();
+//                        obj_inst_ptr_vector.push_back(obj_inst_ptr);
+//                    }
                 }
 
 
                 obj_inst_ptr->SetCurrentView(itmview);
 
                 if (newObject) {
+                    obj_inst_ptr->AddObjectInstanceToLabel();
 #pragma omp critical
                     {
                         if (obj_inst_ptr->CheckIsBackground()) {
@@ -182,31 +187,129 @@ namespace ObjSLAM {
                     obj_inst_ptr->SetRenderState(renderState_ptr, renderState_above_ptr);
                     obj_inst_ptr->SetRenderStateFar(renderState_far_ptr);
                     auto t_state_ptr = std::make_shared<ITMLib::ITMTrackingState>(imgSize, MEMORYDEVICE_CPU);
+                    t_state_ptr->pose_d->SetFrom(this->t_state->pose_d);
                     obj_inst_ptr->SetTrackingState(t_state_ptr);
 
 //                    denseMapper->ResetScene(obj_inst_scene_ptr.get());
 
                 } else {
-//                    obj_inst_ptr->view_count++;
-//                    cout << "obj_view_count = " << obj_inst_ptr->view_count << endl;
+
+                    auto tmp_t_state = obj_inst_ptr->GetTrackingState();
+                    tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
+                    //init tracking with
+                            if(do_Obj_tracking){
+                                t_controller->Prepare(tmp_t_state.get(),
+                                                      obj_inst_ptr->GetScene().get(),
+                                                      obj_inst_ptr.get()->GetCurrentView().get(),
+                                                      visualisationEngine,
+                                                      obj_inst_ptr->GetRenderState().get());
+                                this->t_controller->Track(obj_inst_ptr->GetTrackingState().get(), obj_inst_ptr->GetCurrentView().get());
+                                if(tmp_t_state->trackerResult==ITMTrackingState::TRACKING_FAILED){
+                                    tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
+                                }else{
+
+                                }
+                                std::cout<<"Object Pose: \n"<<obj_inst_ptr->GetTrackingState()->pose_d->GetM()<<std::endl;
+                            }
                 }
 
-
-                //ProcessOneObject
-                ProcessOneObject(itmview, obj_inst_ptr);
 
                 //re-init the bool of newObject
                 newObject = true;
             }
         }
+
+
+        if(imgNumber>1 && do_Obj_tracking) RefineTrackingResult();
+
+#ifdef WITH_OPENMP
+#pragma omp parallel for private(sceneIsBackground)
+#endif
+        for(int i = 0; i<active_obj_ptr_vector.size(); i++){
+            ObjectInstance_ptr<TVoxel,TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
+            //ProcessOneObject
+                    if(obj_inst_ptr->updatedView){
+                        ProcessOneObject(obj_inst_ptr->GetCurrentView(), obj_inst_ptr);
+                        obj_inst_ptr->updatedView=false;
+                    }
+
+        }
+
+
+
+
         //Insert function: prepare tracking with all objs
         this->renderState_RenderAll->raycastResult->Clear();
-        t_controller->Prepare(t_state.get(), this->renderState_RenderAll.get(), this->obj_inst_ptr_vector,
+
+        std::vector<ObjectInstance_ptr<TVoxel,TIndex>> tmp_vec;
+        copy((++obj_inst_ptr_vector.begin()), obj_inst_ptr_vector.end(),back_inserter(tmp_vec));
+
+        t_controller->Prepare(t_state.get(), this->renderState_RenderAll.get(), this->obj_inst_ptr_vector /*tmp_vec*/,
                               visualisationEngine); //visualisationEngine_BG
 
-        write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img" + to_string(imgNumber) + ".ply");
-//        write2PLYfile(BG_object_ptr->GetTrackingState()->pointCloud->locations,
-//                      "t_state_PCL_img" + to_string(imgNumber) + ".ply");
+
+
+//        write2PLYfile(this->renderState_RenderAll->raycastResult, "raycast_img" + to_string(imgNumber) + ".ply");
+
+    }
+
+    template<class TVoxel, class TIndex>
+    void ObjSLAMMappingEngine<TVoxel, TIndex>::RefineTrackingResult(){
+        ITMLib::ITMRenderState_VH* tmp_BG_r_state = (ITMLib::ITMRenderState_VH*)BG_object_ptr->GetRenderState().get();
+        UpdateVisibilityOfObj(BG_object_ptr, t_state->pose_d);
+        if(tmp_BG_r_state->noVisibleEntries==0) return;
+        int BG_weight = BG_object_ptr->GetScene()->index.getNumAllocatedVoxelBlocks() - BG_object_ptr->GetScene()->localVBA.lastFreeBlockId;
+
+        float count=BG_weight*/*tmp_BG_r_state->noVisibleEntries**/t_state->trackerResult;
+//        ORUtils::SE3Pose tmp_pose;
+//        tmp_pose.SetFrom(this->t_state->pose_d);
+        float tmp_pose_params[6]{0,0,0,0,0,0};
+
+        for(int j = 0; j < 6; j++){
+            tmp_pose_params[j]+=BG_weight*this->t_state->pose_d->GetParams()[j];
+        }
+
+        //tmp_pose.GetParams(ORUtils::Vector3<float>& translation, ORUtils::Vector3<float>& rotation);
+        float TH=0.01;
+
+        for(int i = 0; i<active_obj_ptr_vector.size();i++){
+            ObjectInstance_ptr <TVoxel,TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
+            bool outlier=false;
+
+            auto tmp_t_state = obj_inst_ptr->GetTrackingState().get();
+            ITMLib::ITMRenderState_VH* tmp_r_state = (ITMLib::ITMRenderState_VH*)obj_inst_ptr->GetRenderState().get();
+
+            //if outlier, then reset pose
+            for(int j = 3; j < 6; j++){
+                if(abs(this->t_state->pose_d->GetParams()[j]-tmp_t_state->pose_d->GetParams()[j])>TH){
+                    outlier=true;
+                    tmp_t_state->pose_d->SetFrom(t_state->pose_d);
+                    break;
+                }
+            }
+
+
+     /*       if(!obj_inst_ptr->updatedView||outlier||obj_inst_ptr->GetTrackingState()->trackerResult==ITMTrackingState::TRACKING_FAILED) continue;
+            UpdateVisibilityOfObj(obj_inst_ptr, t_state->pose_d);
+
+            int weight = obj_inst_ptr->GetScene()->index.getNumAllocatedVoxelBlocks() - obj_inst_ptr->GetScene()->localVBA.lastFreeBlockId;
+
+
+            for(int j = 0; j < 6; j++){
+                tmp_pose_params[j]+=weight*tmp_t_state->trackerResult*tmp_t_state->pose_d->GetParams()[j];
+            }
+            count+=tmp_t_state->trackerResult*weight;*/
+        }
+
+        /*
+        for(int j = 0; j < 6; j++){
+            tmp_pose_params[j] /= count;
+        }*/
+
+
+//        this->t_state->pose_d->SetFrom(tmp_pose_params);
+//        this->t_state->pose_d->Coerce();
+//        cout<<"Refined Pose:\n"<<t_state->pose_d->GetM()<<std::endl;
 
     }
 
@@ -223,12 +326,15 @@ namespace ObjSLAM {
         if (!obj_inst_ptr.get()->CheckIsBackground()) {
             sceneIsBackground = false;
 
+            ORUtils::SE3Pose anchor_pose = obj_inst_ptr->GetAnchorView()->GetCameraPose().GetSE3Pose();
+
+
             std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = obj_inst_ptr->GetTrackingState();
 
-            tmp_t_state->Reset();
-
-            tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
-            tmp_t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
+//            tmp_t_state->Reset();
+//            tmp_t_state->pose_d->SetM(anchor_pose.GetInvM()*t_state->pose_d->GetM());
+//            tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
+//            tmp_t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
 
             denseMapper->ProcessFrame(itmview.get(), tmp_t_state.get(), scene, obj_inst_ptr->GetRenderState().get(),
                                       true);
@@ -283,7 +389,7 @@ namespace ObjSLAM {
                                                   pose,
                                                   &obj_inst_ptr->GetCurrentView()->calib.intrinsics_d,
                                                   obj_inst_ptr->GetRenderState().get());
-        obj_inst_ptr->UpdateVisibility();
+//        obj_inst_ptr->UpdateVisibility();
 
     }
 
@@ -328,7 +434,8 @@ namespace ObjSLAM {
     void ObjSLAMMappingEngine<TVoxel, TIndex>::UpdateVisibilityOfAllObj() {
         if (obj_inst_ptr_vector.size() == 0) return;
         sceneIsBackground = false;
-
+        active_obj_ptr_vector.clear();
+        active_obj_ptr_vector.push_back(BG_object_ptr);
 #pragma omp parallel for private(sceneIsBackground)
         for (size_t i = 1; i < this->obj_inst_ptr_vector.size(); ++i) { //start from1 to skip BG
 
@@ -339,22 +446,26 @@ namespace ObjSLAM {
 
 #pragma omp critical
             {
-                if (prevVisibility && !(obj_inst_ptr->isVisible)) {
-                    active_obj_ptr_vector.erase(
-                            std::remove(active_obj_ptr_vector.begin(), active_obj_ptr_vector.end(), obj_inst_ptr),
-                            active_obj_ptr_vector.end());
-                }
-                if (!prevVisibility && obj_inst_ptr->isVisible) {
-                    active_obj_ptr_vector.push_back(obj_inst_ptr);
-                }
+
+                if(obj_inst_ptr->isVisible) active_obj_ptr_vector.push_back(obj_inst_ptr);
+//                if (prevVisibility && !(obj_inst_ptr->isVisible)) {
+//                    active_obj_ptr_vector.erase(
+//                            std::remove(active_obj_ptr_vector.begin(), active_obj_ptr_vector.end(), obj_inst_ptr),
+//                            active_obj_ptr_vector.end());
+//                    if(!do_Obj_cleanup){ Object_Cleanup(obj_inst_ptr);}
+//                }
+//                if (!prevVisibility && obj_inst_ptr->isVisible) {
+//                    active_obj_ptr_vector.push_back(obj_inst_ptr);
+//                }
             }
         }
 //        active_obj_ptr_vector.shrink_to_fit();
         this->number_totalObjects = obj_inst_ptr_vector.size();
         this->number_activeObjects = active_obj_ptr_vector.size();
 
-        BG_VoxelCleanUp();
-        for (size_t i = 1; i < this->active_obj_ptr_vector.size(); ++i) {
+        if(do_BG_cleanup) BG_VoxelCleanUp();
+        if(!do_Obj_cleanup) return;
+        for (size_t i = 0; i < this->active_obj_ptr_vector.size(); ++i) {//TODO do BG clean?
             Object_Cleanup(active_obj_ptr_vector.at(i));
         }
     }
@@ -429,7 +540,7 @@ namespace ObjSLAM {
     template<class TVoxel, class TIndex>
     bool ObjSLAMMappingEngine<TVoxel, TIndex>::CheckImageOverlap(ObjSLAM::ObjFloatImage *first,
                                                                  ObjSLAM::ObjFloatImage *second) {
-        double threshold_areaChange = 0.05;
+        double threshold_areaChange = 0.02;
         double threshold_overlap = 0.2;
 
         int x1_min = imgSize.x - 1;
@@ -465,6 +576,8 @@ namespace ObjSLAM {
 
         float area_1 = (x1_max - x1_min) * (y1_max - y1_min);
         float area_2 = (x2_max - x2_min) * (y2_max - y2_min);
+        if(area_1==0||area_2==0) return false;
+
 
         int x_min_overlap = MAX(x1_min, x2_min);
         int y_min_overlap = MAX(y1_min, y2_min);
@@ -486,8 +599,8 @@ namespace ObjSLAM {
                                                                  ObjSLAM::ObjFloatImage *second) {
 //  cout<<"CheckImageOverlap\n";
         //parameter to set which % of the pixels must match
-        double threshold_areaChange = 0.05;
-        double threshold_overlap = 0.25;
+        double threshold_areaChange = 0.02;
+        double threshold_overlap = 0.2;
 
         int x1_min = imgSize.x - 1;
         int x2_min = imgSize.x - 1;
@@ -526,6 +639,8 @@ namespace ObjSLAM {
         float area_1 = (x1_max - x1_min) * (y1_max - y1_min);
         float area_2 = (x2_max - x2_min) * (y2_max - y2_min);
 
+        if(area_1==0||area_2==0) return false;
+
         int x_min_overlap = max(x1_min, x2_min);
         int y_min_overlap = max(y1_min, y2_min);
         int x_max_overlap = min(x1_max, x2_max);
@@ -544,7 +659,7 @@ namespace ObjSLAM {
 
 //check if same obj by 3d overlap
     template<class TVoxel, class TIndex>
-    bool ObjSLAMMappingEngine<TVoxel, TIndex>::CheckIsSameObject(ObjectInstance_ptr <TVoxel, TIndex> obj_ptr_1,
+    bool ObjSLAMMappingEngine<TVoxel, TIndex>::CheckIsSameObject3D(ObjectInstance_ptr <TVoxel, TIndex> obj_ptr_1,
                                                                  ObjectInstance_ptr <TVoxel, TIndex> obj_ptr_2) {
 
         ObjSLAM::ObjFloatImage *first = obj_ptr_1.get()->GetAnchorView_ITM()->depth;
@@ -572,8 +687,8 @@ namespace ObjSLAM {
     bool ObjSLAMMappingEngine<TVoxel, TIndex>::CheckBoundingCubeOverlap(ORUtils::Vector6<float> first,
                                                                         ORUtils::Vector6<float> second) {
 
-        double threshold_volumeChange = 0.4;
-        double threshold_overlap = 0.6;
+        double threshold_volumeChange = 0.05;
+        double threshold_overlap = 0.2;
 
         //case where there is 0 overlap
         if (second[0] > first[3] || second[1] > first[4] || second[2] > first[5] || first[0] > second[3]
@@ -699,8 +814,8 @@ namespace ObjSLAM {
         sceneIsBackground = object->CheckIsBackground();
         float threshold = 0.8;
         short k_weight = 4;
-        float th_weight = 0.5;
-        short k_minAge = 4;
+        float th_weight = 0.3;
+        short k_minAge = 5;
 
         auto scene = object->GetScene();
 //        short object_view_count = object->view_count;
@@ -715,7 +830,7 @@ namespace ObjSLAM {
         TVoxel *voxelBlocks_ptr = scene->localVBA.GetVoxelBlocks();
         ITMHashEntry *hashTable = scene->index.GetEntries();
         TVoxel *localVBA = scene->localVBA.GetVoxelBlocks();
-
+        int noAllocatedVoxelEntries = scene->localVBA.lastFreeBlockId;
 #ifdef WITH_OPENMP
 #pragma omp parallel for
 #endif
@@ -744,21 +859,77 @@ namespace ObjSLAM {
         }
     }
 
-
     template<class TVoxel, class TIndex>
+    void ObjSLAMMappingEngine<TVoxel, TIndex>::BG_VoxelCleanUp() {
+        ITMHashEntry tmpEntry;
+        memset(&tmpEntry, 0, sizeof(ITMHashEntry));
+        tmpEntry.ptr = -2;
+
+
+
+        ITMLib::ITMScene<TVoxel, TIndex> *scene_BG = this->BG_object_ptr->GetScene().get();
+        sceneIsBackground = true;
+
+
+        TVoxel *voxelData = scene_BG->localVBA.GetVoxelBlocks();
+        int *voxelAllocationList = scene_BG->localVBA.GetAllocationList();
+        int noAllocatedVoxelEntries = scene_BG->localVBA.lastFreeBlockId;
+        ITMVoxelBlockHash::IndexData* voxelIndex = scene_BG->index.getIndexData();
+
+#ifdef WITH_OPENMP
+#pragma omp parallel //private(sceneIsBackground)
+#endif
+        for (size_t i = 1; i < this->active_obj_ptr_vector.size(); ++i) {
+//            sceneIsBackground=false;
+            int vmIndex;
+            ITMLib::ITMVoxelBlockHash::IndexCache cache;
+
+            ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
+            float voxelSize = obj_inst_ptr->GetScene()->sceneParams->voxelSize;
+            ORUtils::Image<Vector4f>* pcl = obj_inst_ptr->GetRenderState()->raycastResult;
+
+
+#ifdef WITH_OPENMP
+#pragma omp parallel
+#endif
+            for(int idx = 0; idx<pcl->dataSize;idx++){
+                Vector3f point = TO_VECTOR3(pcl->GetElement(idx,MEMORYDEVICE_CPU)*voxelSize);
+                if(IS_EQUAL3(point, Vector3i(0,0,0))) continue;
+                int index = findVoxel(voxelIndex, Vector3i((int)ROUND(point.x), (int)ROUND(point.y), (int)ROUND(point.z)), vmIndex, cache );
+                if(index!=-1){
+                    voxelData[index] = TVoxel();
+                }
+
+                Vector3f p[8];
+                float sdf[8];
+                Vector3i blockLocation;
+                findPointNeighbors(p, sdf, Vector3i((int)ROUND(point.x), (int)ROUND(point.y), (int)ROUND(point.z)), voxelData,voxelIndex);
+                for(int idx2 = 0; idx2 < 8; idx2++){
+                    index = findVoxel(voxelIndex, Vector3i((int)ROUND(p[idx2].x), (int)ROUND(p[idx2].y), (int)ROUND(p[idx2].z)), vmIndex, cache);
+                    if(index!=-1){
+                        voxelData[index] = TVoxel();
+                    }
+                }
+            }
+        }
+    }
+
+
+//old bg clean
+  /*  template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::BG_VoxelCleanUp() {
 
         std::vector<Vector3s> voxelPos_vec;
         voxelPos_vec.reserve(100000);
 
 //TODO Parallelize this loop
-/*#ifdef WITH_OPENMP
+#ifdef WITH_OPENMP
 #pragma omp parallel
 #endif
   std::vector<Vector3f> voxelPos_vec_private;
 #ifdef WITH_OPENMP
 #pragma omp for
-#endif */
+#endif
         sceneIsBackground = false;
         for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
             ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
@@ -767,11 +938,16 @@ namespace ObjSLAM {
 
         int size = voxelPos_vec.size();
 
+        ITMHashEntry tmpEntry;
+        memset(&tmpEntry, 0, sizeof(ITMHashEntry));
+        tmpEntry.ptr = -2;
+
         ITMLib::ITMScene<TVoxel, TIndex> *scene_BG = this->BG_object_ptr->GetScene().get();
         sceneIsBackground = true;
         for (size_t i = 0; i < size; ++i) {
             Vector3s blockPos = voxelPos_vec.at(i);
             int hashIdx = hashIndex(blockPos);
+
             TVoxel *voxelData = scene_BG->localVBA.GetVoxelBlocks();
             int *voxelAllocationList = scene_BG->localVBA.GetAllocationList();
             int noAllocatedVoxelEntries = scene_BG->localVBA.lastFreeBlockId;
@@ -795,6 +971,7 @@ namespace ObjSLAM {
                             for (int idx = 0; idx < SDF_BLOCK_SIZE3; idx++) voxelData[blockIdx + idx] = TVoxel();
                         }
                     }
+//                    scene_BG->index.GetEntries()[hashIdx]=tmpEntry;
 
                 }
 
@@ -802,8 +979,7 @@ namespace ObjSLAM {
                 hashIdx = (sceneIsBackground ? SDF_BUCKET_NUM_BG : SDF_BUCKET_NUM) + hashEntry.offset - 1;
             }
         }
-    }
-
+    }*/
 
     template<class TVoxel, class TIndex>
     void ObjSLAMMappingEngine<TVoxel, TIndex>::
@@ -841,6 +1017,24 @@ namespace ObjSLAM {
     template<class TVoxel, class TIndex>
     ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::GetImage(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr) {
         return obj_inst_ptr->GetRenderState()->raycastImage;
+    }
+
+    template<class TVoxel, class TIndex>
+    ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::GetRGBImage(int object_index) {
+        if (object_index == 0) return GetImage(BG_object_ptr);
+
+        if (object_index < number_activeObjects) {
+            return GetRGBImage(active_obj_ptr_vector.at(object_index));
+        } else {
+            cout << "Object Index larger than total number of objects, showing first object...\n";
+            return GetRGBImage(BG_object_ptr);
+        }
+    }
+
+
+    template<class TVoxel, class TIndex>
+    ObjUChar4Image *ObjSLAMMappingEngine<TVoxel, TIndex>::GetRGBImage(ObjectInstance_ptr <TVoxel, TIndex> obj_inst_ptr) {
+        return obj_inst_ptr->GetCurrentView()->rgb;
     }
 
 
@@ -1003,6 +1197,17 @@ namespace ObjSLAM {
 #endif
             for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_vec.at(j);
+//save stl
+                if (saveSTL && (imgNumber/(reader_SkipFrames+1)) % STL_Frequency == 0) {
+                    sceneIsBackground = obj_inst_ptr->CheckIsBackground();
+                    Object_Cleanup(obj_inst_ptr);
+                    auto scene = obj_inst_ptr.get()->GetScene();
+                    string stlname = "Frame"+to_string(imgNumber)+"."+obj_inst_ptr->GetClassLabel()->GetLabelClassName() + ".Object" + to_string(j) + ".stl";
+                    SaveSceneToMesh(stlname.c_str(), scene);
+                }
+
+
+                if(!obj_inst_ptr->isVisible) continue;
 
                 auto scene = obj_inst_ptr->GetScene();
 
@@ -1016,16 +1221,6 @@ namespace ObjSLAM {
 
 
                     UpdateVisibilityOfObj(obj_inst_ptr, pose_visualize);
-
-
-//                    if (!obj_inst_ptr->isVisible) {
-//                        auto scene = obj_inst_ptr.get()->GetScene();
-//                        string stlname = obj_inst_ptr->GetClassLabel()->GetLabelClassName() + "." + to_string(j) +
-//                                         "_cleaned.stl";
-//                        SaveSceneToMesh(stlname.c_str(), scene);
-//                        continue;
-//                    }
-
 
                     visualisationEngine->RenderImage(scene.get(), pose_visualize,
                                                      &obj_inst_ptr->GetAnchorView_ITM()->calib.intrinsics_d,
@@ -1044,7 +1239,6 @@ namespace ObjSLAM {
                 } else {
                     sceneIsBackground = true;
 
-//update visibility? TODO
                     UpdateVisibilityOfObj(obj_inst_ptr, pose_visualize);
 
                     visualisationEngine->RenderImage(scene.get(), pose_visualize,
@@ -1060,8 +1254,8 @@ namespace ObjSLAM {
 //                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
 //                                                     ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_OLD_RAYCAST);
 
-                    write2PLYfile(obj_inst_ptr->GetRenderState()->raycastResult,
-                                  "raycast_img_BG" + to_string(imgNumber) + ".ply");
+//                    write2PLYfile(obj_inst_ptr->GetRenderState()->raycastResult,
+//                                  "raycast_img_BG" + to_string(imgNumber) + ".ply");
                 }
 
 
@@ -1110,8 +1304,8 @@ namespace ObjSLAM {
                                                  this->renderState_RenderAll->raycastImage,
                                                  ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_COLOUR_FROM_VOLUME,
                                                  ITMLib::ITMVisualisationEngine<TVoxel, TIndex>::RENDER_FROM_NEW_RAYCAST);
-        write2PLYfile(renderState_RenderAll->raycastResult,
-                      "raycast_img_Fused_vis" + to_string(imgNumber) + ".ply");
+//        write2PLYfile(renderState_RenderAll->raycastResult,
+//                      "raycast_img_Fused_vis" + to_string(imgNumber) + ".ply");
 
 
         sceneIsBackground = true;
@@ -1127,16 +1321,18 @@ namespace ObjSLAM {
 
 
         //save stl
-        if (saveSTL && imgNumber % STL_Frequency == 0) {
+/*        if (saveSTL && (imgNumber/(reader_SkipFrames+1)) % STL_Frequency == 0) {
+
 //#pragma omp parallel for private(sceneIsBackground)
             for (size_t i = 0; i < this->obj_inst_ptr_vector.size(); ++i) {
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_ptr_vector.at(i);
                 sceneIsBackground = obj_inst_ptr->CheckIsBackground();
-                auto scene = obj_inst_ptr.get()->GetScene();
-                string stlname = obj_inst_ptr->GetClassLabel()->GetLabelClassName() + "." + to_string(i) + ".stl";
-                SaveSceneToMesh(stlname.c_str(), scene);
+//                Object_Cleanup(obj_inst_ptr);
+//                auto scene = obj_inst_ptr.get()->GetScene();
+//                string stlname = "Frame"+to_string(imgNumber)+"."+obj_inst_ptr->GetClassLabel()->GetLabelClassName() + "." + to_string(i) + ".stl";
+//                SaveSceneToMesh(stlname.c_str(), scene);
             }
-        }
+        }*/
     }
 
     template<class TVoxel, class TIndex>
@@ -1155,7 +1351,9 @@ namespace ObjSLAM {
 #pragma omp parallel for private(sceneIsBackground)
 #endif
             for (size_t j = 0; j < obj_inst_vec.size(); ++j) {
+
                 ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr = obj_inst_vec.at(j);
+                if(!obj_inst_ptr->isVisible) continue;
                 string name =
                         "Label_" + label_ptr.get()->GetLabelClassName() + ".Object" + to_string(j) + ".Frame" +
                         to_string(imgNumber)

@@ -118,7 +118,7 @@ ORUtils::Vector6<float> ObjSLAMCamera::ProjectImg2PointCloud(ObjSLAM::ObjFloatIm
 }
 
 shared_ptr<ORUtils::Image<Vector2i>> ObjSLAMCamera::ProjectDepthPixelToRGB(ObjSLAM::ObjFloatImage *in) {
-  Matrix4f tranfo_inv = calib->trafo_rgb_to_depth.calib_inv;
+  Matrix4f trafo_inv = calib->trafo_rgb_to_depth.calib_inv;
   Matrix4f K_d_inv;
   K_d.inv(K_d_inv);
 
@@ -131,7 +131,7 @@ shared_ptr<ORUtils::Image<Vector2i>> ObjSLAMCamera::ProjectDepthPixelToRGB(ObjSL
       int locId = v * imgSize.width + u;
       float depth_value = in->GetElement(locId, MEMORYDEVICE_CPU);
       Vector4f depth_in(u * depth_value, v * depth_value, depth_value, 1.0f);
-      Vector4f rgb_pix = K_rgb * tranfo_inv * K_d_inv * depth_in;
+      Vector4f rgb_pix = K_rgb * trafo_inv * K_d_inv * depth_in;
 
       Vector2i res((int) (rgb_pix / rgb_pix.z).x, (int) (rgb_pix / rgb_pix.z).y);
       if(res.x>=0 && res.x<imgSize.width && res.y>=0 && res.y<imgSize.height){

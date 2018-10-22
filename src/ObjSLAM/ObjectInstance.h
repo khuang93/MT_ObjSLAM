@@ -13,6 +13,7 @@
 #include "ObjectInstanceScene.h"
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Objects/Views/ITMView.h"
 #include "ObjSLAMDataTypes.h"
+#include "ObjCameraPose.h"
 
 namespace ObjSLAM {
     template<class TVoxel, class TIndex>
@@ -34,8 +35,9 @@ namespace ObjSLAM {
         std::shared_ptr<ORUtils::Image<bool>> prevFrameProjectedToCurrent;
         bool isBackground = false;
     public:
-
+        bool updatedView=false;
         bool isVisible = true;
+
 //        short view_count = 0;
 
         //Constructor
@@ -57,7 +59,7 @@ namespace ObjSLAM {
             anchor_view = std::shared_ptr<ObjectView<TVoxel, TIndex>>(_anchor_view);
         }
 
-        void SetCurrentView(std::shared_ptr<ITMLib::ITMView> _current_view) { current_view = _current_view; }
+        void SetCurrentView(std::shared_ptr<ITMLib::ITMView> _current_view) { current_view = _current_view; updatedView=true; }
 
 
         void SetAnchorView_ITM(std::shared_ptr<ITMLib::ITMView> _anchor_view) { anchor_view_itm = _anchor_view; }
@@ -74,11 +76,13 @@ namespace ObjSLAM {
 
         void SetTrackingState(std::shared_ptr<ITMLib::ITMTrackingState> _t_state) { t_state = _t_state; }
 
-        std::shared_ptr<ITMLib::ITMView> GetCurrentView() { return current_view; }
+        std::shared_ptr<ITMLib::ITMView>& GetCurrentView() { return current_view; }
 
         std::shared_ptr<ObjectView<TVoxel, TIndex>> &GetAnchorView() { return anchor_view; }
 
         ITMLib::ITMView *GetAnchorView_ITM() { return anchor_view_itm.get(); }
+
+        ObjCameraPose GetAnchorPose() {return anchor_view->GetCameraPose();}
 
         std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> GetScene() { return this->scene; }
 
@@ -107,7 +111,8 @@ namespace ObjSLAM {
         int GetLabelIndex() { return this->GetClassLabel()->GetLabelIndex(); }
 
         void UpdateVisibility() {
-            isVisible = ((ITMLib::ITMRenderState_VH *) this->GetRenderState().get())->noVisibleEntries > 0;
+            int voxelCount = scene->index.getNumAllocatedVoxelBlocks() - scene->localVBA.lastFreeBlockId -1;
+            isVisible = ((ITMLib::ITMRenderState_VH *) this->GetRenderState().get())->noVisibleEntries > 0 && voxelCount > 0;
         }
 
     };

@@ -406,6 +406,7 @@ void ITMExtendedTracker::UpdatePoseQuality(int noValidPoints_old, float *hessian
 		if (score > 0) trackingState->trackerResult = ITMTrackingState::TRACKING_GOOD;
 		else if (score > -10.0f) trackingState->trackerResult = ITMTrackingState::TRACKING_POOR;
 	}
+//	trackingState->trackerScore=noValidPointsMax;
 }
 
 void ITMExtendedTracker::TrackCamera(ITMTrackingState *trackingState, const ITMView *view)
