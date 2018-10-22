@@ -49,21 +49,6 @@ INCLUDE(External/InfiniTAM/InfiniTAM/cmake/UseCUDA.cmake)
 #add_subdirectory(External/g2o/g2o)
 
 
-
-set(ObjSLAM_Sources
-        src/ObjSLAM/ObjSLAM_TrackerMapper_Test.cpp
-        src/ObjSLAM/ObjSLAMEngine.h
-        src/ObjSLAM/ObjSLAMEngine.tpp
-        src/ObjSLAM/ObjectSLAMTracker.cpp
-        src/ObjSLAM/ObjectInstanceScene.tpp src/ObjSLAM/ObjectInstanceScene.h
-        src/ObjSLAM/ObjSLAMDataTypes.h
-
-        src/ObjSLAM/LPD_Dataset_Reader.h
-        src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
-        src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h
-        src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h
-        )
-
 set(TrackerMapper_Sources
         src/ObjSLAM/ObjSLAM_TrackerMapper_Test.cpp
 
@@ -84,7 +69,35 @@ set(TrackerMapper_Sources
         src/ObjSLAM/TeddyReader.h src/ObjSLAM/TUM_Reader.cpp src/ObjSLAM/TUM_Reader.h
         src/ObjSLAM/ObjSLAMVoxelBlockHash.h src/ObjSLAM/ObjSLAMVoxelSceneParams.h
         src/ObjSLAM/ObjSLAMUI.cpp src/ObjSLAM/ObjSLAMUI.h
-        src/ObjSLAM/ObjSLAMMainEngine.cpp src/ObjSLAM/ObjSLAMMainEngine.h src/ObjSLAM/MS_Reader.cpp src/ObjSLAM/MS_Reader.h src/ObjSLAM/ObjSLAMMultiTrackingEngine.cpp src/ObjSLAM/ObjSLAMMultiTrackingEngine.h src/ObjSLAM/ObjSLAMFunctions.h)
+        src/ObjSLAM/ObjSLAMMainEngine.cpp src/ObjSLAM/ObjSLAMMainEngine.h
+        src/ObjSLAM/MS_Reader.cpp src/ObjSLAM/MS_Reader.h src/ObjSLAM/ObjSLAMMultiTrackingEngine.cpp
+        src/ObjSLAM/ObjSLAMMultiTrackingEngine.h src/ObjSLAM/ObjSLAMFunctions.h)
+
+
+
+set(TrackerMapperCLI_Sources
+        src/ObjSLAM/ObjSLAM_TrackerMapper_CLI.cpp
+
+
+        src/ObjSLAM/ObjectInstanceScene.tpp src/ObjSLAM/ObjectInstanceScene.h
+        src/ObjSLAM/ObjSLAMDataTypes.h
+
+        src/ObjSLAM/LPD_Dataset_Reader.h
+        src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
+        src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h
+        src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h
+        src/DatasetIO/IOUtils.cpp src/DatasetIO/IOUtils.h
+        src/ObjSLAM/ObjSLAMCamera.cpp src/ObjSLAM/ObjSLAMCamera.h
+        src/ObjSLAM/ObjectInstance.tpp src/ObjSLAM/ObjectInstance.h
+        src/ObjSLAM/ObjectClassLabel_Group.tpp src/ObjSLAM/ObjectClassLabel_Group.h
+        src/ObjSLAM/ObjectView.tpp src/ObjSLAM/ObjectView.h
+        src/ObjSLAM/ObjSLAMTrackingEngine.cpp src/ObjSLAM/ObjSLAMTrackingEngine.h
+        src/ObjSLAM/DatasetReader.h src/ObjSLAM/DatasetReader.cpp src/ObjSLAM/TeddyReader.cpp
+        src/ObjSLAM/TeddyReader.h src/ObjSLAM/TUM_Reader.cpp src/ObjSLAM/TUM_Reader.h
+        src/ObjSLAM/ObjSLAMVoxelBlockHash.h src/ObjSLAM/ObjSLAMVoxelSceneParams.h
+        src/ObjSLAM/ObjSLAMMainEngine.cpp src/ObjSLAM/ObjSLAMMainEngine.h
+        src/ObjSLAM/MS_Reader.cpp src/ObjSLAM/MS_Reader.h src/ObjSLAM/ObjSLAMMultiTrackingEngine.cpp
+        src/ObjSLAM/ObjSLAMMultiTrackingEngine.h src/ObjSLAM/ObjSLAMFunctions.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)
@@ -92,7 +105,9 @@ set(TrackerMapper_Sources
 
 
 add_executable(TrackerMapper ${TrackerMapper_Sources}  /usr/include)
+add_executable(TrackerMapper_CLI ${TrackerMapperCLI_Sources}  /usr/include)
 
 TARGET_LINK_LIBRARIES(TrackerMapper  boost_system  boost_filesystem  InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png ${Pangolin_LIBRARIES})
+TARGET_LINK_LIBRARIES(TrackerMapper_CLI  boost_system  boost_filesystem  InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png ${Pangolin_LIBRARIES})
 #TARGET_LINK_LIBRARIES(Mapper  boost_system  boost_filesystem  cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png)
 #looks like it needs link cudart
