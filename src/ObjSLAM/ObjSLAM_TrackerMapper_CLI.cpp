@@ -64,6 +64,7 @@ int main(int argc, char **argv) {
     Vector2i imgSize(640, 480);
 
     totFrames =atoi( argv[2]);
+    std::cout<<"totFrames = "<<totFrames<<std::endl;
 
     if(argc>3 && atoi(argv[3])>0){
         reader_SkipFrames = atoi(argv[3]);
