@@ -465,7 +465,8 @@ namespace ObjSLAM {
 
         if(do_BG_cleanup) BG_VoxelCleanUp();
         if(!do_Obj_cleanup) return;
-        for (size_t i = 0; i < this->active_obj_ptr_vector.size(); ++i) {//TODO do BG clean?
+        //TODO do BG also included in the clean?
+        for (size_t i = 0; i < this->active_obj_ptr_vector.size(); ++i) {
             Object_Cleanup(active_obj_ptr_vector.at(i));
         }
     }
@@ -814,7 +815,7 @@ namespace ObjSLAM {
         sceneIsBackground = object->CheckIsBackground();
         float threshold = 0.8;
         short k_weight = 4;
-        float th_weight = 0.5;
+        float th_weight = 0.75;
         short k_minAge = 5;
 
         auto scene = object->GetScene();

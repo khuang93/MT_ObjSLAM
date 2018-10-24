@@ -45,7 +45,7 @@ bool ObjSLAMCamera::ProjectPointCloud2Img(ORUtils::Image<Vector4f> *PCL, ObjFloa
 
     Vector3f pix = K * (point_camera_frame.toVector3());
 //    Vector2i pix_int(round(pix.x / pix.z), round(pix.y / pix.z));
-
+    if(pix.z<0) continue; //skip when depth is negative!!!
     Vector2i pix_int(ROUND(pix.x / pix.z), ROUND(pix.y / pix.z));
     if (pix_int.y >= 0 && pix_int.x >= 0 && pix_int.y < height && pix_int.x < width) {
       int locId = pix_int.y * width + pix_int.x;
