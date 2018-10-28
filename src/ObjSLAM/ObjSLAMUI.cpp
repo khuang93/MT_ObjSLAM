@@ -364,6 +364,7 @@ namespace ObjSLAM {
 //            imageTexture_obj6.RenderToViewport(true);
 
 
+
             pangolin::FinishFrame();
 
             delete[] image_BG;
