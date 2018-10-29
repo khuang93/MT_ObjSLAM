@@ -42,8 +42,8 @@ namespace ObjSLAM {
     public:
         //constuctor
         ObjSLAMUI(Vector2i _imgSize) : imgSize(_imgSize) {
-            w = imgSize.width * 1.5;
-            h = imgSize.height * 1.5;
+            w = imgSize.width * 2;
+            h = imgSize.height * 2;
             cout << "UI Created!\n";
         }
 

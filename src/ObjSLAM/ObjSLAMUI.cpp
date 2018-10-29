@@ -112,6 +112,7 @@ namespace ObjSLAM {
         pangolin::View &d_image_BG = pangolin::Display("image")
                 .SetAspect(640.0f / 480.0f);
 
+        pangolin::GlFont::I().Text("BackgroundFull").DrawWindow(d_image_BG.v.l, d_image_BG.v.b);
 
 
         pangolin::View &d_image_rgb = pangolin::Display("image_rgb")
@@ -143,10 +144,10 @@ namespace ObjSLAM {
                 .AddDisplay(d_image_above)
                 .AddDisplay(d_image_obj)
                 .AddDisplay(d_image_obj2)
-//                .AddDisplay(d_image_obj3)
+                .AddDisplay(d_image_obj3)
                 .AddDisplay(d_image_obj4)
-//                .AddDisplay(d_image_obj5)
-//                .AddDisplay(d_image_obj6)
+                .AddDisplay(d_image_obj5)
+                .AddDisplay(d_image_obj6)
                 ;
 
 
@@ -175,22 +176,7 @@ namespace ObjSLAM {
             imageTexture_BG.Upload(image_BG, GL_RGB, GL_UNSIGNED_BYTE);
 
 
-            auto *itmImage_obj = mainEngine->GetImage(currentObjNum);
-            unsigned char *image_obj = new unsigned char[itmImage_obj->noDims.x * itmImage_obj->noDims.y * 3];
 
-
-            for (int i = 0; i < noDims.x * noDims.y; ++i) {
-                image_obj[i * 3 + 0] = itmImage_obj->GetData(MEMORYDEVICE_CPU)[i].x;
-                image_obj[i * 3 + 1] = itmImage_obj->GetData(MEMORYDEVICE_CPU)[i].y;
-                image_obj[i * 3 + 2] = itmImage_obj->GetData(MEMORYDEVICE_CPU)[i].z;
-            }
-            pangolin::GlTexture imageTexture_obj(itmImage_obj->noDims.x, itmImage_obj->noDims.y, GL_RGB, false, 0,
-                                                 GL_RGB,
-                                                 GL_UNSIGNED_BYTE);
-
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            imageTexture_obj.Upload(image_obj, GL_RGB, GL_UNSIGNED_BYTE);
 
 
             auto *itmImage_rgb = mainEngine->GetInputImage();//GetRGBImage(currentObjNum);
@@ -229,10 +215,32 @@ namespace ObjSLAM {
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            imageTexture_above.Upload(image_above, GL_RGB, GL_UNSIGNED_BYTE);
 
             //
+            imageTexture_above.Upload(image_above, GL_RGB, GL_UNSIGNED_BYTE);
 
+            auto *itmImage_obj = mainEngine->GetImage(currentObjNum);
+            unsigned char *image_obj = new unsigned char[itmImage_obj->noDims.x * itmImage_obj->noDims.y * 3];
+
+
+            for (int i = 0; i < noDims.x * noDims.y; ++i) {
+                image_obj[i * 3 + 0] = itmImage_obj->GetData(MEMORYDEVICE_CPU)[i].x;
+                image_obj[i * 3 + 1] = itmImage_obj->GetData(MEMORYDEVICE_CPU)[i].y;
+                image_obj[i * 3 + 2] = itmImage_obj->GetData(MEMORYDEVICE_CPU)[i].z;
+            }
+            pangolin::GlTexture imageTexture_obj(itmImage_obj->noDims.x, itmImage_obj->noDims.y, GL_RGB, false, 0,
+                                                 GL_RGB,
+                                                 GL_UNSIGNED_BYTE);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            imageTexture_obj.Upload(image_obj, GL_RGB, GL_UNSIGNED_BYTE);
+
+
+
+
+
+            //
             auto *itmImage_obj2 = mainEngine->GetImage(currentObjNum+1);
             unsigned char *image_obj2 = new unsigned char[itmImage_obj2->noDims.x * itmImage_obj2->noDims.y * 3];
 
@@ -251,22 +259,22 @@ namespace ObjSLAM {
             imageTexture_obj2.Upload(image_obj2, GL_RGB, GL_UNSIGNED_BYTE);
 
 //            //
-//            auto *itmImage_obj3 = mainEngine->GetImage(currentObjNum+2);
-//            unsigned char *image_obj3 = new unsigned char[itmImage_obj3->noDims.x * itmImage_obj3->noDims.y * 3];
-//
-//
-//            for (int i = 0; i < noDims.x * noDims.y; ++i) {
-//                image_obj3[i * 3 + 0] = itmImage_obj3->GetData(MEMORYDEVICE_CPU)[i].x;
-//                image_obj3[i * 3 + 1] = itmImage_obj3->GetData(MEMORYDEVICE_CPU)[i].y;
-//                image_obj3[i * 3 + 2] = itmImage_obj3->GetData(MEMORYDEVICE_CPU)[i].z;
-//            }
-//            pangolin::GlTexture imageTexture_obj3(itmImage_obj3->noDims.x, itmImage_obj3->noDims.y, GL_RGB, false, 0,
-//                                                  GL_RGB,
-//                                                  GL_UNSIGNED_BYTE);
-//
-//            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
-//            imageTexture_obj3.Upload(image_obj3, GL_RGB, GL_UNSIGNED_BYTE);
+            auto *itmImage_obj3 = mainEngine->GetImage(currentObjNum+2);
+            unsigned char *image_obj3 = new unsigned char[itmImage_obj3->noDims.x * itmImage_obj3->noDims.y * 3];
+
+
+            for (int i = 0; i < noDims.x * noDims.y; ++i) {
+                image_obj3[i * 3 + 0] = itmImage_obj3->GetData(MEMORYDEVICE_CPU)[i].x;
+                image_obj3[i * 3 + 1] = itmImage_obj3->GetData(MEMORYDEVICE_CPU)[i].y;
+                image_obj3[i * 3 + 2] = itmImage_obj3->GetData(MEMORYDEVICE_CPU)[i].z;
+            }
+            pangolin::GlTexture imageTexture_obj3(itmImage_obj3->noDims.x, itmImage_obj3->noDims.y, GL_RGB, false, 0,
+                                                  GL_RGB,
+                                                  GL_UNSIGNED_BYTE);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            imageTexture_obj3.Upload(image_obj3, GL_RGB, GL_UNSIGNED_BYTE);
 
             //
             auto *itmImage_obj4 = mainEngine->GetImageFar(currentObjNum);
@@ -287,41 +295,41 @@ namespace ObjSLAM {
             imageTexture_obj4.Upload(image_obj4, GL_RGB, GL_UNSIGNED_BYTE);
 
 
-//            //
-//            auto *itmImage_obj5 = mainEngine->GetImageFar(currentObjNum+1);
-//            unsigned char *image_obj5 = new unsigned char[itmImage_obj5->noDims.x * itmImage_obj5->noDims.y * 3];
-//
-//
-//            for (int i = 0; i < noDims.x * noDims.y; ++i) {
-//                image_obj5[i * 3 + 0] = itmImage_obj5->GetData(MEMORYDEVICE_CPU)[i].x;
-//                image_obj5[i * 3 + 1] = itmImage_obj5->GetData(MEMORYDEVICE_CPU)[i].y;
-//                image_obj5[i * 3 + 2] = itmImage_obj5->GetData(MEMORYDEVICE_CPU)[i].z;
-//            }
-//            pangolin::GlTexture imageTexture_obj5(itmImage_obj5->noDims.x, itmImage_obj5->noDims.y, GL_RGB, false, 0,
-//                                                  GL_RGB,
-//                                                  GL_UNSIGNED_BYTE);
-//
-//            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
-//            imageTexture_obj5.Upload(image_obj5, GL_RGB, GL_UNSIGNED_BYTE);
-//
-//            //
-//            auto *itmImage_obj6 = mainEngine->GetImageFar(currentObjNum+2);
-//            unsigned char *image_obj6 = new unsigned char[itmImage_obj6->noDims.x * itmImage_obj6->noDims.y * 3];
-//
-//
-//            for (int i = 0; i < noDims.x * noDims.y; ++i) {
-//                image_obj6[i * 3 + 0] = itmImage_obj6->GetData(MEMORYDEVICE_CPU)[i].x;
-//                image_obj6[i * 3 + 1] = itmImage_obj6->GetData(MEMORYDEVICE_CPU)[i].y;
-//                image_obj6[i * 3 + 2] = itmImage_obj6->GetData(MEMORYDEVICE_CPU)[i].z;
-//            }
-//            pangolin::GlTexture imageTexture_obj6(itmImage_obj6->noDims.x, itmImage_obj6->noDims.y, GL_RGB, false, 0,
-//                                                  GL_RGB,
-//                                                  GL_UNSIGNED_BYTE);
-//
-//            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
-//            imageTexture_obj6.Upload(image_obj6, GL_RGB, GL_UNSIGNED_BYTE);
+            //
+            auto *itmImage_obj5 = mainEngine->GetImageFar(currentObjNum+1);
+            unsigned char *image_obj5 = new unsigned char[itmImage_obj5->noDims.x * itmImage_obj5->noDims.y * 3];
+
+
+            for (int i = 0; i < noDims.x * noDims.y; ++i) {
+                image_obj5[i * 3 + 0] = itmImage_obj5->GetData(MEMORYDEVICE_CPU)[i].x;
+                image_obj5[i * 3 + 1] = itmImage_obj5->GetData(MEMORYDEVICE_CPU)[i].y;
+                image_obj5[i * 3 + 2] = itmImage_obj5->GetData(MEMORYDEVICE_CPU)[i].z;
+            }
+            pangolin::GlTexture imageTexture_obj5(itmImage_obj5->noDims.x, itmImage_obj5->noDims.y, GL_RGB, false, 0,
+                                                  GL_RGB,
+                                                  GL_UNSIGNED_BYTE);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            imageTexture_obj5.Upload(image_obj5, GL_RGB, GL_UNSIGNED_BYTE);
+
+            //
+            auto *itmImage_obj6 = mainEngine->GetImageFar(currentObjNum+2);
+            unsigned char *image_obj6 = new unsigned char[itmImage_obj6->noDims.x * itmImage_obj6->noDims.y * 3];
+
+
+            for (int i = 0; i < noDims.x * noDims.y; ++i) {
+                image_obj6[i * 3 + 0] = itmImage_obj6->GetData(MEMORYDEVICE_CPU)[i].x;
+                image_obj6[i * 3 + 1] = itmImage_obj6->GetData(MEMORYDEVICE_CPU)[i].y;
+                image_obj6[i * 3 + 2] = itmImage_obj6->GetData(MEMORYDEVICE_CPU)[i].z;
+            }
+            pangolin::GlTexture imageTexture_obj6(itmImage_obj6->noDims.x, itmImage_obj6->noDims.y, GL_RGB, false, 0,
+                                                  GL_RGB,
+                                                  GL_UNSIGNED_BYTE);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            imageTexture_obj6.Upload(image_obj6, GL_RGB, GL_UNSIGNED_BYTE);
 
 
 
@@ -347,21 +355,21 @@ namespace ObjSLAM {
             glColor3f(1.0, 1.0, 1.0);
             imageTexture_obj2.RenderToViewport(true);
 
-//            d_image_obj3.Activate();
-//            glColor3f(1.0, 1.0, 1.0);
-//            imageTexture_obj3.RenderToViewport(true);
+            d_image_obj3.Activate();
+            glColor3f(1.0, 1.0, 1.0);
+            imageTexture_obj3.RenderToViewport(true);
 
             d_image_obj4.Activate();
             glColor3f(1.0, 1.0, 1.0);
             imageTexture_obj4.RenderToViewport(true);
 
-//            d_image_obj5.Activate();
-//            glColor3f(1.0, 1.0, 1.0);
-//            imageTexture_obj5.RenderToViewport(true);
-//
-//            d_image_obj6.Activate();
-//            glColor3f(1.0, 1.0, 1.0);
-//            imageTexture_obj6.RenderToViewport(true);
+            d_image_obj5.Activate();
+            glColor3f(1.0, 1.0, 1.0);
+            imageTexture_obj5.RenderToViewport(true);
+
+            d_image_obj6.Activate();
+            glColor3f(1.0, 1.0, 1.0);
+            imageTexture_obj6.RenderToViewport(true);
 
 
 
