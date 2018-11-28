@@ -59,7 +59,7 @@ set(TrackerMapper_Sources
         src/ObjSLAM/ObjCameraPose.cpp src/ObjSLAM/ObjCameraPose.h
         src/ObjSLAM/LPD_RAW_Pose.cpp src/ObjSLAM/LPD_RAW_Pose.h
         src/ObjSLAM/ObjSLAMMappingEngine.tpp src/ObjSLAM/ObjSLAMMappingEngine.h
-        src/DatasetIO/IOUtils.cpp src/DatasetIO/IOUtils.h
+ #       src/DatasetIO/IOUtils.cpp src/DatasetIO/IOUtils.h
         src/ObjSLAM/ObjSLAMCamera.cpp src/ObjSLAM/ObjSLAMCamera.h
         src/ObjSLAM/ObjectInstance.tpp src/ObjSLAM/ObjectInstance.h
         src/ObjSLAM/ObjectClassLabel_Group.tpp src/ObjSLAM/ObjectClassLabel_Group.h
@@ -105,9 +105,9 @@ set(TrackerMapperCLI_Sources
 
 
 add_executable(TrackerMapper ${TrackerMapper_Sources}  /usr/include)
-add_executable(TrackerMapper_CLI ${TrackerMapperCLI_Sources}  /usr/include)
+#add_executable(TrackerMapper_CLI ${TrackerMapperCLI_Sources}  /usr/include)
 
 TARGET_LINK_LIBRARIES(TrackerMapper  boost_system  boost_filesystem  InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png ${Pangolin_LIBRARIES})
-TARGET_LINK_LIBRARIES(TrackerMapper_CLI  boost_system  boost_filesystem  InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png ${Pangolin_LIBRARIES})
+#TARGET_LINK_LIBRARIES(TrackerMapper_CLI  boost_system  boost_filesystem  InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png ${Pangolin_LIBRARIES})
 #TARGET_LINK_LIBRARIES(Mapper  boost_system  boost_filesystem  cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads ${OpenMP_CXX_FLAGS}  png)
 #looks like it needs link cudart

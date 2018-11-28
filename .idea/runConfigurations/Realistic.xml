@@ -1,5 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Realistic" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="../../polybox/Datasets/RealisticRenderingDataset/ 12 0 0" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MT_ObjSLAM" TARGET_NAME="TrackerMapper" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MT_ObjSLAM" RUN_TARGET_NAME="TrackerMapper">
-    <method />
+    <method v="2">
+      <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+    </method>
   </configuration>
 </component>
