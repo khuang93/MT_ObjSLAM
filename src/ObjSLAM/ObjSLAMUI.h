@@ -5,19 +5,9 @@
 #ifndef MT_OBJSLAM_OBJSLAMUI_H
 #define MT_OBJSLAM_OBJSLAMUI_H
 
-//#include "External/InfiniTAM/InfiniTAM/InputSource/ImageSourceEngine.h"
-//#include "External/InfiniTAM/InfiniTAM/InputSource/IMUSourceEngine.h"
-//#include "External/InfiniTAM/InfiniTAM/InputSource/FFMPEGWriter.h"
-//#include "External/InfiniTAM/InfiniTAM/ITMLib/Core/ITMMainEngine.h"
-//#include "External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMLibSettings.h"
-//#include "External/InfiniTAM/InfiniTAM/ORUtils/FileUtils.h"
-//#include "External/InfiniTAM/InfiniTAM/ORUtils/NVTimer.h"
 #include "DatasetReader.h"
 #include <pangolin/pangolin.h>
-
 #include <vector>
-
-
 #include "External/InfiniTAM/InfiniTAM/ITMLib/Utils/ITMMath.h"
 #include "ObjSLAMMainEngine.h"
 
@@ -25,10 +15,7 @@ namespace ObjSLAM {
 
 
     class ObjSLAMUI {
-//        static ObjSLAMUI* instance;
 
-//        DatasetReader* reader;
-//        ITMLib::ITMLibSettings internalSettings;
     private:
         int w, h;
         Vector2i imgSize;
@@ -76,7 +63,6 @@ namespace ObjSLAM {
         void DrawLabels();
 
         void CreatePangolinDisplays();
-
 
     };
 
