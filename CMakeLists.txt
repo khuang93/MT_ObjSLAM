@@ -70,8 +70,8 @@ set(TrackerMapper_Sources
         src/ObjSLAM/ObjSLAMVoxelBlockHash.h src/ObjSLAM/ObjSLAMVoxelSceneParams.h
         src/ObjSLAM/ObjSLAMUI.cpp src/ObjSLAM/ObjSLAMUI.h
         src/ObjSLAM/ObjSLAMMainEngine.cpp src/ObjSLAM/ObjSLAMMainEngine.h
-        src/ObjSLAM/MS_Reader.cpp src/ObjSLAM/MS_Reader.h src/ObjSLAM/ObjSLAMMultiTrackingEngine.cpp
-        src/ObjSLAM/ObjSLAMMultiTrackingEngine.h src/ObjSLAM/ObjSLAMFunctions.h)
+        src/ObjSLAM/MS_Reader.cpp src/ObjSLAM/MS_Reader.h
+        src/ObjSLAM/ObjSLAMFunctions.h)
 
 
 
@@ -96,8 +96,8 @@ set(TrackerMapperCLI_Sources
         src/ObjSLAM/TeddyReader.h src/ObjSLAM/TUM_Reader.cpp src/ObjSLAM/TUM_Reader.h
         src/ObjSLAM/ObjSLAMVoxelBlockHash.h src/ObjSLAM/ObjSLAMVoxelSceneParams.h
         src/ObjSLAM/ObjSLAMMainEngine.cpp src/ObjSLAM/ObjSLAMMainEngine.h
-        src/ObjSLAM/MS_Reader.cpp src/ObjSLAM/MS_Reader.h src/ObjSLAM/ObjSLAMMultiTrackingEngine.cpp
-        src/ObjSLAM/ObjSLAMMultiTrackingEngine.h src/ObjSLAM/ObjSLAMFunctions.h)
+        src/ObjSLAM/MS_Reader.cpp src/ObjSLAM/MS_Reader.h
+        src/ObjSLAM/ObjSLAMFunctions.h)
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})
 #TARGET_LINK_LIBRARIES(ObjSLAM cudart InputSource ITMLib MiniSlamGraphLib ORUtils FernRelocLib Threads::Threads png)

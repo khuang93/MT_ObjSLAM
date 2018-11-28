@@ -13,6 +13,9 @@
 
 namespace ObjSLAM {
 using namespace ITMLib;
+/** \brief
+    * Tracking Interface to ITMTracker
+	*/
 class ObjSLAMTrackingEngine {
  protected:
   std::shared_ptr<ITMTrackingState> t_state;

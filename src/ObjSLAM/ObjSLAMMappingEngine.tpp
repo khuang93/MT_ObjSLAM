@@ -47,8 +47,6 @@ namespace ObjSLAM {
         }
 
         this->UpdateViewPose();
-//  this->UpdateObjBoolImg();
-
 
         //init all objects in view
         view->SetListOfObjects(label_ptr_vector);
