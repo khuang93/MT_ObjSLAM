@@ -226,10 +226,10 @@ namespace ObjSLAM {
         for(int i = 0; i<active_obj_ptr_vector.size(); i++){
             ObjectInstance_ptr<TVoxel,TIndex> obj_inst_ptr = active_obj_ptr_vector.at(i);
             //ProcessOneObject
-                    if(obj_inst_ptr->updatedView){
-                        ProcessOneObject(obj_inst_ptr->GetCurrentView(), obj_inst_ptr);
-                        obj_inst_ptr->updatedView=false;
-                    }
+                if(obj_inst_ptr->updatedView){
+                    ProcessOneObject(obj_inst_ptr->GetCurrentView(), obj_inst_ptr);
+                    obj_inst_ptr->updatedView=false;
+                }
 
         }
 
@@ -326,13 +326,7 @@ namespace ObjSLAM {
 
             ORUtils::SE3Pose anchor_pose = obj_inst_ptr->GetAnchorView()->GetCameraPose().GetSE3Pose();
 
-
             std::shared_ptr<ITMLib::ITMTrackingState> tmp_t_state = obj_inst_ptr->GetTrackingState();
-
-//            tmp_t_state->Reset();
-//            tmp_t_state->pose_d->SetM(anchor_pose.GetInvM()*t_state->pose_d->GetM());
-//            tmp_t_state->pose_d->SetFrom(this->t_state->pose_d);
-//            tmp_t_state->trackerResult = ITMLib::ITMTrackingState::TRACKING_GOOD;
 
             denseMapper->ProcessFrame(itmview.get(), tmp_t_state.get(), scene, obj_inst_ptr->GetRenderState().get(),
                                       true);
@@ -361,8 +355,10 @@ namespace ObjSLAM {
                                            scene,
                                            BG_object_ptr->GetRenderState().get(),
                                            true);
+
             BG_object_ptr->GetRenderState()->raycastResult->Clear();
             //BG renderstate
+
             t_controller->Prepare(this->t_state.get(),
                                   scene,
                                   BG_object_ptr->GetAnchorView_ITM(),
@@ -388,7 +384,6 @@ namespace ObjSLAM {
                                                   &obj_inst_ptr->GetCurrentView()->calib.intrinsics_d,
                                                   obj_inst_ptr->GetRenderState().get());
 //        obj_inst_ptr->UpdateVisibility();
-
     }
 
     template<class TVoxel, class TIndex>
@@ -406,7 +401,6 @@ namespace ObjSLAM {
                                                   &obj_inst_ptr->GetCurrentView()->calib.intrinsics_d,
                                                   obj_inst_ptr->GetRenderState().get());
         obj_inst_ptr->UpdateVisibility();
-
     }
 
 

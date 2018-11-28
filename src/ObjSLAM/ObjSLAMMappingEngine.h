@@ -68,8 +68,6 @@ namespace ObjSLAM {
         const std::shared_ptr<ITMLib::ITMLibSettings> settings_obj;
         const std::shared_ptr<ITMLib::ITMRGBDCalib> calib;
 
-//  std::shared_ptr<ObjUChar4Image> img_from_above;
-
         std::shared_ptr<ITMLib::ITMRenderState> renderState_RenderAll;
 
         std::shared_ptr<ITMLib::ITMRenderState> renderState_RenderAbove;
@@ -82,6 +80,9 @@ namespace ObjSLAM {
         ITMLib::ITMDenseMapper<TVoxel, TIndex> *denseMapper;
         std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> label_ptr_vector;
 
+        /**
+         * @brief delete all new pointers which is not a shared_ptr. Will be called from destructor
+         */
         void DeleteAll();
 
         void ReserveVectors(int memory_size) {
@@ -93,11 +94,23 @@ namespace ObjSLAM {
         void GetVoxelPosFromScene(std::vector<Vector3s> &voxelPos_vec, ObjectInstance_ptr<TVoxel, TIndex> obj_ptr);
 
     public:
+        /**
+         * @brief Number of currently visible objects
+         */
         int number_activeObjects = 0;
+        /**
+         * @brief Number of all objects in map
+         */
         int number_totalObjects = 0;
         bool isFree = true;
 
-        //Constructor
+        /**
+         * @brief Contructor
+         * @param _settings ITMLibSettings for background
+         * @param _settings_obj ITMLibSettings for objects
+         * @param _calib Calibration parameters
+         * @param _imgSize Image Size specified as Vector2i
+         */
         ObjSLAMMappingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,const std::shared_ptr<ITMLib::ITMLibSettings> _settings_obj,
                              const std::shared_ptr<ITMLib::ITMRGBDCalib> _calib,
                              const Vector2i _imgSize) : settings(_settings), settings_obj(_settings_obj),calib(_calib), imgSize(_imgSize) {
@@ -106,15 +119,13 @@ namespace ObjSLAM {
 
             sceneIsBackground = false;
 
-            visualisationEngine =new ITMLib::ITMVisualisationEngine_CPU<TVoxel,TIndex>;
-//                    ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(
-//                            settings->deviceType);
+            visualisationEngine = new ITMLib::ITMVisualisationEngine_CPU<TVoxel,TIndex>;
+
 
             sceneIsBackground = true;
 
-            visualisationEngine_BG =new ITMLib::ITMVisualisationEngine_CPU<TVoxel,TIndex>;
-//                    ITMLib::ITMVisualisationEngineFactory::MakeVisualisationEngine<TVoxel, TIndex>(
-//                            settings->deviceType);
+            visualisationEngine_BG = new ITMLib::ITMVisualisationEngine_CPU<TVoxel,TIndex>;
+
 
             sceneParams_ptr = std::shared_ptr<ITMLib::ITMSceneParams>(&(this->settings->sceneParams));
             sceneParams_ptr_obj = std::shared_ptr<ITMLib::ITMSceneParams>(&(this->settings_obj->sceneParams));
@@ -145,25 +156,47 @@ namespace ObjSLAM {
             img_BG = std::make_shared<ObjUChar4Image>(imgSize, MEMORYDEVICE_CPU);
         }
 
-
+        /**
+         * @brief Destructor
+         */
         ~ObjSLAMMappingEngine() { DeleteAll(); }
 
         void CreateView(ObjFloatImage *_depth,
                         ObjUChar4Image *_rgb,
                         LabelImgVector _label_img_vector);
-
+        /**
+         * @brief Process the current frame with all segmentation and RGB-D data
+         */
         void ProcessFrame();
 
         void RefineTrackingResult();
 
+        /**
+         * @brief reconstruction for a single object
+         * @param itmview the object's itmview containing RGB and D image
+         * @param obj_inst_ptr the pointer of the object currently being processed
+         */
         void ProcessOneObject(std::shared_ptr<ITMLib::ITMView> &itmview,
                               std::shared_ptr<ObjectInstance<TVoxel, TIndex>> obj_inst_ptr);
 
+        /**
+         * @brief check for overlap in 3D for 2 objects
+         * @param obj_ptr_1
+         * @param obj_ptr_2
+         * @return true if overlap percentage is larger than threshold
+         */
         bool CheckIsSameObject3D(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
                                ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_2);
 
+        /**
+         * @brief check for overlap in 2D for 2 objects
+         * @param obj_ptr_1
+         * @param obj_ptr_2
+         * @return true if overlap percentage is larger than threshold
+         */
         bool CheckIsSameObject2D(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
                                  ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_2);
+
 
         ORUtils::Image<Vector4u> *ProjectObjectToImg(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
 
@@ -171,6 +204,11 @@ namespace ObjSLAM {
 
         bool CheckBoundingCubeOverlap(ORUtils::Vector6<float> first, ORUtils::Vector6<float> second);
 
+        /**
+         * @brief calculate the volume of a cube
+         * @param corners
+         * @return volume in m^3
+         */
         double CalculateCubeVolume(ORUtils::Vector6<float> corners);
 
         bool CheckImageOverlap(ObjSLAM::ObjFloatImage *first, ObjSLAM::ObjFloatImage *second);
@@ -241,6 +279,11 @@ namespace ObjSLAM {
         std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>>
         GetLabelPtrVec() { return this->label_ptr_vector; }
 
+        /**
+         * @brief Save an object scene as STL
+         * @param objFileName the filename under which the STL file will be saved
+         * @param scene_ptr pointer of the object scene
+         */
         void SaveSceneToMesh(const char *objFileName, std::shared_ptr<ITMLib::ITMScene<TVoxel, TIndex>> scene_ptr);
 
         void write2PLYfile(const ORUtils::Image<ORUtils::Vector4<float>>* pcl, const std::string filename);

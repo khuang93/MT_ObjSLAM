@@ -1,33 +1,25 @@
 //
 // Created by khuang on 9/3/18.
 //
+/**
+\brief: declaration of global variables
+*/
 
 #pragma once
 
+/**
+ * @brief switching argument between Background and non-background, need to switch for each operation involving access of voxels and hash table
+ */
 extern bool sceneIsBackground;
 //#pragma omp threadprivate(sceneIsBackground) //only active when using parallel track and map
-extern bool saveSTL;
-extern int STL_Frequency;
-extern int reader_SkipFrames;
+
+extern bool saveSTL; //save STLs or not, set during program start
+extern int STL_Frequency; //save STLs every X frames.
+extern int reader_SkipFrames; // Set the number of frames the reader should skip
 extern int numthreads;
-extern int totFrames;
-extern bool do_BG_cleanup;
-extern bool do_Obj_cleanup;
-extern bool do_Obj_tracking;
-//class ObjSLAMVoxelSceneParams{
-//
-// public:
-//  static const unsigned int sdf_local_block_num = 0x10000; //0x10000
-//  static const unsigned int sdf_bucket_num = sdf_local_block_num*4;
-//  static const unsigned int sdf_hash_mask = sdf_bucket_num-1;
-//  static const unsigned int sdf_excess_list_size=0x8000;
-//
-//  static const unsigned int background_sdf_local_block_num = 0x20000;
-//  static const unsigned int background_sdf_bucket_num = background_sdf_local_block_num*4;
-//  static const unsigned int background_sdf_hash_mask = background_sdf_bucket_num-1;
-//
-//
-//
-//};
+extern int totFrames; //Set the total number of frames before stop
+extern bool do_BG_cleanup; //Set if the Background cleanup will be performed
+extern bool do_Obj_cleanup; //Set if the Object cleanup will be performed
+extern bool do_Obj_tracking; //Set if the Object level tracking will be performed
 
  //MT_OBJSLAM_OBJSLAMVOXELSCENEPARAMS_H
