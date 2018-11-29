@@ -7,6 +7,8 @@
 
 namespace ObjSLAM{
 template<typename TVoxel, typename TIndex>
+
+//All labels according to Matterport Implementation of Mask-RCNN
 const std::vector<std::string> ObjectClassLabel_Group<TVoxel,TIndex>::label_list= {"BG", "person", "bicycle", "car", "motorcycle", "airplane",
 "bus", "train", "truck", "boat", "traffic light",
 "fire hydrant", "stop sign", "parking meter", "bench", "bird",

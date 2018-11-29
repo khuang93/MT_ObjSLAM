@@ -57,6 +57,8 @@ int main(int argc, char **argv) {
 
   //Path of the depth image file
   string path = argv[1];
+
+  //Image Size 640 x 480
   Vector2i imgSize(640, 480);
 
   totFrames =atoi( argv[2]);
@@ -87,15 +89,16 @@ int main(int argc, char **argv) {
   internalSettings->sceneParams =ITMLib::ITMSceneParams(0.1f, 100, 0.01f, 0.1, 10.0, true);// ITMLib::ITMSceneParams(0.08f, 100, 0.008f, 0.1, 10.0, true);
 
   std::shared_ptr<ITMLib::ITMLibSettings> internalSettings_obj = std::make_shared<ITMLib::ITMLibSettings>();
+  //Scene Params
+  //  float mu, int maxW, float voxelSize, float viewFrustum_min, float viewFrustum_max, bool stopIntegratingAtMaxW
   internalSettings_obj->sceneParams = ITMLib::ITMSceneParams(0.1f, 100, 0.01f, 0.1, 10.0, true);
   //(0.1, 10, 0.025, 0.1, 4.0, false); //(0.02f, 100, 0.002f, 0.2f, 3.0f, false);  //(0.2, 4, 0.05, 0.1, 4.0, false);
           //0.1f, 5, 0.01f, 0.1, 6.0, false  0.04f, 100, 0.005f, 0.2f, 5.0f, false
-//  float mu, int maxW, float voxelSize, float viewFrustum_min, float viewFrustum_max, bool stopIntegratingAtMaxW
+
 
   internalSettings->deviceType = ITMLib::ITMLibSettings::DEVICE_CPU;
 
 
-//  LPD_Dataset_Reader reader(path, imgSize);
   DatasetReader* reader= nullptr;
   if(path.find("Teddy")!=std::string::npos){
     cout<<"Teddy\n";
