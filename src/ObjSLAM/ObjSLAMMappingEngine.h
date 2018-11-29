@@ -61,7 +61,7 @@ namespace ObjSLAM {
         shared_ptr<ObjSLAMTrackingEngine> trackingEngine;
 
         Vector2i imgSize;
-//  std::vector<ObjectInstanceScene<TVoxel, TIndex> *> object_instance_scene_vector;
+
         std::vector<ObjectInstance_ptr<TVoxel, TIndex>> obj_inst_ptr_vector; //managing a list of all objs for faster loop over all objs
         std::vector<ObjectInstance_ptr<TVoxel, TIndex>> active_obj_ptr_vector; //managing a list of all visible objs
         const std::shared_ptr<ITMLib::ITMLibSettings> settings;
@@ -71,7 +71,6 @@ namespace ObjSLAM {
         std::shared_ptr<ITMLib::ITMRenderState> renderState_RenderAll;
 
         std::shared_ptr<ITMLib::ITMRenderState> renderState_RenderAbove;
-
 
         std::shared_ptr<ObjectInstance<TVoxel, TIndex>> BG_object_ptr;
         std::shared_ptr<ITMLib::ITMSceneParams> sceneParams_ptr;
@@ -111,20 +110,22 @@ namespace ObjSLAM {
          * @param _calib Calibration parameters
          * @param _imgSize Image Size specified as Vector2i
          */
-        ObjSLAMMappingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,const std::shared_ptr<ITMLib::ITMLibSettings> _settings_obj,
+        ObjSLAMMappingEngine(const std::shared_ptr<ITMLib::ITMLibSettings> _settings,
+                             const std::shared_ptr<ITMLib::ITMLibSettings> _settings_obj,
                              const std::shared_ptr<ITMLib::ITMRGBDCalib> _calib,
-                             const Vector2i _imgSize) : settings(_settings), settings_obj(_settings_obj),calib(_calib), imgSize(_imgSize) {
+                             const Vector2i _imgSize) : settings(_settings), settings_obj(_settings_obj), calib(_calib),
+                                                        imgSize(_imgSize) {
 
             denseMapper = new ITMLib::ITMDenseMapper<TVoxel, TIndex>(settings.get());
 
             sceneIsBackground = false;
 
-            visualisationEngine = new ITMLib::ITMVisualisationEngine_CPU<TVoxel,TIndex>;
+            visualisationEngine = new ITMLib::ITMVisualisationEngine_CPU<TVoxel, TIndex>;
 
 
             sceneIsBackground = true;
 
-            visualisationEngine_BG = new ITMLib::ITMVisualisationEngine_CPU<TVoxel,TIndex>;
+            visualisationEngine_BG = new ITMLib::ITMVisualisationEngine_CPU<TVoxel, TIndex>;
 
 
             sceneParams_ptr = std::shared_ptr<ITMLib::ITMSceneParams>(&(this->settings->sceneParams));
@@ -139,7 +140,7 @@ namespace ObjSLAM {
                                                   settings->sceneParams.viewFrustum_max,
                                                   MEMORYDEVICE_CPU));
 
-            renderState_RenderAbove= std::shared_ptr<ITMLib::ITMRenderState>(
+            renderState_RenderAbove = std::shared_ptr<ITMLib::ITMRenderState>(
                     new ITMLib::ITMRenderState_VH(ITMLib::ITMVoxelBlockHash::noTotalEntries_BG,
                                                   imgSize,
                                                   3.0f, //vf_min set to be larger so the roof of room is not rendered
@@ -147,10 +148,10 @@ namespace ObjSLAM {
                                                   MEMORYDEVICE_CPU));
 
 
-            t_state_above=make_shared<ITMLib::ITMTrackingState>(this->imgSize, MEMORYDEVICE_CPU);
+            t_state_above = make_shared<ITMLib::ITMTrackingState>(this->imgSize, MEMORYDEVICE_CPU);
             Matrix3f R(1, 0, 0, 0, 0, -1, 0, 1, 0);
             Vector3f T(0, 0.5, 8);
-            auto * pose_visualize = new ORUtils::SE3Pose(R,T);
+            auto *pose_visualize = new ORUtils::SE3Pose(R, T);
             t_state_above->pose_d->SetFrom(pose_visualize);
             delete pose_visualize;
             img_BG = std::make_shared<ObjUChar4Image>(imgSize, MEMORYDEVICE_CPU);
@@ -164,6 +165,7 @@ namespace ObjSLAM {
         void CreateView(ObjFloatImage *_depth,
                         ObjUChar4Image *_rgb,
                         LabelImgVector _label_img_vector);
+
         /**
          * @brief Process the current frame with all segmentation and RGB-D data
          */
@@ -186,10 +188,10 @@ namespace ObjSLAM {
          * @return true if overlap percentage is larger than threshold
          */
         bool CheckIsSameObject3D(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
-                               ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_2);
+                                 ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_2);
 
         /**
-         * @brief check for overlap in 2D for 2 objects
+         * @brief check if object 1 and object 2 are the same object
          * @param obj_ptr_1
          * @param obj_ptr_2
          * @return true if overlap percentage is larger than threshold
@@ -197,22 +199,44 @@ namespace ObjSLAM {
         bool CheckIsSameObject2D(ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_1,
                                  ObjectInstance_ptr<TVoxel, TIndex> obj_ptr_2);
 
-
+        /**
+         * @brief Render an Image of the object using the current pose
+         * @param obj_inst_ptr Pointer to the object
+         * @return The rendered image
+         */
         ORUtils::Image<Vector4u> *ProjectObjectToImg(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
 
         ORUtils::Image<Vector4f> *ProjectObjectToFloatImg(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
 
+        /**
+         * @brief calculate the overlap of the bounding cubes
+         * @param first corners of the first cube: x_max, x_min, y_max, y_min, z_max, z_min
+         * @param second corners of the second cube: x_max, x_min, y_max, y_min, z_max, z_min
+         * @return whether the overlap percentage is larger than threshold
+         */
         bool CheckBoundingCubeOverlap(ORUtils::Vector6<float> first, ORUtils::Vector6<float> second);
 
         /**
          * @brief calculate the volume of a cube
-         * @param corners
+         * @param corners: x_max, x_min, y_max, y_min, z_max, z_min
          * @return volume in m^3
          */
         double CalculateCubeVolume(ORUtils::Vector6<float> corners);
 
+        /**
+         * @brief calculate the overlap of the bounding boxes
+         * @param first Depth Image of the 1st object
+         * @param second Depth Image of the 2nd object
+         * @return whether the overlap percentage is larger than threshold
+         */
         bool CheckImageOverlap(ObjSLAM::ObjFloatImage *first, ObjSLAM::ObjFloatImage *second);
 
+        /**
+         * @brief calculate the overlap of the bounding boxes
+         * @param first 1st Object projected into the camera frame of the 2nd image
+         * @param second Depth Image of the 2nd object
+         * @return whether the overlap percentage is larger than threshold
+         */
         bool CheckImageOverlap(ORUtils::Image<Vector4u> *first, ObjSLAM::ObjFloatImage *second);
 
         void UpdateTrackingState(const ORUtils::SE3Pose *_pose);
@@ -225,19 +249,31 @@ namespace ObjSLAM {
 
         void SetTrackingController(shared_ptr<ITMLib::ITMTrackingController> _t_controller);
 
-        void SetTrackingEngine(shared_ptr<ObjSLAMTrackingEngine> _t_eng){this->trackingEngine=_t_eng; }
+        void SetTrackingEngine(shared_ptr<ObjSLAMTrackingEngine> _t_eng) { this->trackingEngine = _t_eng; }
 
-
+        /**
+         * @brief update the image number in the mapper
+         * @param _imgNum
+         */
         void UpdateImgNumber(int _imgNum) { imgNumber = _imgNum; };
 
         void PrepareTrackingWithAllObj();
 
-        void UpdateVisibilityOfObj(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr, const  ORUtils::SE3Pose* pose);
+        /**
+         * @brief check if object is in visibile range
+         * @param obj_inst_ptr Pointer to the object
+         * @param pose Camera pose
+         */
+        void UpdateVisibilityOfObj(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr, const ORUtils::SE3Pose *pose);
 
-        void UpdateVisibilityAndViewCountOfObj(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr, const  ORUtils::SE3Pose* pose);
+        void UpdateVisibilityAndViewCountOfObj(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr,
+                                               const ORUtils::SE3Pose *pose);
 
-        void UpdateFarVisibilityOfObj(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr, const  ORUtils::SE3Pose* pose);
+        void UpdateFarVisibilityOfObj(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr, const ORUtils::SE3Pose *pose);
 
+        /**
+         * @brief check for all objects if they are in visible range.
+         */
         void UpdateVisibilityOfAllObj();
 
         ObjUChar4Image *GetImage(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr);
@@ -256,13 +292,22 @@ namespace ObjSLAM {
 
         ObjUChar4Image *GetRGBImage(int object_index);
 
-
+        /**
+         * @brief Render Image from bird's perspective
+         */
         void RenderImageFromAbove();
 
 //  void visualizeObjectFromMultiPerspective(std::shared_ptr<ObjectInstance> obj_inst_ptr);
 //TODO
+
+        /**
+         * @brief Render all currently visible objects
+         */
         void RenderAllObjImages();
 
+        /**
+         * @brief Render all currently visible objects, from further back than the current camera
+         */
         void RenderAllObjImagesFar();
 
         void OutputAllObjImages();
@@ -271,10 +316,13 @@ namespace ObjSLAM {
 
         void BG_VoxelCleanUp();
 
-
+        /**
+         * @brief Object voxel cleanup based on visibility and allocation count of the voxels
+         * @param object Pointer to the object being processed
+         */
         void Object_Cleanup(ObjectInstance_ptr<TVoxel, TIndex> object);
 
-        std::vector<ObjectInstance_ptr<TVoxel, TIndex>> getObjInstPtrVec(){return this->obj_inst_ptr_vector;}
+        std::vector<ObjectInstance_ptr<TVoxel, TIndex>> getObjInstPtrVec() { return this->obj_inst_ptr_vector; }
 
         std::vector<std::shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>>
         GetLabelPtrVec() { return this->label_ptr_vector; }
@@ -286,7 +334,12 @@ namespace ObjSLAM {
          */
         void SaveSceneToMesh(const char *objFileName, std::shared_ptr<ITMLib::ITMScene<TVoxel, TIndex>> scene_ptr);
 
-        void write2PLYfile(const ORUtils::Image<ORUtils::Vector4<float>>* pcl, const std::string filename);
+        /**
+         * @brief Output ply file from a depth image
+         * @param pcl the point cloud ordered in an image
+         * @param filename
+         */
+        void write2PLYfile(const ORUtils::Image<ORUtils::Vector4<float>> *pcl, const std::string filename);
 
     };
 }
