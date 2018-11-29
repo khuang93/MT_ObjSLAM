@@ -56,13 +56,6 @@ namespace ObjSLAM {
         std::vector<int> rgb_d_pixel_idx_vec; //index is index in rgb img and value is index in depth img
         shared_ptr<ORUtils::Image<Vector2i>> d_to_rgb_correspondence; //stored the pixel location in rgb img at corresponding depth pixel location
 
-//  std::vector<ITMLib::ITMView*> ITMViewVector_each_Object;
-
-
-//  std::map<int, Object_View_Tup<TVoxel,TIndex>> obj_map; //int is the raw value in seg mask and tuple contains a obj instance and corresbonding ITMView
-
-
-
         void setListOfViews();
 
     public:
@@ -92,11 +85,20 @@ namespace ObjSLAM {
             rgb_Image->SetFrom(_rgb, ORUtils::Image<Vector4u>::CPU_TO_CPU);
             depth_Image->SetFrom(_depth, ORUtils::Image<float>::CPU_TO_CPU);
             //TODO debug info
-//    std::cout<<"ObjectView complete created!\n";
+            //std::cout<<"ObjectView complete created!\n";
 
         }
 
-        //Constructor, currently using this
+        /**
+         * @brief Constructor, currently using this
+         * @param _calibration
+         * @param _imgSize_rgb
+         * @param _imgSize_d
+         * @param useGPU
+         * @param _depth
+         * @param _rgb
+         * @param _label_img_vector
+         */
         ObjectView(const ITMLib::ITMRGBDCalib &_calibration,
                    Vector2i _imgSize_rgb,
                    Vector2i _imgSize_d,
@@ -111,16 +113,20 @@ namespace ObjSLAM {
                     }
         }
 
-        //Destructor
+        /**
+         * @brief Destructor
+         */
         ~ObjectView() {
             delete rgb_Image;
             delete depth_Image;
             delete camera_Pose;
         }
 
+        /**
+         * @brief Using the label images from the reader, create an rgb-d image for each object
+         * @param label_ptr_vector All label images comign from reader
+         */
         void SetListOfObjects(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
-
-        void SetListOfObjects_New(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
 
         void
         UpdateObjectTrackingState(std::vector<shared_ptr<ObjectClassLabel_Group<TVoxel, TIndex>>> &label_ptr_vector);
