@@ -39,7 +39,7 @@
 
 namespace ObjSLAM {
 
-/** \brief
+    /** \brief
     * Object Mapping Engine
 	*/
     template<class TVoxel, class TIndex>
