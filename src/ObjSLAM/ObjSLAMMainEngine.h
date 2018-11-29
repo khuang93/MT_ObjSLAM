@@ -35,14 +35,25 @@
 
 #include <src/ObjSLAM/ObjSLAMVoxelSceneParams.h>
 
+/**
+ * @brief Base class containing the tracker and the mapper
+ */
 class ObjSLAMMainEngine {
 private:
     std::shared_ptr<ITMLib::ITMLibSettings> internalSettings;
     std::shared_ptr<ITMLib::ITMLibSettings> internalSettings_obj;
     shared_ptr<DatasetReader> reader;
     shared_ptr<ITMLib::ITMView> wholeView;
+    /**
+     * @brief Mapping Engine
+     */
     shared_ptr<ObjSLAM::ObjSLAMMappingEngine<ITMVoxel, ITMVoxelIndex>> mappingEngine;
+
+    /**
+     * @brief Tracking Engine
+     */
     shared_ptr<ObjSLAM::ObjSLAMTrackingEngine> trackingEngine;
+
     shared_ptr<ITMLib::ITMTrackingController> t_controller;
     Vector2i imgSize;
     LabelImgVector label_img_vector;
@@ -59,6 +70,13 @@ private:
 public:
     int framesElapsedBeforeMapping = 0;
     bool mapperFree=true;
+
+    /**
+     * @brief Constructor
+     * @param _settings
+     * @param _settings_obj
+     * @param _reader
+     */
     ObjSLAMMainEngine(std::shared_ptr<ITMLib::ITMLibSettings> _settings, std::shared_ptr<ITMLib::ITMLibSettings> _settings_obj,shared_ptr<DatasetReader> _reader)
             : internalSettings(_settings),internalSettings_obj(_settings_obj) ,reader(_reader) {
         imgSize = Vector2i(640, 480);
@@ -77,18 +95,35 @@ public:
 
     ~ObjSLAMMainEngine(){}
 
+    /**
+     * @brief Process the next frame with the reader
+     * @return the image number of the next frame. -1 means it is the end of the sequence
+     */
     int ReadNext();
 
+    /**
+     * @brief Process the tracking
+     */
     void TrackFrame();
 
+    /**
+     * @brief Process the mapping
+     */
     void MapFrame();
 
+    /**
+     * @brief Do visualizations with the mapping engine
+     */
     void Visualize();
 
     void UpdateMappingEngine();
 
+    /**
+     * @brief Save the visualized images as picture files
+     */
     void OutputPics();
 
+    //Getters, mainly for display the images in the UI
     ObjSLAM::ObjUChar4Image* GetImage(int n);
 
     ObjSLAM::ObjUChar4Image* GetImageFar(int n);
