@@ -1,4 +1,5 @@
 // Copyright 2014-2017 Oxford University Innovation Limited and the authors of InfiniTAM
+//Edited by Kailin Huang 2018 ETH Zurich
 
 #include "ITMVisualisationEngine_CPU.h"
 
@@ -294,7 +295,8 @@ static void GenericRaycast(const ITMScene<TVoxel, TIndex> *scene, const Vector2i
     }
 }
 
-
+//Edit Kailin Huang
+//RayCast for Multiple Objects
 template<class TVoxel, class TIndex>
 static void GenericRaycastMultiObj(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>> &obj_inst_ptr_vector,
                                    const Vector2i &imgSize, const Matrix4f &invM, const Vector4f &projParams,
@@ -419,7 +421,7 @@ static void GenericRaycastMultiObj(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxe
 
 }
 
-
+//Old version, unused
 template<class TVoxel, class TIndex>
 static void GenericRaycastMulti(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>> &obj_inst_ptr_vector,
                                 const Vector2i &imgSize, const Matrix4f &invM, const Vector4f &projParams,
@@ -595,6 +597,19 @@ RenderImage_common(const ITMScene<TVoxel, TIndex> *scene, const ORUtils::SE3Pose
     }
 }
 
+/**
+ * Edit Kailin Huang
+ * @brief RenderImage_common for multiple objects
+ * @tparam TVoxel
+ * @tparam TIndex
+ * @param obj_inst_ptr_vector Vector of objects
+ * @param pose
+ * @param intrinsics
+ * @param renderState
+ * @param outputImage
+ * @param type
+ * @param raycastType
+ */
 template<class TVoxel, class TIndex>
 static void RenderImage_common_multi(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>> &obj_inst_ptr_vector,
                                      const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics,
@@ -774,6 +789,16 @@ CreateICPMaps_common(const ITMScene<TVoxel, TIndex> *scene, const ITMView *view,
         }
 }
 
+/**
+ * Edit Kailin Huang
+ * @brief CreateICPMaps_common for multiple objects
+ * @tparam TVoxel
+ * @tparam TIndex
+ * @param obj_inst_ptr_vector vector of objects
+ * @param view
+ * @param trackingState
+ * @param renderState
+ */
 template<class TVoxel, class TIndex>
 static void
 CreateICPMaps_common_MultiObj(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>> &obj_inst_ptr_vector, const ITMView *view, ITMTrackingState *trackingState,
@@ -910,6 +935,7 @@ ITMVisualisationEngine_CPU<TVoxel, ITMVoxelBlockHash>::RenderImage(const ITMScen
     RenderImage_common(scene, pose, intrinsics, renderState, outputImage, type, raycastType);
 }
 
+//Edit Kailin Huang
 template<class TVoxel, class TIndex>
 void ITMVisualisationEngine_CPU<TVoxel, TIndex>::RenderImageMulti(
         std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>> &obj_inst_ptr_vector, const ORUtils::SE3Pose *pose,
@@ -919,7 +945,7 @@ void ITMVisualisationEngine_CPU<TVoxel, TIndex>::RenderImageMulti(
     RenderImage_common_multi(obj_inst_ptr_vector, pose, intrinsics, renderState, outputImage, type, raycastType);
 }
 
-
+//Edit Kailin Huang
 template<class TVoxel>
 void ITMVisualisationEngine_CPU<TVoxel, ITMVoxelBlockHash>::RenderImageMulti(
         std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, ITMVoxelBlockHash>> &obj_inst_ptr_vector,
@@ -984,6 +1010,7 @@ ITMVisualisationEngine_CPU<TVoxel, ITMVoxelBlockHash>::CreateICPMaps(const ITMSc
     CreateICPMaps_common(scene, view, trackingState, renderState);
 }
 
+//Edit Kailin Huang
 template<class TVoxel, class TIndex>
 void
 ITMVisualisationEngine_CPU<TVoxel, TIndex>::CreateICPMapsMulti(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>> &obj_inst_ptr_vector, const ITMView *view,
@@ -992,6 +1019,7 @@ ITMVisualisationEngine_CPU<TVoxel, TIndex>::CreateICPMapsMulti(std::vector<ObjSL
     CreateICPMaps_common_MultiObj(obj_inst_ptr_vector, view, trackingState, renderState);
 }
 
+//Edit Kailin Huang
 template<class TVoxel>
 void
 ITMVisualisationEngine_CPU<TVoxel, ITMVoxelBlockHash>::CreateICPMapsMulti(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, ITMVoxelBlockHash>> &obj_inst_ptr_vector,

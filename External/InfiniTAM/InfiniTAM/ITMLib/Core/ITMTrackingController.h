@@ -1,4 +1,5 @@
 // Copyright 2014-2017 Oxford University Innovation Limited and the authors of InfiniTAM
+// Edited by Kailin Huang 2018 ETH Zurich
 
 #pragma once
 
@@ -91,7 +92,16 @@ class ITMTrackingController {
     }
   }
 
-  //multi prepare
+    /**
+     * Edit by Kailin Huang
+     * @brief Prepare function for multiple objects
+     * @tparam TVoxel
+     * @tparam TIndex
+     * @param trackingState
+     * @param renderState
+     * @param obj_inst_ptr_vector Vector of objects
+     * @param visualisationEngine
+     */
     template<typename TVoxel, typename TIndex>
     void Prepare(ITMTrackingState *trackingState,
                  ITMRenderState *renderState,

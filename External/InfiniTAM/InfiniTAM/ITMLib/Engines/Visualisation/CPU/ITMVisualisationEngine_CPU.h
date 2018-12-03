@@ -1,4 +1,5 @@
 // Copyright 2014-2017 Oxford University Innovation Limited and the authors of InfiniTAM
+// Edited by Kailin Huang 2018 ETH Zurich
 
 #pragma once
 
@@ -21,12 +22,29 @@ namespace ITMLib
 		void RenderImage(const ITMScene<TVoxel,TIndex> *scene, const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics, const ITMRenderState *renderState,
 			ITMUChar4Image *outputImage, IITMVisualisationEngine::RenderImageType type = IITMVisualisationEngine::RENDER_SHADED_GREYSCALE,
 			IITMVisualisationEngine::RenderRaycastSelection raycastType = IITMVisualisationEngine::RENDER_FROM_NEW_RAYCAST) const;
+		/**
+		 * @brief RenderImage for multiple objects
+		 * @param obj_inst_ptr_vector Vector of Objects
+		 * @param pose
+		 * @param intrinsics
+		 * @param renderState
+		 * @param outputImage
+		 * @param type
+		 * @param raycastType
+		 */
 		void RenderImageMulti(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>>& obj_inst_ptr_vector, const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics, const ITMRenderState *renderState,
 							  ITMUChar4Image *outputImage, IITMVisualisationEngine::RenderImageType type = IITMVisualisationEngine::RENDER_SHADED_GREYSCALE,
 							  IITMVisualisationEngine::RenderRaycastSelection raycastType = IITMVisualisationEngine::RENDER_FROM_NEW_RAYCAST) const;
 		void FindSurface(const ITMScene<TVoxel,TIndex> *scene, const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics, const ITMRenderState *renderState) const;
 		void CreatePointCloud(const ITMScene<TVoxel,TIndex> *scene, const ITMView *view, ITMTrackingState *trackingState, ITMRenderState *renderState, bool skipPoints) const;
 		void CreateICPMaps(const ITMScene<TVoxel,TIndex> *scene, const ITMView *view, ITMTrackingState *trackingState, ITMRenderState *renderState) const;
+		/**
+		 * @brief CreateICPMaps for multiple objects
+		 * @param obj_inst_ptr_vector Vector of Objects
+		 * @param view
+		 * @param trackingState
+		 * @param renderState
+		 */
 		void CreateICPMapsMulti(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, TIndex>> &obj_inst_ptr_vector, const ITMView *view,
 				ITMTrackingState *trackingState,
 		ITMRenderState *renderState) const;
@@ -48,12 +66,29 @@ namespace ITMLib
 		void RenderImage(const ITMScene<TVoxel,ITMVoxelBlockHash> *scene, const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics, const ITMRenderState *renderState,
 			ITMUChar4Image *outputImage, IITMVisualisationEngine::RenderImageType type = IITMVisualisationEngine::RENDER_SHADED_GREYSCALE,
 			IITMVisualisationEngine::RenderRaycastSelection raycastType = IITMVisualisationEngine::RENDER_FROM_NEW_RAYCAST) const;
+		/**
+		 * @brief RenderImage for multiple objects
+		 * @param obj_inst_ptr_vector Vector of Objects
+		 * @param pose
+		 * @param intrinsics
+		 * @param renderState
+		 * @param outputImage
+		 * @param type
+		 * @param raycastType
+		 */
 		void RenderImageMulti(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, ITMVoxelBlockHash>>& obj_inst_ptr_vector, const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics, const ITMRenderState *renderState,
 						 ITMUChar4Image *outputImage, IITMVisualisationEngine::RenderImageType type = IITMVisualisationEngine::RENDER_SHADED_GREYSCALE,
 						 IITMVisualisationEngine::RenderRaycastSelection raycastType = IITMVisualisationEngine::RENDER_FROM_NEW_RAYCAST) const;
 		void FindSurface(const ITMScene<TVoxel,ITMVoxelBlockHash> *scene, const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics, const ITMRenderState *renderState) const;
 		void CreatePointCloud(const ITMScene<TVoxel,ITMVoxelBlockHash> *scene, const ITMView *view, ITMTrackingState *trackingState, ITMRenderState *renderState, bool skipPoints) const;
 		void CreateICPMaps(const ITMScene<TVoxel,ITMVoxelBlockHash> *scene, const ITMView *view, ITMTrackingState *trackingState, ITMRenderState *renderState) const;
+		/**
+		 * @brief CreateICPMaps for multiple objects
+		 * @param obj_inst_ptr_vector Vector of Objects
+		 * @param view
+		 * @param trackingState
+		 * @param renderState
+		 */
 		void CreateICPMapsMulti(std::vector<ObjSLAM::ObjectInstance_ptr<TVoxel, ITMVoxelBlockHash>> &obj_inst_ptr_vector, const ITMView *view,
 								ITMTrackingState *trackingState,
 								ITMRenderState *renderState) const;

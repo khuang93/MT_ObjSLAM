@@ -1,4 +1,5 @@
 // Copyright 2014-2017 Oxford University Innovation Limited and the authors of InfiniTAM
+// Edited by Kailin Huang 2018 ETH Zurich
 
 #pragma once
 
@@ -199,7 +200,9 @@ _CPU_AND_GPU_CODE_ inline bool castRay(DEVICEPTR(Vector4f) &pt_out, DEVICEPTR(uc
     return pt_found;
 }
 
-/*template<class TVoxel, class TIndex, bool modifyVisibleEntries>
+/*
+ //old version of castRay for multiple
+ template<class TVoxel, class TIndex, bool modifyVisibleEntries>
 _CPU_AND_GPU_CODE_ inline bool castRay(DEVICEPTR(Vector4f) &pt_out, DEVICEPTR(uchar) *entriesVisibleType,
                                        int x, int y, const CONSTPTR(TVoxel) *voxelData,
                                        const CONSTPTR(typename TIndex::IndexData) *voxelIndex,
@@ -279,6 +282,25 @@ _CPU_AND_GPU_CODE_ inline bool castRay(DEVICEPTR(Vector4f) &pt_out, DEVICEPTR(uc
     return pt_found;
 }*/
 
+
+/**
+ * Edit Kailin Huang
+ * @brief castRay for multiple objects
+ * @tparam TVoxel
+ * @tparam TIndex
+ * @param pt_out
+ * @param entriesVisibleType
+ * @param x
+ * @param y
+ * @param voxelData_vec
+ * @param voxelIndex_vec
+ * @param invM
+ * @param invProjParams
+ * @param oneOverVoxelSize
+ * @param mu
+ * @param viewFrustum_minmax
+ * @return
+ */
 template<class TVoxel, class TIndex>
 _CPU_AND_GPU_CODE_ inline bool
 castRayMulti(DEVICEPTR(Vector4f) &pt_out, std::vector<DEVICEPTR(uchar) *> &entriesVisibleType,
