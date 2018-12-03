@@ -22,7 +22,10 @@ using namespace std;
 
 namespace ObjSLAM {
 
-//unless specified, it saves Twc from World to Cam
+/**
+ * @brief Class for camera pose containing eigen pose and the pose from InfiniTAM.
+ * unless specified, it saves Twc from World to Cam
+ */
 class ObjCameraPose  {
 
 
@@ -31,7 +34,6 @@ class ObjCameraPose  {
   Eigen::Quaterniond eigen_pose;
   Eigen::Quaterniond eigen_pose_inv;
   Eigen::Matrix4d eigen_pose_mat;
-//  double tx,ty,tz;
   ORUtils::SE3Pose se3Pose;
 
   //allocated when needed
@@ -39,21 +41,52 @@ class ObjCameraPose  {
 
 
  public:
-  //Constructor
+  /**
+   * @brief Constructor using quaternion and x y z
+   * @param qw
+   * @param qx
+   * @param qy
+   * @param qz
+   * @param tx
+   * @param ty
+   * @param tz
+   */
   ObjCameraPose(double qw, double qx, double qy, double qz, double tx, double ty, double tz);
 
+  /**
+   * @brief Constructor from ORUtils::SE3Pose
+   * @param _se3pose
+   */
   ObjCameraPose(ORUtils::SE3Pose _se3pose);
 
+  /**
+   * @brief Constructor from Eigen::Quaterniond pose
+   * @param _pose
+   */
   ObjCameraPose(Eigen::Quaterniond _pose);
 
-
-
+  /**
+   * @brief Getter of the quaternion
+   * @return Pose in Eigen::Quaterniond
+   */
   Eigen::Quaterniond GetQuaternion();
 
+  /**
+   * @brief Getter of the quaternion of the inversed pose
+   * @return Inversed pose in Eigen::Quaterniond
+   */
   Eigen::Quaterniond GetQuaternionInv();
   
+  /**
+   * @brief Getter for 4x4 Matrix Pose
+   * @return pose in Eigen::Matrix4d
+   */
   Eigen::Matrix4d GetEigenMat();
 
+  /**
+   * @brief Getter of pose in ORUtils::SE3Pose&
+   * @return Pose in ORUtils::SE3Pose&
+   */
   ORUtils::SE3Pose& GetSE3Pose();
 
   static ObjCameraPose GetTransformation(ObjCameraPose& fromPose, ObjCameraPose& toPose);

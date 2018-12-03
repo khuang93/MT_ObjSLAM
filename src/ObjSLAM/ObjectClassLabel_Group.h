@@ -53,6 +53,10 @@ namespace ObjSLAM {
             this->object_ptr_vector.push_back(object_ptr);
         }
 
+        /**
+         * @brief Get the vector of all objects in this label
+         * @return
+         */
         std::vector<std::shared_ptr<ObjectInstance<TVoxel, TIndex>>> &GetObjPtrVector() { return object_ptr_vector; }
 
 

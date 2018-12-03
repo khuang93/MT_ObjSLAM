@@ -8,7 +8,7 @@
 
 namespace ObjSLAM {
 
-bool ObjSLAMCamera::ProjectPointCloud2Img(ORUtils::Image<Vector4f> *PCL, ObjFloatImage *out, ObjCameraPose pose) {
+void ObjSLAMCamera::ProjectPointCloud2Img(ORUtils::Image<Vector4f> *PCL, ObjFloatImage *out, ObjCameraPose pose) {
 /*  Eigen::Matrix3f K; = Eigen::Matrix3d::Zero();
   //K normalized with the focal length in pixels
   K(0, 0) = 1.0f;

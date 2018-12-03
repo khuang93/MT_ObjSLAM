@@ -81,8 +81,21 @@ namespace ObjSLAM {
          */
         void AddObjectInstanceToLabel();
 
+        /**
+         * @brief Check if this is the background object
+         * @return true if background, false if not
+         */
         bool CheckIsBackground() { return isBackground; }
 
+        /**
+         * @brief Update the visibility parameter isVisible depending on noVisibleEntries
+         */
+        void UpdateVisibility() {
+            int voxelCount = scene->index.getNumAllocatedVoxelBlocks() - scene->localVBA.lastFreeBlockId -1;
+            isVisible = ((ITMLib::ITMRenderState_VH *) this->GetRenderState().get())->noVisibleEntries > 0 && voxelCount > 0;
+        }
+
+        //Setters
         void SetScene(std::shared_ptr<ObjectInstanceScene<TVoxel, TIndex>> _scene) { scene = _scene; }
 
         void SetAnchorView(std::shared_ptr<ObjectView<TVoxel, TIndex>> _anchor_view) { anchor_view = _anchor_view; }
@@ -107,6 +120,7 @@ namespace ObjSLAM {
 
         void SetTrackingState(std::shared_ptr<ITMLib::ITMTrackingState> _t_state) { t_state = _t_state; }
 
+        //Getter
         std::shared_ptr<ITMLib::ITMView>& GetCurrentView() { return current_view; }
 
         std::shared_ptr<ObjectView<TVoxel, TIndex>> &GetAnchorView() { return anchor_view; }
@@ -141,10 +155,7 @@ namespace ObjSLAM {
 
         int GetLabelIndex() { return this->GetClassLabel()->GetLabelIndex(); }
 
-        void UpdateVisibility() {
-            int voxelCount = scene->index.getNumAllocatedVoxelBlocks() - scene->localVBA.lastFreeBlockId -1;
-            isVisible = ((ITMLib::ITMRenderState_VH *) this->GetRenderState().get())->noVisibleEntries > 0 && voxelCount > 0;
-        }
+
 
     };
 
