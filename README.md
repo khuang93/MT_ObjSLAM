@@ -1,5 +1,7 @@
 # MT_ObjSLAM
 
+//TODO needs update!  03.12.2018
+
 This is the Repo of the master thesis of dense object SLAM. It is based on the dense slam algorithm InfiniTAM and will fuse the funcitonalities of Object Segmentation to reconstruct objects searately and use them to perform place recognition and loop closure.
 
 Clone the repo with its submodules: 
