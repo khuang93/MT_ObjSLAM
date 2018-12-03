@@ -1,4 +1,5 @@
 // Copyright 2014-2017 Oxford University Innovation Limited and the authors of InfiniTAM
+// Edited by Kailin Huang 2018
 
 #pragma once
 
@@ -13,6 +14,9 @@
 #include "../../../ORUtils/MemoryBlock.h"
 #include "../../../ORUtils/MemoryBlockPersister.h"
 
+/**
+ * @brief Voxel values for Backgound and other objects defined separately
+ */
 #define SDF_BLOCK_SIZE 8				// SDF block size
 #define SDF_BLOCK_SIZE3 512				// SDF_BLOCK_SIZE3 = SDF_BLOCK_SIZE * SDF_BLOCK_SIZE * SDF_BLOCK_SIZE
 

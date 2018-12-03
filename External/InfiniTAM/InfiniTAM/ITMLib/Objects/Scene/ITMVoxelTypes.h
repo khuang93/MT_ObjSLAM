@@ -127,6 +127,9 @@ struct ITMVoxel_s
 	}
 };
 
+/**
+ * @brief Extension of ITMVoxel_s with the view and alloc count for voxel clean up in objects
+ */
 struct ITMVoxel_s_vote : public ITMVoxel_s
 {
 	/** In how many views are this voxel seen as a part of the object*/
