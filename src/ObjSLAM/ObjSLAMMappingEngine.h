@@ -167,7 +167,7 @@ namespace ObjSLAM {
                         LabelImgVector _label_img_vector);
 
         /**
-         * @brief Process the current frame with all segmentation and RGB-D data
+         * @brief Process the current frame with all segmentation and RGB-D data, core logic of the mapper is here
          */
         void ProcessFrame();
 
@@ -266,6 +266,11 @@ namespace ObjSLAM {
          */
         void UpdateVisibilityOfObj(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr, const ORUtils::SE3Pose *pose);
 
+        /**
+         * @brief check if object is in visibile range, then update view count
+         * @param obj_inst_ptr Pointer to the object
+         * @param pose Camera pose
+         */
         void UpdateVisibilityAndViewCountOfObj(ObjectInstance_ptr<TVoxel, TIndex> obj_inst_ptr,
                                                const ORUtils::SE3Pose *pose);
 

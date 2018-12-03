@@ -16,6 +16,14 @@ namespace ITMLib
 
 		ITMRenderState* CreateRenderState(const ITMScene<TVoxel, TIndex> *scene, const Vector2i & imgSize) const;
 		void FindVisibleBlocks(const ITMScene<TVoxel,TIndex> *scene, const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics, ITMRenderState *renderState) const;
+		/**
+		 * Edit Kailin Huang
+		 * @brief FindVisibleBlocks and then update the view count in the voxels
+		 * @param scene
+		 * @param pose
+		 * @param intrinsics
+		 * @param renderState
+		 */
 		void FindVisibleBlocksAndUpdateViewCount(ITMScene<TVoxel,TIndex> *scene, const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics, ITMRenderState *renderState) const;
 		int CountVisibleBlocks(const ITMScene<TVoxel,TIndex> *scene,const ITMRenderState *renderState, int minBlockId, int maxBlockId) const;
 		void CreateExpectedDepths(const ITMScene<TVoxel,TIndex> *scene, const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics, ITMRenderState *renderState) const;
@@ -23,6 +31,7 @@ namespace ITMLib
 			ITMUChar4Image *outputImage, IITMVisualisationEngine::RenderImageType type = IITMVisualisationEngine::RENDER_SHADED_GREYSCALE,
 			IITMVisualisationEngine::RenderRaycastSelection raycastType = IITMVisualisationEngine::RENDER_FROM_NEW_RAYCAST) const;
 		/**
+		 * Edit Kailin Huang
 		 * @brief RenderImage for multiple objects
 		 * @param obj_inst_ptr_vector Vector of Objects
 		 * @param pose
@@ -39,6 +48,7 @@ namespace ITMLib
 		void CreatePointCloud(const ITMScene<TVoxel,TIndex> *scene, const ITMView *view, ITMTrackingState *trackingState, ITMRenderState *renderState, bool skipPoints) const;
 		void CreateICPMaps(const ITMScene<TVoxel,TIndex> *scene, const ITMView *view, ITMTrackingState *trackingState, ITMRenderState *renderState) const;
 		/**
+		 * Edit Kailin Huang
 		 * @brief CreateICPMaps for multiple objects
 		 * @param obj_inst_ptr_vector Vector of Objects
 		 * @param view
@@ -60,6 +70,14 @@ namespace ITMLib
 
 		ITMRenderState_VH* CreateRenderState(const ITMScene<TVoxel, ITMVoxelBlockHash> *scene, const Vector2i & imgSize) const;
 		void FindVisibleBlocks(const ITMScene<TVoxel,ITMVoxelBlockHash> *scene, const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics, ITMRenderState *renderState) const;
+		/**
+		 * Edit Kailin Huang
+		 * @brief FindVisibleBlocks and then update the view count in the voxels
+		 * @param scene
+		 * @param pose
+		 * @param intrinsics
+		 * @param renderState
+		 */
 		void FindVisibleBlocksAndUpdateViewCount(ITMScene<TVoxel,ITMVoxelBlockHash> *scene, const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics, ITMRenderState *renderState) const;
 		int CountVisibleBlocks(const ITMScene<TVoxel,ITMVoxelBlockHash> *scene, const ITMRenderState *renderState, int minBlockId, int maxBlockId) const;
 		void CreateExpectedDepths(const ITMScene<TVoxel,ITMVoxelBlockHash> *scene, const ORUtils::SE3Pose *pose, const ITMIntrinsics *intrinsics, ITMRenderState *renderState) const;
@@ -67,6 +85,7 @@ namespace ITMLib
 			ITMUChar4Image *outputImage, IITMVisualisationEngine::RenderImageType type = IITMVisualisationEngine::RENDER_SHADED_GREYSCALE,
 			IITMVisualisationEngine::RenderRaycastSelection raycastType = IITMVisualisationEngine::RENDER_FROM_NEW_RAYCAST) const;
 		/**
+		 * Edit Kailin Huang
 		 * @brief RenderImage for multiple objects
 		 * @param obj_inst_ptr_vector Vector of Objects
 		 * @param pose
@@ -83,6 +102,7 @@ namespace ITMLib
 		void CreatePointCloud(const ITMScene<TVoxel,ITMVoxelBlockHash> *scene, const ITMView *view, ITMTrackingState *trackingState, ITMRenderState *renderState, bool skipPoints) const;
 		void CreateICPMaps(const ITMScene<TVoxel,ITMVoxelBlockHash> *scene, const ITMView *view, ITMTrackingState *trackingState, ITMRenderState *renderState) const;
 		/**
+		 * Edit Kailin Huang
 		 * @brief CreateICPMaps for multiple objects
 		 * @param obj_inst_ptr_vector Vector of Objects
 		 * @param view
