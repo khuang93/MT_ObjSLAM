@@ -16,4 +16,5 @@ test
 build_OMP
 Profiler
 CudaBuild
+.idea/*
 
