@@ -10,7 +10,6 @@
 #include <vector>
 #include <stdlib.h>
 #include <memory>
-//#include <opencv2/opencv.hpp>
 #include "ObjSLAMDataTypes.h"
 #include "ObjCameraPose.h"
 
@@ -25,8 +24,9 @@
 
 using namespace std;
 
-//using LabelImgVector = std::vector<std::shared_ptr<ObjSLAM::ObjUIntImage>>;
-
+/**
+ * @brief Dataset reader for the RealisticRenderingDataset by LPD
+ */
 class LPD_Dataset_Reader : public DatasetReader {
  private:
 //  int width, height;

@@ -7,7 +7,7 @@
 namespace ObjSLAM {
 struct LPD_RAW_Pose {
 /**
- * \brief The pose used in the LPD Dataset
+ * @brief The pose used in the LPD Dataset
  *
  */
   double t, qw, qx, qy, qz;

@@ -70,7 +70,6 @@ set(TrackerMapper_Sources
         src/ObjSLAM/ObjSLAMVoxelSceneParams.h
         src/ObjSLAM/ObjSLAMUI.cpp src/ObjSLAM/ObjSLAMUI.h
         src/ObjSLAM/ObjSLAMMainEngine.cpp src/ObjSLAM/ObjSLAMMainEngine.h
-        src/ObjSLAM/MS_Reader.cpp src/ObjSLAM/MS_Reader.h
         )
 
 
@@ -96,7 +95,6 @@ set(TrackerMapperCLI_Sources
         src/ObjSLAM/TeddyReader.h src/ObjSLAM/TUM_Reader.cpp src/ObjSLAM/TUM_Reader.h
         src/ObjSLAM/ObjSLAMVoxelSceneParams.h
         src/ObjSLAM/ObjSLAMMainEngine.cpp src/ObjSLAM/ObjSLAMMainEngine.h
-        src/ObjSLAM/MS_Reader.cpp src/ObjSLAM/MS_Reader.h
         )
 
 #add_executable(ObjSLAM ${ObjSLAM_Sources})

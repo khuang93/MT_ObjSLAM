@@ -11,7 +11,7 @@
 
 namespace ObjSLAM {
 
-//
+//Bool image mask
 typedef ORUtils::Image<bool> ObjBoolImage;
 //DepthImg
 typedef ORUtils::Image<float> ObjFloatImage;

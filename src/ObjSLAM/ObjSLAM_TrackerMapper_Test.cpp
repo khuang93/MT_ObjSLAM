@@ -45,6 +45,12 @@ bool do_BG_cleanup = true;
 bool do_Obj_cleanup = true;
 bool do_Obj_tracking = true;
 
+/**
+ * @brief main function of ObjSLAM
+ * @param argc
+ * @param argv
+ * @return
+ */
 int main(int argc, char **argv) {
 
 

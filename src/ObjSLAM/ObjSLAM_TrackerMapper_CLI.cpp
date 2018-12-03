@@ -51,6 +51,14 @@ bool do_BG_cleanup = true;
 bool do_Obj_cleanup = true;
 bool do_Obj_tracking = true;
 
+//TODO debug this non-GUI version
+
+/**
+ * @brief ain function of ObjSLAM without GUI, currently still under development
+ * @param argc
+ * @param argv
+ * @return
+ */
 int main(int argc, char **argv) {
 
 
