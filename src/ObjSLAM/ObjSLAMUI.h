@@ -27,7 +27,11 @@ namespace ObjSLAM {
 
 
     public:
-        //constuctor
+        /**
+         * @brief constuctor
+         * @param _imgSize SIze of the images
+         */
+
         ObjSLAMUI(Vector2i _imgSize) : imgSize(_imgSize) {
             w = imgSize.width * 2;
             h = imgSize.height * 2;
@@ -42,22 +46,40 @@ namespace ObjSLAM {
 
         void ProcessContinuous();
 
+        /**
+         * @brief Core function with creation of the images
+         */
         void Run();
 
+        /**
+         * @brief Register the key-presses
+         */
         void Reg();
 
         void CreateDisplay();
 
         void CreateObjectsDisplay();
 
+        /**
+         * @brief select next object in visible objects
+         */
         void SelectNextObj();
 
+        /**
+        * @brief select previos object in visible objects
+        */
         void SelectPrevObj();
 
         void Pause();
 
+        /**
+         * @brief Process only the next frame and then pause
+         */
         void OneFrame();
 
+        /**
+         * @brief Run continuously
+         */
         void Continuous();
 
         void DrawLabels();
