@@ -116,6 +116,9 @@ public:
      */
     void Visualize();
 
+    /**
+     * @brief Update the parameters and values in the mapping engine
+     */
     void UpdateMappingEngine();
 
     /**
